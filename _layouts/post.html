@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<article>
+  <h1>{{ page.title }}</h1>
+  <p class="meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d.%m.%Y" }}</time>{% if page.categories.size > 0 %} · {{ page.categories | join: ", " }}{% endif %}{% if page.ki != false %}<span class="ki">KI-generiert</span>{% endif %}</p>
+  {% if page.bild %}<p><img src="{{ page.bild }}" alt="{{ page.bild_alt | escape }}"></p>{% endif %}
+  {{ content }}
+  {% if page.quellen %}
+  <div class="quellen">
+    <h2>Quellen</h2>
+    <ul>{% for q in page.quellen %}<li><a href="{{ q.url }}" rel="noopener">{{ q.titel }}</a></li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+</article>
