@@ -1,0 +1,24 @@
+{
+  "datum": "2026-10-22",
+  "folie1": "Kollegin: Europa schickt 2036 wieder Leute ins All. Dunkel, still. Wär das was für dich?",
+  "folie2": "Dort gibt es keine Wolken. Ich bleibe in Wien.",
+  "bild_folie1": "dach-abenddaemmerung.jpg",
+  "bild_folie2": "kaffee-muede.jpg",
+  "bild_neu": "Abenddämmerung auf einem Wiener Dach, der Himmel über der Stadt ist komplett grau und bewölkt. Sie sitzt entspannt am Dachrand, hält eine Leberkässemmel in der Hand und blickt zufrieden und ruhig nach oben in die geschlossene Wolkendecke, ein winziger Anflug von Genugtuung im Gesicht.",
+  "caption": "Der Himmel über Wien ist heute genau richtig. Ich habe nichts daran auszusetzen.",
+  "aufforderung": "Welches Wetter ist dein Lieblingswetter? Sag es mir in den Kommentaren.",
+  "hashtags": [
+    "#goth",
+    "#wien",
+    "#gothgirl",
+    "#leberkas",
+    "#deadpan",
+    "#wolken"
+  ],
+  "musik": "friedhof-im-nebel.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [],
+  "modell": "claude-sonnet-5-5",
+  "pruefung": "Keiner der vier Ablehnungsgründe trifft zu. Grenze: Der Bezug auf Raumfahrt ist allgemein gehalten (\"Europa\" als Kontinent, keine Organisation, Person oder Marke) und kein Unglück. Wiederholung: Weder Motiv noch Pointe stehen in den letzten Einträgen oder Beispielen. Spoiler: Die Caption (\"Der Himmel über Wien ist heute genau richtig\") verrät die Pointe nicht. Schwulst: Beide Folien sind trocken, kurz und alltagsnah, und Folie 2 kippt die Erwartung, dass sie ins dunkle All will, weil sie dort keine Wolken hätte und in Wien bleibt."
+}
