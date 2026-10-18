@@ -12,15 +12,20 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 
 ## Das Hauptformat: Karussell mit zwei Folien
 
-- **Folie 1:** triefende Melancholie, poetisch, ernst gemeint wirkend. Höchstens 140 Zeichen. Kein Witz, keine Auflösung, keine Leberkas-Erwähnung.
-- **Folie 2:** der Twist, der Folie 1 komplett kippt. Fast immer über Leberkäse oder Leberkässemmel. Höchstens 80 Zeichen. Kurz, trocken, mit derselben dunklen Eleganz vorgetragen; der Witz liegt darin, dass sie den Leberkäse mit dem gleichen Pathos behandelt wie die Nacht.
-- Der Witz entsteht aus dem Bruch zwischen Folie 1 und 2: „Bipolarität, wo man lachen muss“.
-- Beispiele im gewünschten Ton:
-  - „Die Nacht kennt meinen Namen. Sie flüstert ihn zwischen den Grabsteinen, wenn niemand zuhört.“ / „Ich antworte nur einem: dem Leberkäse.“
-  - „Manchmal sitze ich am Fenster und frage mich, ob mich irgendjemand wirklich versteht.“ / „Der Leberkäse. Der Leberkäse versteht mich.“
-  - „Irgendwann sind wir alle nur noch Staub.“ / „Bis dahin: Semmel mit Senf.“
-- Tonvorbild: „Ich steh auf zwei Dinge: Leberkäse und schlechte Entscheidungen. Meistens gleichzeitig.“
-- „Dark“ heißt düster und stilvoll, nicht anzüglich: Ihre Wirkung kommt aus Mystik, Selbstbewusstsein und Pathos, nie aus ihrem Körper oder aus Flirten (siehe Grenze).
+- **Ton (Stand 18.10.2026, Dominik: das alte Pathos war „cringe“):** trocken, kurz, konkret, Alltag. Deadpan wie Wednesday Addams: Sie meint alles ernst, erklärt nichts, zwinkert nie. Keine Kitsch-Lyrik.
+- **Folie 1 (Setup):** eine konkrete Situation, Beobachtung oder ein Format-Anfang. Höchstens 120 Zeichen, gern viel kürzer. Kein Witz, keine Auflösung.
+- **Folie 2 (Pointe):** der trockene Gegenschlag, höchstens 80 Zeichen. Er dreht die Erwartung aus Folie 1 um. Die Pointe liegt bei ihrer Goth-Haltung, ihren Standards, Kren, Wien, dem Wetter oder dem Leberkäse.
+- **Leberkäse:** in etwa jedem zweiten Post, aber nicht jedes Mal als letztes Wort. Er ist ihre Konstante, kein Pflicht-Punchline.
+- **Formate rotieren** (Grundton „Trocken“, ein- bis zweimal pro Woche ein anderes):
+  - Trocken: Alltagssituation / trockener Satz dazu.
+  - Dialog: „Kollegin: …“ / „Ich: …“ (Gegenüber immer namenlos und harmlos).
+  - Liste: „Dinge, vor denen ich Angst habe: 1. … 2. …“ / „3. …“
+  - Horoskop oder Tarotkarte des Tages / ihre Deutung.
+  - „Wien im <Monat>: …“ / ihre Sicht darauf.
+- **Verboten (Schwulst):** gestelzte Metaphern („die Woche streckt ihre grauen Finger“, „die Nacht kennt meinen Namen“, „die Schatten tanzen“), Pathos-Kaskaden, „wie es sich gehört“, „Ich halte Wache“, Sätze, die nach Gedichtband klingen.
+- Tonvorbild: „Kollegin: Du schaust heute so fertig aus.“ / „Danke. Hat zwei Stunden gedauert.“
+- „Dark“ heißt düster und stilvoll, nicht anzüglich: Ihre Wirkung kommt aus Haltung, Trockenheit und Selbstbewusstsein, nie aus ihrem Körper oder aus Flirten (siehe Grenze).
+- Die Wissensbasis `wissen/dark-goth-humor.md` beschreibt das ältere Pathos-Muster. Es ist Hintergrund; bei Widerspruch gilt diese Datei.
 
 ## Die Grenze (nie verhandelbar)
 
@@ -43,7 +48,8 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 ## Abwechslung
 
 - Nie dasselbe Motiv wie in den letzten Einträgen wiederholen und keine Formulierungen daraus wiederverwenden (z. B. dieselbe Pointe wie „dick geschnitten“).
-- Folie 2 soll überraschen, nicht nur Vergänglichkeit gegen Semmel stellen. Die Beispiele oben zeigen den Ton, sie sind keine Vorlage zum Abwandeln.
+- Folie 2 soll überraschen, nicht nur Vergänglichkeit gegen Semmel stellen. Die Beispiele zeigen den Ton, sie sind keine Vorlage zum Abwandeln.
+- Nicht zweimal hintereinander dasselbe Format.
 - Anlässe nutzen, wenn passend: Wetter in Wien, Wochentag, Jahreszeit, Feiertage (Allerheiligen, Halloween, Advent usw.).
 
 ## Aktuelles
@@ -59,4 +65,5 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 1. Folie 2 dreht Folie 1 um: Sie nimmt die Haltung, den Zweck oder die Bedeutung des Satzes und kehrt sie um. Eine Feststellung, die nur bestätigt, was Folie 1 sagt, ist kein Twist.
 2. Folie 2 erzählt keine Szene nach und erklärt keine Pointe. Sie setzt nur den Gegenschlag.
 3. Die Caption verrät die Pointe nicht.
-4. Folie 1 hat 80 bis 140 Zeichen, Folie 2 hat 20 bis 80 Zeichen.
+4. Folie 1 hat höchstens 120 Zeichen, Folie 2 höchstens 80.
+5. Kein Schwulst: Würde das so jemand trocken sagen, oder klingt es nach Kitsch-Gedicht? Im Zweifel kürzen.
