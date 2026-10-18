@@ -16,7 +16,7 @@ const e = JSON.parse(fs.readFileSync(eintragDatei, "utf8"));
 const KEY = process.env.GEMINI_API_KEY;
 const MODELL_BILD = process.env.MODELL_BILD || "gemini-nano-banana-2.1";
 const MODELL_PRUEFEN = process.env.MODELL_PRUEFEN || "claude-sonnet-5-5";
-const VERSUCHE = 2;
+const VERSUCHE = 3;
 
 if (!KEY) { console.log("Kein GEMINI_API_KEY, nehme das Bibliotheksbild."); process.exit(0); }
 if (!e.bild_neu) { console.log("Kein neues Bild gewünscht, nehme das Bibliotheksbild."); process.exit(0); }
@@ -74,7 +74,7 @@ async function pruefe(bild) {
   const res = await client.messages.parse({
     model: MODELL_PRUEFEN,
     max_tokens: 4000,
-    system: "Du prüfst KI-Bilder für die Kunstfigur von Oida Leberkas, bevor sie veröffentlicht werden. Sei streng: lieber ablehnen als ein misslungenes Bild posten.",
+    system: "Du prüfst KI-Bilder für die Kunstfigur von Oida Leberkas, bevor sie veröffentlicht werden. Lehne nur echte Fehler ab, die ein Betrachter sofort sieht. Kleine Abweichungen von der Szenenbeschreibung sind kein Grund.",
     messages: [{
       role: "user",
       content: [
@@ -88,7 +88,8 @@ async function pruefe(bild) {
 - Text, Buchstaben, Kauderwelsch-Schrift oder Wasserzeichen im Bild.
 - Die Figur wirkt kindlich, oder das Bild ist sexualisiert (Pose, Körperfokus, knappe Kleidung).
 - Fotorealistisch statt Anime-Stil.
-- Die Szene passt nicht zur Beschreibung oder Leberkäse bzw. Semmel ist nicht erkennbar, obwohl verlangt.` },
+- Eine verlangte Semmel ist gar nicht als Semmel erkennbar.
+Nicht ablehnen wegen Kleinigkeiten: Blickrichtung, Gesichtsausdruck, Licht, Hintergrunddetails oder ob die Fleischscheibe sichtbar ist, solange Figur und Grundidee der Szene stimmen. Kleine Unschärfen an Händen sind ok, nur klar verformte Hände nicht.` },
       ],
     }],
     output_config: { format: zodOutputFormat(Pruefung), effort: "medium" },

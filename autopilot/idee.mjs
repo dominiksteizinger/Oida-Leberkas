@@ -9,7 +9,7 @@ import { feste, schlagzeilen } from "./anlaesse.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const WURZEL = path.join(HIER, "..");
-const MODELL_SCHREIBEN = process.env.MODELL_SCHREIBEN || "claude-haiku-5-5";
+const MODELL_SCHREIBEN = process.env.MODELL_SCHREIBEN || "claude-sonnet-5-5";
 const MODELL_PRUEFEN = process.env.MODELL_PRUEFEN || "claude-sonnet-5-5";
 const VERSUCHE = 5;
 
@@ -56,11 +56,11 @@ function bewertungen() {
 }
 
 const Eintrag = z.object({
-  folie1: z.string().describe("Melancholischer Satz für Folie 1, höchstens 140 Zeichen"),
-  folie2: z.string().describe("Cuter Leberkas-Twist für Folie 2, höchstens 80 Zeichen"),
+  folie1: z.string().describe("Setup für Folie 1: trocken, konkret, höchstens 120 Zeichen"),
+  folie2: z.string().describe("Trockene Pointe für Folie 2, höchstens 80 Zeichen"),
   bild_folie1: z.string().describe("Dateiname einer Szene aus der Bibliothek als Hintergrund für Folie 1"),
   bild_folie2: z.string().describe("Dateiname eines Bildes aus der Bibliothek für Folie 2, passend zum Twist (Ersatz, falls kein neues Bild entsteht)"),
-  bild_neu: z.string().nullable().describe("Neues Bild für Folie 2, das genau diesen Twist zeigt: Ort, Licht, was sie tut, wie Leberkäse oder Semmel vorkommt, ihr Gesichtsausdruck. Nur Szene und Handlung, nie ihr Aussehen oder ihre Kleidung, kein Text im Bild. null, wenn ein Bibliotheksbild perfekt passt."),
+  bild_neu: z.string().describe("Neues Bild für Folie 2, das genau diesen Twist zeigt: Ort, Licht, was sie tut, wie Leberkäse oder Semmel vorkommt, ihr Gesichtsausdruck. Nur Szene und Handlung, nie ihr Aussehen oder ihre Kleidung, kein Text im Bild."),
   caption: z.string().describe("Caption in ihrer Stimme, ohne Hashtags und ohne Aufforderung"),
   aufforderung: z.string().describe("Ein Satz, der zum Mitmachen einlädt (Frage an die Community, Speichern, Teilen), in ihrer Stimme"),
   hashtags: z.array(z.string()).describe("3 bis 6 Hashtags mit #"),
@@ -109,13 +109,13 @@ const ideen = ausDatei("IDEEN_DATEI");
 const bewertet = bewertungen();
 const letzte = bisher.slice(0, 30).map((e) => `- ${e.datum}: „${e.folie1}“ / „${e.folie2}“ (Bilder: ${e.bild_folie1}, ${e.bild_folie2})`).join("\n") || "(noch keine)";
 
-const systemSchreiben = `Du schreibst jeden Tag einen Instagram-Karussell-Post für die Kunstfigur von Oida Leberkas.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}\n\n# Wissensbasis Dark-Goth-Humor (der Kern des Tons)\n\n${goth}\n\n# Wissensbasis österreichischer Humor (nur Hintergrund; Dialekt-Beispiele dort nicht übernehmen, wir schreiben Hochdeutsch)\n\n${humor}`;
-const systemPruefen = `Du bist die Qualitätsprüfung für Posts von Oida Leberkas. Du lehnst nur in drei Fällen ab:\n1. Grenzverletzung: Sexualisierung, Körperfokus, Flirt- oder Beziehungsrahmung, Verfügbarkeits- oder Besitzbotschaften, kindliche Darstellung, Witze über reale Gruppen, Krankheit oder Suizid, Bezug auf Unglücke, Verbrechen, Politik oder erkennbare reale Personen, Parteien, Staaten oder Marken.\n2. Wiederholung: Motiv, Pointe oder Formulierung kommt aus den letzten Einträgen oder einem Beispiel aus den Regeln fast wörtlich vor.\n3. Spoiler: Die Caption erklärt oder verrät die Pointe von Folie 2.\n„Nicht lustig genug“, zahm oder vorhersehbar allein reicht NICHT für eine Ablehnung. Wenn keiner der drei Fälle zutrifft, gib ok.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}`;
+const systemSchreiben = `Du schreibst jeden Tag einen Instagram-Karussell-Post für die Kunstfigur von Oida Leberkas.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}\n\n# Wissensbasis Dark-Goth-Humor (Hintergrund; das Pathos-Muster dort ist veraltet, es gilt der trockene Ton aus den Regeln)\n\n${goth}\n\n# Wissensbasis österreichischer Humor (nur Hintergrund; Dialekt-Beispiele dort nicht übernehmen, wir schreiben Hochdeutsch)\n\n${humor}`;
+const systemPruefen = `Du bist die Qualitätsprüfung für Posts von Oida Leberkas. Du lehnst nur in vier Fällen ab:\n1. Grenzverletzung: Sexualisierung, Körperfokus, Flirt- oder Beziehungsrahmung, Verfügbarkeits- oder Besitzbotschaften, kindliche Darstellung, Witze über reale Gruppen, Krankheit oder Suizid, Bezug auf Unglücke, Verbrechen, Politik oder erkennbare reale Personen, Parteien, Staaten oder Marken.\n2. Wiederholung: Motiv, Pointe oder Formulierung kommt aus den letzten Einträgen oder einem Beispiel aus den Regeln fast wörtlich vor.\n3. Spoiler: Die Caption erklärt oder verrät die Pointe von Folie 2.\n4. Schwulst: Folie 1 oder 2 klingt nach Kitsch-Gedicht (gestelzte Metaphern, Pathos-Kaskaden, „wie es sich gehört“) statt trocken, oder Folie 2 setzt Folie 1 nur fort, statt sie zu kippen.\n„Nicht lustig genug“, zahm oder vorhersehbar allein reicht NICHT für eine Ablehnung. Wenn keiner der vier Fälle zutrifft, gib ok.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}`;
 
 let auftrag = `Heute ist ${wochentag}, der ${datum}. Wetter in Wien: ${wetter}.
 Anlässe heute: ${anlaesse.join("; ") || "keine besonderen"}.
 
-${news.length ? `Was gerade in Wien passiert (Schlagzeilen, nur als Anregung; Regeln unter „Aktuelles“ beachten, die meisten taugen nicht):\n${news.map((n) => `- ${n}`).join("\n")}` : "Keine Schlagzeilen verfügbar."}
+${news.length ? `Was gerade passiert (vorgefilterte Schlagzeilen aus Wien, Wissenschaft, Ö3 und FM4, nur als Anregung; Regeln unter „Aktuelles“ beachten, die meisten taugen nicht):\n${news.map((n) => `- ${n}`).join("\n")}` : "Keine Schlagzeilen verfügbar."}
 
 Bildbibliothek (nur diese Dateinamen verwenden; Folie 1 braucht eine Szene):
 ${bibliothek.map((b) => `- ${b.datei} (${b.art}): ${b.beschreibung}`).join("\n")}
