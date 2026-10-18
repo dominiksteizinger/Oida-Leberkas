@@ -45,3 +45,11 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 - Nie dasselbe Motiv wie in den letzten Einträgen wiederholen und keine Formulierungen daraus wiederverwenden (z. B. dieselbe Pointe wie „dick geschnitten“).
 - Folie 2 soll überraschen, nicht nur Vergänglichkeit gegen Semmel stellen. Die Beispiele oben zeigen den Ton, sie sind keine Vorlage zum Abwandeln.
 - Anlässe nutzen, wenn passend: Wetter in Wien, Wochentag, Jahreszeit, Feiertage (Allerheiligen, Halloween, Advent usw.).
+- Motive rotieren: Wetterbilder (Regen, Wolken, Nebel, Sonne) und das Bild „Stern“ höchstens einmal pro Woche. Sonst aus dem Motivpool wählen: Kerzen, Tarot, Vitrine, Kren (die Fledermaus), Pizzaleberkäse, Friedhof, Nachtleben, Steckbrief-Details.
+
+## Pointen-Check (vor jeder Ausgabe)
+
+1. Folie 2 dreht Folie 1 um: Sie nimmt die Haltung, den Zweck oder die Bedeutung des Satzes und kehrt sie um. Eine Feststellung, die nur bestätigt, was Folie 1 sagt, ist kein Twist.
+2. Folie 2 erzählt keine Szene nach und erklärt keine Pointe. Sie setzt nur den Gegenschlag.
+3. Die Caption verrät die Pointe nicht.
+4. Folie 1 hat 80 bis 140 Zeichen, Folie 2 hat 20 bis 80 Zeichen.
