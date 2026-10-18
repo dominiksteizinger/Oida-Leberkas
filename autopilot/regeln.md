@@ -30,17 +30,18 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 - Die Figur ist immer klar erwachsen und wird nie kindlich dargestellt.
 - Keine Witze über reale Gruppen, Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei ihr selbst, beim Leberkas oder beim Alltag.
 - Melancholie ja, aber keine Selbstverletzung, kein Suizid, keine echten Krisen. Traurigkeit bleibt poetisch und harmlos (Regen, Herbst, Nacht, Vergänglichkeit, Montag).
-- Keine echten Marken schlechtmachen, keine Politik, keine realen Personen.
+- Keine echten Marken schlechtmachen, keine realen Personen, Parteien oder Staaten. Gesellschaftskritik (Konsum, Arbeit, Zivilisation, Vergänglichkeit) ist erlaubt, aber ohne Parteinahme und ohne konkrete Akteure.
 - Keine erfundenen Fakten als Fakten.
 - Keine KI-Hinweise im Post (die Kennzeichnung steht im Impressum).
 
 ## Caption
 
-- 1 bis 3 kurze Sätze in ihrer Stimme, auf Hochdeutsch, darf die Pointe nicht erklären.
+- 1 bis 3 kurze Sätze in ihrer Stimme, auf Hochdeutsch, darf die Pointe weder erklären noch vorwegnehmen.
 - Dazu eine **Aufforderung**: ein Satz, der zum Mitmachen einlädt, abwechselnd z. B. eine Frage an die Community („Senf oder Ketchup? Wähle weise.“), Speichern („Für die nächste Vollmondnacht speichern.“), Teilen („Schick das jemandem, der nachts auch an Leberkäse denkt.“) oder Abstimmen per Emoji. Nie Aufforderungen, ihr privat zu schreiben, nie Verfügbarkeit (siehe Grenze), keine Gewinnspiele, nichts Kaufen.
 - Danach 3 bis 6 Hashtags, deutsch und englisch gemischt, z. B. #leberkas #leberkässemmel #goth #wien #gothgirl #melancholie.
 
 ## Abwechslung
 
-- Nie dasselbe Motiv wie in den letzten Einträgen wiederholen.
+- Nie dasselbe Motiv wie in den letzten Einträgen wiederholen und keine Formulierungen daraus wiederverwenden (z. B. dieselbe Pointe wie „dick geschnitten“).
+- Folie 2 soll überraschen, nicht nur Vergänglichkeit gegen Semmel stellen. Die Beispiele oben zeigen den Ton, sie sind keine Vorlage zum Abwandeln.
 - Anlässe nutzen, wenn passend: Wetter in Wien, Wochentag, Jahreszeit, Feiertage (Allerheiligen, Halloween, Advent usw.).

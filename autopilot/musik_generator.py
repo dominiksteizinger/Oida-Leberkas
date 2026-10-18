@@ -1,4 +1,4 @@
-"""Komponiert die eigene Hintergrundmusik für Oida Leberkas: düstere Spieluhr über tiefem Klangteppich.
+"""Komponiert die eigene Hintergrundmusik für Oida Leberkas: verspielte Spieluhr in Dur mit leichtem Bass und Takt.
 
 Alles hier ist selbst erzeugt (Sinus-Synthese), daher frei von fremden Rechten.
 Aufruf: python3 musik_generator.py   -> schreibt musik/*.mp3 und musik.json
@@ -16,14 +16,13 @@ DAUER = 32.0
 
 # Name, Stimmung, Grundton (Hz), Tempo (Schläge pro Minute), Tonleiter-Schritte (Moll-Varianten), Zufallssamen, Regen
 STUECKE = [
-    ("spieluhr-mitternacht", "verspielt, unheimlich, Spieluhr um Mitternacht", 220.0, 84, [0, 2, 3, 5, 7, 8, 11], 1, False),
-    ("regen-am-fenster", "melancholisch, Regen, Einsamkeit", 196.0, 66, [0, 2, 3, 5, 7, 8, 10], 2, True),
-    ("friedhof-im-nebel", "düster, weit, Nebel, Friedhof", 174.6, 58, [0, 1, 3, 5, 7, 8, 10], 3, False),
-    ("kerzenlicht", "warm, ruhig, Tagebuch bei Kerzenlicht", 246.9, 72, [0, 2, 3, 5, 7, 9, 10], 4, False),
-    ("vollmond", "theatralisch, dramatisch, Vollmond", 207.7, 96, [0, 2, 3, 5, 7, 8, 11], 5, False),
-    ("letzte-semmel", "tragisch, Verlust, große Gefühle", 185.0, 60, [0, 2, 3, 5, 7, 8, 10], 6, True),
+    ("spieluhr-mitternacht", "verspielt, cute, Spieluhr um Mitternacht", 293.7, 112, [0, 2, 4, 5, 7, 9, 11], 1, False),
+    ("regen-am-fenster", "gemütlich, verträumt, Regen draußen", 261.6, 92, [0, 2, 4, 7, 9, 12, 14], 2, True),
+    ("friedhof-im-nebel", "neckisch, augenzwinkernd spukig", 329.6, 120, [0, 2, 3, 4, 7, 9, 10], 3, False),
+    ("kerzenlicht", "warm, ruhig, Tagebuch bei Kerzenlicht", 349.2, 88, [0, 2, 4, 5, 7, 9, 11], 4, False),
+    ("vollmond", "theatralisch, fröhlich, großer Auftritt", 392.0, 126, [0, 2, 4, 6, 7, 9, 11], 5, False),
+    ("letzte-semmel", "bittersüß, sehnsüchtig, aber mit Lächeln", 311.1, 100, [0, 2, 4, 5, 7, 9, 10], 6, False),
 ]
-
 
 def ton(freq, laenge, abklingen=2.5):
     t = np.arange(int(laenge * RATE)) / RATE
@@ -35,8 +34,8 @@ def ton(freq, laenge, abklingen=2.5):
 def teppich(grund, n):
     t = np.arange(n) / RATE
     schwebung = 0.5 + 0.5 * np.sin(2 * np.pi * 0.07 * t)
-    akkord = sum(np.sin(2 * np.pi * f * t + p) for f, p in [(grund / 2, 0), (grund / 2 * 1.498, 1.3), (grund / 4, 2.1), (grund / 2 * 1.003, 0.4)])
-    return 0.18 * akkord * (0.6 + 0.4 * schwebung)
+    akkord = sum(np.sin(2 * np.pi * f * t + p) for f, p in [(grund / 2, 0), (grund / 2 * 1.26, 1.3), (grund / 2 * 1.498, 2.1)])
+    return 0.05 * akkord * (0.6 + 0.4 * schwebung)
 
 
 def hall(x, verzoegerungen=(0.113, 0.171, 0.257, 0.343), rueck=0.45):
@@ -51,11 +50,30 @@ def hall(x, verzoegerungen=(0.113, 0.171, 0.257, 0.343), rueck=0.45):
     return y
 
 
+def takt(grund, schlag, n):
+    """Kurzer, weicher Bass auf jedem Schlag (Grundton, Quinte im Wechsel) und ein leises Klicken dazwischen."""
+    spur = np.zeros(n)
+    pos, i = 0.5, 0
+    while pos < DAUER - 2:
+        s = int(pos * RATE)
+        f = grund / 2 * (1.498 if i % 4 == 2 else 1.0)
+        note = ton(f, 0.35, abklingen=9) * 0.45
+        e = min(n, s + len(note))
+        spur[s:e] += note[: e - s]
+        k = int((pos + schlag / 2) * RATE)
+        klick = np.exp(-np.arange(600) / 60) * np.sin(2 * np.pi * 3200 * np.arange(600) / RATE) * 0.08
+        if k + 600 < n:
+            spur[k:k + 600] += klick
+        pos += schlag
+        i += 1
+    return spur
+
+
 def regen(n, rng):
     rauschen = rng.normal(0, 1, n)
     # grob tiefpassgefiltert und leise
     kern = np.ones(40) / 40
-    return 0.05 * np.convolve(rauschen, kern, mode="same")
+    return 0.03 * np.convolve(rauschen, kern, mode="same")
 
 
 def stueck(name, stimmung, grund, tempo, skala, samen, mit_regen):
@@ -72,11 +90,11 @@ def stueck(name, stimmung, grund, tempo, skala, samen, mit_regen):
             if i == 7:
                 stufe = 0 if rng.random() < 0.6 else 4
             else:
-                stufe = int(np.clip(stufe + rng.choice([-2, -1, -1, 1, 1, 2, 0]), -3, 9))
+                stufe = int(np.clip(stufe + rng.choice([-2, -1, 1, 1, 2, 2, 3]), 0, 11))
             oktave, idx = divmod(stufe, len(skala))
             freq = grund * 2 * 2 ** ((skala[idx] + 12 * oktave) / 12)
-            laenge = schlag * (2 if i in (3, 7) else 1)
-            note = ton(freq, min(laenge * 2.5, 3.0)) * (0.55 if i % 2 else 0.7)
+            laenge = schlag * (2 if i in (3, 7) else 0.5 if i in (1, 5) else 1)
+            note = ton(freq, min(laenge * 2.0, 1.6), abklingen=4) * (0.55 if i % 2 else 0.7)
             s = int(pos * RATE)
             if s >= n:
                 break
@@ -84,7 +102,7 @@ def stueck(name, stimmung, grund, tempo, skala, samen, mit_regen):
             melodie[s:e] += note[: e - s]
             pos += laenge
         pos += schlag
-    spur = spur + 0.5 * hall(melodie)
+    spur = spur + 0.5 * hall(melodie, rueck=0.25) + takt(grund, schlag, n)
     if mit_regen:
         spur += regen(n, rng)
     t = np.arange(n) / RATE
