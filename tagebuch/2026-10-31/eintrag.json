@@ -1,0 +1,25 @@
+{
+  "datum": "2026-10-31",
+  "folie1": "Heute Nacht wandeln die Toten durch Wien, verkleidet als Lebende. Ich bleibe lieber, wie ich bin: schwarz, still, ehrlich.",
+  "folie2": "Ehrlich? Ich trage das ganze Jahr ein Kostüm. Nur vor dem Leberkäse nicht.",
+  "bild_folie1": "dach-abenddaemmerung.jpg",
+  "bild_folie2": "winkt-zwinkert.jpg",
+  "bild_neu": null,
+  "caption": "Draußen ziehen die Kinder mit Kürbislaternen los. Ich schaue vom Dach aus zu, wie die Stadt für eine Nacht ihr Gesicht verliert.",
+  "aufforderung": "Eher Geist oder eher Vampir? Stimm mit einem Emoji in den Kommentaren ab.",
+  "hashtags": [
+    "#halloween",
+    "#leberkas",
+    "#goth",
+    "#wien",
+    "#melancholie"
+  ],
+  "musik": "friedhof-im-nebel.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [
+    "Halloween"
+  ],
+  "modell": "claude-haiku-5-5",
+  "pruefung": "Keiner der drei Ablehnungsgründe trifft zu. Grenze: Halloween ist ein erlaubter Anlass, es gibt keine Sexualisierung, keine realen Personen und keine Beziehungsrahmung. Wiederholung: Motiv (Halloween, Verkleidung/Kostüm, Ehrlichkeit) und Pointe unterscheiden sich von den letzten Einträgen und von den Beispielen; die Halloween-Pointe der Beispiele (Ketchup) wird nicht verwendet. Spoiler: Die Caption beschreibt nur die Szene und verrät den Kostüm-Twist mit dem Leberkäse nicht."
+}
