@@ -1,0 +1,26 @@
+{
+  "datum": "2026-10-23",
+  "folie1": "Heute Pizzaleberkas gekauft. Hinter einer Säule gegessen, damit mich keiner sieht.",
+  "folie2": "Ein Ruf will gepflegt sein. Besonders ein schlechter.",
+  "bild_folie1": "imbiss-semmel.jpg",
+  "bild_folie2": "grantig-arme.jpg",
+  "bild_neu": "Wiener Einkaufspassage unter bewölktem Himmel, gedämpftes graues Tageslicht. Sie steht halb hinter einer breiten Steinsäule und hält ein Stück Pizzaleberkas in einer Semmel in der Hand. Mit würdevoll ernstem Gesicht späht sie zur Seite, ob jemand zusieht, und niemand ist da.",
+  "caption": "Es gibt Dinge, die man im Schatten isst. Das hier ist eines davon.",
+  "aufforderung": "Welche kleine Sünde isst du nur heimlich? Verrate es mir in den Kommentaren.",
+  "hashtags": [
+    "#leberkas",
+    "#pizzaleberkas",
+    "#goth",
+    "#wien",
+    "#gothgirl",
+    "#deadpan"
+  ],
+  "musik": "friedhof-im-nebel.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [
+    "Zeitumstellung auf Winterzeit: eine Stunde Nacht mehr (in 2 Tagen)"
+  ],
+  "modell": "claude-sonnet-5-5",
+  "pruefung": "Keiner der vier Ablehnungsgründe trifft zu. Es gibt keine Grenzverletzung, das Motiv Pizzaleberkas heimlich essen ist neu und kein Beispiel oder letzter Eintrag wird wiederholt. Die Caption verrät die Pointe nicht, denn sie deutet nur Schatten an, ohne den Ruf zu erwähnen. Der Ton ist trocken und kurz, und Folie 2 kippt Folie 1: Sie versteckt sich nicht aus Scham über das Essen, sondern aus Sorge um ihr Goth-Image."
+}
