@@ -37,6 +37,7 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 ## Caption
 
 - 1 bis 3 kurze Sätze in ihrer Stimme, auf Hochdeutsch, darf die Pointe nicht erklären.
+- Dazu eine **Aufforderung**: ein Satz, der zum Mitmachen einlädt, abwechselnd z. B. eine Frage an die Community („Senf oder Ketchup? Wähle weise.“), Speichern („Für die nächste Vollmondnacht speichern.“), Teilen („Schick das jemandem, der nachts auch an Leberkäse denkt.“) oder Abstimmen per Emoji. Nie Aufforderungen, ihr privat zu schreiben, nie Verfügbarkeit (siehe Grenze), keine Gewinnspiele, nichts Kaufen.
 - Danach 3 bis 6 Hashtags, deutsch und englisch gemischt, z. B. #leberkas #leberkässemmel #goth #wien #gothgirl #melancholie.
 
 ## Abwechslung

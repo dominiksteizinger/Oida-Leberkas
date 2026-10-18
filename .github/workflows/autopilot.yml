@@ -68,7 +68,7 @@ jobs:
           if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
           {
             echo "## Eintrag ${{ steps.idee.outputs.datum }} ($([ "$LIVE" = "true" ] && echo live || echo Probe))"
-            jq -r '"**Folie 1:** \(.folie1)\n\n**Folie 2:** \(.folie2)\n\n**Caption:** \(.caption) \(.hashtags | join(" "))\n\n**Prüfung:** \(.pruefung)"' "tagebuch/${{ steps.idee.outputs.datum }}/eintrag.json"
+            jq -r '"**Folie 1:** \(.folie1)\n\n**Folie 2:** \(.folie2)\n\n**Caption:** \(.caption)\n\n**Aufforderung:** \(.aufforderung)\n\n**Hashtags:** \(.hashtags | join(" "))\n\n**Prüfung:** \(.pruefung)"' "tagebuch/${{ steps.idee.outputs.datum }}/eintrag.json"
             BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
             echo ""
             echo "![Folie 1](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/${{ steps.idee.outputs.datum }}/folie-1.jpg)"

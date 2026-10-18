@@ -15,6 +15,7 @@ const VERSUCHE = 3;
 const lies = (p) => fs.readFileSync(path.join(HIER, p), "utf8");
 const regeln = lies("regeln.md");
 const humor = lies("wissen/humor.md");
+const goth = lies("wissen/dark-goth-humor.md");
 const bibliothek = JSON.parse(lies("bibliothek.json"));
 const eintraegeDatei = path.join(WURZEL, "tagebuch", "eintraege.json");
 const bisher = fs.existsSync(eintraegeDatei) ? JSON.parse(fs.readFileSync(eintraegeDatei, "utf8")) : [];
@@ -46,7 +47,8 @@ const Eintrag = z.object({
   folie2: z.string().describe("Cuter Leberkas-Twist für Folie 2, höchstens 80 Zeichen"),
   bild_folie1: z.string().describe("Dateiname einer Szene aus der Bibliothek als Hintergrund für Folie 1"),
   bild_folie2: z.string().describe("Dateiname eines Bildes aus der Bibliothek für Folie 2, passend zum Twist"),
-  caption: z.string().describe("Caption in ihrer Stimme, ohne Hashtags"),
+  caption: z.string().describe("Caption in ihrer Stimme, ohne Hashtags und ohne Aufforderung"),
+  aufforderung: z.string().describe("Ein Satz, der zum Mitmachen einlädt (Frage an die Community, Speichern, Teilen), in ihrer Stimme"),
   hashtags: z.array(z.string()).describe("3 bis 6 Hashtags mit #"),
   idee_nummer: z.number().nullable().describe("Nummer der verwendeten Idee aus der Inbox, sonst null"),
 });
@@ -87,7 +89,7 @@ const wetter = await wetterWien();
 const ideen = ideenAusInbox();
 const letzte = bisher.slice(0, 30).map((e) => `- ${e.datum}: „${e.folie1}“ / „${e.folie2}“ (Bilder: ${e.bild_folie1}, ${e.bild_folie2})`).join("\n") || "(noch keine)";
 
-const systemSchreiben = `Du schreibst jeden Tag einen Instagram-Karussell-Post für die Kunstfigur von Oida Leberkas.\n\n${regeln}\n\n# Wissensbasis Humor (Hintergrund, Regeln oben haben Vorrang)\n\n${humor}`;
+const systemSchreiben = `Du schreibst jeden Tag einen Instagram-Karussell-Post für die Kunstfigur von Oida Leberkas.\n\n${regeln}\n\n# Wissensbasis Dark-Goth-Humor (der Kern des Tons)\n\n${goth}\n\n# Wissensbasis österreichischer Humor (nur Hintergrund; Dialekt-Beispiele dort nicht übernehmen, wir schreiben Hochdeutsch)\n\n${humor}`;
 const systemPruefen = `Du bist die strenge Qualitätsprüfung für Posts von Oida Leberkas. Lehne ab, wenn auch nur eine Regel der Grenze verletzt ist, wenn der Bruch zwischen Folie 1 und 2 nicht funktioniert, wenn es nicht lustig ist oder wenn es ein Motiv der letzten Einträge wiederholt. Sonst gib ok.\n\n${regeln}`;
 
 let auftrag = `Heute ist ${wochentag}, der ${datum}. Wetter in Wien: ${wetter}.
@@ -122,5 +124,5 @@ const ordner = path.join(WURZEL, "tagebuch", datum);
 fs.mkdirSync(ordner, { recursive: true });
 const ergebnis = { datum, ...eintrag, wetter, modell: MODELL_SCHREIBEN, pruefung: pruefung.grund };
 fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify(ergebnis, null, 2) + "\n");
-console.log(`Folie 1: ${eintrag.folie1}\nFolie 2: ${eintrag.folie2}\nCaption: ${eintrag.caption} ${eintrag.hashtags.join(" ")}`);
+console.log(`Folie 1: ${eintrag.folie1}\nFolie 2: ${eintrag.folie2}\nCaption: ${eintrag.caption}\n${eintrag.aufforderung}\n${eintrag.hashtags.join(" ")}`);
 if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `datum=${datum}\nidee=${eintrag.idee_nummer ?? ""}\n`);
