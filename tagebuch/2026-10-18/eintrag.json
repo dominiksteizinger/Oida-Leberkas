@@ -1,21 +1,21 @@
 {
   "datum": "2026-10-18",
-  "folie1": "Jede Nacht schreibe ich auf, was von mir übrig bleibt. Die Seiten werden mit jedem Herbst leerer und kälter.",
-  "folie2": "Auf der letzten Seite steht nur ein Wort: Leberkäse. Dreimal unterstrichen.",
-  "bild_folie1": "tagebuch-kerze.jpg",
-  "bild_folie2": "verliebt-semmel.jpg",
-  "caption": "Ein Tagebuch ist für die Wahrheit da. Diese Wahrheit nehme ich sehr ernst.",
-  "aufforderung": "Welches Wort steht bei dir auf der letzten Seite? Schreib es in die Kommentare.",
+  "folie1": "Auf den Gräbern liegt das Laub, und keiner dieser Namen wird mehr gerufen.",
+  "folie2": "Nummer 47 wird aufgerufen: Leberkässemmel, dick geschnitten. Ich komme schon.",
+  "bild_folie1": "friedhofsmauer-fledermaeuse.jpg",
+  "bild_folie2": "grantig-arme.jpg",
+  "caption": "Die Toten haben alle Zeit der Welt. Ich habe einen Hunger.",
+  "aufforderung": "Welche Nummer hast du heute gezogen? Schreib sie unten rein.",
   "hashtags": [
-    "#tagebuch",
+    "#leberkas",
+    "#leberkässemmel",
     "#goth",
     "#wien",
-    "#gothgirl",
-    "#leberkas",
-    "#nacht"
+    "#friedhof"
   ],
+  "musik": "friedhof-im-nebel.mp3",
   "idee_nummer": null,
   "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
   "modell": "claude-haiku-5-5",
-  "pruefung": "Alle Regeln erfüllt: Folie 1 hat 109 Zeichen, ist melancholisch und ohne Leberkas-Erwähnung. Folie 2 hat 71 Zeichen, trocken und kippt mit dem Wort „Leberkäse“ dreimal unterstrichen in Pathos, das Tagebuch behandelt den Leberkäse mit der Ernsthaftigkeit der Nacht. Die Caption ist hochdeutsch, erklärt die Pointe nicht, die Aufforderung ist eine Community-Frage ohne private Nachrichten, 6 passende Hashtags. Kein Flirt, keine Sexualisierung, keine Krise (Vergänglichkeit bleibt poetisch). Motiv Tagebuch ist neu gegenüber Kren am Fenster. Der Bruch funktioniert und ist lustig."
+  "pruefung": "Folie 1 hat 77 Zeichen und enthält keinen Witz und keinen Leberkäse. Folie 2 hat 77 Zeichen. Der Bruch funktioniert: Das Rufen der vergessenen Namen kippt in das Aufrufen der Wartenummer an der Theke, und die Pathos-Behandlung der Semmel passt zur Figur. Die Grenze wird nicht verletzt: Es gibt keine Sexualisierung, kein Flirten, keine Selbstverletzung und keine Marken oder Politik. Die Melancholie bleibt poetisch (Laub, Gräber). Die Caption ist hochdeutsch, erklärt die Pointe nicht und hat eine Aufforderung zum Mitmachen in der Community, kein privates Schreiben. Es sind 5 Hashtags, deutsch und englisch gemischt. Das Motiv (Friedhof und Namen, Wartenummer) wiederholt nicht das Tagebuch-Motiv vom 18.10. Die Pointe ist trocken und komisch. Das Herbstlaub passt zur Jahreszeit."
 }
