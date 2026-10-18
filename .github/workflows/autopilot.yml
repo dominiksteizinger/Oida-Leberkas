@@ -66,7 +66,7 @@ jobs:
           BEWERTUNGEN_DATEI: ${{ runner.temp }}/bewertungen.json
         run: node idee.mjs
       - name: Neues Bild (Gemini)
-        if: vars.BILDER_GENERIEREN == 'an'
+        if: vars.BILDER_GENERIEREN != 'aus'
         working-directory: autopilot
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
