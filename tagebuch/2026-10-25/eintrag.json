@@ -1,26 +1,29 @@
 {
   "datum": "2026-10-25",
-  "folie1": "Heute Nacht bekommt die Dunkelheit eine Stunde geschenkt. Ich verbringe sie allein unter dem Vollmond, wie jede Nacht davor.",
-  "folie2": "Die Stunde gehört nicht der Nacht. Sie gehört dem Leberkäse.",
-  "bild_folie1": "friedhofsmauer-fledermaeuse.jpg",
-  "bild_folie2": "wuerstelstand-neon.jpg",
-  "bild_neu": null,
-  "caption": "Die Uhren werden zurückgestellt, und die Nacht bekommt eine Stunde geschenkt. Ich habe sie mir schon eingeplant. Der Vollmond weiß Bescheid.",
-  "aufforderung": "Was machst du mit der geschenkten Stunde? Teil es mit jemandem, der nachts wach ist.",
+  "folie1": "Horoskop Skorpion: Heute gelingt dir alles, was du dir vornimmst.",
+  "folie2": "Ich nehme mir nichts vor. Sicher ist sicher.",
+  "bild_folie1": "tarot-semmelkarte.jpg",
+  "bild_folie2": "gen-2026-10-25.jpg",
+  "bild_neu": "Sonntagnachmittag in einem abgedunkelten Wohnzimmer, die schweren Vorhänge sind zu, nur eine Kerze brennt. Sie liegt reglos auf dem Samtsofa, neben ihr auf einem Teller eine unberührte Leberkässemmel, auf dem Tisch eine aufgeschlagene Horoskopseite. Kren hängt kopfüber an der Vorhangstange. Ihr Gesichtsausdruck ist ruhig und völlig zufrieden.",
+  "caption": "Sonntag. Die Sterne haben wieder große Pläne mit mir.",
+  "aufforderung": "Was hat euer Horoskop heute versprochen? Schreibt es in die Kommentare.",
   "hashtags": [
-    "#zeitumstellung",
-    "#vollmond",
+    "#horoskop",
+    "#skorpion",
     "#goth",
     "#wien",
-    "#leberkas"
+    "#leberkas",
+    "#gothhumor"
   ],
-  "musik": "vollmond.mp3",
+  "musik": "friedhof-im-nebel.mp3",
   "idee_nummer": null,
-  "wetter": "bewölkt, 12 bis 19 Grad, 0 mm Niederschlag",
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
   "anlaesse": [
     "Zeitumstellung auf Winterzeit: eine Stunde Nacht mehr",
     "Vollmond"
   ],
-  "modell": "claude-haiku-5-5",
-  "pruefung": "Keine Grenzverletzung, keine Wiederholung (Motiv Zeitumstellung/Vollmond neu, Pointe 'gehört dem Leberkäse' unterscheidet sich von den letzten Einträgen) und die Caption verrät die Pointe nicht, sie deutet nur 'eingeplant' an."
+  "modell": "claude-sonnet-5-5",
+  "pruefung": "Keiner der vier Ablehnungsgründe trifft zu. Das Horoskop-Format kommt in den letzten Einträgen nicht vor, und Motiv und Pointe (Untätigkeit als Absicherung) sind neu. Folie 2 kippt die Verheißung trocken in Vermeidung, ohne zu erklären. Die Caption verrät die Pointe nicht, sie bleibt bei den Sternen. Der Ton ist trocken, ohne Schwulst. Es gibt keine Grenzverletzung, keine Marke und keine reale Person. Die Aufforderung ist erlaubt.",
+  "bild_ersatz": "samtsofa-drama.jpg",
+  "bild_pruefung": "Figur stimmt mit der Referenz überein (schwarze lange Haare mit Pony, pinke Strähne, rosa Herz-Choker, Spitzenärmel, Korsett, Faltenrock, zerrissene Strumpfhose). Anime-Stil, ruhiger zufriedener Ausdruck, keine sexualisierte Pose. Kerze, Samtsofa, Vorhänge, Fledermaus kopfüber an der Stange, Leberkässemmel auf dem Teller und aufgeschlagene Horoskopseite sind vorhanden. Die Symbole im Buch sind Tierkreiszeichen, kein lesbarer Text oder Kauderwelsch; Hände sind unauffällig."
 }

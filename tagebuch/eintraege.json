@@ -1,5 +1,16 @@
 [
   {
+    "datum": "2026-10-25",
+    "folie1": "Horoskop Skorpion: Heute gelingt dir alles, was du dir vornimmst.",
+    "folie2": "Ich nehme mir nichts vor. Sicher ist sicher.",
+    "bild_folie1": "tarot-semmelkarte.jpg",
+    "bild_folie2": "gen-2026-10-25.jpg",
+    "bilder": [
+      "tagebuch/2026-10-25/folie-1.jpg",
+      "tagebuch/2026-10-25/folie-2.jpg"
+    ]
+  },
+  {
     "datum": "2026-10-24",
     "folie1": "Kollegin: Bei dem Wetter kannst du heute ja mal rausgehen.",
     "folie2": "Ich war um sechs schon draußen. Es war noch dunkel genug.",
@@ -85,17 +96,6 @@
     "bilder": [
       "tagebuch/2026-10-31/folie-1.jpg",
       "tagebuch/2026-10-31/folie-2.jpg"
-    ]
-  },
-  {
-    "datum": "2026-10-25",
-    "folie1": "Heute Nacht bekommt die Dunkelheit eine Stunde geschenkt. Ich verbringe sie allein unter dem Vollmond, wie jede Nacht davor.",
-    "folie2": "Die Stunde gehört nicht der Nacht. Sie gehört dem Leberkäse.",
-    "bild_folie1": "friedhofsmauer-fledermaeuse.jpg",
-    "bild_folie2": "wuerstelstand-neon.jpg",
-    "bilder": [
-      "tagebuch/2026-10-25/folie-1.jpg",
-      "tagebuch/2026-10-25/folie-2.jpg"
     ]
   },
   {
