@@ -17,6 +17,7 @@ const regeln = lies("regeln.md");
 const humor = lies("wissen/humor.md");
 const goth = lies("wissen/dark-goth-humor.md");
 const bibliothek = JSON.parse(lies("bibliothek.json"));
+const musik = JSON.parse(lies("musik.json"));
 const eintraegeDatei = path.join(WURZEL, "tagebuch", "eintraege.json");
 const bisher = fs.existsSync(eintraegeDatei) ? JSON.parse(fs.readFileSync(eintraegeDatei, "utf8")) : [];
 
@@ -50,6 +51,7 @@ const Eintrag = z.object({
   caption: z.string().describe("Caption in ihrer Stimme, ohne Hashtags und ohne Aufforderung"),
   aufforderung: z.string().describe("Ein Satz, der zum Mitmachen einlädt (Frage an die Community, Speichern, Teilen), in ihrer Stimme"),
   hashtags: z.array(z.string()).describe("3 bis 6 Hashtags mit #"),
+  musik: z.string().nullable().describe("Dateiname des Tracks aus der Musikliste, der zur Stimmung passt; null, wenn die Liste leer ist"),
   idee_nummer: z.number().nullable().describe("Nummer der verwendeten Idee aus der Inbox, sonst null"),
 });
 
@@ -82,6 +84,7 @@ function pruefeFormal(e) {
   if (!szenen.has(e.bild_folie1)) fehler.push(`bild_folie1 "${e.bild_folie1}" ist keine Szene aus der Bibliothek`);
   if (!dateien.has(e.bild_folie2)) fehler.push(`bild_folie2 "${e.bild_folie2}" gibt es nicht`);
   if (e.bild_folie1 === e.bild_folie2) fehler.push("Folie 1 und 2 brauchen verschiedene Bilder");
+  if (musik.length && !musik.some((m) => m.datei === e.musik)) fehler.push(`musik "${e.musik}" gibt es nicht`);
   return fehler;
 }
 
@@ -96,6 +99,9 @@ let auftrag = `Heute ist ${wochentag}, der ${datum}. Wetter in Wien: ${wetter}.
 
 Bildbibliothek (nur diese Dateinamen verwenden; Folie 1 braucht eine Szene):
 ${bibliothek.map((b) => `- ${b.datei} (${b.art}): ${b.beschreibung}`).join("\n")}
+
+Musik (einen Track passend zur Stimmung wählen):
+${musik.map((m) => `- ${m.datei}: ${m.stimmung}`).join("\n") || "(keine)"}
 
 Letzte Einträge (nicht wiederholen):
 ${letzte}
