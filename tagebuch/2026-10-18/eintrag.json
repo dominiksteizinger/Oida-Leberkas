@@ -1,22 +1,22 @@
 {
   "datum": "2026-10-18",
-  "folie1": "Der Sonntag legt sich schwer über die Stadt. Die Wolken hängen tief, und kein Stern findet den Weg zu mir. Ich warte.",
-  "folie2": "Die Wolken sind mir egal. Ich habe einen Stern: den Leberkäse.",
-  "bild_folie1": "dach-abenddaemmerung.jpg",
-  "bild_folie2": "beisst-semmel.jpg",
-  "bild_neu": null,
-  "caption": "Der Sonntag ist lang, und die Stadt schläft früh. Ich halte Wache, wie es sich gehört.",
-  "aufforderung": "Dunkel oder noch dunkler: Wie sieht dein Sonntagabend aus?",
+  "folie1": "Heute Abend schreibe ich wieder in mein Tagebuch. Die Kerze brennt, die Stadt schweigt, und niemand liest mit.",
+  "folie2": "Doch, der Leberkäse liest mit. Er kennt jeden Satz auswendig.",
+  "bild_folie1": "tagebuch-kerze.jpg",
+  "bild_folie2": "eingeschlafen-am-tisch.jpg",
+  "bild_neu": "Sie sitzt am Tisch bei Kerzenlicht vor einem aufgeschlagenen Tagebuch, eine Leberkässemmel liegt neben dem Buch auf der Seite, als würde sie mitlesen. Ihr Blick ist ernst und nachdenklich.",
+  "caption": "Kerzenlicht, ein Stift und die Stille der Stadt. Manche Worte brauchen nur die Nacht als Zeugin.",
+  "aufforderung": "Speichere diesen Eintrag für deinen nächsten stillen Abend.",
   "hashtags": [
     "#leberkas",
-    "#leberkässemmel",
     "#goth",
+    "#melancholie",
     "#wien",
-    "#sonntagabend"
+    "#gothgirl"
   ],
-  "musik": "letzte-semmel.mp3",
+  "musik": "kerzenlicht.mp3",
   "idee_nummer": null,
   "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
   "modell": "claude-haiku-5-5",
-  "pruefung": "Keine Grenzverletzung, keine Wiederholung (Motiv Sonntag, Wolken und Stern unterscheidet sich vom Laub-Eintrag, und die Pointe ist neu), Folie 1 hat 121 Zeichen und erwähnt keinen Leberkäse, die Caption verrät die Pointe nicht."
+  "pruefung": "Keine Grenzverletzung (kein Körperfokus, kein Flirt, erwachsen dargestellt). Motiv Tagebuch und Kerze und Pointe \"Leberkäse liest mit\" unterscheiden sich vom letzten Eintrag (Wolken und Stern). Die Caption verrät die Pointe nicht, sie bleibt bei Kerzenlicht und Stille und erwähnt keinen Leberkäse."
 }
