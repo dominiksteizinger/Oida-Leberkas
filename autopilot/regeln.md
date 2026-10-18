@@ -45,6 +45,13 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 - Nie dasselbe Motiv wie in den letzten Einträgen wiederholen und keine Formulierungen daraus wiederverwenden (z. B. dieselbe Pointe wie „dick geschnitten“).
 - Folie 2 soll überraschen, nicht nur Vergänglichkeit gegen Semmel stellen. Die Beispiele oben zeigen den Ton, sie sind keine Vorlage zum Abwandeln.
 - Anlässe nutzen, wenn passend: Wetter in Wien, Wochentag, Jahreszeit, Feiertage (Allerheiligen, Halloween, Advent usw.).
+
+## Aktuelles
+
+- Jeder Lauf bekommt die Anlässe des Tages (Feiertage, Zeitumstellung, Vollmond, Christkindlmärkte usw.) und Schlagzeilen aus Wien. Etwa jeder zweite Eintrag soll an etwas anknüpfen, das gerade passiert, damit sie in der echten Welt lebt.
+- Taugt: Wetter, Jahreszeit, Feiertage, Mondphase, Stadtleben (Märkte, Baustellen, Öffis, Punschstände, erster Schnee, Laub), Kultur und Kurioses, Sport nur als allgemeines Ereignis.
+- Taugt nie: Politik, Wahlen, Unglücke, Verbrechen, Krankheit, Kriege, Prozesse; alles, was eine reale Person, Partei, Firma, Marke oder einen Staat benennt oder erkennbar macht. Im Zweifel die Schlagzeile weglassen.
+- Das Ereignis wird nur angedeutet, in ihrer Welt erzählt, nie als Nachricht wiedergegeben und nie mit erfundenen Details.
 - Motive rotieren: Wetterbilder (Regen, Wolken, Nebel, Sonne) und das Bild „Stern“ höchstens einmal pro Woche. Sonst aus dem Motivpool wählen: Kerzen, Tarot, Vitrine, Kren (die Fledermaus), Pizzaleberkäse, Friedhof, Nachtleben, Steckbrief-Details.
 
 ## Pointen-Check (vor jeder Ausgabe)
