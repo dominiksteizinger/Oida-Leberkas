@@ -1,0 +1,20 @@
+{
+  "datum": "2026-10-18",
+  "folie1": "Sonntag. Der Himmel hängt grau über der Stadt, und die Blätter fallen, ohne dass sie jemand fragt.",
+  "folie2": "Die Blätter gehen, da Leberkas bleibt. Und der Senf sowieso.",
+  "bild_folie1": "friedhofsbank-herbst.jpg",
+  "bild_folie2": "beisst-semmel.jpg",
+  "caption": "Sonntag auf da Bank, des Laub fallt eh scho. Nur mei Semmel is no warm.",
+  "hashtags": [
+    "#leberkas",
+    "#leberkässemmel",
+    "#goth",
+    "#wien",
+    "#melancholie",
+    "#herbst"
+  ],
+  "idee_nummer": null,
+  "wetter": "bewölkt, 12 bis 19 Grad, 0 mm Niederschlag",
+  "modell": "claude-haiku-5-5",
+  "pruefung": "Keine Regel der Grenze verletzt. Folie 1 hat ca. 98 Zeichen, ist rein melancholisch und ohne Leberkas. Folie 2 hat ca. 60 Zeichen und kippt trocken ins Leberkas-Bekenntnis, der Schmäh mit 'Und der Senf sowieso' sitzt. Die Caption ist kurz, erklärt die Pointe nicht und hat 6 passende Hashtags. Es gibt keine früheren Einträge, also keine Motivwiederholung."
+}

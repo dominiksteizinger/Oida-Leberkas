@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "datum": "2026-10-18",
+    "folie1": "Sonntag. Der Himmel hängt grau über der Stadt, und die Blätter fallen, ohne dass sie jemand fragt.",
+    "folie2": "Die Blätter gehen, da Leberkas bleibt. Und der Senf sowieso.",
+    "bild_folie1": "friedhofsbank-herbst.jpg",
+    "bild_folie2": "beisst-semmel.jpg",
+    "bilder": [
+      "tagebuch/2026-10-18/folie-1.jpg",
+      "tagebuch/2026-10-18/folie-2.jpg"
+    ]
+  }
+]
