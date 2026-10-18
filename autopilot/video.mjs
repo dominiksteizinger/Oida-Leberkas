@@ -1,46 +1,32 @@
-// Macht aus den zwei Folien Videos mit Musik:
-// - tagebuch/<datum>/folie-1.mp4 und folie-2.mp4 (1080x1350) für das Instagram-Karussell, die Musik läuft über beide Folien weiter
-// - <ausgabe>/reel.mp4 (1080x1920) für Reels, Shorts und TikTok; wird nicht ins Repo eingecheckt
-// Ohne Musik in der Bibliothek passiert nichts, dann bleibt das Karussell bei Bildern.
+// Macht aus dem Post ein Reel mit Musik: erst das Setup (post-a.jpg), nach einer Pause der ganze Post (post.jpg).
+// Ergebnis: tagebuch/<id>/reel.mp4 (1080x1920) für Instagram-Reels und YouTube Shorts.
+// Ohne Musik in musik.json passiert nichts, dann wird nur das Bild gepostet.
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
-const WURZEL = path.join(HIER, "..");
-const [datum, ausgabe = path.join(WURZEL, "tagebuch", datum)] = process.argv.slice(2);
-if (!datum) throw new Error("Aufruf: node video.mjs <datum> [ordner für reel.mp4]");
-const ordner = path.join(WURZEL, "tagebuch", datum);
+const id = process.argv[2];
+if (!id) throw new Error("Aufruf: node video.mjs <id>");
+const ordner = path.join(HIER, "..", "tagebuch", id);
 const e = JSON.parse(fs.readFileSync(path.join(ordner, "eintrag.json"), "utf8"));
 const musik = JSON.parse(fs.readFileSync(path.join(HIER, "musik.json"), "utf8"));
 if (!musik.length) {
-  console.log("Keine Musik in musik.json, Videos werden übersprungen.");
+  console.log("Keine Musik in musik.json, kein Reel.");
   process.exit(0);
 }
-const track = musik.find((m) => m.datei === e.musik) || musik[[...datum].reduce((a, c) => a + c.charCodeAt(0), 0) % musik.length];
+const track = musik.find((m) => m.datei === e.musik) || musik[[...id].reduce((a, c) => a + c.charCodeAt(0), 0) % musik.length];
 const audio = path.join(HIER, "musik", track.datei);
-const F1 = path.join(ordner, "folie-1.jpg");
-const F2 = path.join(ordner, "folie-2.jpg");
-const DAUER = 6;
+const SETUP = 2.8;
+const DAUER = 8;
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
-const video = ["-c:v", "libx264", "-preset", "medium", "-tune", "stillimage", "-crf", "26", "-pix_fmt", "yuv420p", "-r", "30"];
-const ton = ["-c:a", "aac", "-b:a", "128k", "-ar", "44100"];
 
-// Karussell: Folie 1 bekommt Sekunde 0 bis 6 des Tracks, Folie 2 Sekunde 6 bis 12 mit Ausblenden
-for (const [n, bild, start] of [[1, F1, 0], [2, F2, DAUER]]) {
-  const aus = n === 2 ? `,afade=t=out:st=${DAUER - 1.5}:d=1.5` : "";
-  ff(["-loop", "1", "-i", bild, "-ss", String(start), "-i", audio, "-t", String(DAUER),
-    "-af", `afade=t=in:st=0:d=${n === 1 ? 1 : 0.3}${aus}`, ...video, ...ton, "-shortest", "-movflags", "+faststart",
-    path.join(ordner, `folie-${n}.mp4`)]);
-}
+// Beide Stufen hochkant auf dunklem Grund mit leichtem Zoom; harter Schnitt von Setup auf Pointe
+const stufe = (n, d) => `[${n}:v]scale=1080:-2,zoompan=z='min(zoom+0.0003,1.04)':d=${Math.round(d * 30)}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1350:fps=30,pad=1080:1920:0:285:color=0x0D090C,setsar=1[v${n}]`;
+ff(["-i", path.join(ordner, "post-a.jpg"), "-i", path.join(ordner, "post.jpg"), "-i", audio,
+  "-filter_complex", `${stufe(0, SETUP)};${stufe(1, DAUER - SETUP)};[v0][v1]concat=n=2:v=1:a=0[v];[2:a]atrim=0:${DAUER},afade=t=in:d=0.8,afade=t=out:st=${DAUER - 1.5}:d=1.5[a]`,
+  "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "26", "-pix_fmt", "yuv420p", "-r", "30",
+  "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", path.join(ordner, "reel.mp4")]);
 
-// Reel: beide Folien hochkant auf dunklem Grund, langsamer Zoom, weiche Überblendung.
-// Die Bilder gehen als Einzelbild hinein; zoompan erzeugt daraus selbst DAUER*30 Frames.
-fs.mkdirSync(ausgabe, { recursive: true });
-const zoom = (i) => `[${i}:v]scale=1080:-2,zoompan=z='min(zoom+0.0004,1.05)':d=${DAUER * 30}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1350:fps=30,pad=1080:1920:0:285:color=0x0D090C,setsar=1[v${i}]`;
-ff(["-i", F1, "-i", F2, "-i", audio,
-  "-filter_complex", `${zoom(0)};${zoom(1)};[v0][v1]xfade=transition=fade:duration=0.6:offset=${DAUER - 0.6}[v];[2:a]atrim=0:${2 * DAUER - 0.6},afade=t=in:d=1,afade=t=out:st=${2 * DAUER - 2.1}:d=1.5[a]`,
-  "-map", "[v]", "-map", "[a]", ...video, ...ton, "-movflags", "+faststart", path.join(ausgabe, "reel.mp4")]);
-
-console.log(`Videos fertig mit „${track.titel}“ (${track.datei})`);
+console.log(`Reel fertig mit „${track.titel}“ (${track.datei})`);
 if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `musik=${track.titel}\n`);

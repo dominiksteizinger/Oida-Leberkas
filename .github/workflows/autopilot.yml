@@ -1,15 +1,23 @@
 name: Autopilot
-# Jeden Tag ein Karussell: Idee (Claude), Prüfung, Folien rendern, Tagebuch auf der Seite, Instagram/Facebook.
+# Zweimal am Tag ein Post von Resi Requiem: um 7:00 und um 16:00 Wiener Zeit.
+# Der Post kommt fertig geschrieben aus der Warteschlange (Issues mit Label „warteschlange“), hier wird er nur
+# gerendert, als Reel mit Musik gebaut, ins Tagebuch der Webseite eingetragen und gepostet. Keine Claude-API.
 # Solange die Repo-Variable POSTEN nicht "an" ist, läuft alles im Probebetrieb:
-# Die Ergebnisse landen nur auf dem Branch autopilot-probe, gepostet wird nichts.
+# Die Ergebnisse landen nur auf dem Branch autopilot-probe, gepostet wird nichts und die Warteschlange bleibt, wie sie ist.
 on:
   schedule:
-    - cron: "0 16 * * *"
-  # Probeläufe nur per Hand (Actions > Autopilot > Run workflow), nicht bei jedem Push.
+    # GitHub rechnet in UTC. Je zwei Zeiten pro Post, damit Sommer- und Winterzeit passen;
+    # der Schritt „Zeitfenster“ lässt nur den Lauf durch, der in Wien auf 7 oder 16 Uhr fällt.
+    - cron: "0 5,6,14,15 * * *"
+  # Probeläufe per Hand (Actions > Autopilot > Run workflow)
   workflow_dispatch:
     inputs:
       datum:
-        description: "Datum für den Eintrag (JJJJ-MM-TT), leer = heute. Für mehrere Probeläufe am selben Tag."
+        description: "Datum für den Eintrag (JJJJ-MM-TT), leer = heute"
+        required: false
+        default: ""
+      slot:
+        description: "07 oder 16, leer = nach aktueller Uhrzeit"
         required: false
         default: ""
 permissions:
@@ -19,19 +27,36 @@ concurrency:
   group: autopilot
   cancel-in-progress: false
 jobs:
-  tag:
+  post:
     runs-on: ubuntu-latest
     env:
       LIVE: ${{ vars.POSTEN == 'an' && github.ref == 'refs/heads/main' }}
       GH_TOKEN: ${{ github.token }}
     steps:
+      - name: Zeitfenster
+        id: zeit
+        run: |
+          STUNDE=$(TZ=Europe/Vienna date +%H)
+          DATUM="${{ inputs.datum }}"; [ -z "$DATUM" ] && DATUM=$(TZ=Europe/Vienna date +%F)
+          SLOT="${{ inputs.slot }}"
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            # Verspätete Läufe (GitHub startet geplante Läufe oft verzögert) zählen noch zum Slot
+            case "$STUNDE" in 07|08) SLOT=07;; 16|17) SLOT=16;; *) echo "In Wien ist es $STUNDE Uhr, kein Slot."; echo "weiter=false" >> "$GITHUB_OUTPUT"; exit 0;; esac
+          elif [ -z "$SLOT" ]; then
+            [ "$STUNDE" -lt 12 ] && SLOT=07 || SLOT=16
+          fi
+          echo "datum=$DATUM" >> "$GITHUB_OUTPUT"
+          echo "slot=$SLOT" >> "$GITHUB_OUTPUT"
+          echo "id=$DATUM-$SLOT" >> "$GITHUB_OUTPUT"
+          echo "weiter=true" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
+        if: steps.zeit.outputs.weiter == 'true'
         with:
           fetch-depth: 0
       - name: Probe-Branch holen
-        if: env.LIVE != 'true'
+        if: steps.zeit.outputs.weiter == 'true' && env.LIVE != 'true'
         run: |
-          git config user.name "Oida Leberkas Autopilot"
+          git config user.name "Resi Requiem Autopilot"
           git config user.email "autopilot@users.noreply.github.com"
           if git fetch origin autopilot-probe:refs/remotes/origin/autopilot-probe 2>/dev/null; then
             git checkout -B autopilot-probe origin/autopilot-probe
@@ -39,106 +64,120 @@ jobs:
           else
             git checkout -b autopilot-probe
           fi
+      - name: Schon gepostet?
+        id: doppelt
+        if: steps.zeit.outputs.weiter == 'true'
+        run: |
+          # Zwei Cron-Zeiten pro Slot: wenn der Post schon existiert, hat ein früherer Lauf ihn erledigt
+          if [ "$LIVE" = "true" ] && [ -f "tagebuch/${{ steps.zeit.outputs.id }}/post.jpg" ]; then
+            echo "Post ${{ steps.zeit.outputs.id }} gibt es schon."; echo "weiter=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "weiter=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v4
+        if: steps.doppelt.outputs.weiter == 'true'
         with:
           node-version: 20
       - name: Abhängigkeiten
+        if: steps.doppelt.outputs.weiter == 'true'
         working-directory: autopilot
         run: npm ci --no-audit --no-fund
-      - name: Ideen aus der Inbox
+      - name: Wien-Signale für die Schreibenden
+        if: steps.doppelt.outputs.weiter == 'true' && steps.zeit.outputs.slot == '07'
+        working-directory: autopilot
         run: |
-          # Nur Ideen von Dominik: über die Vorlage kann jeder ein Issue mit Label idee anlegen
-          gh issue list --repo "$GITHUB_REPOSITORY" --label idee --state open --json number,title,body,author \
-            --jq '[.[] | select(.author.login == "${{ github.repository_owner }}") | {nummer: .number, text: (.title + ": " + .body)}]' > "$RUNNER_TEMP/ideen.json" || echo "[]" > "$RUNNER_TEMP/ideen.json"
-          echo "Offene Ideen: $(jq length "$RUNNER_TEMP/ideen.json")"
-      - name: Bewertungen holen
+          node signale.mjs "${{ steps.zeit.outputs.datum }}" > "$RUNNER_TEMP/signale.md" || exit 0
+          gh label create signale --repo "$GITHUB_REPOSITORY" --color 9AA0A6 --description "Tägliche Wien-Signale für die Post-Ideen" 2>/dev/null || true
+          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label signale --state open --json number --jq '.[0].number // empty')
+          [ -z "$NR" ] && NR=$(gh issue create --repo "$GITHUB_REPOSITORY" --title "Wien-Signale" --label signale --body "Jeden Morgen hängt hier das Wetter, die Anlässe und harmlose Schlagzeilen des Tages an." | grep -o '[0-9]*$')
+          gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/signale.md"
+      - name: Post aus der Warteschlange
+        id: holen
+        if: steps.doppelt.outputs.weiter == 'true'
         working-directory: autopilot
-        # Label gut/schlecht an Issues, Daumen hoch/runter oder „gut …“/„schlecht …“ in der Sammelliste
-        run: node bewertungen.mjs "$RUNNER_TEMP/bewertungen.json" || echo "[]" > "$RUNNER_TEMP/bewertungen.json"
-      - name: Idee schreiben und prüfen
-        id: idee
+        run: |
+          gh label create warteschlange --repo "$GITHUB_REPOSITORY" --color FF4FA3 --description "Fertiger Post, den der Autopilot als Nächstes nimmt" 2>/dev/null || true
+          gh label create fehler --repo "$GITHUB_REPOSITORY" --color D73A4A --description "Post ließ sich nicht lesen" 2>/dev/null || true
+          node holen.mjs "${{ steps.zeit.outputs.id }}" "${{ steps.zeit.outputs.datum }}" "${{ steps.zeit.outputs.slot }}"
+      - name: Warteschlange leer melden
+        if: steps.holen.outputs.gefunden == 'false' && env.LIVE == 'true'
+        run: |
+          gh label create leer --repo "$GITHUB_REPOSITORY" --color FBCA04 --description "Autopilot hat nichts zu posten" 2>/dev/null || true
+          if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label leer --state open --json number --jq '.[0].number // empty')" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label leer --assignee "${{ github.repository_owner }}" \
+              --title "Warteschlange leer: ${{ steps.zeit.outputs.id }} wurde nicht gepostet" \
+              --body "Um ${{ steps.zeit.outputs.slot }}:00 lag kein fertiger Post in der Warteschlange. Neue Posts als Issue mit Label warteschlange anlegen (Aufbau siehe autopilot/README.md). Dieses Issue schließt sich beim nächsten Post von selbst."
+          fi
+      - name: Rendern
+        if: steps.holen.outputs.gefunden == 'true'
         working-directory: autopilot
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          MODELL_SCHREIBEN: ${{ vars.MODELL_SCHREIBEN }}
-          MODELL_PRUEFEN: ${{ vars.MODELL_PRUEFEN }}
-          IDEEN_DATEI: ${{ runner.temp }}/ideen.json
-          BEWERTUNGEN_DATEI: ${{ runner.temp }}/bewertungen.json
-          DATUM: ${{ inputs.datum }}
-        run: node idee.mjs
-      - name: Neues Bild (Gemini)
-        if: vars.BILDER_GENERIEREN != 'aus'
-        working-directory: autopilot
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          MODELL_BILD: ${{ vars.MODELL_BILD }}
-          MODELL_PRUEFEN: ${{ vars.MODELL_PRUEFEN }}
-        run: node bild.mjs "${{ steps.idee.outputs.datum }}"
-      - name: Folien rendern
-        working-directory: autopilot
-        run: node render.mjs "${{ steps.idee.outputs.datum }}"
-      - name: Videos mit Musik
-        id: video
+        run: node render.mjs "${{ steps.zeit.outputs.id }}"
+      - name: Reel mit Musik
+        if: steps.holen.outputs.gefunden == 'true'
         working-directory: autopilot
         run: |
           command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
-          node video.mjs "${{ steps.idee.outputs.datum }}" "$RUNNER_TEMP/reel"
-      - name: Reel aufheben
-        uses: actions/upload-artifact@v4
-        with:
-          name: reel-${{ steps.idee.outputs.datum }}
-          path: ${{ runner.temp }}/reel/reel.mp4
-          if-no-files-found: ignore
+          node video.mjs "${{ steps.zeit.outputs.id }}"
       - name: Ins Tagebuch eintragen
+        if: steps.holen.outputs.gefunden == 'true'
         run: |
-          git config user.name "Oida Leberkas Autopilot"
+          ID="${{ steps.zeit.outputs.id }}"
+          git config user.name "Resi Requiem Autopilot"
           git config user.email "autopilot@users.noreply.github.com"
-          git add tagebuch autopilot/bilder autopilot/bibliothek.json
-          git commit -m "Tagebuch ${{ steps.idee.outputs.datum }}"
+          git add tagebuch
+          git commit -m "Tagebuch $ID"
           if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
-          {
-            echo "## Eintrag ${{ steps.idee.outputs.datum }} ($([ "$LIVE" = "true" ] && echo live || echo Probe))"
-            jq -r '"**Folie 1:** \(.folie1)\n\n**Folie 2:** \(.folie2)\n\n**Caption:** \(.caption)\n\n**Aufforderung:** \(.aufforderung)\n\n**Hashtags:** \(.hashtags | join(" "))\n\n**Musik:** \(.musik)\n\n**Prüfung:** \(.pruefung)"' "tagebuch/${{ steps.idee.outputs.datum }}/eintrag.json"
-            BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
-            echo ""
-            echo "![Folie 1](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/${{ steps.idee.outputs.datum }}/folie-1.jpg)"
-            echo "![Folie 2](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/${{ steps.idee.outputs.datum }}/folie-2.jpg)"
-          } >> "$GITHUB_STEP_SUMMARY"
-      - name: Zur Bewertung stellen
-        run: |
-          D="${{ steps.idee.outputs.datum }}"
           BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
-          gh label create sammelliste --repo "$GITHUB_REPOSITORY" --color B9A3FF --description "Sammelt die Probeläufe zur Bewertung" 2>/dev/null || true
+          {
+            echo "## Eintrag $ID ($([ "$LIVE" = "true" ] && echo live || echo Probe), aus ${{ steps.holen.outputs.issue && format('#{0}', steps.holen.outputs.issue) }})"
+            jq -r '"**Format:** \(.inhalt.format)\n\n**Caption:** \(.caption)\n\n**Aufforderung:** \(.aufforderung)\n\n**Hashtags:** \(.hashtags | join(" "))"' "tagebuch/$ID/eintrag.json"
+            echo ""
+            echo "![Post](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/$ID/post.jpg)"
+          } | tee -a "$GITHUB_STEP_SUMMARY" > "$RUNNER_TEMP/sammelliste.md"
+      - name: Zur Bewertung stellen
+        if: steps.holen.outputs.gefunden == 'true'
+        run: |
+          gh label create sammelliste --repo "$GITHUB_REPOSITORY" --color B9A3FF --description "Sammelt die Posts zur Bewertung" 2>/dev/null || true
           SAMMEL=$(gh issue list --repo "$GITHUB_REPOSITORY" --label sammelliste --state open --json number --jq '.[0].number // empty')
           if [ -z "$SAMMEL" ]; then
-            SAMMEL=$(gh issue create --repo "$GITHUB_REPOSITORY" --title "Probeläufe: Sammelliste" --label sammelliste \
-              --body "Jeder Probelauf hängt hier als Kommentar an. Urteil: Daumen hoch oder runter direkt am Eintrag. Begründung als eigener Kommentar, der mit gut oder schlecht beginnt (gilt für den Eintrag direkt darüber, oder Datum davor: 2026-10-19 gut, weil ...)." | grep -o '[0-9]*$')
+            SAMMEL=$(gh issue create --repo "$GITHUB_REPOSITORY" --title "Posts: Sammelliste" --label sammelliste \
+              --body "Jeder Post hängt hier als Kommentar an. Urteil: Daumen hoch oder runter direkt am Eintrag, Begründung als eigener Kommentar, der mit gut oder schlecht beginnt." | grep -o '[0-9]*$')
           fi
-          {
-            echo "## Eintrag $D ($([ "$LIVE" = "true" ] && echo live || echo Probe))"
-            jq -r '"„\(.folie1)“ / „\(.folie2)“\nCaption: \(.caption)"' "tagebuch/$D/eintrag.json"
-            jq -r 'if .bild_ersatz then "Neues Bild: \(.bild_folie2) (\(.bild_neu))" else empty end' "tagebuch/$D/eintrag.json"
-            echo ""
-            echo "![Folie 1](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/$D/folie-1.jpg) ![Folie 2](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/$D/folie-2.jpg)"
-          } > "$RUNNER_TEMP/sammelliste.md"
           gh issue comment "$SAMMEL" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/sammelliste.md"
       - name: Posten
-        if: env.LIVE == 'true'
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
         working-directory: autopilot
         env:
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
           FACEBOOK_POSTEN: ${{ vars.FACEBOOK_POSTEN }}
-        run: node posten.mjs "${{ steps.idee.outputs.datum }}"
+        run: node posten.mjs "${{ steps.zeit.outputs.id }}"
       - name: YouTube Short
-        if: env.LIVE == 'true' && vars.YOUTUBE_POSTEN == 'an'
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' && vars.YOUTUBE_POSTEN == 'an' && hashFiles(format('tagebuch/{0}/reel.mp4', steps.zeit.outputs.id)) != ''
         working-directory: autopilot
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           YOUTUBE_SICHTBARKEIT: ${{ vars.YOUTUBE_SICHTBARKEIT }}
-        run: node youtube.mjs "${{ steps.idee.outputs.datum }}" "$RUNNER_TEMP/reel/reel.mp4"
-      - name: Verwendete Idee abhaken
-        if: env.LIVE == 'true' && steps.idee.outputs.idee != ''
-        run: gh issue close "${{ steps.idee.outputs.idee }}" --repo "$GITHUB_REPOSITORY" --comment "Umgesetzt im Eintrag vom ${{ steps.idee.outputs.datum }}."
+        run: node youtube.mjs "${{ steps.zeit.outputs.id }}" "../tagebuch/${{ steps.zeit.outputs.id }}/reel.mp4"
+      - name: Warteschlange abhaken
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
+        run: |
+          gh issue close "${{ steps.holen.outputs.issue }}" --repo "$GITHUB_REPOSITORY" --comment "Gepostet als ${{ steps.zeit.outputs.id }}."
+          for NR in $(gh issue list --repo "$GITHUB_REPOSITORY" --label leer --state open --json number --jq '.[].number'); do
+            gh issue close "$NR" --repo "$GITHUB_REPOSITORY" --comment "Es wird wieder gepostet."
+          done
+      - name: Bildvorrat prüfen
+        id: vorrat
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
+        working-directory: autopilot
+        run: node vorrat.mjs
+      - name: Neue Bilder anfordern
+        if: steps.vorrat.outputs.unbenutzt != '' && fromJSON(steps.vorrat.outputs.unbenutzt) < 7
+        run: |
+          gh label create bilder --repo "$GITHUB_REPOSITORY" --color 7B61FF --description "Bildbibliothek braucht Nachschub" 2>/dev/null || true
+          if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label bilder --state open --json number --jq '.[0].number // empty')" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label bilder --assignee "${{ github.repository_owner }}" \
+              --title "Bildbibliothek fast leer: noch ${{ steps.vorrat.outputs.unbenutzt }} unbenutzte Bilder" \
+              --body "Von ${{ steps.vorrat.outputs.gesamt }} Bildern sind nur noch ${{ steps.vorrat.outputs.unbenutzt }} unbenutzt. Zeit für eine neue Runde in Gemini; die Bilder im Projekt-Chat hochladen, dann kommen sie in die Bibliothek. Dieses Issue schließen, wenn sie drin sind."
+          fi

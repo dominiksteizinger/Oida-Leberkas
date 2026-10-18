@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Oida Leberkas</title>
-<meta name="description" content="Ein Herz aus Kajal, ein Magen aus Leberkas. Tagebuch, Semmel-Tarot und das Grufti-Quiz.">
+<title>Resi Requiem</title>
+<meta name="description" content="Resi Requiem: Bürojob, Goth, Leberkässemmel. Tagebuch, Wetter aus der Gruft, Semmel-Tarot und das Grufti-Quiz.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230D090C'/%3E%3Cpath d='M16 26C7 20 5 15 7.5 11S14 8.5 16 12c2-3.5 6-5 8.5-1S25 20 16 26Z' fill='%23FF4FA3'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/gruft.css">
 <style>
@@ -61,14 +61,22 @@ dd{margin:0}
 .poll button{font:inherit;font-weight:800;background:transparent;color:var(--fg);border:2px solid var(--pink);border-radius:999px;padding:12px 24px;min-height:48px;cursor:pointer}
 .poll button[aria-pressed="true"]{background:var(--pink);color:var(--bg)}
 .note{color:var(--muted);min-height:1.6em}
+.entry img{width:100%;height:auto;display:block;aspect-ratio:4/5;object-fit:cover;background:var(--panel)}
+.entry .meta{padding:14px 20px;font-size:14px;color:var(--muted);border-top:2px solid var(--line)}
+.gruft{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:24px}
+.gruft .box{gap:10px}
+.gruft .label{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pink)}
+.gruft .big{font-family:var(--gothic);font-size:44px;line-height:1}
+.gruft .line{font-size:18px;color:#E6CFDB}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="lace" aria-hidden="true"></div>
 <header class="top"><nav class="wrap" aria-label="Hauptnavigation">
-  <a class="logo" href="#top">Oida Leberkas</a>
+  <a class="logo" href="#top">Resi Requiem</a>
   <div class="menu">
+    <a href="#heute">Heute</a>
     <a href="#steckbrief">Steckbrief</a>
     <a href="#tagebuch">Tagebuch</a>
     <a href="#tarot">Tarot</a>
@@ -81,9 +89,9 @@ dd{margin:0}
 <section id="top" class="hero" style="padding-top:48px">
   <div class="wrap">
     <div class="hero-text">
-      <p class="kicker">Ein Herz aus Kajal. Ein Magen aus Leberkas.</p>
-      <h1>Oida <span>Leberkas</span></h1>
-      <p class="hero-lead">Sie trägt Schwarz, liest Tarot und glaubt an genau eine Sache: die warme Scheibe in der Semmel. Jeden Tag ein Eintrag aus ihrem Tagebuch.</p>
+      <p class="kicker">Bürojob. Goth. Leberkässemmel.</p>
+      <h1>Resi <span>Requiem</span></h1>
+      <p class="hero-lead">Sie geht ins Büro wie zu einem Begräbnis und zu Begräbnissen wie in die Freizeit. Zweimal am Tag ein Eintrag aus ihrem Leben: um 7, wenn alle aufstehen, und um 16, wenn die Arbeit vorbei ist.</p>
       <div class="btns">
         <a class="btn" href="#tagebuch">Zum Tagebuch</a>
         <a class="btn ghost" href="#tarot">Karte ziehen</a>
@@ -91,32 +99,44 @@ dd{margin:0}
     </div>
     <div class="altar">
       <svg aria-hidden="true" viewBox="0 0 40 160" width="40" height="160"><path class="flame" d="M20 4Q12 18 20 30Q28 18 20 4Z" fill="#FFD27A"/><rect x="10" y="34" width="20" height="120" rx="4" fill="#E9DDE3"/><path d="M10 52q6 10 0 22" fill="none" stroke="#C9B9C2" stroke-width="4"/></svg>
-      <div class="arch"><img src="assets/figur/figur-vorne.webp" width="240" height="557" alt="Die Figur von Oida Leberkas: eine junge Frau im Anime-Stil mit langen schwarzen Haaren, pinker Strähne, Spitzenbluse und Plateaustiefeln"></div>
+      <div class="arch"><img src="assets/figur/figur-vorne.webp" width="240" height="557" alt="Resi Requiem: eine junge Frau im Anime-Stil mit langen schwarzen Haaren, pinker Strähne, Spitzenbluse und Plateaustiefeln"></div>
       <svg aria-hidden="true" viewBox="0 0 40 120" width="40" height="120"><path class="flame" d="M20 4Q12 18 20 30Q28 18 20 4Z" fill="#FFD27A"/><rect x="10" y="34" width="20" height="82" rx="4" fill="#E9DDE3"/></svg>
     </div>
   </div>
 </section>
 
-<section id="steckbrief" class="alt">
+<section id="heute" class="alt">
+  <div class="wrap">
+    <div class="head-row"><h2>Heute in Wien</h2><p class="note" id="heute-stand"></p></div>
+    <div class="gruft">
+      <div class="box"><p class="label">Wetter</p><p class="big" id="wetter-grad">…</p><p class="line" id="wetter-satz">Ich schau kurz raus. Ungern.</p></div>
+      <div class="box"><p class="label">Bis es finster wird</p><p class="big" id="finster-zeit">…</p><p class="line" id="finster-satz"></p></div>
+      <div class="box"><p class="label">Mond</p><p class="big" id="mond-symbol" aria-hidden="true">…</p><p class="line" id="mond-satz"></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="steckbrief">
   <div class="wrap two">
     <div>
       <h2>Steckbrief</h2>
       <div class="faces">
-        <img src="assets/figur/gesicht-frech.webp" width="240" height="247" alt="Ihr Gesicht, frech" loading="lazy">
-        <img src="assets/figur/gesicht-verliebt.webp" width="234" height="247" alt="Ihr Gesicht, verliebt in Leberkas" loading="lazy">
-        <img src="assets/figur/gesicht-grantig.webp" width="240" height="250" alt="Ihr Gesicht, grantig" loading="lazy">
+        <img src="assets/figur/gesicht-frech.webp" width="240" height="247" alt="Resis Gesicht, frech" loading="lazy">
+        <img src="assets/figur/gesicht-verliebt.webp" width="234" height="247" alt="Resis Gesicht, verliebt in die Leberkässemmel" loading="lazy">
+        <img src="assets/figur/gesicht-grantig.webp" width="240" height="250" alt="Resis Gesicht, grantig" loading="lazy">
       </div>
-      <p class="motto">„Alles is vergänglich. Außer mei Hunger.“</p>
+      <p class="motto">„Ich schau nicht grantig. Ich schau Wien.“</p>
     </div>
     <dl>
+      <div><dt>Beruf</dt><dd>Büro. Anwesend, physisch.</dd></div>
       <div><dt>Lieblingsfarbe</dt><dd>Schwarz. Zweitliebste: dunkleres Schwarz.</dd></div>
-      <div><dt>Lieblingsessen</dt><dd>Leberkassemmel mit Senf. Nie Ketchup. Niemals.</dd></div>
-      <div><dt>Wohnt</dt><dd>Wien, Nähe Zentralfriedhof. Wegen der Ruhe.</dd></div>
-      <div><dt>Hobbys</dt><dd>Friedhofsspaziergänge, Tarot, Kajal nachziehen, The Cure in Dauerschleife.</dd></div>
-      <div><dt>Haustier</dt><dd>A Fledermaus namens Kren.</dd></div>
-      <div><dt>Sternzeichen</dt><dd>Skorpion. Eh klar.</dd></div>
-      <div><dt>Größte Angst</dt><dd>Sonnenlicht und eine leere Leberkas-Vitrine.</dd></div>
-      <div><dt>Guilty Pleasure</dt><dd>Pizzaleberkas. Sag es niemandem.</dd></div>
+      <div><dt>Lieblingsessen</dt><dd>Leberkässemmel mit Senf. Nie Ketchup.</dd></div>
+      <div><dt>Wohnt</dt><dd>Wien, Nähe Zentralfriedhof. Wegen der Nachbarn. Die sind ruhig.</dd></div>
+      <div><dt>Haustier</dt><dd>Herbert, eine Fledermaus. Zahlt keine Miete. Klaut.</dd></div>
+      <div><dt>Kollegin</dt><dd>Sunny. Immer gut gelaunt. Wir arbeiten daran.</dd></div>
+      <div><dt>Stammlokal</dt><dd>Der Würstelstand von Herrn Franz. Er fragt nie, wie es mir geht. Ein Profi.</dd></div>
+      <div><dt>Lebensziel</dt><dd>Ein Ehrengrab am Zentralfriedhof. Projekt läuft.</dd></div>
+      <div><dt>Größte Angst</dt><dd>Sonnenlicht und gute Laune am Montag.</dd></div>
     </dl>
   </div>
 </section>
@@ -125,13 +145,13 @@ dd{margin:0}
   <div class="wrap">
     <div class="head-row">
       <h2>Aus ihrem Tagebuch</h2>
-      <a href="https://www.instagram.com/oidaleberkas/" target="_blank" rel="noopener" style="font-weight:800">Alle Einträge</a>
+      <a href="https://www.instagram.com/resi.requiem/" target="_blank" rel="noopener" style="font-weight:800">Alle Einträge</a>
     </div>
-    <!-- Der Autopilot schreibt neue Einträge nach tagebuch/eintraege.json; das Skript unten zeigt die neuesten sechs. -->
+    <!-- Der Autopilot schreibt neue Einträge nach tagebuch/eintraege.json; das Skript unten zeigt die neuesten sechs (neue als Bild, alte als Text). -->
     <div class="diary" id="diary">
-      <figure class="entry"><blockquote class="sad">Manchmal sitz i am Fenster und frag mi, ob irgendwer mi wirklich versteht.</blockquote><figcaption class="cute">Da Leberkas. Da Leberkas versteht mi.</figcaption></figure>
-      <figure class="entry"><blockquote class="sad">Die Nacht is kalt und leer, so wie mei Herz.</blockquote><figcaption class="cute">Aber die Semmel is warm, also passt.</figcaption></figure>
-      <figure class="entry"><blockquote class="sad">Irgendwann san ma alle nur mehr Staub.</blockquote><figcaption class="cute">Bis dahin: Semmel mit Senf, bitte.</figcaption></figure>
+      <figure class="entry"><blockquote class="sad">Kollegin: Du schaust heute so fertig aus.</blockquote><figcaption class="cute">Danke. Hat zwei Stunden gedauert.</figcaption></figure>
+      <figure class="entry"><blockquote class="sad">Herbert wohnt bei mir. Zahlt keine Miete.</blockquote><figcaption class="cute">Klaut. Familie halt.</figcaption></figure>
+      <figure class="entry"><blockquote class="sad">Montag, 8:01.</blockquote><figcaption class="cute">Lebe noch. Leider.</figcaption></figure>
     </div>
   </div>
 </section>
@@ -140,15 +160,15 @@ dd{margin:0}
   <div class="wrap two" style="align-items:center">
     <div class="intro">
       <h2>Semmel-Tarot</h2>
-      <p>Konzentrier di. Denk an a Frage. Oder an a Semmel. Is eh meistens dasselbe.</p>
+      <p>Denk an eine Frage. Oder an eine Semmel. Ist meistens dasselbe.</p>
       <button class="btn" type="button" id="draw" style="align-self:flex-start">Karte ziehen</button>
     </div>
     <div class="tarot-wrap">
       <div class="tarot" id="card" aria-live="polite">
         <p class="num" id="card-num">?</p>
         <svg aria-hidden="true" viewBox="0 0 120 120" width="120" height="120"><circle cx="60" cy="60" r="54" fill="none" stroke="#C9A86A" stroke-width="2"/><path d="M60 14L68 52L106 60L68 68L60 106L52 68L14 60L52 52Z" fill="none" stroke="#C9A86A" stroke-width="2"/><circle cx="60" cy="60" r="10" fill="#FF4FA3"/></svg>
-        <p class="name" id="card-name">Zieh a Karte</p>
-        <p class="text" id="card-text">Die Karten wissen, was du heut isst.</p>
+        <p class="name" id="card-name">Zieh eine Karte</p>
+        <p class="text" id="card-text">Die Karten wissen, was du heute isst.</p>
       </div>
     </div>
   </div>
@@ -173,11 +193,11 @@ dd{margin:0}
 <section id="umfrage" class="alt">
   <div class="narrow" style="gap:20px">
     <h2>Die Frage der Woche</h2>
-    <p class="poll-q" id="poll-q">Leberkassemmel: süßer oder scharfer Senf?</p>
+    <p class="poll-q" id="poll-q">Leberkässemmel: süßer oder scharfer Senf?</p>
     <div class="poll" id="poll">
       <button type="button" data-v="suess" aria-pressed="false">Süß</button>
       <button type="button" data-v="scharf" aria-pressed="false">Scharf</button>
-      <button type="button" data-v="beides" aria-pressed="false">Beides, i bin kompliziert</button>
+      <button type="button" data-v="beides" aria-pressed="false">Beides. Ich bin kompliziert.</button>
     </div>
     <p class="note" id="poll-note" aria-live="polite"></p>
   </div>
@@ -186,27 +206,70 @@ dd{margin:0}
 <section id="folgen">
   <div class="wrap" style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">
     <h2>Folgen</h2>
-    <p style="max-width:60ch">Jeden Tag ein neuer Tagebuch-Eintrag, dazu Memes und Umfragen in den Stories.</p>
+    <p style="max-width:60ch">Jeden Tag um 7 und um 16 Uhr ein neuer Eintrag. <span id="naechster"></span></p>
     <div class="btns">
-      <a class="btn" href="https://www.instagram.com/oidaleberkas/" target="_blank" rel="noopener">Instagram</a>
-      <a class="btn ghost" href="https://www.tiktok.com/@oidaleberkas" target="_blank" rel="noopener">TikTok</a>
-      <a class="btn ghost" href="https://www.youtube.com/@OidaLeberkas" target="_blank" rel="noopener">YouTube</a>
+      <a class="btn" href="https://www.instagram.com/resi.requiem/" target="_blank" rel="noopener">Instagram</a>
+      <a class="btn ghost" href="https://www.tiktok.com/@resi.requiem" target="_blank" rel="noopener">TikTok</a>
+      <a class="btn ghost" href="https://www.youtube.com/@resi.requiem" target="_blank" rel="noopener">YouTube</a>
     </div>
   </div>
 </section>
 </main>
 
 <footer><div class="wrap">
-  <p>Oida Leberkas · ein Kunstprojekt aus Hallein</p>
+  <p>Resi Requiem · oidaleberkas.at · ein Kunstprojekt aus Hallein</p>
   <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="nutzungsbedingungen.html">Nutzungsbedingungen</a></nav>
 </div></footer>
 
 <script>
 fetch("tagebuch/eintraege.json").then(r=>r.ok?r.json():[]).then(liste=>{
   if(!liste.length)return;
-  const box=document.getElementById("diary"),esc=t=>t.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"})[c]);
-  box.innerHTML=liste.slice(0,6).map(e=>`<figure class="entry"><blockquote class="sad">${esc(e.folie1)}</blockquote><figcaption class="cute"><time datetime="${e.datum}">${new Date(e.datum+"T12:00:00").toLocaleDateString("de-AT",{day:"numeric",month:"long"})}</time>${esc(e.folie2)}</figcaption></figure>`).join("");
+  const box=document.getElementById("diary"),esc=t=>String(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+  const tag=e=>new Date(e.datum+"T12:00:00").toLocaleDateString("de-AT",{day:"numeric",month:"long"})+(e.slot?`, ${e.slot}:00`:"");
+  box.innerHTML=liste.slice(0,6).map(e=>e.format&&e.bilder&&e.bilder.length
+    ?`<figure class="entry"><img src="${esc(e.bilder[0])}" width="1080" height="1350" loading="lazy" alt="${esc(e.text)}"><figcaption class="meta"><time datetime="${e.datum}">${tag(e)}</time></figcaption></figure>`
+    :`<figure class="entry"><blockquote class="sad">${esc(e.folie1)}</blockquote><figcaption class="cute"><time datetime="${e.datum}">${tag(e)}</time>${esc(e.folie2)}</figcaption></figure>`).join("");
 }).catch(()=>{});
+</script>
+<script>
+// Heute in Wien: Wetter und Sonnenuntergang von Open-Meteo, Mondphase gerechnet
+(function(){
+  var TZ="Europe/Vienna",uhr=function(d){return d.toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit",timeZone:TZ})};
+  var $=function(id){return document.getElementById(id)};
+  function dauer(ms){var m=Math.max(0,Math.round(ms/60000));return Math.floor(m/60)+":"+String(m%60).padStart(2,"0")}
+  function satz(code,grad,tag){
+    if(code>=95)return "Gewitter. Endlich Stimmung.";
+    if((code>=71&&code<=77)||code===85||code===86)return "Schnee. Alles still und weiß. Wie ein Friedhof, nur kälter.";
+    if((code>=51&&code<=67)||(code>=80&&code<=82))return "Regen. Wien schaut endlich so aus, wie ich mich fühle.";
+    if(code===45||code===48)return "Nebel. Niemand sieht mich. Perfekt.";
+    if(grad>=25)return "Über 25 Grad. Ich verlasse das Haus nicht.";
+    if(grad<=0)return "Minusgrade. Ich fühl mich verstanden.";
+    if(code<=1&&tag)return "Sonne. Die Vorhänge bleiben zu.";
+    if(code<=1)return "Klare Nacht. Meine Lieblingssorte.";
+    return "Bewölkt. Passt.";
+  }
+  fetch("https://api.open-meteo.com/v1/forecast?latitude=48.21&longitude=16.37&current=temperature_2m,weather_code,is_day&daily=sunrise,sunset&timezone=GMT&forecast_days=2")
+    .then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(w){
+      var c=w.current;
+      $("wetter-grad").textContent=Math.round(c.temperature_2m)+"°";
+      $("wetter-satz").textContent=satz(c.weather_code,c.temperature_2m,c.is_day);
+      var jetzt=Date.now(),z=function(s){return new Date(s+"Z")};
+      var unter=z(w.daily.sunset[0]),auf=z(w.daily.sunrise[0]),aufMorgen=z(w.daily.sunrise[1]);
+      if(jetzt<auf){$("finster-zeit").textContent="Jetzt";$("finster-satz").textContent="Finster. Endlich. Die Sonne droht um "+uhr(auf)+".";}
+      else if(jetzt<unter){$("finster-zeit").textContent=dauer(unter-jetzt);$("finster-satz").textContent="Sonnenuntergang um "+uhr(unter)+". Durchhalten.";}
+      else{$("finster-zeit").textContent="Jetzt";$("finster-satz").textContent="Finster. Endlich. Noch "+dauer(aufMorgen-jetzt)+" bis zur Sonne, leider.";}
+      $("heute-stand").textContent="Stand "+uhr(new Date());
+    }).catch(function(){
+      $("wetter-grad").textContent="?";$("wetter-satz").textContent="Das Wetter schweigt heute. Respekt.";
+      $("finster-zeit").textContent="?";$("finster-satz").textContent="Irgendwann wird es finster. Versprochen.";
+    });
+  var alter=((Date.now()-Date.UTC(2000,0,6,18,14))/864e5)%29.530588853;if(alter<0)alter+=29.530588853;
+  var phasen=[[1.85,"🌑","Neumond. Nicht einmal der Mond hat heute Lust."],[7.38,"🌒","Zunehmend. Er gibt sich Mühe. Wir nicht."],[9.23,"🌓","Halbmond. Halb anwesend, wie ich im Büro."],[13.84,"🌔","Fast voll. Nur noch ein paar Tage Normalität."],[15.69,"🌕","Vollmond. Herbert ist nicht ansprechbar."],[20.3,"🌖","Abnehmend. Der Mond auch."],[22.15,"🌗","Halbmond. Halb anwesend, wie ich im Büro."],[27.68,"🌘","Fast weg. Er versteht mich."],[30,"🌑","Neumond. Nicht einmal der Mond hat heute Lust."]];
+  for(var i=0;i<phasen.length;i++){if(alter<phasen[i][0]){$("mond-symbol").textContent=phasen[i][1];$("mond-satz").textContent=phasen[i][2];break;}}
+  // Nächster Post um 7 oder 16 Uhr Wiener Zeit
+  var h=Number(new Intl.DateTimeFormat("de-AT",{hour:"numeric",hourCycle:"h23",timeZone:TZ}).format(new Date()));
+  $("naechster").textContent=h<7?"Der nächste kommt heute um 7:00.":h<16?"Der nächste kommt heute um 16:00.":"Der nächste kommt morgen um 7:00.";
+})();
 </script>
 <script>
 (function(){
@@ -214,13 +277,13 @@ fetch("tagebuch/eintraege.json").then(r=>r.ok?r.json():[]).then(liste=>{
 
   // Semmel-Tarot
   var cards=[
-    ["XIII","Der Tod","Keine Sorge. Heute stirbt nur dein Hunger. Mit Senf."],
-    ["0","Die Semmel","Etwas Warmes tritt in dein Leben. Es is a Leberkas."],
-    ["XVI","Der Turm","Wer dir die letzte Scheibe wegisst, hat Rache verdient. Kalte."],
-    ["XVIII","Der Mond","Um drei in der Früh is a Leberkassemmel ka Entscheidung. Es is Schicksal."],
-    ["IX","Der Eremit","Heut isst allein. Is eh besser so. Für die Semmel."],
-    ["X","Das Rad","Alles kommt wieder. Auch der Kren. Vor allem der Kren."],
-    ["XIX","Die Sonne","Schlechte Nachricht. Bleib drin, zieh die Vorhänge zu."]
+    ["XIII","Der Tod","Endlich jemand, der pünktlich kommt."],
+    ["0","Die Semmel","Etwas Warmes tritt in dein Leben. Es ist Leberkäse."],
+    ["XVI","Der Turm","Montag. Mehr muss ich dazu nicht sagen."],
+    ["XVIII","Der Mond","Um drei in der Früh ist eine Leberkässemmel keine Entscheidung. Sie ist Schicksal."],
+    ["IX","Der Eremit","Du sagst heute das Afterwork ab. Gute Wahl."],
+    ["X","Das Rad","Alles kommt wieder. Auch der Montag. Vor allem der Montag."],
+    ["XIX","Die Sonne","Schlechte Nachricht. Bleib drin, Vorhänge zu."]
   ];
   var last=-1,card=document.getElementById("card"),drawBtn=document.getElementById("draw");
   drawBtn.addEventListener("click",function(){
@@ -235,18 +298,19 @@ fetch("tagebuch/eintraege.json").then(r=>r.ok?r.json():[]).then(liste=>{
   // Quiz
   var questions=[
     ["Dein Lieblingsplatz am Sonntag?",[["Zentralfriedhof, eh klar",2],["Couch, Vorhänge zu",1],["Freibad",0]]],
-    ["Wie viel Kajal is zu viel?",[["Die Frage versteh i ned",2],["Bissl was geht immer",1],["Was is Kajal?",0]]],
-    ["Die Leberkassemmel kommt mit …",[["Senf, schwarz wie mei Seele",2],["Senf und Gurkerl",1],["Ketchup",0]]]
+    ["Wie viel Kajal ist zu viel?",[["Die Frage verstehe ich nicht",2],["Ein bisschen geht immer",1],["Was ist Kajal?",0]]],
+    ["Die Kollegin lädt zum Afterwork ein. Du …",[["hast schon was vor. Daheim sitzen.",2],["gehst, bleibst eine Stunde",1],["organisierst es",0]]],
+    ["Die Leberkässemmel kommt mit …",[["Senf. Sonst nichts.",2],["Senf und Gurkerl",1],["Ketchup",0]]]
   ];
   var results=[
-    ["Sonnenkind","Du bist zu fröhlich für uns. Aber a Semmel kriegst trotzdem."],
-    ["Teilzeit-Grufti","Schwarz im Herzen, bunt im Kasten. Wir arbeiten dran."],
-    ["Wandelnde Gruft","Du bist eine von uns. Die Fledermäuse grüßen."]
+    ["Sonnenkind","Du bist zu fröhlich für uns. Eine Semmel kriegst du trotzdem."],
+    ["Teilzeit-Grufti","Schwarz im Herzen, bunt im Kasten. Wir arbeiten daran."],
+    ["Wandelnde Gruft","Du bist eine von uns. Herbert grüßt."]
   ];
   var qi=0,score=0,box=document.getElementById("quiz-box"),res=document.getElementById("quiz-result"),ans=document.getElementById("quiz-answers");
   function showQ(){
     if(qi>=questions.length){
-      var r=results[score>=5?2:score>=3?1:0];
+      var r=results[score>=6?2:score>=3?1:0];
       document.getElementById("result-title").textContent=r[0];
       document.getElementById("result-text").textContent=r[1];
       box.hidden=true;res.hidden=false;return;
@@ -265,7 +329,7 @@ fetch("tagebuch/eintraege.json").then(r=>r.ok?r.json():[]).then(liste=>{
   showQ();
 
   // Frage der Woche: die Stimme bleibt nur im eigenen Browser, das Ergebnis kommt in die Instagram-Story.
-  var POLL="oida-frage-der-woche",poll=document.getElementById("poll"),note=document.getElementById("poll-note");
+  var POLL="resi-frage-der-woche",poll=document.getElementById("poll"),note=document.getElementById("poll-note");
   function mark(v){
     Array.prototype.forEach.call(poll.querySelectorAll("button"),function(b){b.setAttribute("aria-pressed",b.dataset.v===v?"true":"false")});
     note.textContent=v?"Notiert. Abgestimmt wird auch in der Instagram-Story, das Ergebnis kommt am Sonntag.":"";
