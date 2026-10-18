@@ -1,20 +1,20 @@
 {
   "datum": "2026-10-18",
-  "folie1": "Sonntag. Der Himmel hängt grau über der Stadt, und die Blätter fallen, ohne dass sie jemand fragt.",
-  "folie2": "Die Blätter gehen, da Leberkas bleibt. Und der Senf sowieso.",
-  "bild_folie1": "friedhofsbank-herbst.jpg",
-  "bild_folie2": "beisst-semmel.jpg",
-  "caption": "Sonntag auf da Bank, des Laub fallt eh scho. Nur mei Semmel is no warm.",
+  "folie1": "Kren ist letzte Nacht nicht heimgekommen. Ich stand am offenen Fenster, bis die Schatten aufgehört haben zu flüstern.",
+  "folie2": "Um sechs kam er heim. Mit Senf auf den Flügeln und einer Semmel im Maul.",
+  "bild_folie1": "regenfenster-nacht.jpg",
+  "bild_folie2": "daumen-hoch.jpg",
+  "caption": "Manche Nächte sind lang. Kren hat sich Zeit gelassen.",
   "hashtags": [
-    "#leberkas",
-    "#leberkässemmel",
+    "#fledermaus",
     "#goth",
     "#wien",
-    "#melancholie",
-    "#herbst"
+    "#gothgirl",
+    "#leberkas",
+    "#melancholie"
   ],
   "idee_nummer": null,
-  "wetter": "bewölkt, 12 bis 19 Grad, 0 mm Niederschlag",
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
   "modell": "claude-haiku-5-5",
-  "pruefung": "Keine Regel der Grenze verletzt. Folie 1 hat ca. 98 Zeichen, ist rein melancholisch und ohne Leberkas. Folie 2 hat ca. 60 Zeichen und kippt trocken ins Leberkas-Bekenntnis, der Schmäh mit 'Und der Senf sowieso' sitzt. Die Caption ist kurz, erklärt die Pointe nicht und hat 6 passende Hashtags. Es gibt keine früheren Einträge, also keine Motivwiederholung."
+  "pruefung": "Keine Regel der Grenze verletzt: kein Flirt, keine Sexualisierung, keine Selbstverletzung (Kren ist eine Fledermaus, die Sorge bleibt poetisch und harmlos). Folie 1 hat 119 Zeichen, ist ernst und schauerromantisch, ohne Witz und ohne Leberkas. Folie 2 hat 71 Zeichen und kippt trocken: Die Fledermaus kommt mit Senf auf den Flügeln und einer Semmel im Maul heim. Der Bruch funktioniert, und das Bild ist absurd-komisch. Motiv neu gegenüber dem Eintrag vom 18.10. (Herbstblätter und Vergänglichkeit). Caption ist kurz, erklärt die Pointe nicht, 6 Hashtags gemischt, passt."
 }
