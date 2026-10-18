@@ -14,7 +14,7 @@ const IG = process.env.IG_USER_ID || "17841454284048783";
 const SEITE = process.env.FB_PAGE_ID || "1415408888319545";
 const BASIS = process.env.SEITEN_URL || "https://oidaleberkas.at";
 const bilder = [1, 2].map((n) => `${BASIS}/tagebuch/${datum}/folie-${n}.jpg`);
-const text = `${e.caption}\n\n${e.hashtags.join(" ")}`;
+const text = [e.caption, e.aufforderung, e.hashtags.join(" ")].filter(Boolean).join("\n\n");
 const warte = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function graph(pfad, felder) {
