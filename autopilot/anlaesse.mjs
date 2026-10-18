@@ -59,14 +59,24 @@ export function feste(datum) {
   return liste;
 }
 
-// Schlagzeilen aus Wien (ORF). Fehler oder kein Netz: leere Liste, der Lauf geht weiter.
-export async function schlagzeilen() {
+// Harmlose Schlagzeilen: Wien, Wissenschaft, Ö3, FM4 (ORF). Ein Wortfilter wirft Unglücke, Kriminalität,
+// Politik und Krankheit vorab raus; den Rest prüft das Modell nach den Regeln. Fehler oder kein Netz: leere Liste.
+const FEEDS = ["wien", "science", "oe3", "fm4"];
+const TABU = /unfall|verletzt|tot\b|tote|tödlich|getötet|stirbt|starb|leiche|mord|polizei|festnahme|festgenommen|verhaftet|anklage|gericht|prozess|urteil|haft|raub|überfall|einbr|dieb|gestohlen|waffe|messer|schuss|schüsse|angriff|attacke|gewalt|brand|feuer|explosion|einsturz|opfer|vermisst|krieg|militär|armee|terror|anschlag|regierung|minister|kanzler|präsident|partei|wahl|koalition|parlament|politik|gesetz|övp|spö|fpö|grüne|neos|eu-|nato|liga|staat|krank|krebs|virus|klinik|spital|patient|tod|suizid|missbrauch|kind\b|kinder|fünfjährig|jährige[rn]?\b|streik|pleite|insolvenz|kündig|teuerung|inflation|steuer|falschgeld|betrug|ermittl|behörd|einzelfälle|skandal|vorwurf|verdacht|droge|razzia|flucht|asyl|migra|demo\b|protest/i;
+
+async function feed(name) {
   try {
-    const xml = await (await fetch("https://rss.orf.at/wien.xml", { signal: AbortSignal.timeout(8000) })).text();
+    const xml = await (await fetch(`https://rss.orf.at/${name}.xml`, { signal: AbortSignal.timeout(8000) })).text();
     return [...xml.matchAll(/<item[\s\S]*?<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/g)]
-      .map((m) => m[1].trim().replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;/g, "'"))
-      .slice(0, 15);
+      .map((m) => m[1].trim().replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;/g, "'"));
   } catch {
     return [];
   }
+}
+
+export const harmlos = (titel) => !TABU.test(titel);
+
+export async function schlagzeilen() {
+  const alle = (await Promise.all(FEEDS.map(feed))).flatMap((liste, i) => liste.slice(0, 20).map((t) => `${t} (${FEEDS[i]})`));
+  return alle.filter(harmlos).slice(0, 20);
 }

@@ -60,7 +60,7 @@ const Eintrag = z.object({
   folie2: z.string().describe("Cuter Leberkas-Twist für Folie 2, höchstens 80 Zeichen"),
   bild_folie1: z.string().describe("Dateiname einer Szene aus der Bibliothek als Hintergrund für Folie 1"),
   bild_folie2: z.string().describe("Dateiname eines Bildes aus der Bibliothek für Folie 2, passend zum Twist (Ersatz, falls kein neues Bild entsteht)"),
-  bild_neu: z.string().nullable().describe("Neues Bild für Folie 2, das genau diesen Twist zeigt: Ort, Licht, was sie tut, wie Leberkäse oder Semmel vorkommt, ihr Gesichtsausdruck. Nur Szene und Handlung, nie ihr Aussehen oder ihre Kleidung, kein Text im Bild. null, wenn ein Bibliotheksbild perfekt passt."),
+  bild_neu: z.string().describe("Neues Bild für Folie 2, das genau diesen Twist zeigt: Ort, Licht, was sie tut, wie Leberkäse oder Semmel vorkommt, ihr Gesichtsausdruck. Nur Szene und Handlung, nie ihr Aussehen oder ihre Kleidung, kein Text im Bild."),
   caption: z.string().describe("Caption in ihrer Stimme, ohne Hashtags und ohne Aufforderung"),
   aufforderung: z.string().describe("Ein Satz, der zum Mitmachen einlädt (Frage an die Community, Speichern, Teilen), in ihrer Stimme"),
   hashtags: z.array(z.string()).describe("3 bis 6 Hashtags mit #"),
@@ -115,7 +115,7 @@ const systemPruefen = `Du bist die Qualitätsprüfung für Posts von Oida Leberk
 let auftrag = `Heute ist ${wochentag}, der ${datum}. Wetter in Wien: ${wetter}.
 Anlässe heute: ${anlaesse.join("; ") || "keine besonderen"}.
 
-${news.length ? `Was gerade in Wien passiert (Schlagzeilen, nur als Anregung; Regeln unter „Aktuelles“ beachten, die meisten taugen nicht):\n${news.map((n) => `- ${n}`).join("\n")}` : "Keine Schlagzeilen verfügbar."}
+${news.length ? `Was gerade passiert (vorgefilterte Schlagzeilen aus Wien, Wissenschaft, Ö3 und FM4, nur als Anregung; Regeln unter „Aktuelles“ beachten, die meisten taugen nicht):\n${news.map((n) => `- ${n}`).join("\n")}` : "Keine Schlagzeilen verfügbar."}
 
 Bildbibliothek (nur diese Dateinamen verwenden; Folie 1 braucht eine Szene):
 ${bibliothek.map((b) => `- ${b.datei} (${b.art}): ${b.beschreibung}`).join("\n")}
