@@ -30,7 +30,7 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 - Die Figur ist immer klar erwachsen und wird nie kindlich dargestellt.
 - Keine Witze über reale Gruppen, Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei ihr selbst, beim Leberkas oder beim Alltag.
 - Melancholie ja, aber keine Selbstverletzung, kein Suizid, keine echten Krisen. Traurigkeit bleibt poetisch und harmlos (Regen, Herbst, Nacht, Vergänglichkeit, Montag).
-- Keine echten Marken schlechtmachen, keine Politik, keine realen Personen.
+- Keine echten Marken schlechtmachen, keine realen Personen, Parteien oder Staaten. Gesellschaftskritik (Konsum, Arbeit, Zivilisation, Vergänglichkeit) ist erlaubt, aber ohne Parteinahme und ohne konkrete Akteure.
 - Keine erfundenen Fakten als Fakten.
 - Keine KI-Hinweise im Post (die Kennzeichnung steht im Impressum).
 
@@ -45,3 +45,11 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 - Nie dasselbe Motiv wie in den letzten Einträgen wiederholen und keine Formulierungen daraus wiederverwenden (z. B. dieselbe Pointe wie „dick geschnitten“).
 - Folie 2 soll überraschen, nicht nur Vergänglichkeit gegen Semmel stellen. Die Beispiele oben zeigen den Ton, sie sind keine Vorlage zum Abwandeln.
 - Anlässe nutzen, wenn passend: Wetter in Wien, Wochentag, Jahreszeit, Feiertage (Allerheiligen, Halloween, Advent usw.).
+- Motive rotieren: Wetterbilder (Regen, Wolken, Nebel, Sonne) und das Bild „Stern“ höchstens einmal pro Woche. Sonst aus dem Motivpool wählen: Kerzen, Tarot, Vitrine, Kren (die Fledermaus), Pizzaleberkäse, Friedhof, Nachtleben, Steckbrief-Details.
+
+## Pointen-Check (vor jeder Ausgabe)
+
+1. Folie 2 dreht Folie 1 um: Sie nimmt die Haltung, den Zweck oder die Bedeutung des Satzes und kehrt sie um. Eine Feststellung, die nur bestätigt, was Folie 1 sagt, ist kein Twist.
+2. Folie 2 erzählt keine Szene nach und erklärt keine Pointe. Sie setzt nur den Gegenschlag.
+3. Die Caption verrät die Pointe nicht.
+4. Folie 1 hat 80 bis 140 Zeichen, Folie 2 hat 20 bis 80 Zeichen.
