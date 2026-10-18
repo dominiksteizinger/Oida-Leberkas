@@ -13,10 +13,10 @@ const SETUP = 2.8;
 const DAUER = 8;
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
 
-// Beide Stufen hochkant auf dunklem Grund mit leichtem Zoom; harter Schnitt von Setup auf Pointe
-const stufe = (n, d) => `[${n}:v]scale=1080:-2,zoompan=z='min(zoom+0.0003,1.04)':d=${Math.round(d * 30)}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1350:fps=30,pad=1080:1920:0:285:color=0x0D090C,setsar=1[v${n}]`;
-ff(["-i", path.join(ordner, "post-a.jpg"), "-i", path.join(ordner, "post.jpg"), "-f", "lavfi", "-t", String(DAUER), "-i", "anullsrc=r=44100:cl=stereo",
-  "-filter_complex", `${stufe(0, SETUP)};${stufe(1, DAUER - SETUP)};[v0][v1]concat=n=2:v=1:a=0[v]`,
+// Beide Stufen hochkant auf dunklem Grund, ohne Bewegung (Standbild); harter Schnitt von Setup auf Pointe
+const stufe = (n) => `[${n}:v]scale=1080:-2,fps=30,pad=1080:1920:0:285:color=0x0D090C,setsar=1[v${n}]`;
+ff(["-loop", "1", "-t", String(SETUP), "-i", path.join(ordner, "post-a.jpg"), "-loop", "1", "-t", String(DAUER - SETUP), "-i", path.join(ordner, "post.jpg"), "-f", "lavfi", "-t", String(DAUER), "-i", "anullsrc=r=44100:cl=stereo",
+  "-filter_complex", `${stufe(0)};${stufe(1)};[v0][v1]concat=n=2:v=1:a=0[v]`,
   "-map", "[v]", "-map", "2:a", "-c:v", "libx264", "-preset", "medium", "-crf", "26", "-pix_fmt", "yuv420p", "-r", "30",
   "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", path.join(ordner, "reel.mp4")]);
 
