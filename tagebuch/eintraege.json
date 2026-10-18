@@ -1,5 +1,16 @@
 [
   {
+    "datum": "2026-10-19",
+    "folie1": "Montag. Die Woche streckt ihre grauen Finger nach mir aus, und ich lasse sie gewähren. Alles verblasst, nur die Nacht bleibt.",
+    "folie2": "Die Nacht bleibt. Der Leberkäse bleibt länger, warm unter der Lampe.",
+    "bild_folie1": "friedhofsbank-herbst.jpg",
+    "bild_folie2": "beisst-semmel.jpg",
+    "bilder": [
+      "tagebuch/2026-10-19/folie-1.jpg",
+      "tagebuch/2026-10-19/folie-2.jpg"
+    ]
+  },
+  {
     "datum": "2026-10-18",
     "folie1": "Heute Abend schreibe ich wieder in mein Tagebuch. Die Kerze brennt, die Stadt schweigt, und niemand liest mit.",
     "folie2": "Doch, der Leberkäse liest mit. Er kennt jeden Satz auswendig.",

@@ -1,0 +1,23 @@
+{
+  "datum": "2026-10-19",
+  "folie1": "Montag. Die Woche streckt ihre grauen Finger nach mir aus, und ich lasse sie gewähren. Alles verblasst, nur die Nacht bleibt.",
+  "folie2": "Die Nacht bleibt. Der Leberkäse bleibt länger, warm unter der Lampe.",
+  "bild_folie1": "friedhofsbank-herbst.jpg",
+  "bild_folie2": "beisst-semmel.jpg",
+  "bild_neu": null,
+  "caption": "Der Montag kam wie immer, grau und ungefragt. Ich habe ihn trotzdem stilvoll empfangen, in Schwarz.",
+  "aufforderung": "Was hilft dir am Montag: Kaffee, Musik oder Dunkelheit? Schreib es unten.",
+  "hashtags": [
+    "#leberkas",
+    "#gothgirl",
+    "#melancholie",
+    "#wien",
+    "#montag"
+  ],
+  "musik": "letzte-semmel.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [],
+  "modell": "claude-haiku-5-5",
+  "pruefung": "Keiner der drei Ablehnungsgründe trifft zu. Es gibt keine Grenzverletzung, das Motiv Montag/Friedhofsbank/Leberkäse unter der Lampe wiederholt den Eintrag vom 18.10. (Tagebuch, Kerze) nicht, und die Caption verrät die Pointe nicht. Dass Folie 2 Folie 1 eher fortsetzt als kippt, ist höchstens zahm und reicht allein nicht für eine Ablehnung."
+}
