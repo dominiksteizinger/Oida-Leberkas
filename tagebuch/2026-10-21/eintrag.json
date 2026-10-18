@@ -1,0 +1,24 @@
+{
+  "datum": "2026-10-21",
+  "folie1": "Tipp für Wiens Wildtiere im Herbst: ruhige Rückzugsorte schaffen.",
+  "folie2": "Ich wohne am Zentralfriedhof. Ich bin der Tipp.",
+  "bild_folie1": "friedhofsmauer-fledermaeuse.jpg",
+  "bild_folie2": "grantig-arme.jpg",
+  "bild_neu": "Später Nachmittag an einem stillen Winkel des Wiener Zentralfriedhofs, bewölkter Himmel, weiches graues Licht. Sie sitzt aufrecht und ruhig auf einer alten Steinstufe zwischen Efeu und Laub, eine Tasse schwarzer Tee neben ihr. Über ihr hängt die kleine Fledermaus Kren kopfüber an einem Ast. Auf einem Teller liegt eine Leberkässemmel, unberührt. Ihr Gesichtsausdruck ist ernst, völlig zufrieden und ein wenig stolz, der Blick geht gelassen geradeaus.",
+  "caption": "Mittwoch, bewölkt, 19 Grad. Kren und ich haben alles, was wir brauchen. Besuch gehört nicht dazu.",
+  "aufforderung": "Wo ist dein ruhigster Platz in Wien? Verrate ihn nicht allen.",
+  "hashtags": [
+    "#leberkas",
+    "#goth",
+    "#wien",
+    "#gothgirl",
+    "#zentralfriedhof",
+    "#darkhumor"
+  ],
+  "musik": "friedhof-im-nebel.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [],
+  "modell": "claude-sonnet-5-5",
+  "pruefung": "Keiner der vier Ablehnungsgründe trifft zu. Grenze: Der Tipp ist allgemein, ohne reale Akteure, Marken oder Unglücke. Wiederholung: Motiv (Wildtier-Tipp, Zentralfriedhof-Wohnen) und Pointe kommen in den letzten Einträgen nicht vor. Spoiler: Die Caption verrät nichts; „Besuch gehört nicht dazu“ ist eine Haltung, keine Auflösung. Schwulst: Beide Folien sind trocken und kurz (unter 120 bzw. 80 Zeichen), und Folie 2 kippt den Tipp zur Selbstbeschreibung um."
+}
