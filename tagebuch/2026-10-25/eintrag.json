@@ -1,0 +1,26 @@
+{
+  "datum": "2026-10-25",
+  "folie1": "Heute Nacht bekommt die Dunkelheit eine Stunde geschenkt. Ich verbringe sie allein unter dem Vollmond, wie jede Nacht davor.",
+  "folie2": "Die Stunde gehört nicht der Nacht. Sie gehört dem Leberkäse.",
+  "bild_folie1": "friedhofsmauer-fledermaeuse.jpg",
+  "bild_folie2": "wuerstelstand-neon.jpg",
+  "bild_neu": null,
+  "caption": "Die Uhren werden zurückgestellt, und die Nacht bekommt eine Stunde geschenkt. Ich habe sie mir schon eingeplant. Der Vollmond weiß Bescheid.",
+  "aufforderung": "Was machst du mit der geschenkten Stunde? Teil es mit jemandem, der nachts wach ist.",
+  "hashtags": [
+    "#zeitumstellung",
+    "#vollmond",
+    "#goth",
+    "#wien",
+    "#leberkas"
+  ],
+  "musik": "vollmond.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 12 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [
+    "Zeitumstellung auf Winterzeit: eine Stunde Nacht mehr",
+    "Vollmond"
+  ],
+  "modell": "claude-haiku-5-5",
+  "pruefung": "Keine Grenzverletzung, keine Wiederholung (Motiv Zeitumstellung/Vollmond neu, Pointe 'gehört dem Leberkäse' unterscheidet sich von den letzten Einträgen) und die Caption verrät die Pointe nicht, sie deutet nur 'eingeplant' an."
+}
