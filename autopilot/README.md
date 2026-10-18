@@ -3,7 +3,7 @@
 Läuft jeden Tag um 16:00 UTC (17:00 Winterzeit) über `.github/workflows/autopilot.yml`, sobald alles auf main ist. Probeläufe per Hand: Actions → Autopilot → Run workflow.
 
 1. `idee.mjs`: Claude Haiku 5.5 schreibt das Karussell nach `regeln.md`, Claude Sonnet 5.5 prüft es. Bis zu fünf Versuche, sonst wird nichts erzeugt.
-2. `render.mjs`: rendert `tagebuch/<datum>/folie-1.jpg` und `folie-2.jpg` und trägt den Eintrag in `tagebuch/eintraege.json` ein (die Startseite zeigt die neuesten sechs).
+2. `render.mjs`: rendert `tagebuch/<datum>/folie-1.jpg` und `folie-2.jpg` und trägt den Eintrag in `tagebuch/eintraege.json` ein (die Startseite zeigt die neuesten sechs). Danach legt der Lauf ein Bewertungs-Issue an.
 3. `posten.mjs`: postet auf Instagram und, wenn `FACEBOOK_POSTEN=an`, auf der Facebook-Seite.
 4. `youtube.mjs`: lädt das Reel als YouTube Short hoch, wenn `YOUTUBE_POSTEN=an` (mit KI-Kennzeichnung).
 
@@ -16,7 +16,12 @@ Läuft jeden Tag um 16:00 UTC (17:00 Winterzeit) über `.github/workflows/autopi
 
 ## Ideen einwerfen
 
-Ein Issue mit dem Label `idee` anlegen, z. B. mit einem Instagram-Link und einem Satz dazu. Der Autopilot darf eine offene Idee aufgreifen und schließt das Issue, wenn er sie verwendet hat.
+Neues Issue → Vorlage „Idee für den Autopilot“: Link und ein Satz, was daran gut ist. Der Autopilot kann Links nicht öffnen, er arbeitet nur mit der Beschreibung. Er greift eine offene Idee auf und schließt das Issue, sobald sie live verwendet wurde. Es zählen nur Issues von Dominik.
+
+## Beispiele und Bewertung
+
+- `beispiele.md`: gute und misslungene Karussells mit Begründung. Schreiben und Prüfung messen sich daran.
+- Jeder Lauf legt ein Issue „Eintrag <datum>“ mit Label `bewertung` an. Label `gut` oder `schlecht` setzen und gern einen Satz als Kommentar. Beim nächsten Lauf liest der Autopilot die letzten 15 je Urteil samt Dominiks Kommentaren als zusätzliche Beispiele.
 
 ## Bilder
 
