@@ -34,6 +34,7 @@ dd{margin:0}
 .entry blockquote,.entry figcaption{margin:0}
 .entry{border-radius:22px;overflow:hidden;border:2px solid var(--line);display:flex;flex-direction:column;margin:0}
 .entry .sad{background:var(--sad);padding:28px;min-height:180px;display:flex;align-items:center;font-family:var(--poem);font-style:italic;font-size:28px;line-height:1.25;color:var(--sadfg)}
+.entry time{display:block;font-size:13px;font-weight:700;letter-spacing:.08em;opacity:.7;margin-bottom:6px}
 .entry .cute{background:var(--pink);color:var(--bg);padding:22px 28px;font-weight:800;font-size:22px;line-height:1.3}
 .intro{display:flex;flex-direction:column;gap:16px}
 .intro p{max-width:40ch}
@@ -126,7 +127,7 @@ dd{margin:0}
       <h2>Aus ihrem Tagebuch</h2>
       <a href="https://www.instagram.com/oidaleberkas/" target="_blank" rel="noopener" style="font-weight:800">Alle Einträge</a>
     </div>
-    <!-- Wird später automatisch aus den neuesten Beiträgen befüllt. -->
+    <!-- Der Autopilot schreibt neue Einträge nach tagebuch/eintraege.json; das Skript unten zeigt die neuesten sechs. -->
     <div class="diary" id="diary">
       <figure class="entry"><blockquote class="sad">Manchmal sitz i am Fenster und frag mi, ob irgendwer mi wirklich versteht.</blockquote><figcaption class="cute">Da Leberkas. Da Leberkas versteht mi.</figcaption></figure>
       <figure class="entry"><blockquote class="sad">Die Nacht is kalt und leer, so wie mei Herz.</blockquote><figcaption class="cute">Aber die Semmel is warm, also passt.</figcaption></figure>
@@ -200,6 +201,13 @@ dd{margin:0}
   <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="nutzungsbedingungen.html">Nutzungsbedingungen</a></nav>
 </div></footer>
 
+<script>
+fetch("tagebuch/eintraege.json").then(r=>r.ok?r.json():[]).then(liste=>{
+  if(!liste.length)return;
+  const box=document.getElementById("diary"),esc=t=>t.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"})[c]);
+  box.innerHTML=liste.slice(0,6).map(e=>`<figure class="entry"><blockquote class="sad">${esc(e.folie1)}</blockquote><figcaption class="cute"><time datetime="${e.datum}">${new Date(e.datum+"T12:00:00").toLocaleDateString("de-AT",{day:"numeric",month:"long"})}</time>${esc(e.folie2)}</figcaption></figure>`).join("");
+}).catch(()=>{});
+</script>
 <script>
 (function(){
   function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}

@@ -1,0 +1,105 @@
+name: Autopilot
+# Jeden Tag ein Karussell: Idee (Claude), Prüfung, Folien rendern, Tagebuch auf der Seite, Instagram/Facebook.
+# Solange die Repo-Variable POSTEN nicht "an" ist, läuft alles im Probebetrieb:
+# Die Ergebnisse landen nur auf dem Branch autopilot-probe, gepostet wird nichts.
+on:
+  schedule:
+    - cron: "0 16 * * *"
+  # Probeläufe nur per Hand (Actions > Autopilot > Run workflow), nicht bei jedem Push.
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: autopilot
+  cancel-in-progress: false
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    env:
+      LIVE: ${{ vars.POSTEN == 'an' && github.ref == 'refs/heads/main' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Probe-Branch holen
+        if: env.LIVE != 'true'
+        run: |
+          git config user.name "Oida Leberkas Autopilot"
+          git config user.email "autopilot@users.noreply.github.com"
+          if git fetch origin autopilot-probe:refs/remotes/origin/autopilot-probe 2>/dev/null; then
+            git checkout -B autopilot-probe origin/autopilot-probe
+            git merge --no-edit -X theirs "$GITHUB_SHA"
+          else
+            git checkout -b autopilot-probe
+          fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Abhängigkeiten
+        working-directory: autopilot
+        run: npm ci --no-audit --no-fund
+      - name: Ideen aus der Inbox
+        run: |
+          gh issue list --repo "$GITHUB_REPOSITORY" --label idee --state open --json number,title,body \
+            --jq '[.[] | {nummer: .number, text: (.title + ": " + .body)}]' > "$RUNNER_TEMP/ideen.json" || echo "[]" > "$RUNNER_TEMP/ideen.json"
+          echo "Offene Ideen: $(jq length "$RUNNER_TEMP/ideen.json")"
+      - name: Idee schreiben und prüfen
+        id: idee
+        working-directory: autopilot
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODELL_SCHREIBEN: ${{ vars.MODELL_SCHREIBEN }}
+          MODELL_PRUEFEN: ${{ vars.MODELL_PRUEFEN }}
+          IDEEN_DATEI: ${{ runner.temp }}/ideen.json
+        run: node idee.mjs
+      - name: Folien rendern
+        working-directory: autopilot
+        run: node render.mjs "${{ steps.idee.outputs.datum }}"
+      - name: Videos mit Musik
+        id: video
+        working-directory: autopilot
+        run: |
+          command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+          node video.mjs "${{ steps.idee.outputs.datum }}" "$RUNNER_TEMP/reel"
+      - name: Reel aufheben
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ steps.idee.outputs.datum }}
+          path: ${{ runner.temp }}/reel/reel.mp4
+          if-no-files-found: ignore
+      - name: Ins Tagebuch eintragen
+        run: |
+          git config user.name "Oida Leberkas Autopilot"
+          git config user.email "autopilot@users.noreply.github.com"
+          git add tagebuch
+          git commit -m "Tagebuch ${{ steps.idee.outputs.datum }}"
+          if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
+          {
+            echo "## Eintrag ${{ steps.idee.outputs.datum }} ($([ "$LIVE" = "true" ] && echo live || echo Probe))"
+            jq -r '"**Folie 1:** \(.folie1)\n\n**Folie 2:** \(.folie2)\n\n**Caption:** \(.caption)\n\n**Aufforderung:** \(.aufforderung)\n\n**Hashtags:** \(.hashtags | join(" "))\n\n**Musik:** \(.musik)\n\n**Prüfung:** \(.pruefung)"' "tagebuch/${{ steps.idee.outputs.datum }}/eintrag.json"
+            BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
+            echo ""
+            echo "![Folie 1](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/${{ steps.idee.outputs.datum }}/folie-1.jpg)"
+            echo "![Folie 2](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/${{ steps.idee.outputs.datum }}/folie-2.jpg)"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Posten
+        if: env.LIVE == 'true'
+        working-directory: autopilot
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          FACEBOOK_POSTEN: ${{ vars.FACEBOOK_POSTEN }}
+        run: node posten.mjs "${{ steps.idee.outputs.datum }}"
+      - name: YouTube Short
+        if: env.LIVE == 'true' && vars.YOUTUBE_POSTEN == 'an'
+        working-directory: autopilot
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_SICHTBARKEIT: ${{ vars.YOUTUBE_SICHTBARKEIT }}
+        run: node youtube.mjs "${{ steps.idee.outputs.datum }}" "$RUNNER_TEMP/reel/reel.mp4"
+      - name: Verwendete Idee abhaken
+        if: env.LIVE == 'true' && steps.idee.outputs.idee != ''
+        run: gh issue close "${{ steps.idee.outputs.idee }}" --repo "$GITHUB_REPOSITORY" --comment "Umgesetzt im Eintrag vom ${{ steps.idee.outputs.datum }}."
