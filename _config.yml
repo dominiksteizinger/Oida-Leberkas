@@ -1,0 +1,15 @@
+# Jekyll-Konfiguration für GitHub Pages.
+# index.html hat kein Front Matter und wird unverändert ausgeliefert.
+title: Oida Leberkas
+description: Das Leberkas-Universum. Memes, Lore und Wahnsinn rund um die Semmel.
+url: https://oidaleberkas.at
+lang: de
+timezone: Europe/Vienna
+markdown: kramdown
+permalink: /beitraege/:year/:month/:day/:title/
+exclude:
+  - AUTOMATIK.md
+  - README.md
+defaults:
+  - scope: { path: "", type: posts }
+    values: { layout: post }

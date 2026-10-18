@@ -1,0 +1,14 @@
+---
+layout: default
+title: Beiträge
+---
+<h1>Beiträge</h1>
+{% if site.posts.size > 0 %}
+<ul class="liste">
+{% for p in site.posts %}{% unless p.categories contains "logbuch" %}
+  <li><a href="{{ p.url }}">{{ p.title }}</a><p class="meta">{{ p.date | date: "%d.%m.%Y" }} · {{ p.categories | join: ", " }}</p></li>
+{% endunless %}{% endfor %}
+</ul>
+{% else %}
+<p class="leer">Noch nix da. Die Maschine wärmt sich auf.</p>
+{% endif %}
