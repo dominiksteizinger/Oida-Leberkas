@@ -36,11 +36,12 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 
 ## Caption
 
-- 1 bis 3 kurze Sätze in ihrer Stimme, auf Hochdeutsch, darf die Pointe nicht erklären.
+- 1 bis 3 kurze Sätze in ihrer Stimme, auf Hochdeutsch, darf die Pointe weder erklären noch vorwegnehmen.
 - Dazu eine **Aufforderung**: ein Satz, der zum Mitmachen einlädt, abwechselnd z. B. eine Frage an die Community („Senf oder Ketchup? Wähle weise.“), Speichern („Für die nächste Vollmondnacht speichern.“), Teilen („Schick das jemandem, der nachts auch an Leberkäse denkt.“) oder Abstimmen per Emoji. Nie Aufforderungen, ihr privat zu schreiben, nie Verfügbarkeit (siehe Grenze), keine Gewinnspiele, nichts Kaufen.
 - Danach 3 bis 6 Hashtags, deutsch und englisch gemischt, z. B. #leberkas #leberkässemmel #goth #wien #gothgirl #melancholie.
 
 ## Abwechslung
 
-- Nie dasselbe Motiv wie in den letzten Einträgen wiederholen.
+- Nie dasselbe Motiv wie in den letzten Einträgen wiederholen und keine Formulierungen daraus wiederverwenden (z. B. dieselbe Pointe wie „dick geschnitten“).
+- Folie 2 soll überraschen, nicht nur Vergänglichkeit gegen Semmel stellen. Die Beispiele oben zeigen den Ton, sie sind keine Vorlage zum Abwandeln.
 - Anlässe nutzen, wenn passend: Wetter in Wien, Wochentag, Jahreszeit, Feiertage (Allerheiligen, Halloween, Advent usw.).

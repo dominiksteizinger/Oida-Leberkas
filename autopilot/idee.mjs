@@ -10,7 +10,7 @@ const HIER = path.dirname(new URL(import.meta.url).pathname);
 const WURZEL = path.join(HIER, "..");
 const MODELL_SCHREIBEN = process.env.MODELL_SCHREIBEN || "claude-haiku-5-5";
 const MODELL_PRUEFEN = process.env.MODELL_PRUEFEN || "claude-sonnet-5-5";
-const VERSUCHE = 3;
+const VERSUCHE = 5;
 
 const lies = (p) => fs.readFileSync(path.join(HIER, p), "utf8");
 const regeln = lies("regeln.md");
@@ -119,7 +119,7 @@ for (let v = 1; v <= VERSUCHE; v++) {
     : await frage(MODELL_PRUEFEN, systemPruefen, `Letzte Einträge:\n${letzte}\n\nNeuer Eintrag:\n${JSON.stringify(eintrag, null, 2)}`, Pruefung, "medium");
   console.log(`Versuch ${v}: ${pruefung.ok ? "ok" : "abgelehnt"} (${pruefung.grund})`);
   if (pruefung.ok) break;
-  auftrag += `\n\nDein letzter Vorschlag wurde abgelehnt:\n${JSON.stringify(eintrag)}\nGrund: ${pruefung.grund}\nSchreib einen neuen.`;
+  auftrag += `\n\nDein letzter Vorschlag wurde abgelehnt:\n${JSON.stringify(eintrag)}\nGrund: ${pruefung.grund}\nSchreib einen ganz neuen Eintrag mit anderem Motiv und anderen Formulierungen, nicht nur eine Variante.`;
 }
 if (!pruefung.ok) {
   console.error("Kein Eintrag hat die Prüfung bestanden, heute wird nichts erzeugt.");
