@@ -42,9 +42,19 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Ideen aus der Inbox
         run: |
-          gh issue list --repo "$GITHUB_REPOSITORY" --label idee --state open --json number,title,body \
-            --jq '[.[] | {nummer: .number, text: (.title + ": " + .body)}]' > "$RUNNER_TEMP/ideen.json" || echo "[]" > "$RUNNER_TEMP/ideen.json"
+          # Nur Ideen von Dominik: über die Vorlage kann jeder ein Issue mit Label idee anlegen
+          gh issue list --repo "$GITHUB_REPOSITORY" --label idee --state open --json number,title,body,author \
+            --jq '[.[] | select(.author.login == "${{ github.repository_owner }}") | {nummer: .number, text: (.title + ": " + .body)}]' > "$RUNNER_TEMP/ideen.json" || echo "[]" > "$RUNNER_TEMP/ideen.json"
           echo "Offene Ideen: $(jq length "$RUNNER_TEMP/ideen.json")"
+      - name: Bewertungen holen
+        run: |
+          for u in gut schlecht; do
+            gh issue list --repo "$GITHUB_REPOSITORY" --label "$u" --state all --limit 15 --json body,comments \
+              --jq "[.[] | {urteil: \"$u\", text: (.body | split(\"\\n<!--\")[0]), kommentare: ([.comments[] | select(.author.login == \"${{ github.repository_owner }}\") | .body] | join(\" / \"))}]" \
+              > "$RUNNER_TEMP/bewertung-$u.json" || echo "[]" > "$RUNNER_TEMP/bewertung-$u.json"
+          done
+          jq -s 'add' "$RUNNER_TEMP"/bewertung-*.json > "$RUNNER_TEMP/bewertungen.json"
+          echo "Bewertete Einträge: $(jq length "$RUNNER_TEMP/bewertungen.json")"
       - name: Idee schreiben und prüfen
         id: idee
         working-directory: autopilot
@@ -53,6 +63,7 @@ jobs:
           MODELL_SCHREIBEN: ${{ vars.MODELL_SCHREIBEN }}
           MODELL_PRUEFEN: ${{ vars.MODELL_PRUEFEN }}
           IDEEN_DATEI: ${{ runner.temp }}/ideen.json
+          BEWERTUNGEN_DATEI: ${{ runner.temp }}/bewertungen.json
         run: node idee.mjs
       - name: Folien rendern
         working-directory: autopilot
@@ -84,6 +95,23 @@ jobs:
             echo "![Folie 1](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/${{ steps.idee.outputs.datum }}/folie-1.jpg)"
             echo "![Folie 2](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/${{ steps.idee.outputs.datum }}/folie-2.jpg)"
           } >> "$GITHUB_STEP_SUMMARY"
+      - name: Zur Bewertung stellen
+        run: |
+          D="${{ steps.idee.outputs.datum }}"
+          BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
+          gh label create bewertung --repo "$GITHUB_REPOSITORY" --color B9A3FF --description "Eintrag wartet auf Dominiks Urteil" 2>/dev/null || true
+          gh label create gut --repo "$GITHUB_REPOSITORY" --color 2EA043 --description "Guter Eintrag, dient als Beispiel" 2>/dev/null || true
+          gh label create schlecht --repo "$GITHUB_REPOSITORY" --color D73A49 --description "Misslungen, Begründung als Kommentar" 2>/dev/null || true
+          {
+            jq -r '"„\(.folie1)“ / „\(.folie2)“\nCaption: \(.caption)"' "tagebuch/$D/eintrag.json"
+            echo ""
+            echo "<!-- ab hier nur für Dominik -->"
+            echo "![Folie 1](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/$D/folie-1.jpg) ![Folie 2](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/$D/folie-2.jpg)"
+            echo ""
+            echo "Label **gut** oder **schlecht** setzen und gern einen Satz als Kommentar, warum. Der Autopilot lernt beim nächsten Lauf daraus."
+          } > "$RUNNER_TEMP/bewertung.md"
+          gh issue create --repo "$GITHUB_REPOSITORY" --title "Eintrag $D ($([ "$LIVE" = "true" ] && echo live || echo Probe))" \
+            --label bewertung --body-file "$RUNNER_TEMP/bewertung.md"
       - name: Posten
         if: env.LIVE == 'true'
         working-directory: autopilot

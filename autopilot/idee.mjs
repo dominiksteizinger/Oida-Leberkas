@@ -16,6 +16,7 @@ const lies = (p) => fs.readFileSync(path.join(HIER, p), "utf8");
 const regeln = lies("regeln.md");
 const humor = lies("wissen/humor.md");
 const goth = lies("wissen/dark-goth-humor.md");
+const beispiele = lies("beispiele.md");
 const bibliothek = JSON.parse(lies("bibliothek.json"));
 const musik = JSON.parse(lies("musik.json"));
 const eintraegeDatei = path.join(WURZEL, "tagebuch", "eintraege.json");
@@ -37,10 +38,20 @@ async function wetterWien() {
   }
 }
 
-function ideenAusInbox() {
-  const datei = process.env.IDEEN_DATEI;
+function ausDatei(variable) {
+  const datei = process.env[variable];
   if (!datei || !fs.existsSync(datei)) return [];
   return JSON.parse(fs.readFileSync(datei, "utf8"));
+}
+
+// Von Dominik bewertete Einträge (Issues mit Label gut/schlecht); seine Kommentare sind die Begründung
+function bewertungen() {
+  const liste = ausDatei("BEWERTUNGEN_DATEI");
+  const zeile = (b) => `- ${b.text.trim()}${b.kommentare ? `\n  Dominik: ${b.kommentare}` : ""}`;
+  const gut = liste.filter((b) => b.urteil === "gut").map(zeile);
+  const schlecht = liste.filter((b) => b.urteil === "schlecht").map(zeile);
+  if (!gut.length && !schlecht.length) return "";
+  return `\n\n# Von Dominik bewertete Einträge\n\n## Gut\n\n${gut.join("\n") || "(noch keine)"}\n\n## Schlecht\n\n${schlecht.join("\n") || "(noch keine)"}`;
 }
 
 const Eintrag = z.object({
@@ -89,11 +100,12 @@ function pruefeFormal(e) {
 }
 
 const wetter = await wetterWien();
-const ideen = ideenAusInbox();
+const ideen = ausDatei("IDEEN_DATEI");
+const bewertet = bewertungen();
 const letzte = bisher.slice(0, 30).map((e) => `- ${e.datum}: „${e.folie1}“ / „${e.folie2}“ (Bilder: ${e.bild_folie1}, ${e.bild_folie2})`).join("\n") || "(noch keine)";
 
-const systemSchreiben = `Du schreibst jeden Tag einen Instagram-Karussell-Post für die Kunstfigur von Oida Leberkas.\n\n${regeln}\n\n# Wissensbasis Dark-Goth-Humor (der Kern des Tons)\n\n${goth}\n\n# Wissensbasis österreichischer Humor (nur Hintergrund; Dialekt-Beispiele dort nicht übernehmen, wir schreiben Hochdeutsch)\n\n${humor}`;
-const systemPruefen = `Du bist die strenge Qualitätsprüfung für Posts von Oida Leberkas. Lehne ab, wenn auch nur eine Regel der Grenze verletzt ist, wenn der Bruch zwischen Folie 1 und 2 nicht funktioniert, wenn es nicht lustig ist oder wenn es ein Motiv der letzten Einträge wiederholt. Sonst gib ok.\n\n${regeln}`;
+const systemSchreiben = `Du schreibst jeden Tag einen Instagram-Karussell-Post für die Kunstfigur von Oida Leberkas.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}\n\n# Wissensbasis Dark-Goth-Humor (der Kern des Tons)\n\n${goth}\n\n# Wissensbasis österreichischer Humor (nur Hintergrund; Dialekt-Beispiele dort nicht übernehmen, wir schreiben Hochdeutsch)\n\n${humor}`;
+const systemPruefen = `Du bist die strenge Qualitätsprüfung für Posts von Oida Leberkas. Lehne ab, wenn auch nur eine Regel der Grenze verletzt ist, wenn der Bruch zwischen Folie 1 und 2 nicht funktioniert, wenn es nicht lustig ist oder wenn es ein Motiv der letzten Einträge wiederholt. Sonst gib ok. Miss den Witz an den guten Beispielen und lehne ab, was den schlechten ähnelt.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}`;
 
 let auftrag = `Heute ist ${wochentag}, der ${datum}. Wetter in Wien: ${wetter}.
 
