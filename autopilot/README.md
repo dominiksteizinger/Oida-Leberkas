@@ -9,7 +9,7 @@ Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die
 1. **Signale** (nur um 7): Wetter für Wien (Open-Meteo, mit Sonnenuntergang), Feiertage und Anlässe als Kommentar im Issue mit Label `signale`. Daraus entstehen die nächsten Posts.
 2. `holen.mjs`: nimmt den ältesten offenen Post aus der Warteschlange (Issues mit Label `warteschlange`) und prüft ihn. Fehlerhafte Posts bekommen einen Kommentar und das Label `fehler`. Ist nichts da, öffnet der Lauf ein Issue mit Label `leer` und weist es Dominik zu.
 3. `render.mjs`: rendert `tagebuch/<datum>-<slot>/post-a.jpg` (nur Setup) und `post.jpg` (ganzer Post) und trägt ihn in `tagebuch/eintraege.json` ein. Die Startseite zeigt die neuesten Einträge.
-4. `video.mjs`: macht daraus ein 8-Sekunden-Reel (Setup, harter Schnitt, Pointe) mit Musik aus `musik.json`. Ohne Musik gibt es nur das Bild.
+4. `video.mjs`: macht daraus ein 8-Sekunden-Reel (Setup, harter Schnitt, Pointe) ohne Ton.
 5. `posten.mjs`: Instagram als Reel (oder Bild) und, wenn `FACEBOOK_POSTEN=an`, Facebook-Seite.
 6. `youtube.mjs`: das Reel als YouTube Short, wenn `YOUTUBE_POSTEN=an`.
 7. Danach wird das Warteschlangen-Issue geschlossen und der Post kommt zur Bewertung in die Sammelliste.
@@ -38,7 +38,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
   - `szene`: `satz`, `klammern` (1–3)
 - `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`.
 - `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
-- `musik` (optional): Dateiname aus `musik.json`, sonst wird gewürfelt.
+- `musik` (optional): wird zurzeit nicht verwendet, die Reels laufen ohne Ton.
 - Nur Issues mit dem Label `warteschlange` zählen, und Labels setzen kann nur, wer Schreibrechte hat.
 
 ## Einstellungen (Settings → Secrets and variables → Actions → Variables)

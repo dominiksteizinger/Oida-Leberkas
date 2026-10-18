@@ -112,7 +112,7 @@ jobs:
         if: steps.holen.outputs.gefunden == 'true'
         working-directory: autopilot
         run: node render.mjs "${{ steps.zeit.outputs.id }}"
-      - name: Reel mit Musik
+      - name: Reel (ohne Ton)
         if: steps.holen.outputs.gefunden == 'true'
         working-directory: autopilot
         run: |
