@@ -30,7 +30,7 @@ Diese Datei ist die Grundlage für jede Ideenrunde und jede Prüfung. Bei Widers
 - Die Figur ist immer klar erwachsen und wird nie kindlich dargestellt.
 - Keine Witze über reale Gruppen, Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei ihr selbst, beim Leberkas oder beim Alltag.
 - Melancholie ja, aber keine Selbstverletzung, kein Suizid, keine echten Krisen. Traurigkeit bleibt poetisch und harmlos (Regen, Herbst, Nacht, Vergänglichkeit, Montag).
-- Keine echten Marken schlechtmachen, keine Politik, keine realen Personen.
+- Keine echten Marken schlechtmachen, keine realen Personen, Parteien oder Staaten. Gesellschaftskritik (Konsum, Arbeit, Zivilisation, Vergänglichkeit) ist erlaubt, aber ohne Parteinahme und ohne konkrete Akteure.
 - Keine erfundenen Fakten als Fakten.
 - Keine KI-Hinweise im Post (die Kennzeichnung steht im Impressum).
 
