@@ -1,0 +1,42 @@
+/* Gruft-Look: schwarz, Pink, Kerzenlicht. Schriften liegen lokal, keine fremden Server. */
+@font-face{font-family:"Grenze Gotisch";src:url(fonts/grenze-gotisch.woff2) format("woff2");font-weight:900;font-display:swap}
+@font-face{font-family:"Cormorant Garamond";src:url(fonts/cormorant-garamond-italic.woff2) format("woff2");font-style:italic;font-weight:500;font-display:swap}
+@font-face{font-family:"Nunito";src:url(fonts/nunito.woff2) format("woff2");font-weight:400 800;font-display:swap}
+:root{
+  --bg:#0D090C;--panel:#170F15;--line:#2B1A25;--line2:#4A2A3E;--fg:#F3E6EC;--muted:#B7A3AF;--faint:#8E7A86;
+  --pink:#FF4FA3;--gold:#C9A86A;--sad:#1B1C22;--sadfg:#D6D8E0;
+  --gothic:"Grenze Gotisch",serif;--poem:"Cormorant Garamond",Georgia,serif;--body:"Nunito",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:18px;line-height:1.6;overflow-x:hidden}
+a{color:#FFB3D9}a:hover{color:#fff}
+:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+img{max-width:100%}
+.wrap{max-width:1160px;margin:0 auto}
+.lace{height:18px;background-image:radial-gradient(circle at 50% 0,var(--pink) 0 6px,transparent 7px),radial-gradient(circle at 50% 0,var(--line) 0 11px,transparent 12px);background-size:24px 18px}
+header.top{padding:18px 16px}
+header.top nav{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between}
+.logo{font-family:var(--gothic);font-weight:900;font-size:34px;text-decoration:none;color:var(--pink)}
+.menu{display:flex;flex-wrap:wrap;gap:8px 22px;font-weight:700;font-size:16px;letter-spacing:.04em}
+.menu a{text-decoration:none}
+section{padding:88px 16px}
+section.alt{background:var(--panel);border-block:1px solid var(--line)}
+h1,h2{font-family:var(--gothic);font-weight:900;line-height:1;margin:0}
+h2{font-size:clamp(44px,7vw,60px)}
+p{margin:0}
+.btns{display:flex;flex-wrap:wrap;gap:14px}
+.btn{display:inline-block;background:var(--pink);color:var(--bg);text-decoration:none;padding:14px 28px;border-radius:999px;font:inherit;font-weight:800;border:0;cursor:pointer;min-height:48px}
+.btn:hover{color:var(--bg);filter:brightness(1.1)}
+.btn.ghost{background:transparent;color:var(--fg);border:2px solid #6B4A5E}
+.btn.ghost:hover{border-color:var(--pink)}
+footer{padding:28px 16px 44px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;align-items:center;font-size:14px;color:var(--faint)}
+footer nav{display:flex;gap:20px}
+footer a{color:var(--faint)}
+.legal{max-width:70ch}
+.legal h2{margin-bottom:24px}
+.legal h3{font-size:1.2rem;margin:28px 0 6px}
+.legal p,.legal li{margin:0 0 .8em}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
