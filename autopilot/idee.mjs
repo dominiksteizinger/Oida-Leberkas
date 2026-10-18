@@ -44,7 +44,7 @@ function ausDatei(variable) {
   return JSON.parse(fs.readFileSync(datei, "utf8"));
 }
 
-// Von Dominik bewertete Einträge (Issues mit Label gut/schlecht); seine Kommentare sind die Begründung
+// Von Dominik bewertete Einträge (gesammelt von bewertungen.mjs); seine Kommentare sind die Begründung
 function bewertungen() {
   const liste = ausDatei("BEWERTUNGEN_DATEI");
   const zeile = (b) => `- ${b.text.trim()}${b.kommentare ? `\n  Dominik: ${b.kommentare}` : ""}`;
