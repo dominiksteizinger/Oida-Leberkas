@@ -1,0 +1,26 @@
+{
+  "datum": "2026-10-24",
+  "folie1": "Kollegin: Bei dem Wetter kannst du heute ja mal rausgehen.",
+  "folie2": "Ich war um sechs schon draußen. Es war noch dunkel genug.",
+  "bild_folie1": "herbstlaub-strasse.jpg",
+  "bild_folie2": "nebel-friedhof.jpg",
+  "bild_neu": "Früher Morgen vor Sonnenaufgang in einer leeren Wiener Gasse unter Laternen, es ist noch dunkel und der Atem steht in der Luft. Kren fliegt neben ihr. Sie hält eine warme Leberkässemmel im Papier und blickt ruhig und zufrieden geradeaus.",
+  "caption": "Samstag, bewölkt, 19 Grad. Ich habe nichts dagegen.",
+  "aufforderung": "Wann gehst du raus: früh, spät oder gar nicht?",
+  "hashtags": [
+    "#goth",
+    "#wien",
+    "#gothgirl",
+    "#leberkas",
+    "#dunkelhumor",
+    "#samstag"
+  ],
+  "musik": "friedhof-im-nebel.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [
+    "Zeitumstellung auf Winterzeit: eine Stunde Nacht mehr (in 1 Tag)"
+  ],
+  "modell": "claude-sonnet-5-5",
+  "pruefung": "Keiner der vier Ablehnungsgründe trifft zu. Keine Grenzverletzung: Dialog mit namenloser, harmloser Kollegin, kein Körperfokus, keine Politik oder Marken. Keine Wiederholung: Das Motiv \"früh raus, solange es dunkel ist\" kommt in den letzten Einträgen nicht vor. Kein Spoiler: Die Caption (Wetterangabe, \"Ich habe nichts dagegen\") verrät die Pointe nicht. Kein Schwulst: Beide Folien sind trocken und kurz, und Folie 2 dreht die Erwartung um, denn \"rausgehen\" wird zur Dunkelheit statt zum Wetter."
+}

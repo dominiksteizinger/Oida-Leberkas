@@ -1,5 +1,16 @@
 [
   {
+    "datum": "2026-10-24",
+    "folie1": "Kollegin: Bei dem Wetter kannst du heute ja mal rausgehen.",
+    "folie2": "Ich war um sechs schon draußen. Es war noch dunkel genug.",
+    "bild_folie1": "herbstlaub-strasse.jpg",
+    "bild_folie2": "nebel-friedhof.jpg",
+    "bilder": [
+      "tagebuch/2026-10-24/folie-1.jpg",
+      "tagebuch/2026-10-24/folie-2.jpg"
+    ]
+  },
+  {
     "datum": "2026-10-23",
     "folie1": "Heute Pizzaleberkas gekauft. Hinter einer Säule gegessen, damit mich keiner sieht.",
     "folie2": "Ein Ruf will gepflegt sein. Besonders ein schlechter.",
