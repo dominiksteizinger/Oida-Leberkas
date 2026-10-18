@@ -104,6 +104,7 @@ function pruefeFormal(e) {
 const wetter = await wetterWien();
 const anlaesse = feste(datum);
 const news = await schlagzeilen();
+console.log(`Anlässe: ${anlaesse.join("; ") || "keine"}\nSchlagzeilen (${news.length}):\n${news.map((n) => `- ${n}`).join("\n")}`);
 const ideen = ausDatei("IDEEN_DATEI");
 const bewertet = bewertungen();
 const letzte = bisher.slice(0, 30).map((e) => `- ${e.datum}: „${e.folie1}“ / „${e.folie2}“ (Bilder: ${e.bild_folie1}, ${e.bild_folie2})`).join("\n") || "(noch keine)";
