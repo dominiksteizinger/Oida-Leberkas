@@ -1,0 +1,47 @@
+# Prüft nur lesend, ob der Instagram-Zugang funktioniert. Postet nichts.
+# Der Token kommt aus dem Secret INSTAGRAM_ACCESS_TOKEN und erscheint nie im Log.
+name: Instagram-Verbindungstest
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/instagram-verbindungstest]
+    paths: [.github/workflows/instagram-verbindungstest.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      IG_USER_ID: "17841454284048783"
+      TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+    steps:
+      - name: Secret vorhanden?
+        run: |
+          if [ -z "$TOKEN" ]; then echo "::error::Secret INSTAGRAM_ACCESS_TOKEN fehlt"; exit 1; fi
+          echo "Secret ist gesetzt."
+
+      - name: Token gehört zur Seite?
+        run: |
+          curl -sS -G "https://graph.facebook.com/me" \
+            --data-urlencode "fields=id,name" \
+            --data-urlencode "access_token=$TOKEN" > me.json
+          jq '{id, name, error: .error.message}' me.json
+          jq -e '.id' me.json > /dev/null
+
+      - name: Instagram-Konto lesbar?
+        run: |
+          curl -sS -G "https://graph.facebook.com/$IG_USER_ID" \
+            --data-urlencode "fields=username,followers_count,media_count" \
+            --data-urlencode "access_token=$TOKEN" > ig.json
+          jq '{username, followers_count, media_count, error: .error.message}' ig.json
+          jq -e '.username == "oidaleberkas"' ig.json > /dev/null
+
+      - name: Posting-Kontingent
+        run: |
+          curl -sS -G "https://graph.facebook.com/$IG_USER_ID/content_publishing_limit" \
+            --data-urlencode "fields=config,quota_usage" \
+            --data-urlencode "access_token=$TOKEN" > limit.json
+          jq '{data, error: .error.message}' limit.json

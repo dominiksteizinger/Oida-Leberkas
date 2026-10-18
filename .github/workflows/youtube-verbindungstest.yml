@@ -1,0 +1,45 @@
+name: YouTube-Verbindungstest
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/instagram-verbindungstest]
+    paths: [.github/workflows/youtube-verbindungstest.yml]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+    steps:
+      - name: Secrets vorhanden?
+        run: |
+          for v in CLIENT_ID CLIENT_SECRET REFRESH_TOKEN; do
+            if [ -z "${!v}" ]; then echo "::error::$v ist leer"; exit 1; fi
+          done
+          echo "Alle drei Secrets sind gesetzt."
+      - name: Zugang holen
+        run: |
+          curl -sS https://oauth2.googleapis.com/token \
+            --data-urlencode "client_id=$CLIENT_ID" \
+            --data-urlencode "client_secret=$CLIENT_SECRET" \
+            --data-urlencode "refresh_token=$REFRESH_TOKEN" \
+            --data-urlencode "grant_type=refresh_token" > token.json
+          ACCESS=$(jq -r '.access_token // empty' token.json)
+          if [ -z "$ACCESS" ]; then
+            jq '{error, error_description}' token.json; exit 1
+          fi
+          echo "::add-mask::$ACCESS"
+          echo "ACCESS=$ACCESS" >> "$GITHUB_ENV"
+          jq '{scope, expires_in}' token.json
+          rm token.json
+      - name: Kanal lesbar?
+        run: |
+          curl -sS -G https://www.googleapis.com/youtube/v3/channels \
+            -H "Authorization: Bearer $ACCESS" \
+            --data-urlencode "part=snippet,statistics" \
+            --data-urlencode "mine=true" > ch.json
+          jq '{error: .error.message, kanaele: [.items[]? | {titel: .snippet.title, handle: .snippet.customUrl, abos: .statistics.subscriberCount, videos: .statistics.videoCount}]}' ch.json
+          jq -e '.items | length > 0' ch.json > /dev/null
