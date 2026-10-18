@@ -65,6 +65,15 @@ jobs:
           IDEEN_DATEI: ${{ runner.temp }}/ideen.json
           BEWERTUNGEN_DATEI: ${{ runner.temp }}/bewertungen.json
         run: node idee.mjs
+      - name: Neues Bild (Gemini)
+        if: vars.BILDER_GENERIEREN == 'an'
+        working-directory: autopilot
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODELL_BILD: ${{ vars.MODELL_BILD }}
+          MODELL_PRUEFEN: ${{ vars.MODELL_PRUEFEN }}
+        run: node bild.mjs "${{ steps.idee.outputs.datum }}"
       - name: Folien rendern
         working-directory: autopilot
         run: node render.mjs "${{ steps.idee.outputs.datum }}"
@@ -84,7 +93,7 @@ jobs:
         run: |
           git config user.name "Oida Leberkas Autopilot"
           git config user.email "autopilot@users.noreply.github.com"
-          git add tagebuch
+          git add tagebuch autopilot/bilder autopilot/bibliothek.json
           git commit -m "Tagebuch ${{ steps.idee.outputs.datum }}"
           if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
           {
@@ -104,6 +113,7 @@ jobs:
           gh label create schlecht --repo "$GITHUB_REPOSITORY" --color D73A49 --description "Misslungen, Begründung als Kommentar" 2>/dev/null || true
           {
             jq -r '"„\(.folie1)“ / „\(.folie2)“\nCaption: \(.caption)"' "tagebuch/$D/eintrag.json"
+            jq -r 'if .bild_ersatz then "Neues Bild: \(.bild_folie2) (\(.bild_neu))" else empty end' "tagebuch/$D/eintrag.json"
             echo ""
             echo "<!-- ab hier nur für Dominik -->"
             echo "![Folie 1](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/$D/folie-1.jpg) ![Folie 2](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/$D/folie-2.jpg)"
