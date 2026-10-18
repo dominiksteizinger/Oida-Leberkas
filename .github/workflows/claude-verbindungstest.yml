@@ -1,0 +1,27 @@
+name: Claude-Verbindungstest
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/instagram-verbindungstest]
+    paths: [.github/workflows/claude-verbindungstest.yml]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - name: Secret vorhanden?
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then echo "::error::ANTHROPIC_API_KEY ist leer (liegt das Secret unter Actions?)"; exit 1; fi
+          echo "Secret ist gesetzt."
+      - name: Key pruefen (Modellliste, kostet nichts)
+        run: |
+          CODE=$(curl -sS -o models.json -w '%{http_code}' https://api.anthropic.com/v1/models \
+            -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01")
+          if [ "$CODE" != "200" ]; then
+            echo "::error::API antwortet mit HTTP $CODE: $(jq -r '.error.message // "unbekannt"' models.json)"; exit 1
+          fi
+          echo "Key funktioniert. Verfuegbare Modelle:"
+          jq -r '.data[].id' models.json
