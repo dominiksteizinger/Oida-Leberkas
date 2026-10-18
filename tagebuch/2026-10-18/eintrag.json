@@ -1,21 +1,22 @@
 {
   "datum": "2026-10-18",
-  "folie1": "Auf den Gräbern liegt das Laub, und keiner dieser Namen wird mehr gerufen.",
-  "folie2": "Nummer 47 wird aufgerufen: Leberkässemmel, dick geschnitten. Ich komme schon.",
-  "bild_folie1": "friedhofsmauer-fledermaeuse.jpg",
-  "bild_folie2": "grantig-arme.jpg",
-  "caption": "Die Toten haben alle Zeit der Welt. Ich habe einen Hunger.",
-  "aufforderung": "Welche Nummer hast du heute gezogen? Schreib sie unten rein.",
+  "folie1": "Der Sonntag legt sich schwer über die Stadt. Die Wolken hängen tief, und kein Stern findet den Weg zu mir. Ich warte.",
+  "folie2": "Die Wolken sind mir egal. Ich habe einen Stern: den Leberkäse.",
+  "bild_folie1": "dach-abenddaemmerung.jpg",
+  "bild_folie2": "beisst-semmel.jpg",
+  "bild_neu": null,
+  "caption": "Der Sonntag ist lang, und die Stadt schläft früh. Ich halte Wache, wie es sich gehört.",
+  "aufforderung": "Dunkel oder noch dunkler: Wie sieht dein Sonntagabend aus?",
   "hashtags": [
     "#leberkas",
     "#leberkässemmel",
     "#goth",
     "#wien",
-    "#friedhof"
+    "#sonntagabend"
   ],
-  "musik": "friedhof-im-nebel.mp3",
+  "musik": "letzte-semmel.mp3",
   "idee_nummer": null,
   "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
   "modell": "claude-haiku-5-5",
-  "pruefung": "Folie 1 hat 77 Zeichen und enthält keinen Witz und keinen Leberkäse. Folie 2 hat 77 Zeichen. Der Bruch funktioniert: Das Rufen der vergessenen Namen kippt in das Aufrufen der Wartenummer an der Theke, und die Pathos-Behandlung der Semmel passt zur Figur. Die Grenze wird nicht verletzt: Es gibt keine Sexualisierung, kein Flirten, keine Selbstverletzung und keine Marken oder Politik. Die Melancholie bleibt poetisch (Laub, Gräber). Die Caption ist hochdeutsch, erklärt die Pointe nicht und hat eine Aufforderung zum Mitmachen in der Community, kein privates Schreiben. Es sind 5 Hashtags, deutsch und englisch gemischt. Das Motiv (Friedhof und Namen, Wartenummer) wiederholt nicht das Tagebuch-Motiv vom 18.10. Die Pointe ist trocken und komisch. Das Herbstlaub passt zur Jahreszeit."
+  "pruefung": "Keine Grenzverletzung, keine Wiederholung (Motiv Sonntag, Wolken und Stern unterscheidet sich vom Laub-Eintrag, und die Pointe ist neu), Folie 1 hat 121 Zeichen und erwähnt keinen Leberkäse, die Caption verrät die Pointe nicht."
 }
