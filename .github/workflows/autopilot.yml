@@ -5,10 +5,8 @@ name: Autopilot
 on:
   schedule:
     - cron: "0 16 * * *"
+  # Probeläufe nur per Hand (Actions > Autopilot > Run workflow), nicht bei jedem Push.
   workflow_dispatch:
-  push:
-    branches: [claude/autopilot]
-    paths: [autopilot/**, .github/workflows/autopilot.yml]
 permissions:
   contents: write
   issues: write
