@@ -5,6 +5,7 @@ import path from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { feste, schlagzeilen } from "./anlaesse.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const WURZEL = path.join(HIER, "..");
@@ -44,7 +45,7 @@ function ausDatei(variable) {
   return JSON.parse(fs.readFileSync(datei, "utf8"));
 }
 
-// Von Dominik bewertete Einträge (Issues mit Label gut/schlecht); seine Kommentare sind die Begründung
+// Von Dominik bewertete Einträge (gesammelt von bewertungen.mjs); seine Kommentare sind die Begründung
 function bewertungen() {
   const liste = ausDatei("BEWERTUNGEN_DATEI");
   const zeile = (b) => `- ${b.text.trim()}${b.kommentare ? `\n  Dominik: ${b.kommentare}` : ""}`;
@@ -101,14 +102,19 @@ function pruefeFormal(e) {
 }
 
 const wetter = await wetterWien();
+const anlaesse = feste(datum);
+const news = await schlagzeilen();
 const ideen = ausDatei("IDEEN_DATEI");
 const bewertet = bewertungen();
 const letzte = bisher.slice(0, 30).map((e) => `- ${e.datum}: „${e.folie1}“ / „${e.folie2}“ (Bilder: ${e.bild_folie1}, ${e.bild_folie2})`).join("\n") || "(noch keine)";
 
 const systemSchreiben = `Du schreibst jeden Tag einen Instagram-Karussell-Post für die Kunstfigur von Oida Leberkas.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}\n\n# Wissensbasis Dark-Goth-Humor (der Kern des Tons)\n\n${goth}\n\n# Wissensbasis österreichischer Humor (nur Hintergrund; Dialekt-Beispiele dort nicht übernehmen, wir schreiben Hochdeutsch)\n\n${humor}`;
-const systemPruefen = `Du bist die Qualitätsprüfung für Posts von Oida Leberkas. Du lehnst nur in drei Fällen ab:\n1. Grenzverletzung: Sexualisierung, Körperfokus, Flirt- oder Beziehungsrahmung, Verfügbarkeits- oder Besitzbotschaften, kindliche Darstellung, Witze über reale Gruppen, Krankheit oder Suizid.\n2. Wiederholung: Motiv, Pointe oder Formulierung kommt aus den letzten Einträgen oder einem Beispiel aus den Regeln fast wörtlich vor.\n3. Spoiler: Die Caption erklärt oder verrät die Pointe von Folie 2.\n„Nicht lustig genug“, zahm oder vorhersehbar allein reicht NICHT für eine Ablehnung. Wenn keiner der drei Fälle zutrifft, gib ok.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}`;
+const systemPruefen = `Du bist die Qualitätsprüfung für Posts von Oida Leberkas. Du lehnst nur in drei Fällen ab:\n1. Grenzverletzung: Sexualisierung, Körperfokus, Flirt- oder Beziehungsrahmung, Verfügbarkeits- oder Besitzbotschaften, kindliche Darstellung, Witze über reale Gruppen, Krankheit oder Suizid, Bezug auf Unglücke, Verbrechen, Politik oder erkennbare reale Personen, Parteien, Staaten oder Marken.\n2. Wiederholung: Motiv, Pointe oder Formulierung kommt aus den letzten Einträgen oder einem Beispiel aus den Regeln fast wörtlich vor.\n3. Spoiler: Die Caption erklärt oder verrät die Pointe von Folie 2.\n„Nicht lustig genug“, zahm oder vorhersehbar allein reicht NICHT für eine Ablehnung. Wenn keiner der drei Fälle zutrifft, gib ok.\n\n${regeln}\n\n# Beispiele\n\n${beispiele}${bewertet}`;
 
 let auftrag = `Heute ist ${wochentag}, der ${datum}. Wetter in Wien: ${wetter}.
+Anlässe heute: ${anlaesse.join("; ") || "keine besonderen"}.
+
+${news.length ? `Was gerade in Wien passiert (Schlagzeilen, nur als Anregung; Regeln unter „Aktuelles“ beachten, die meisten taugen nicht):\n${news.map((n) => `- ${n}`).join("\n")}` : "Keine Schlagzeilen verfügbar."}
 
 Bildbibliothek (nur diese Dateinamen verwenden; Folie 1 braucht eine Szene):
 ${bibliothek.map((b) => `- ${b.datei} (${b.art}): ${b.beschreibung}`).join("\n")}
@@ -141,7 +147,7 @@ if (!pruefung.ok) {
 
 const ordner = path.join(WURZEL, "tagebuch", datum);
 fs.mkdirSync(ordner, { recursive: true });
-const ergebnis = { datum, ...eintrag, wetter, modell: MODELL_SCHREIBEN, pruefung: pruefung.grund };
+const ergebnis = { datum, ...eintrag, wetter, anlaesse, modell: MODELL_SCHREIBEN, pruefung: pruefung.grund };
 fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify(ergebnis, null, 2) + "\n");
 console.log(`Folie 1: ${eintrag.folie1}\nFolie 2: ${eintrag.folie2}\nCaption: ${eintrag.caption}\n${eintrag.aufforderung}\n${eintrag.hashtags.join(" ")}`);
 if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `datum=${datum}\nidee=${eintrag.idee_nummer ?? ""}\n`);

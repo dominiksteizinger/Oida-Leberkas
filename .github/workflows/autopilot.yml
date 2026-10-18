@@ -52,14 +52,9 @@ jobs:
             --jq '[.[] | select(.author.login == "${{ github.repository_owner }}") | {nummer: .number, text: (.title + ": " + .body)}]' > "$RUNNER_TEMP/ideen.json" || echo "[]" > "$RUNNER_TEMP/ideen.json"
           echo "Offene Ideen: $(jq length "$RUNNER_TEMP/ideen.json")"
       - name: Bewertungen holen
-        run: |
-          for u in gut schlecht; do
-            gh issue list --repo "$GITHUB_REPOSITORY" --label "$u" --state all --limit 15 --json body,comments \
-              --jq "[.[] | {urteil: \"$u\", text: (.body | split(\"\\n<!--\")[0]), kommentare: ([.comments[] | select(.author.login == \"${{ github.repository_owner }}\") | .body] | join(\" / \"))}]" \
-              > "$RUNNER_TEMP/bewertung-$u.json" || echo "[]" > "$RUNNER_TEMP/bewertung-$u.json"
-          done
-          jq -s 'add' "$RUNNER_TEMP"/bewertung-*.json > "$RUNNER_TEMP/bewertungen.json"
-          echo "Bewertete Einträge: $(jq length "$RUNNER_TEMP/bewertungen.json")"
+        working-directory: autopilot
+        # Label gut/schlecht an Issues, Daumen hoch/runter oder „gut …“/„schlecht …“ in der Sammelliste
+        run: node bewertungen.mjs "$RUNNER_TEMP/bewertungen.json" || echo "[]" > "$RUNNER_TEMP/bewertungen.json"
       - name: Idee schreiben und prüfen
         id: idee
         working-directory: autopilot
@@ -118,7 +113,7 @@ jobs:
           SAMMEL=$(gh issue list --repo "$GITHUB_REPOSITORY" --label sammelliste --state open --json number --jq '.[0].number // empty')
           if [ -z "$SAMMEL" ]; then
             SAMMEL=$(gh issue create --repo "$GITHUB_REPOSITORY" --title "Probeläufe: Sammelliste" --label sammelliste \
-              --body "Jeder Probelauf hängt hier als Kommentar an. Bitte pro Eintrag ein Urteil als Antwort: gut oder schlecht, gern mit einem Satz warum." | grep -o '[0-9]*$')
+              --body "Jeder Probelauf hängt hier als Kommentar an. Urteil: Daumen hoch oder runter direkt am Eintrag. Begründung als eigener Kommentar, der mit gut oder schlecht beginnt (gilt für den Eintrag direkt darüber, oder Datum davor: 2026-10-19 gut, weil ...)." | grep -o '[0-9]*$')
           fi
           {
             echo "## Eintrag $D ($([ "$LIVE" = "true" ] && echo live || echo Probe))"
