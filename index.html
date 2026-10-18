@@ -17,18 +17,19 @@
 .hero-lead{font-size:22px;max-width:34ch}
 .altar{display:flex;justify-content:center;align-items:flex-end;gap:12px}
 .altar svg{flex:none}
-.arch{width:340px;max-width:100%;aspect-ratio:240/557;background:#fff;border:4px solid var(--pink);border-radius:170px 170px 18px 18px;overflow:hidden;box-shadow:0 0 60px rgba(255,79,163,.35)}
-.arch img{width:100%;height:100%;object-fit:cover;display:block}
+.arch{width:340px;max-width:100%;aspect-ratio:614/1024;background:#fff;border:4px solid var(--pink);border-radius:170px 170px 18px 18px;overflow:hidden;box-shadow:0 0 60px rgba(255,79,163,.35)}
+.arch img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
 .flame{transform-origin:50% 100%;animation:flicker 2.6s ease-in-out infinite}
 @keyframes flicker{0%,100%{transform:scale(1)}40%{transform:scale(.92,1.06)}70%{transform:scale(1.04,.96)}}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:48px;align-items:start}
-.faces{display:flex;gap:12px;margin:18px 0}
+.faces{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}
 .faces img{width:96px;height:96px;object-fit:cover;border-radius:50%;border:3px solid var(--pink);background:#fff}
+@media (max-width:460px){.faces img{width:72px;height:72px}}
 .motto{font-family:var(--poem);font-style:italic;font-size:26px;color:#E6CFDB}
 dl{margin:0}
 dl div{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:4px 20px;padding:14px 0;border-bottom:1px dashed var(--line2)}
 dt{font-weight:800;color:var(--pink)}
-dd{margin:0}
+dd{margin:0;hyphens:auto;overflow-wrap:anywhere}
 .head-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:36px}
 .diary{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px}
 .entry blockquote,.entry figcaption{margin:0}
@@ -90,7 +91,7 @@ dd{margin:0}
     </div>
     <div class="altar">
       <svg aria-hidden="true" viewBox="0 0 40 160" width="40" height="160"><path class="flame" d="M20 4Q12 18 20 30Q28 18 20 4Z" fill="#FFD27A"/><rect x="10" y="34" width="20" height="120" rx="4" fill="#E9DDE3"/><path d="M10 52q6 10 0 22" fill="none" stroke="#C9B9C2" stroke-width="4"/></svg>
-      <div class="arch"><img src="assets/figur/figur-vorne.webp" width="240" height="557" alt="Die Figur von Oida Leberkas: eine junge Frau im Anime-Stil mit langen schwarzen Haaren, pinker Strähne, Spitzenbluse und Plateaustiefeln"></div>
+      <div class="arch"><img src="assets/figur/figur-vorne.webp" width="614" height="1024" alt="Die Figur von Oida Leberkas: eine junge Frau im Anime-Stil mit langen schwarzen Haaren, pinker Strähne und Spitzenbluse, hält verliebt eine Leberkässemmel"></div>
       <svg aria-hidden="true" viewBox="0 0 40 120" width="40" height="120"><path class="flame" d="M20 4Q12 18 20 30Q28 18 20 4Z" fill="#FFD27A"/><rect x="10" y="34" width="20" height="82" rx="4" fill="#E9DDE3"/></svg>
     </div>
   </div>
@@ -101,9 +102,10 @@ dd{margin:0}
     <div>
       <h2>Steckbrief</h2>
       <div class="faces">
-        <img src="assets/figur/gesicht-frech.webp" width="240" height="247" alt="Ihr Gesicht, frech" loading="lazy">
-        <img src="assets/figur/gesicht-verliebt.webp" width="234" height="247" alt="Ihr Gesicht, verliebt in Leberkas" loading="lazy">
-        <img src="assets/figur/gesicht-grantig.webp" width="240" height="250" alt="Ihr Gesicht, grantig" loading="lazy">
+        <img src="assets/figur/gesicht-frech.webp" width="300" height="300" alt="Ihr Gesicht, frech" loading="lazy">
+        <img src="assets/figur/gesicht-verliebt.webp" width="300" height="300" alt="Ihr Gesicht, verliebt in Leberkas" loading="lazy">
+        <img src="assets/figur/gesicht-grantig.webp" width="300" height="300" alt="Ihr Gesicht, grantig" loading="lazy">
+        <img src="assets/figur/gesicht-geschockt.webp" width="300" height="300" alt="Ihr Gesicht, geschockt" loading="lazy">
       </div>
       <p class="motto">„Alles is vergänglich. Außer mei Hunger.“</p>
     </div>
