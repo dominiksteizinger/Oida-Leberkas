@@ -91,7 +91,7 @@ dd{margin:0}
     <div class="hero-text">
       <p class="kicker">Bürojob. Goth. Leberkässemmel.</p>
       <h1>Resi <span>Requiem</span></h1>
-      <p class="hero-lead">Sie geht ins Büro wie zu einem Begräbnis und zu Begräbnissen wie in die Freizeit. Zweimal am Tag ein Eintrag aus ihrem Leben: um 7, wenn alle aufstehen, und um 16, wenn die Arbeit vorbei ist.</p>
+      <p class="hero-lead">Sie geht ins Büro wie zu einem Begräbnis und zu Begräbnissen wie in die Freizeit. Hier steht, was sie aus ihrem Leben erzählt.</p>
       <div class="btns">
         <a class="btn" href="#tagebuch">Zum Tagebuch</a>
         <a class="btn ghost" href="#tarot">Karte ziehen</a>
@@ -99,7 +99,7 @@ dd{margin:0}
     </div>
     <div class="altar">
       <svg aria-hidden="true" viewBox="0 0 40 160" width="40" height="160"><path class="flame" d="M20 4Q12 18 20 30Q28 18 20 4Z" fill="#FFD27A"/><rect x="10" y="34" width="20" height="120" rx="4" fill="#E9DDE3"/><path d="M10 52q6 10 0 22" fill="none" stroke="#C9B9C2" stroke-width="4"/></svg>
-      <div class="arch"><img src="assets/figur/figur-vorne.webp" width="240" height="557" alt="Resi Requiem: eine junge Frau im Anime-Stil mit langen schwarzen Haaren, pinker Strähne, Spitzenbluse und Plateaustiefeln"></div>
+      <div class="arch"><img src="assets/figur/profilbild-pink.webp" width="480" height="480" alt="Resi Requiem mit Leberkässemmel, pinker Hintergrund"></div>
       <svg aria-hidden="true" viewBox="0 0 40 120" width="40" height="120"><path class="flame" d="M20 4Q12 18 20 30Q28 18 20 4Z" fill="#FFD27A"/><rect x="10" y="34" width="20" height="82" rx="4" fill="#E9DDE3"/></svg>
     </div>
   </div>
@@ -206,11 +206,9 @@ dd{margin:0}
 <section id="folgen">
   <div class="wrap" style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">
     <h2>Folgen</h2>
-    <p style="max-width:60ch">Jeden Tag um 7 und um 16 Uhr ein neuer Eintrag. <span id="naechster"></span></p>
     <div class="btns">
       <a class="btn" href="https://www.instagram.com/resi.requiem/" target="_blank" rel="noopener">Instagram</a>
-      <a class="btn ghost" href="https://www.tiktok.com/@resi.requiem" target="_blank" rel="noopener">TikTok</a>
-      <a class="btn ghost" href="https://www.youtube.com/@resi.requiem" target="_blank" rel="noopener">YouTube</a>
+      <a class="btn ghost" href="https://www.youtube.com/@oidaleberkas" target="_blank" rel="noopener">YouTube</a>
     </div>
   </div>
 </section>
@@ -225,7 +223,7 @@ dd{margin:0}
 fetch("tagebuch/eintraege.json").then(r=>r.ok?r.json():[]).then(liste=>{
   if(!liste.length)return;
   const box=document.getElementById("diary"),esc=t=>String(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
-  const tag=e=>new Date(e.datum+"T12:00:00").toLocaleDateString("de-AT",{day:"numeric",month:"long"})+(e.slot?`, ${e.slot}:00`:"");
+  const tag=e=>new Date(e.datum+"T12:00:00").toLocaleDateString("de-AT",{day:"numeric",month:"long"}); 
   box.innerHTML=liste.slice(0,6).map(e=>e.format&&e.bilder&&e.bilder.length
     ?`<figure class="entry"><img src="${esc(e.bilder[0])}" width="1080" height="1350" loading="lazy" alt="${esc(e.text)}"><figcaption class="meta"><time datetime="${e.datum}">${tag(e)}</time></figcaption></figure>`
     :`<figure class="entry"><blockquote class="sad">${esc(e.folie1)}</blockquote><figcaption class="cute"><time datetime="${e.datum}">${tag(e)}</time>${esc(e.folie2)}</figcaption></figure>`).join("");
@@ -266,9 +264,6 @@ fetch("tagebuch/eintraege.json").then(r=>r.ok?r.json():[]).then(liste=>{
   var alter=((Date.now()-Date.UTC(2000,0,6,18,14))/864e5)%29.530588853;if(alter<0)alter+=29.530588853;
   var phasen=[[1.85,"🌑","Neumond. Nicht einmal der Mond hat heute Lust."],[7.38,"🌒","Zunehmend. Er gibt sich Mühe. Wir nicht."],[9.23,"🌓","Halbmond. Halb anwesend, wie ich im Büro."],[13.84,"🌔","Fast voll. Nur noch ein paar Tage Normalität."],[15.69,"🌕","Vollmond. Herbert ist nicht ansprechbar."],[20.3,"🌖","Abnehmend. Der Mond auch."],[22.15,"🌗","Halbmond. Halb anwesend, wie ich im Büro."],[27.68,"🌘","Fast weg. Er versteht mich."],[30,"🌑","Neumond. Nicht einmal der Mond hat heute Lust."]];
   for(var i=0;i<phasen.length;i++){if(alter<phasen[i][0]){$("mond-symbol").textContent=phasen[i][1];$("mond-satz").textContent=phasen[i][2];break;}}
-  // Nächster Post um 7 oder 16 Uhr Wiener Zeit
-  var h=Number(new Intl.DateTimeFormat("de-AT",{hour:"numeric",hourCycle:"h23",timeZone:TZ}).format(new Date()));
-  $("naechster").textContent=h<7?"Der nächste kommt heute um 7:00.":h<16?"Der nächste kommt heute um 16:00.":"Der nächste kommt morgen um 7:00.";
 })();
 </script>
 <script>
