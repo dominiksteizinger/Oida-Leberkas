@@ -1,0 +1,25 @@
+{
+  "datum": "2026-11-11",
+  "folie1": "Der heilige Martin schnitt seinen Mantel entzwei und gab die eine Hälfte her. Ich habe nie etwas hergegeben, nicht einmal Trost.",
+  "folie2": "Nur dem Leberkäse. Ihm gehört die Hälfte von allem.",
+  "bild_folie1": "imbiss-semmel.jpg",
+  "bild_folie2": "grantig-arme.jpg",
+  "bild_neu": null,
+  "caption": "Heute ist Martini. Die Laternen ziehen durch die Gassen, und ich bleibe im Dunkeln stehen, wie es sich gehört.",
+  "aufforderung": "Wer teilt heute seine Semmel? Sag es in den Kommentaren.",
+  "hashtags": [
+    "#martini",
+    "#leberkas",
+    "#goth",
+    "#wien",
+    "#melancholie"
+  ],
+  "musik": "letzte-semmel.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [
+    "Martini und Faschingsbeginn um 11:11"
+  ],
+  "modell": "claude-haiku-5-5",
+  "pruefung": "Keiner der drei Ablehnungsgründe trifft zu. Martini ist ein Anlass wie Allerheiligen, und die Pointe liegt bei ihr selbst und beim Leberkäse, nicht bei der Heiligenfigur oder der Religion. Das Motiv Teilen und Hälfte ist neu. Die Caption und die Aufforderung verraten die Pointe von Folie 2 nicht."
+}
