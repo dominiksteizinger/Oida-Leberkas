@@ -1,32 +1,58 @@
 # Autopilot
 
-Läuft jeden Tag um 16:00 UTC (17:00 Winterzeit) über `.github/workflows/autopilot.yml`, sobald alles auf main ist. Probeläufe per Hand: Actions → Autopilot → Run workflow.
+Postet zweimal am Tag für Resi Requiem: um **7:00** und um **16:00** Wiener Zeit (`.github/workflows/autopilot.yml`). GitHub rechnet in UTC, deshalb läuft der Cron zu beiden möglichen UTC-Stunden und der Lauf prüft selbst, ob es in Wien gerade 7 oder 16 Uhr ist. So passt es im Sommer und im Winter, und ein Post geht nie doppelt raus. Probeläufe per Hand: Actions → Autopilot → Run workflow (Datum und Slot wählbar).
 
-1. `idee.mjs`: Claude Haiku 5.5 schreibt das Karussell nach `regeln.md`, Claude Sonnet 5.5 prüft es. Bis zu fünf Versuche, sonst wird nichts erzeugt.
-2. `bild.mjs` (an, sobald das Secret `GEMINI_API_KEY` gesetzt ist; abschalten mit `BILDER_GENERIEREN=aus`): Gemini zeichnet ein neues Bild für Folie 2 nach der Beschreibung aus `bild_neu`, mit Referenz-Sheet und fester Figurenbeschreibung. Claude Sonnet prüft es (gleiche Figur, keine KI-Fehler, kein Text, Grenze). Höchstens zwei Versuche, sonst bleibt das Bibliotheksbild. Gute Bilder wandern als `gen-<datum>` in die Bibliothek.
-3. `render.mjs`: rendert `tagebuch/<datum>/folie-1.jpg` und `folie-2.jpg` und trägt den Eintrag in `tagebuch/eintraege.json` ein (die Startseite zeigt die neuesten sechs). Danach hängt der Lauf den Eintrag zur Bewertung an die Sammelliste.
-4. `posten.mjs`: postet auf Instagram und, wenn `FACEBOOK_POSTEN=an`, auf der Facebook-Seite.
-5. `youtube.mjs`: lädt das Reel als YouTube Short hoch, wenn `YOUTUBE_POSTEN=an` (mit KI-Kennzeichnung).
+Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die Posts entstehen im Chat mit Claude und landen fertig in der Warteschlange.
+
+## Ablauf eines Laufs
+
+1. **Signale** (nur um 7): Wetter für Wien (Open-Meteo, mit Sonnenuntergang), Feiertage und Anlässe als Kommentar im Issue mit Label `signale`. Daraus entstehen die nächsten Posts.
+2. `holen.mjs`: nimmt den ältesten offenen Post aus der Warteschlange (Issues mit Label `warteschlange`) und prüft ihn. Fehlerhafte Posts bekommen einen Kommentar und das Label `fehler`. Ist nichts da, öffnet der Lauf ein Issue mit Label `leer` und weist es Dominik zu.
+3. `render.mjs`: rendert `tagebuch/<datum>-<slot>/post-a.jpg` (nur Setup) und `post.jpg` (ganzer Post) und trägt ihn in `tagebuch/eintraege.json` ein. Die Startseite zeigt die neuesten Einträge.
+4. `video.mjs`: macht daraus ein 8-Sekunden-Reel (Setup, harter Schnitt, Pointe) mit Musik aus `musik.json`. Ohne Musik gibt es nur das Bild.
+5. `posten.mjs`: Instagram als Reel (oder Bild) und, wenn `FACEBOOK_POSTEN=an`, Facebook-Seite.
+6. `youtube.mjs`: das Reel als YouTube Short, wenn `YOUTUBE_POSTEN=an`.
+7. Danach wird das Warteschlangen-Issue geschlossen und der Post kommt zur Bewertung in die Sammelliste.
+8. `vorrat.mjs`: Sind weniger als 7 Bibliotheksbilder noch nie verwendet worden, öffnet der Lauf ein Issue mit Label `bilder` und weist es Dominik zu. Das ist die Erinnerung, neue Bilder in Gemini zu machen.
+
+## Einen Post in die Warteschlange legen
+
+Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im Issue steht ein JSON-Block:
+
+```json
+{
+  "inhalt": { "format": "antwort", "von": "sunny.kollegin", "kommentar": "Du schaust heute so fertig aus 🥺", "zeilen": ["Danke.", "Hat zwei Stunden gedauert."] },
+  "bild": "kaffee-muede.jpg",
+  "caption": "Kollegin vs. ich, Folge 5.",
+  "aufforderung": "Schick das deiner Sunny.",
+  "hashtags": ["#deadpan", "#büro", "#goth", "#wien"],
+  "slot": "07"
+}
+```
+
+- `inhalt.format` ist eines von `antwort`, `notiz`, `bewertung`, `chat`, `szene`. Felder und Längen stehen in `eintrag.mjs`, Ton und Grenzen in `regeln.md`, Beispiele in `beispiele.md`.
+  - `antwort`: `von`, `kommentar`, `zeilen` (1–3)
+  - `notiz`: `titel`, `absaetze` (2–5, der letzte ist die Pointe)
+  - `bewertung`: `nr`, `ort`, `saerge` (0–5), `text`
+  - `chat`: `name`, `nachrichten` (`wer`: `sie`, `ich` oder `zeit`)
+  - `szene`: `satz`, `klammern` (1–3)
+- `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`.
+- `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
+- `musik` (optional): Dateiname aus `musik.json`, sonst wird gewürfelt.
+- Nur Issues mit dem Label `warteschlange` zählen, und Labels setzen kann nur, wer Schreibrechte hat.
 
 ## Einstellungen (Settings → Secrets and variables → Actions → Variables)
 
-- `POSTEN` = `an`: echter Betrieb. Ohne diese Variable läuft alles im Probebetrieb auf dem Branch `autopilot-probe` und es wird nichts gepostet.
-- `FACEBOOK_POSTEN` = `an`: zusätzlich auf der Facebook-Seite posten (braucht den Seiten-Token mit `pages_manage_posts`).
-- `YOUTUBE_POSTEN` = `an`: Reel als Short hochladen. Der Refresh-Token braucht den Bereich `youtube.upload`. `YOUTUBE_SICHTBARKEIT` = `private` oder `unlisted` zum Testen, sonst öffentlich.
-- `BILDER_GENERIEREN` = `aus`: keine neuen Gemini-Bilder (Standard: an, sobald `GEMINI_API_KEY` gesetzt ist; ca. 3 Cent pro Bild). `MODELL_BILD` überschreibt das Modell (Standard `gemini-nano-banana-2.1`).
-- `MODELL_SCHREIBEN`, `MODELL_PRUEFEN`: Modelle überschreiben (Standard `claude-haiku-5-5` und `claude-sonnet-5-5`).
+- `POSTEN` = `an`: echter Betrieb (nur auf `main`). Ohne diese Variable läuft alles im Probebetrieb auf dem Branch `autopilot-probe` und es wird nichts gepostet.
+- `FACEBOOK_POSTEN` = `an`: zusätzlich auf der Facebook-Seite posten.
+- `YOUTUBE_POSTEN` = `an`: Reel als Short hochladen. `YOUTUBE_SICHTBARKEIT` = `private` oder `unlisted` zum Testen.
+- `HANDLE`: Name im Post, Standard `resi.requiem`.
 
-## Ideen einwerfen
+## Bewertung
 
-Neues Issue → Vorlage „Idee für den Autopilot“: Link und ein Satz, was daran gut ist. Der Autopilot kann Links nicht öffnen, er arbeitet nur mit der Beschreibung. Er greift eine offene Idee auf und schließt das Issue, sobald sie live verwendet wurde. Es zählen nur Issues von Dominik.
+Jeder Post hängt als Kommentar an der Sammelliste (Label `sammelliste`). 👍 oder 👎 am Kommentar, oder ein eigener Kommentar, der mit `gut` oder `schlecht` beginnt. Claude liest das, bevor neue Posts geschrieben werden.
 
-## Beispiele und Bewertung
+## Bilder und Musik
 
-- `beispiele.md`: gute und misslungene Karussells mit Begründung. Schreiben und Prüfung messen sich daran.
-- Jeder Lauf hängt als Kommentar an die Sammelliste (Issue mit Label `sammelliste`). Urteil: 👍 oder 👎 direkt am Eintrag-Kommentar. Begründung: eigener Kommentar, der mit `gut` oder `schlecht` beginnt; er gilt für den Eintrag direkt darüber, mit Datum davor (`2026-10-19 schlecht, Pointe erklärt sich`) oder per „Zitieren“ für einen bestimmten. Ein Text-Urteil schlägt den Daumen.
-- Ältere Einzel-Issues zählen weiter über die Labels `gut` und `schlecht`, Dominiks Kommentare dort sind die Begründung.
-- `bewertungen.mjs` sammelt das vor jedem Lauf (nur Dominiks Reaktionen und Kommentare), gibt die letzten 15 je Urteil als zusätzliche Beispiele weiter und schreibt die Zählung (gut, schlecht, offen) in die Zusammenfassung des Laufs.
-
-## Bilder
-
-`bilder/` ist die Bibliothek, `bibliothek.json` beschreibt jedes Bild. Neue Bilder: Datei ablegen und eine Zeile in `bibliothek.json` ergänzen (`szene` für Bilder mit Hintergrund, `figur` für Bilder auf Weiß).
+- `bilder/` ist die Bibliothek, `bibliothek.json` beschreibt jedes Bild in einer Zeile: `szene` für Bilder mit Hintergrund, `figur` für Reaktionsbilder auf Weiß (für das Format `antwort`).
+- `musik/` enthält lizenzfreie Tracks, `musik.json` beschreibt sie (`datei`, `titel`, `stimmung`, Lizenz). Neue Musik wirft Dominik in den Projektordner `eingang/musik/` mit der Lizenz in `lizenzen.md`.

@@ -1,13 +1,14 @@
-// Lädt das Reel eines Tages als YouTube Short hoch (hochkant, unter 3 Minuten, #Shorts im Titel).
+// Lädt das Reel eines Posts als YouTube Short hoch (hochkant, unter 3 Minuten, #Shorts im Titel).
 // Braucht YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET und einen Refresh-Token mit dem Bereich youtube.upload.
 import fs from "node:fs";
 import path from "node:path";
+import { captionText, kurzfassung, titel as titelVon } from "./eintrag.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
-const [datum, reel] = process.argv.slice(2);
-if (!datum || !reel) throw new Error("Aufruf: node youtube.mjs <datum> <reel.mp4>");
+const [id, reel] = process.argv.slice(2);
+if (!id || !reel) throw new Error("Aufruf: node youtube.mjs <id> <reel.mp4>");
 if (!fs.existsSync(reel)) throw new Error(`${reel} fehlt`);
-const e = JSON.parse(fs.readFileSync(path.join(HIER, "..", "tagebuch", datum, "eintrag.json"), "utf8"));
+const e = JSON.parse(fs.readFileSync(path.join(HIER, "..", "tagebuch", id, "eintrag.json"), "utf8"));
 
 const token = await (await fetch("https://oauth2.googleapis.com/token", {
   method: "POST",
@@ -23,8 +24,8 @@ if (!String(token.scope).includes("youtube.upload")) throw new Error("Der Refres
 
 // Titel höchstens 100 Zeichen, ohne spitze Klammern
 const kurz = (s, n) => (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s);
-const titel = kurz(`${e.folie2} #Shorts`.replace(/[<>]/g, ""), 100);
-const beschreibung = [e.folie1, e.folie2, e.caption, e.aufforderung, e.hashtags.join(" ")].filter(Boolean).join("\n\n").replace(/[<>]/g, "");
+const titel = kurz(`${titelVon(e.inhalt)} #Shorts`.replace(/[<>]/g, ""), 100);
+const beschreibung = [kurzfassung(e.inhalt), captionText(e)].join("\n\n").replace(/[<>]/g, "");
 
 const meta = {
   snippet: { title: titel, description: beschreibung, tags: e.hashtags.map((h) => h.replace(/^#/, "")), categoryId: "23", defaultLanguage: "de" },

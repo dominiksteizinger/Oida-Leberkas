@@ -1,0 +1,21 @@
+name: Fertiger Post
+description: Ein fertig geschriebener Post für die Warteschlange des Autopiloten
+title: "Post: "
+labels: [warteschlange]
+body:
+  - type: textarea
+    id: post
+    attributes:
+      label: Post als JSON
+      description: Aufbau siehe autopilot/README.md. Der Autopilot nimmt den ältesten offenen Post und schließt das Issue, sobald er online ist.
+      render: json
+      value: |
+        {
+          "inhalt": { "format": "szene", "satz": "Montag, 8:01.", "klammern": ["lebe noch", "leider"] },
+          "bild": "buero-montag.jpg",
+          "caption": "Neue Woche, gleiche Frau.",
+          "aufforderung": "Schick das jemandem, der heute auch nur physisch anwesend ist.",
+          "hashtags": ["#deadpan", "#montag", "#goth", "#wien"]
+        }
+    validations:
+      required: true

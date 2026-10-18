@@ -64,7 +64,7 @@ Motive aus der Gothic-Literatur und Romantik, die sie benutzt wie Requisiten (Al
 | Wiederkehr | Er kommt jede Nacht zurück | um 6 Uhr, frisch aus dem Ofen |
 | Wetter als Seele | Regen, Nebel, Kälte = Inneres | warme Semmel als einziger Trost |
 | Anlass | Allerheiligen, Vollmond, Montag | mit Leberkäse überstanden |
-| Running Gag | Fledermaus Kren | Kren und die Semmel |
+| Running Gag | Fledermaus Herbert | Herbert und die Semmel |
 
 ## 8. Beispielpaare (Ton, nicht kopieren)
 

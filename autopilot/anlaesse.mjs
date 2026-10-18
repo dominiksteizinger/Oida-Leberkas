@@ -34,7 +34,7 @@ export function feste(datum) {
     "11-11": "Martini und Faschingsbeginn um 11:11", "12-04": "Barbaratag", "12-05": "Krampustag", "12-06": "Nikolo",
     "12-08": "Mariä Empfängnis, Feiertag mitten im Weihnachtsstress", "12-21": "längste Nacht des Jahres, ihr Feiertag",
     "12-24": "Heiliger Abend", "12-25": "Christtag", "12-26": "Stefanitag", "12-31": "Silvester",
-    "10-04": "Welttierschutztag (Kren!)",
+    "10-04": "Welttierschutztag (Herbert!)",
   };
   if (fest[md]) liste.push(fest[md]);
   if (d.getUTCDate() === 13 && d.getUTCDay() === 5) liste.push("Freitag, der 13.");
