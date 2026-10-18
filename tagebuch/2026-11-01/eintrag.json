@@ -1,0 +1,26 @@
+{
+  "datum": "2026-11-01",
+  "folie1": "Allerheiligen. Auf den Gräbern brennen die Lichter, und ich lese die Namen, die schon lange niemand mehr ruft.",
+  "folie2": "Die Toten kriegen Kerzen. Ich kriege die dickste Scheibe. Mein Heiligenschein.",
+  "bild_folie1": "friedhofsbank-herbst.jpg",
+  "bild_folie2": "umarmt-riesensemmel.jpg",
+  "bild_neu": null,
+  "caption": "Allerheiligen in Wien. Überall brennen Lichter, und die Stadt wird leiser, als müsste sie jemandem Respekt zollen.",
+  "aufforderung": "Welches Licht habt ihr heute für wen angezündet? Schreibt es in die Kommentare.",
+  "hashtags": [
+    "#allerheiligen",
+    "#wien",
+    "#goth",
+    "#leberkas",
+    "#leberkässemmel",
+    "#melancholie"
+  ],
+  "musik": "kerzenlicht.mp3",
+  "idee_nummer": null,
+  "wetter": "bewölkt, 11 bis 19 Grad, 0 mm Niederschlag",
+  "anlaesse": [
+    "Allerheiligen"
+  ],
+  "modell": "claude-haiku-5-5",
+  "pruefung": "Keiner der drei Ablehnungsgründe trifft zu. Allerheiligen als Feiertag ist erlaubt und wird respektvoll angedeutet, ohne Spott über Tote oder Religion. Die Pointe (dickste Scheibe als Heiligenschein) ist neu, keine Wiederholung aus den letzten Einträgen oder den Regelbeispielen. „Dick geschnitten“ kommt nicht wörtlich vor. Die Caption verrät die Pointe nicht, und die Aufforderung ist eine harmlose Community-Frage."
+}
