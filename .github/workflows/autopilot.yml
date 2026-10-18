@@ -59,6 +59,18 @@ jobs:
       - name: Folien rendern
         working-directory: autopilot
         run: node render.mjs "${{ steps.idee.outputs.datum }}"
+      - name: Videos mit Musik
+        id: video
+        working-directory: autopilot
+        run: |
+          command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+          node video.mjs "${{ steps.idee.outputs.datum }}" "$RUNNER_TEMP/reel"
+      - name: Reel aufheben
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ steps.idee.outputs.datum }}
+          path: ${{ runner.temp }}/reel/reel.mp4
+          if-no-files-found: ignore
       - name: Ins Tagebuch eintragen
         run: |
           git config user.name "Oida Leberkas Autopilot"
@@ -68,7 +80,7 @@ jobs:
           if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
           {
             echo "## Eintrag ${{ steps.idee.outputs.datum }} ($([ "$LIVE" = "true" ] && echo live || echo Probe))"
-            jq -r '"**Folie 1:** \(.folie1)\n\n**Folie 2:** \(.folie2)\n\n**Caption:** \(.caption)\n\n**Aufforderung:** \(.aufforderung)\n\n**Hashtags:** \(.hashtags | join(" "))\n\n**Prüfung:** \(.pruefung)"' "tagebuch/${{ steps.idee.outputs.datum }}/eintrag.json"
+            jq -r '"**Folie 1:** \(.folie1)\n\n**Folie 2:** \(.folie2)\n\n**Caption:** \(.caption)\n\n**Aufforderung:** \(.aufforderung)\n\n**Hashtags:** \(.hashtags | join(" "))\n\n**Musik:** \(.musik)\n\n**Prüfung:** \(.pruefung)"' "tagebuch/${{ steps.idee.outputs.datum }}/eintrag.json"
             BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
             echo ""
             echo "![Folie 1](https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BR/tagebuch/${{ steps.idee.outputs.datum }}/folie-1.jpg)"

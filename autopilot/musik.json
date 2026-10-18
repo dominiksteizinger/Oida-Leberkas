@@ -1,0 +1,44 @@
+[
+ {
+  "datei": "spieluhr-mitternacht.mp3",
+  "titel": "Spieluhr Mitternacht",
+  "stimmung": "verspielt, unheimlich, Spieluhr um Mitternacht",
+  "quelle": "selbst komponiert (musik_generator.py)",
+  "lizenz": "eigenes Werk"
+ },
+ {
+  "datei": "regen-am-fenster.mp3",
+  "titel": "Regen Am Fenster",
+  "stimmung": "melancholisch, Regen, Einsamkeit",
+  "quelle": "selbst komponiert (musik_generator.py)",
+  "lizenz": "eigenes Werk"
+ },
+ {
+  "datei": "friedhof-im-nebel.mp3",
+  "titel": "Friedhof Im Nebel",
+  "stimmung": "düster, weit, Nebel, Friedhof",
+  "quelle": "selbst komponiert (musik_generator.py)",
+  "lizenz": "eigenes Werk"
+ },
+ {
+  "datei": "kerzenlicht.mp3",
+  "titel": "Kerzenlicht",
+  "stimmung": "warm, ruhig, Tagebuch bei Kerzenlicht",
+  "quelle": "selbst komponiert (musik_generator.py)",
+  "lizenz": "eigenes Werk"
+ },
+ {
+  "datei": "vollmond.mp3",
+  "titel": "Vollmond",
+  "stimmung": "theatralisch, dramatisch, Vollmond",
+  "quelle": "selbst komponiert (musik_generator.py)",
+  "lizenz": "eigenes Werk"
+ },
+ {
+  "datei": "letzte-semmel.mp3",
+  "titel": "Letzte Semmel",
+  "stimmung": "tragisch, Verlust, große Gefühle",
+  "quelle": "selbst komponiert (musik_generator.py)",
+  "lizenz": "eigenes Werk"
+ }
+]
