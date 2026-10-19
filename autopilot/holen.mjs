@@ -30,7 +30,9 @@ function pruefe(body) {
   const e = Eintrag.parse(roh);
   if (!OHNE_BILD.has(e.inhalt.format) && !e.bild) throw new Error(`Format ${e.inhalt.format} braucht ein Bild`);
   if (e.bild && !bekannt.has(e.bild)) throw new Error(`Bild ${e.bild} gibt es nicht in bibliothek.json`);
-  return { e, wunschSlot: roh.slot ? String(roh.slot) : null };
+  // ab/bis (optional, JJJJ-MM-TT): Post nur in diesem Zeitraum, z. B. für Anlässe (Allerheiligen, Martinstag)
+  for (const k of ["ab", "bis"]) if (roh[k] !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(roh[k])) throw new Error(`${k} muss JJJJ-MM-TT sein`);
+  return { e, wunschSlot: roh.slot ? String(roh.slot) : null, ab: roh.ab || null, bis: roh.bis || null };
 }
 
 // Nur Issues vom Repo-Owner: Die Vorlage „Fertiger Post“ setzt das Label automatisch, auch bei Fremden.
@@ -59,7 +61,11 @@ for (const issue of offen) {
     ablehnen(issue, `Konnte diesen Post nicht lesen: ${err.message}`);
     continue;
   }
-  if (p.wunschSlot && p.wunschSlot !== slot) continue;
+  if (p.bis && datum > p.bis) {
+    ablehnen(issue, `Der Anlass ist vorbei: Post nur bis ${p.bis}, heute ist ${datum}. Bei Bedarf ohne „bis“ neu anlegen.`);
+    continue;
+  }
+  if ((p.wunschSlot && p.wunschSlot !== slot) || (p.ab && datum < p.ab)) { verbleibend++; continue; }
   if (gefunden) { verbleibend++; continue; }
   if (p.e.bild) {
     const regel = pruefeBild({ bibliothek, nutzung, bild: p.e.bild, datum, konf, id, e: p.e });

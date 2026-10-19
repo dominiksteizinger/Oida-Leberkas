@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { setupPointe } from "./eintrag.mjs";
-import { STIMME_AN, tonspuren, dauerVon } from "./stimme.mjs";
+import { STIMME_AN, tonspuren, dauerVon, sprechtext } from "./stimme.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const id = process.argv[2];
@@ -68,6 +68,8 @@ if (fs.existsSync(schritteDatei)) {
   ];
 }
 
+bilder.forEach((b) => { b.text = sprechtext(b.text); });
+
 // Stimme: jeder Teil wird gesprochen, und der Teil bleibt so lang stehen, bis der Satz zu Ende ist
 const VORLAUF = 0.15;
 const NACHLAUF = 0.6;
@@ -78,6 +80,8 @@ if (STIMME_AN) {
     tonDaten = await tonspuren(bilder.map((b) => b.text), fs.mkdtempSync(path.join(os.tmpdir(), "stimme-")));
   } catch (e) {
     console.warn(`Stimme aus, Reel bleibt stumm: ${e.message}`);
+    // Der Workflow macht daraus ein Issue für Dominik (Schritt „Stumm gepostet melden“)
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `stumm=${e.message.replace(/\s+/g, " ").slice(0, 200).replace(/[\r\n]/g, " ")}\n`);
   }
 }
 if (tonDaten) {
