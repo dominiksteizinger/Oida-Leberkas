@@ -10,11 +10,11 @@ export const STIMME_AN = process.env.STIMME === "an";
 // Erstes Modell, das der Schlüssel kennt, gewinnt (404 = Modell unbekannt, dann das nächste)
 const MODELLE = [process.env.STIMME_MODELL, "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"].filter(Boolean);
 
-// Vorgegebene weibliche Gemini-Stimmen, keine echten Personen. Kore: fest, sachlich. Callirrhoe: locker, müde. Die kurze Anweisung vor dem Doppelpunkt steuert nur die Haltung;
-// lange Anweisungen würde die Stimme mitsprechen (Probe 19.10.: 13 s für „Endlich Nebel.“).
+// Vorgegebene weibliche Gemini-Stimmen, keine echten Personen. Kore: fest, sachlich. Callirrhoe: locker, müde.
+// Gesprochen wird nur der Reel-Text. Stilanweisungen als Präfix würden mitgesprochen (Probe 19.10.), deshalb hat die Stimme den Ton.
 const STIMMLAGEN = {
-  trocken: { stimme: "Kore", anweisung: "Sprich trocken, ruhig und im Amtston:" },
-  muede: { stimme: "Callirrhoe", anweisung: "Sprich genervt und müde:" },
+  trocken: { stimme: "Kore" },
+  muede: { stimme: "Callirrhoe" },
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -44,9 +44,9 @@ async function anfrage(modell, stimme, text, schluessel) {
 export async function sprechen(text, ziel, stil = "trocken") {
   const schluessel = process.env.GEMINI_API_KEY;
   if (!schluessel) throw new Error("GEMINI_API_KEY fehlt");
-  const { stimme, anweisung } = STIMMLAGEN[stil] ?? STIMMLAGEN.trocken;
+  const { stimme } = STIMMLAGEN[stil] ?? STIMMLAGEN.trocken;
   for (const modell of MODELLE) {
-    const antwort = await anfrage(modell, stimme, `${anweisung} ${text}`, schluessel);
+    const antwort = await anfrage(modell, stimme, text, schluessel);
     if (antwort.status === 404) continue;
     if (!antwort.ok) throw new Error(`Gemini-TTS ${modell}: ${antwort.status} ${(await antwort.text()).slice(0, 300)}`);
     const daten = await antwort.json();
@@ -54,8 +54,11 @@ export async function sprechen(text, ziel, stil = "trocken") {
     if (!teil) throw new Error(`Gemini-TTS ${modell} lieferte kein Audio`);
     // Rohes PCM, Abtastrate steht im mimeType (sonst 24 kHz, Standard von Gemini-TTS)
     const rate = /rate=(\d+)/.exec(teil.inlineData.mimeType || "")?.[1] ?? "24000";
+    console.log(`TTS ${modell}: ${teil.inlineData.mimeType || "ohne mimeType"}, ${Buffer.from(teil.inlineData.data, "base64").length} Bytes`);
     fs.writeFileSync(`${ziel}.pcm`, Buffer.from(teil.inlineData.data, "base64"));
-    ff(["-f", "s16le", "-ar", rate, "-ac", "1", "-i", `${ziel}.pcm`, "-ar", "44100", "-ac", "2", `${ziel}.wav`]);
+    // Aufbereitung je Satz: Rumpel und Zischen über 11 kHz raus, leichte Rauschminderung,
+    // 30 ms Ein- und Ausblenden gegen Knackser an den Satzgrenzen, dann gleichmäßige Lautheit
+    ff(["-f", "s16le", "-ar", rate, "-ac", "1", "-i", `${ziel}.pcm`, "-af", AUFBEREITUNG, "-ar", "44100", "-ac", "2", `${ziel}.wav`]);
     fs.rmSync(`${ziel}.pcm`);
     return dauerVon(`${ziel}.wav`);
   }
@@ -64,7 +67,7 @@ export async function sprechen(text, ziel, stil = "trocken") {
 
 // Für jeden Bildteil die Sprachspur: { wav, dauer } oder null, wenn der Teil keinen Text hat
 export async function tonspuren(texte, ordner) {
-  const stil = process.env.STIMME_STIL || "trocken";
+  const stil = process.env.STIMME_STIL || "muede";
   const ergebnis = [];
   for (const [k, text] of texte.entries()) {
     if (!text || !text.trim()) { ergebnis.push(null); continue; }
