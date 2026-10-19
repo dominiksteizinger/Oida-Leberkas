@@ -20,6 +20,16 @@ function texte() {
     case "notiz": return [`${i.titel} ${i.absaetze.slice(0, -1).join(" ")}`, i.absaetze.at(-1)];
     case "bewertung": return [i.ort, i.text];
     case "szene": return [i.satz, i.klammern.join(" ")];
+    case "mitteilungen": return [i.mitteilungen.slice(0, -1).map((m) => `${m.titel} ${m.text}`).join(" "), `${i.mitteilungen.at(-1).titel} ${i.mitteilungen.at(-1).text}`];
+    case "termin": return [`${i.datum} ${i.titel} ${i.zeit}`, i.zeilen.join(" ")];
+    case "wetter": return [`${i.ort} ${i.temperatur} ${i.lage}`, i.gefuehlt];
+    case "umfrage": return [`${i.frage} ${i.optionen.map((x) => x.text).join(" ")}`, i.fuss];
+    case "wiedergabe": return ["Gerade läuft", `${i.titel} ${i.kuenstler}`];
+    case "sprachnachricht": return [i.name, i.transkript];
+    case "suchverlauf": return [i.eingabe, i.vorschlaege.join(" ")];
+    case "fehlermeldung": return [`${i.titel} ${i.text}`, `${i.knopf_links} ${i.knopf_rechts}`];
+    case "todo": return [`${i.titel} ${i.punkte.map((p) => p.text).join(" ")}`, i.fazit];
+    case "beleg": return [`${i.titel} ${i.posten.map((p) => `${p.name} ${p.menge}`).join(" ")}`, `${i.summe} ${i.fuss}`];
     case "chat": {
       // wie in formate.mjs: Setup bis zu Resis letzten Antworten
       const n = i.nachrichten.filter((m) => m.wer !== "zeit");
