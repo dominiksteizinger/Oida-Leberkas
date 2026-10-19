@@ -40,13 +40,30 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 - Bilder: `antwort` braucht ein Bild mit `art: figur` (weißer Hintergrund), `bewertung` und `szene` ein Bild mit Hintergrund. `notiz` und `chat` kommen ohne Bild aus.
 - Längen sind im Schema festgelegt (`eintrag.mjs`). Kürzer ist fast immer besser.
 
+## Humor-Mechanik (Grundlage: humor/humor-deepdive-resi.md)
+
+- Formel: vertrauter Rahmen + kleine Verletzung + Entwarnung + Wendung, die der Leser nicht selbst liefern konnte.
+- Düster ist der Rahmen, nicht die Pointe. Tod, Särge und Nachrufe stehen im Setup oder als Kulisse. Die Wendung kommt aus Alltag, Büro, Öffis, Smalltalk, Wetter, Herbert, Sunny oder Franz.
+- Haltung immer Deadpan. Mix bei 14 Posts pro Woche: 7 bis 8 Alltag/Relatable, 4 bis 5 Understatement oder Selbstironie, 3 bis 4 mit schwarzem Humor als Würze, 3 bis 4 Serie oder Callback, höchstens 1 Absurd (Herbert), Meta oder Parodie.
+- Kompetent scheitern: Resi ist souverän bei Tod, Verwaltung und Ordnung und patzt nur im Sozialen (Smalltalk, Spontaneität, Überraschungen). Sie verwaltet, sie jammert nicht.
+- Sunny ist nie das Ziel. Die Pointe landet bei Resis Haltung.
+- Wärme nur als Leck: etwa jeder zehnte Post, indirekt und sofort abgewiegelt.
+- Jede Pointe hat einen denkbaren Adressaten (Kollegin, Mitbewohner). Aufforderungen situativ, nie mit Zahl oder Quote.
+- Serien: Der Rahmen bleibt, die Wendung wechselt. Nach drei gleichen Folgen die vierte brechen.
+
 ## Pointen-Check (vor jedem Post)
 
 1. Die Pointe dreht das Setup um. Eine Bestätigung des Setups ist kein Witz.
-2. Die Pointe erklärt nichts und erzählt keine Szene nach.
-3. Die Caption verrät die Pointe nicht.
-4. Kein Schwulst: keine Gedichtband-Metaphern („die Nacht kennt meinen Namen“), keine Pathos-Kaskaden. Würde das jemand trocken im Büro sagen?
-5. Grenze geprüft (siehe unten).
+2. Vorhersage-Test: Würde mehr als die Hälfte der Leser nach dem Setup den Schluss erraten? Dann umschreiben. „Resi ist düster“ ist keine Wendung.
+3. Kalt-Test: Versteht jemand, der Resi nicht kennt, die Pointe? Callbacks nur als Bonus.
+4. Die Pointe erklärt nichts und erzählt keine Szene nach. Die Caption verrät sie nicht.
+5. Eine Idee pro Post. Zwei Pointen sind zwei Posts.
+6. Kein Schwulst: keine Gedichtband-Metaphern („die Nacht kennt meinen Namen“), keine Pathos-Kaskaden. Würde das jemand trocken im Büro sagen?
+7. Wer wird getroffen? Nur Resi oder der Alltag, nie eine reale Gruppe, Person oder Marke.
+8. Grenze geprüft (siehe unten).
+9. Punkteskala aus dem Deepdive (Abschnitt 7.2): zehn Kriterien mit 0 bis 2 Punkten, Schwelle 14 von 20. Darunter umschreiben.
+
+Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der Caption, Sunny, die verliert oder gemein ist, denselben Gag unverändert zum dritten Mal, Trendvokabeln als Pointe, zwei Pointen in einem Post.
 
 ## Die Grenze (nie verhandelbar)
 
