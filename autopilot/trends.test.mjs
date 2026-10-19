@@ -5,8 +5,8 @@ import { anlaesse, googleLesen, redditLesen } from "./trends.mjs";
 test("Google-Trends-RSS: Suchbegriff, Menge und erste Schlagzeile", () => {
   const xml = `<rss><channel><title>Daily Search Trends</title><item><title>Zeitumstellung</title><ht:approx_traffic>20000+</ht:approx_traffic>
     <ht:news_item><ht:news_item_title><![CDATA[Uhren werden &amp; zurückgestellt]]></ht:news_item_title></ht:news_item>
-    <ht:news_item><ht:news_item_title>Zweite</ht:news_item_title></ht:news_item></item><item><title>Nebel</title></item></channel></rss>`;
-  assert.deepEqual(googleLesen(xml), ["Zeitumstellung (20000+ Suchen): Uhren werden & zurückgestellt", "Nebel"]);
+    <ht:news_item><ht:news_item_title>Zweite</ht:news_item_title></ht:news_item></item><item><title>Axel &apos;s</title></item></channel></rss>`;
+  assert.deepEqual(googleLesen(xml), ["Zeitumstellung (20000+ Suchen): Uhren werden & zurückgestellt", "Axel 's"]);
 });
 
 test("Reddit-Atom: nur Eintragstitel, nicht der Feedtitel", () => {
