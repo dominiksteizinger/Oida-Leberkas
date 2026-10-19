@@ -72,7 +72,10 @@ jobs:
           # Stündliche Läufe: hat ein früherer Lauf den Slot schon gepostet, ist nichts zu tun.
           # Geplante Probeläufe zählen genauso, Probeläufe per Hand dürfen einen Slot wiederholen.
           ID="${{ steps.zeit.outputs.id }}"
-          if { [ "$LIVE" = "true" ] && [ -f "tagebuch/$ID/gepostet.txt" ]; } || \
+          # Live zählt die Datei gepostet.txt oder der Abhak-Kommentar „Gepostet als …“ an einem Warteschlangen-Issue
+          ABGEHAKT=$([ "$LIVE" = "true" ] && gh issue list --repo "$GITHUB_REPOSITORY" --label warteschlange --state closed --limit 30 \
+            --json comments --jq ".[].comments[].body" | grep -c "^Gepostet als $ID\.$" || true)
+          if { [ "$LIVE" = "true" ] && { [ -f "tagebuch/$ID/gepostet.txt" ] || [ "${ABGEHAKT:-0}" != "0" ]; }; } || \
              { [ "$LIVE" != "true" ] && [ "${{ github.event_name }}" = "schedule" ] && [ -f "tagebuch/$ID/post.jpg" ]; }; then
             echo "Post ${{ steps.zeit.outputs.id }} gibt es schon."; echo "weiter=false" >> "$GITHUB_OUTPUT"
           else
