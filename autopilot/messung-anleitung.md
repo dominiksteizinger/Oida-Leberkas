@@ -62,11 +62,11 @@ Fragt Meta nach „Advanced Access“ oder App Review: Als Admin der App im Entw
 3. [Anmeldedaten](https://console.cloud.google.com/apis/credentials) → die OAuth-Client-ID öffnen → unter **Autorisierte Weiterleitungs-URIs** muss `https://developers.google.com/oauthplayground` stehen (wenn nicht: hinzufügen, speichern).
 4. [OAuth-Zustimmungsbildschirm](https://console.cloud.google.com/apis/credentials/consent): Steht der Status auf „Test“, verfallen Refresh-Tokens nach 7 Tagen. Auf **In Produktion** stellen (für ein eigenes Konto reicht das, eine Prüfung ist dafür nicht nötig, Google zeigt beim Anmelden nur eine Warnung „nicht verifiziert“, die du mit „Weiter“ bestätigst).
 5. [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/) öffnen → Zahnrad rechts oben → **Use your own OAuth credentials** anhaken → Client-ID und Client-Secret eintragen (dieselben wie in den Secrets `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`).
-6. Links unten bei **Input your own scopes** alle drei eintragen, mit Leerzeichen getrennt:
+6. Links unten bei **Input your own scopes** alle vier eintragen, mit Leerzeichen getrennt:
    ```
-   https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/youtube.readonly
+   https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.force-ssl
    ```
-   `youtube.upload` muss dabei sein, sonst bricht das Posten ab. `youtube.readonly` braucht die Auswertung für die Titel (damit sie Videos den Posts zuordnen kann).
+   `youtube.upload` muss dabei sein, sonst bricht das Posten ab. `youtube.readonly` braucht die Auswertung für die Titel (damit sie Videos den Posts zuordnen kann). `youtube.force-ssl` braucht der Kommentar-Workflow, um auf Kommentare zu antworten.
 7. **Authorize APIs** → mit dem Google-Konto des YouTube-Kanals anmelden → den Kanal wählen → alles erlauben.
 8. **Step 2: Exchange authorization code for tokens** → den **Refresh token** kopieren.
 9. Als Secret **`YOUTUBE_REFRESH_TOKEN`** eintragen (siehe oben).
@@ -78,3 +78,5 @@ Fragt Meta nach „Advanced Access“ oder App Review: Als Admin der App im Entw
 [Actions → Wochenauswertung → Run workflow](https://github.com/dominiksteizinger/oida-leberkas/actions/workflows/messung.yml). Im Issue „Wochenauswertung“ steht danach bei beiden Quellen „ok“. Steht „übersprungen“, nennt der Bericht den Grund.
 
 Danach einmal [Actions → YouTube-Verbindungstest](https://github.com/dominiksteizinger/oida-leberkas/actions/workflows/youtube-verbindungstest.yml) laufen lassen, damit klar ist, dass das Posten mit dem neuen Token weiter geht.
+
+Zum Schluss [Actions → Kommentare → Run workflow](https://github.com/dominiksteizinger/oida-leberkas/actions/workflows/kommentare.yml) mit „Nur anzeigen“: Im Log steht bei `ig` und `yt` die Zahl offener Kommentare statt „übersprungen“.

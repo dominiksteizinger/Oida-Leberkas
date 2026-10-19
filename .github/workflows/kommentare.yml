@@ -1,0 +1,57 @@
+name: Kommentare
+# Viermal am Tag: neue Kommentare auf Instagram und YouTube holen und harmlose aus dem festen Pool (autopilot/antworten.json) beantworten.
+# Keine Claude-API, kostet nichts. Heikles (Hass, Sexuelles, KI-Fragen, Politik, Krisen, Minderjährige, Werbung) wird nie beantwortet,
+# sondern im Issue mit Label „kommentare“ gemeldet (Dominik zugewiesen). Abschalten: Repo-Variable KOMMENTARE_ANTWORTEN=aus.
+# Braucht die Rechte instagram_manage_comments und youtube.force-ssl; fehlt eins, wird die Plattform übersprungen.
+on:
+  schedule:
+    - cron: "41 6,10,15,19 * * *"
+  workflow_dispatch:
+    inputs:
+      probe:
+        description: "Nur anzeigen, nichts posten"
+        type: boolean
+        default: true
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: kommentare
+  cancel-in-progress: false
+jobs:
+  antworten:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Kommentare beantworten
+        working-directory: autopilot
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          KOMMENTARE_ANTWORTEN: ${{ (github.event_name == 'workflow_dispatch' && inputs.probe) && 'aus' || vars.KOMMENTARE_ANTWORTEN }}
+          BERICHT: ${{ runner.temp }}/bericht.md
+        run: node kommentare.mjs
+      - name: Gedächtnis speichern
+        run: |
+          git config user.name "oida-autopilot"
+          git config user.email "autopilot@users.noreply.github.com"
+          git add autopilot/kommentare-log.json 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -qm "Kommentare: beantwortet und gemeldet"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+      - name: Heikles melden
+        run: |
+          [ -s "$RUNNER_TEMP/bericht.md" ] || exit 0
+          gh label create kommentare --repo "$GITHUB_REPOSITORY" --color D93F0B --description "Kommentare, die der Autopilot nie beantwortet" 2>/dev/null || true
+          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label kommentare --state open --json number --jq '.[0].number // empty')
+          [ -z "$NR" ] && NR=$(gh issue create --repo "$GITHUB_REPOSITORY" --title "Kommentare: für dich" --label kommentare --assignee "$GITHUB_REPOSITORY_OWNER" --body "Hier meldet der Kommentar-Workflow Kommentare, die er nie selbst beantwortet. Alles andere beantwortet er aus autopilot/antworten.json." | grep -o '[0-9]*$')
+          gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/bericht.md"
