@@ -1,6 +1,6 @@
 // Sammelt einmal pro Woche, was in Österreich gerade Thema ist, als Markdown für den wöchentlichen Schreib-Lauf.
 // Quellen ohne Login: Google Trends (AT), meistgelesene Wikipedia-Artikel (de, letzte 7 Tage), Reddit r/wien und r/Austria,
-// YouTube-Trends AT (nur mit den vorhandenen YouTube-Secrets), Anlässe der nächsten 21 Tage und harmlose ORF-Schlagzeilen.
+// YouTube-Trends AT (nur mit den vorhandenen YouTube-Secrets), Kommentare unter den eigenen Instagram-Posts, Anlässe der nächsten 21 Tage und harmlose ORF-Schlagzeilen.
 // Der Wortfilter aus anlaesse.mjs wirft Politik, Unglücke und Kriminalität vorab raus. Personen, Marken und Sport
 // filtert er nicht: Die Trends sind nur Anregung für ein Thema aus Resis Alltag, nie Vorlage (siehe autopilot/nachschub.md).
 // Jede Quelle darf scheitern, dann steht „nicht erreichbar“ da. Aufruf: node trends.mjs [JJJJ-MM-TT]
@@ -57,6 +57,17 @@ async function youtube() {
   return j.items.map((v) => `${v.snippet.title} (${v.snippet.channelTitle})`);
 }
 
+// Kommentare unter den eigenen Instagram-Posts: Fragen und Sprüche des Publikums als Stoff für Antwort-Karten.
+// Braucht das Recht instagram_manage_comments; fehlt es, steht „nicht erreichbar“ da. Namen werden nie übernommen.
+async function kommentare() {
+  const token = process.env.INSTAGRAM_ACCESS_TOKEN;
+  if (!token) throw new Error("kein Instagram-Token");
+  const ig = process.env.IG_USER_ID || "17841454284048783";
+  const j = await (await fetch(`https://graph.facebook.com/${ig}/media?${new URLSearchParams({ fields: "caption,comments.limit(20){text}", limit: "20", access_token: token })}`, { signal: AbortSignal.timeout(10000) })).json();
+  if (j.error) throw new Error(j.error.message);
+  return j.data.flatMap((m) => (m.comments?.data || []).map((c) => `${c.text.replace(/\s+/g, " ").replace(/@\S+/g, "@…").slice(0, 160)} (unter „${(m.caption || "").split("\n")[0].slice(0, 40)}“)`));
+}
+
 export function anlaesse(datum) {
   const liste = [];
   for (let i = 0; i < 21; i++) {
@@ -78,6 +89,7 @@ const quellen = [
   ["Reddit r/Austria, Top der Woche", async () => { await new Promise((r) => setTimeout(r, 5000)); return reddit("Austria"); }],
   ["YouTube-Trends Österreich", youtube],
   ["ORF-Schlagzeilen (Wien, Science, Ö3, FM4)", schlagzeilen],
+  ["Kommentare unter unseren Instagram-Posts", kommentare],
 ];
 
 const teile = [`## Trends ${datum}`, "", "Nur Anregung: Thema in Resis Alltag übersetzen, nie Personen, Marken, Politik, Unglücke oder fremde Memes übernehmen (autopilot/nachschub.md).", ""];

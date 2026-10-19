@@ -31,6 +31,7 @@ jobs:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
         run: node trends.mjs > "$RUNNER_TEMP/trends.md" && cat "$RUNNER_TEMP/trends.md"
       - name: Ans Trends-Issue hängen
         run: |
