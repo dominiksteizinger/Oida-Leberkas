@@ -6,9 +6,10 @@ name: Autopilot
 # Die Ergebnisse landen nur auf dem Branch autopilot-probe, gepostet wird nichts und die Warteschlange bleibt, wie sie ist.
 on:
   schedule:
-    # GitHub rechnet in UTC. Je zwei Zeiten pro Post, damit Sommer- und Winterzeit passen;
-    # der Schritt „Zeitfenster“ lässt nur den Lauf durch, der in Wien auf 7 oder 16 Uhr fällt.
-    - cron: "0 5,6,14,15 * * *"
+    # GitHub rechnet in UTC und startet geplante Läufe oft Stunden zu spät oder lässt sie ganz aus.
+    # Deshalb stündlich: der Schritt „Zeitfenster“ ordnet jeden Lauf dem fälligen Slot zu,
+    # „Schon gepostet?“ sorgt dafür, dass jeder Slot nur einmal gepostet wird.
+    - cron: "17 4-22 * * *"
   # Probeläufe per Hand (Actions > Autopilot > Run workflow)
   workflow_dispatch:
     inputs:
@@ -40,8 +41,8 @@ jobs:
           DATUM="${{ inputs.datum }}"; [ -z "$DATUM" ] && DATUM=$(TZ=Europe/Vienna date +%F)
           SLOT="${{ inputs.slot }}"
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            # Verspätete Läufe (GitHub startet geplante Läufe oft verzögert) zählen noch zum Slot
-            case "$STUNDE" in 07|08) SLOT=07;; 16|17) SLOT=16;; *) echo "In Wien ist es $STUNDE Uhr, kein Slot."; echo "weiter=false" >> "$GITHUB_OUTPUT"; exit 0;; esac
+            # Fälliger Slot: 7 bis 13 Uhr holt den Morgenpost nach, ab 16 Uhr den Nachmittagspost
+            case "$STUNDE" in 07|08|09|10|11|12|13) SLOT=07;; 16|17|18|19|20|21|22|23) SLOT=16;; *) echo "In Wien ist es $STUNDE Uhr, kein Slot."; echo "weiter=false" >> "$GITHUB_OUTPUT"; exit 0;; esac
           elif [ -z "$SLOT" ]; then
             [ "$STUNDE" -lt 12 ] && SLOT=07 || SLOT=16
           fi
@@ -68,8 +69,11 @@ jobs:
         id: doppelt
         if: steps.zeit.outputs.weiter == 'true'
         run: |
-          # Zwei Cron-Zeiten pro Slot: wenn der Post schon existiert, hat ein früherer Lauf ihn erledigt
-          if [ "$LIVE" = "true" ] && [ -f "tagebuch/${{ steps.zeit.outputs.id }}/post.jpg" ]; then
+          # Stündliche Läufe: hat ein früherer Lauf den Slot schon gepostet, ist nichts zu tun.
+          # Geplante Probeläufe zählen genauso, Probeläufe per Hand dürfen einen Slot wiederholen.
+          ID="${{ steps.zeit.outputs.id }}"
+          if { [ "$LIVE" = "true" ] && [ -f "tagebuch/$ID/gepostet.txt" ]; } || \
+             { [ "$LIVE" != "true" ] && [ "${{ github.event_name }}" = "schedule" ] && [ -f "tagebuch/$ID/post.jpg" ]; }; then
             echo "Post ${{ steps.zeit.outputs.id }} gibt es schon."; echo "weiter=false" >> "$GITHUB_OUTPUT"
           else
             echo "weiter=true" >> "$GITHUB_OUTPUT"
@@ -125,7 +129,8 @@ jobs:
           git config user.name "Resi Requiem Autopilot"
           git config user.email "autopilot@users.noreply.github.com"
           git add tagebuch
-          git commit -m "Tagebuch $ID"
+          # Ein neuer Versuch nach gescheitertem Posten kann dieselben Dateien erzeugen
+          git diff --cached --quiet || git commit -m "Tagebuch $ID"
           if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
           BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
           {
@@ -151,6 +156,22 @@ jobs:
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
           FACEBOOK_POSTEN: ${{ vars.FACEBOOK_POSTEN }}
         run: node posten.mjs "${{ steps.zeit.outputs.id }}"
+      - name: Als gepostet markieren
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
+        run: |
+          # Erst ab hier gilt der Slot als erledigt; scheitert das Posten, versucht es der nächste Lauf noch einmal
+          ID="${{ steps.zeit.outputs.id }}"
+          date -u +%FT%TZ > "tagebuch/$ID/gepostet.txt"
+          git add "tagebuch/$ID/gepostet.txt"
+          git commit -m "Gepostet $ID"
+          git pull --rebase origin main && git push origin HEAD:main
+      - name: Warteschlange abhaken
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
+        run: |
+          gh issue close "${{ steps.holen.outputs.issue }}" --repo "$GITHUB_REPOSITORY" --comment "Gepostet als ${{ steps.zeit.outputs.id }}."
+          for NR in $(gh issue list --repo "$GITHUB_REPOSITORY" --label leer --state open --json number --jq '.[].number'); do
+            gh issue close "$NR" --repo "$GITHUB_REPOSITORY" --comment "Es wird wieder gepostet."
+          done
       - name: YouTube Short
         if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' && vars.YOUTUBE_POSTEN == 'an' && hashFiles(format('tagebuch/{0}/reel.mp4', steps.zeit.outputs.id)) != ''
         working-directory: autopilot
@@ -160,22 +181,16 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           YOUTUBE_SICHTBARKEIT: ${{ vars.YOUTUBE_SICHTBARKEIT }}
         run: node youtube.mjs "${{ steps.zeit.outputs.id }}" "../tagebuch/${{ steps.zeit.outputs.id }}/reel.mp4"
-      - name: Warteschlange abhaken
-        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
-        run: |
-          gh issue close "${{ steps.holen.outputs.issue }}" --repo "$GITHUB_REPOSITORY" --comment "Gepostet als ${{ steps.zeit.outputs.id }}."
-          for NR in $(gh issue list --repo "$GITHUB_REPOSITORY" --label leer --state open --json number --jq '.[].number'); do
-            gh issue close "$NR" --repo "$GITHUB_REPOSITORY" --comment "Es wird wieder gepostet."
-          done
       - name: Token prüfen
         id: token
-        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' && steps.zeit.outputs.slot == '07'
+        # Auch wenn das Posten scheitert: ein abgelaufener Token ist dann meist der Grund
+        if: ${{ !cancelled() && steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' }}
         working-directory: autopilot
         env:
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
         run: node token.mjs
       - name: Token-Ablauf melden
-        if: steps.token.outputs.tage != '' && fromJSON(steps.token.outputs.tage) < 14
+        if: ${{ !cancelled() && steps.token.outputs.tage != '' && fromJSON(steps.token.outputs.tage) < 14 }}
         run: |
           gh label create token --repo "$GITHUB_REPOSITORY" --color D73A4A --description "Instagram-Token läuft bald ab" 2>/dev/null || true
           if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label token --state open --json number --jq '.[0].number // empty')" ]; then

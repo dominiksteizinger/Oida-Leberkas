@@ -55,8 +55,13 @@ await fertig(container);
 const ig = await graph(`${IG}/media_publish`, { creation_id: container });
 console.log(`Instagram: veröffentlicht als ${mitReel ? "Reel" : "Bild"} (${ig.id})`);
 
-// Facebook-Seite: das Bild mit Text
+// Facebook-Seite: das Bild mit Text. Ein Fehler hier bricht nicht ab, sonst gälte der Slot als
+// nicht gepostet und der nächste Lauf stellte denselben Post noch einmal auf Instagram.
 if (process.env.FACEBOOK_POSTEN === "an") {
-  const fb = await graph(`${SEITE}/photos`, { url: bild, message: text });
-  console.log(`Facebook: veröffentlicht (${fb.post_id || fb.id})`);
+  try {
+    const fb = await graph(`${SEITE}/photos`, { url: bild, message: text });
+    console.log(`Facebook: veröffentlicht (${fb.post_id || fb.id})`);
+  } catch (err) {
+    console.log(`::warning::Facebook nicht gepostet: ${err.message}`);
+  }
 }

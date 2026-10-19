@@ -1,6 +1,6 @@
 # Autopilot
 
-Postet zweimal am Tag für Resi Requiem: um **7:00** und um **16:00** Wiener Zeit (`.github/workflows/autopilot.yml`). GitHub rechnet in UTC, deshalb läuft der Cron zu beiden möglichen UTC-Stunden und der Lauf prüft selbst, ob es in Wien gerade 7 oder 16 Uhr ist. So passt es im Sommer und im Winter, und ein Post geht nie doppelt raus. Probeläufe per Hand: Actions → Autopilot → Run workflow (Datum und Slot wählbar).
+Postet zweimal am Tag für Resi Requiem: um **7:00** und um **16:00** Wiener Zeit (`.github/workflows/autopilot.yml`). GitHub startet geplante Läufe oft Stunden zu spät oder gar nicht, deshalb läuft der Cron stündlich. Jeder Lauf holt den fälligen Slot nach (7 bis 13 Uhr den Morgenpost, ab 16 Uhr den Nachmittagspost). Nach erfolgreichem Instagram-Post schreibt der Lauf `tagebuch/<id>/gepostet.txt`; gibt es die Datei, tun spätere Läufe nichts. Scheitert das Posten, versucht es der nächste Lauf noch einmal mit demselben Post. Probeläufe per Hand: Actions → Autopilot → Run workflow (Datum und Slot wählbar).
 
 Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die Posts entstehen im Chat mit Claude und landen fertig in der Warteschlange.
 
