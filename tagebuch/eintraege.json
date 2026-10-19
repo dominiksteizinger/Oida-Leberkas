@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-19-16",
+    "datum": "2026-10-19",
+    "slot": "16",
+    "format": "szene",
+    "bild": "nebel-friedhof.jpg",
+    "text": "Endlich Nebel. [ich sehe keine Menschen] [keine Menschen sehen mich] [Wellness]",
+    "bilder": [
+      "tagebuch/2026-10-19-16/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-19-07",
     "datum": "2026-10-19",
     "slot": "07",
