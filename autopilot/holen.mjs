@@ -30,7 +30,10 @@ function pruefe(body) {
 // Nur Issues vom Repo-Owner: Die Vorlage „Fertiger Post“ setzt das Label automatisch, auch bei Fremden.
 const owner = process.env.GITHUB_REPOSITORY_OWNER;
 if (!owner) throw new Error("GITHUB_REPOSITORY_OWNER fehlt");
+// ISSUE (optional, z. B. per Hand gestartet): nur dieser Post, sonst der älteste passende.
+const gewaehlt = process.env.ISSUE ? Number(process.env.ISSUE) : null;
 const offen = JSON.parse(gh("issue", "list", "--repo", repo, "--label", "warteschlange", "--state", "open", "--author", owner, "--limit", "100", "--json", "number,body,createdAt"))
+  .filter((issue) => !gewaehlt || issue.number === gewaehlt)
   .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
 const passend = [];

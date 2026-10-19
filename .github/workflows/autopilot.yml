@@ -21,6 +21,10 @@ on:
         description: "07 oder 16, leer = nach aktueller Uhrzeit"
         required: false
         default: ""
+      issue:
+        description: "Nummer eines bestimmten Warteschlangen-Issues, leer = der älteste passende"
+        required: false
+        default: ""
 permissions:
   contents: write
   issues: write
@@ -106,6 +110,8 @@ jobs:
           gh label create warteschlange --repo "$GITHUB_REPOSITORY" --color FF4FA3 --description "Fertiger Post, den der Autopilot als Nächstes nimmt" 2>/dev/null || true
           gh label create fehler --repo "$GITHUB_REPOSITORY" --color D73A4A --description "Post ließ sich nicht lesen" 2>/dev/null || true
           node holen.mjs "${{ steps.zeit.outputs.id }}" "${{ steps.zeit.outputs.datum }}" "${{ steps.zeit.outputs.slot }}"
+        env:
+          ISSUE: ${{ inputs.issue }}
       - name: Warteschlange leer melden
         if: steps.holen.outputs.gefunden == 'false' && env.LIVE == 'true'
         run: |
