@@ -1,0 +1,39 @@
+name: Bild-Probe
+# Erzeugt neue Resi-Bilder über die Gemini-API (bildgen.mjs, ca. 3–7 Cent pro Bild) und legt sie auf dem Branch bild-probe ab.
+# Nur von Hand. Ändert weder main noch die Bibliothek; was taugt, übernimmt Claude danach per PR in autopilot/bilder.
+on:
+  workflow_dispatch:
+    inputs:
+      auftraege:
+        description: "JSON-Datei mit den Szenen (relativ zu autopilot/)"
+        required: false
+        default: "bilder-probe.json"
+permissions:
+  contents: write
+concurrency:
+  group: bild-probe
+  cancel-in-progress: false
+jobs:
+  bilder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Bilder erzeugen
+        working-directory: autopilot
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node bildgen.mjs "${{ inputs.auftraege }}" "$RUNNER_TEMP/bilder"
+      - name: Auf Branch bild-probe ablegen
+        run: |
+          # Eigener Ordner ohne Verlauf: der Branch enthält nur die Probebilder
+          ARBEIT="$RUNNER_TEMP/bild-probe"
+          rm -rf "$ARBEIT" && mkdir -p "$ARBEIT" && cp -r "$RUNNER_TEMP/bilder" "$ARBEIT/"
+          cd "$ARBEIT"
+          git init -q -b bild-probe
+          git config user.name "Resi Requiem Autopilot"
+          git config user.email "autopilot@users.noreply.github.com"
+          git add bilder && git commit -qm "Bild-Probe: $(ls bilder | wc -l) Bilder"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" bild-probe
