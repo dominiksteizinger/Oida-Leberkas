@@ -18,7 +18,7 @@ const STIMMLAGEN = {
 };
 
 // Aufbereitung der Rohspur (siehe sprechen)
-const AUFBEREITUNG = "highpass=f=80,lowpass=f=11000,afftdn=nf=-30:nt=w,afade=t=in:d=0.03,areverse,afade=t=in:d=0.03,areverse,loudnorm=I=-16:TP=-1.5:LRA=11";
+const AUFBEREITUNG = "highpass=f=80,equalizer=f=4000:t=q:w=1.2:g=2.5,afade=t=in:d=0.03,areverse,afade=t=in:d=0.03,areverse,loudnorm=I=-16:TP=-1.5:LRA=11";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
