@@ -1,0 +1,30 @@
+name: Heartbeat
+# Kontrolle für den Autopilot: Hat ein Slot (07 oder 16) nicht gepostet, bekommt Dominik ein Issue mit Label „ausfall“.
+# Läuft über den GitHub-Cron, unabhängig vom Auslöser des Autopiloten (cron-job.org), und kostet nichts.
+# Zusätzlich kann cron-job.org diesen Workflow um 12:20 und 20:20 Wiener Zeit per workflow_dispatch anstoßen (siehe autopilot/README.md).
+on:
+  schedule:
+    - cron: "50 10-21 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+  actions: read
+concurrency:
+  group: heartbeat
+  cancel-in-progress: false
+jobs:
+  pruefen:
+    runs-on: ubuntu-latest
+    env:
+      LIVE: ${{ vars.POSTEN == 'an' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Slots prüfen
+        run: node autopilot/heartbeat.mjs

@@ -8,6 +8,8 @@ import { execFileSync } from "node:child_process";
 import { Eintrag } from "./eintrag.mjs";
 import { OHNE_BILD } from "./formate.mjs";
 import { bildKonfig, pruefeBild, pruefeTags, verbuchen } from "./bildregeln.mjs";
+import { pruefeWortfilter } from "./wortfilter.mjs";
+import { mechanikLesen, pruefeQuote, verlaufLesen } from "./humorquote.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const WURZEL = path.join(HIER, "..");
@@ -28,11 +30,13 @@ function pruefe(body) {
   if (!block) throw new Error("Kein ```json-Block im Issue");
   const roh = JSON.parse(block[1]);
   const e = Eintrag.parse(roh);
+  // Wortfilter: Leberkäse/Semmel nie in Text, Caption oder Hashtags (nur im Bild erlaubt)
+  pruefeWortfilter(e);
   if (!OHNE_BILD.has(e.inhalt.format) && !e.bild) throw new Error(`Format ${e.inhalt.format} braucht ein Bild`);
   if (e.bild && !bekannt.has(e.bild)) throw new Error(`Bild ${e.bild} gibt es nicht in bibliothek.json`);
   // ab/bis (optional, JJJJ-MM-TT): Post nur in diesem Zeitraum, z. B. für Anlässe (Allerheiligen, Martinstag)
   for (const k of ["ab", "bis"]) if (roh[k] !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(roh[k])) throw new Error(`${k} muss JJJJ-MM-TT sein`);
-  return { e, wunschSlot: roh.slot ? String(roh.slot) : null, ab: roh.ab || null, bis: roh.bis || null };
+  return { e, mechanik: mechanikLesen(roh), wunschSlot: roh.slot ? String(roh.slot) : null, ab: roh.ab || null, bis: roh.bis || null };
 }
 
 // Nur Issues vom Repo-Owner: Die Vorlage „Fertiger Post“ setzt das Label automatisch, auch bei Fremden.
@@ -52,7 +56,10 @@ const ablehnen = (issue, meldung) => {
 
 // Der erste Post, der zum Slot passt und die Bildregeln erfüllt. Bildregel-Fehler landen wie ungültige Posts im Label „fehler“.
 let gefunden = null;
+let zurueck = null; // erster Post, den die Humor-Quote zurückstellt; kommt nur dran, wenn nichts anderes passt
 let verbleibend = 0;
+// Mechaniken der zuletzt gepostenden Posts, plus der heute schon gewählte (nur relevant, wenn mehrere Slots in einem Lauf liefen)
+const verlauf = verlaufLesen(path.join(WURZEL, "tagebuch"), id);
 for (const issue of offen) {
   let p;
   try {
@@ -74,7 +81,23 @@ for (const issue of offen) {
       continue;
     }
   }
-  gefunden = { issue, e: p.e };
+  // Humor-Quote: zu oft dieselbe Mechanik hintereinander → zurückstellen. Anlass-Posts (ab/bis) laufen immer, sonst verpassen sie ihren Tag.
+  const quote = pruefeQuote(verlauf, p.mechanik);
+  if (!quote.ok && !p.ab && !p.bis) {
+    console.log(`Humor-Quote: #${issue.number} zurückgestellt, ${quote.grund}.`);
+    verbleibend++;
+    zurueck = zurueck || { issue, e: p.e, mechanik: p.mechanik, warnung: quote.grund };
+    continue;
+  }
+  gefunden = { issue, e: p.e, mechanik: p.mechanik };
+}
+let quoteWarnung = "";
+if (!gefunden && zurueck) {
+  // Nichts anderes da: lieber posten als ausfallen, aber Dominik bekommt die Warnung (Schritt im Workflow)
+  gefunden = zurueck;
+  verbleibend--;
+  quoteWarnung = `#${zurueck.issue.number}: ${zurueck.warnung}`;
+  console.log(`::warning::Humor-Quote verletzt, weil nichts anderes in der Warteschlange passt: ${quoteWarnung}`);
 }
 
 if (!gefunden) {
@@ -86,10 +109,10 @@ if (!gefunden) {
 const { issue, e } = gefunden;
 const ordner = path.join(WURZEL, "tagebuch", id);
 fs.mkdirSync(ordner, { recursive: true });
-fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id, datum, slot, ...e, quelle: `#${issue.number}` }, null, 2) + "\n");
+fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id, datum, slot, ...e, ...(gefunden.mechanik ? { mechanik: gefunden.mechanik } : {}), quelle: `#${issue.number}` }, null, 2) + "\n");
 if (e.bild) {
   nutzung = verbuchen(nutzung, { id, datum, slot, bild: e.bild, e });
   fs.writeFileSync(nutzungDatei, JSON.stringify(nutzung, null, 2) + "\n");
 }
 console.log(`Post aus #${issue.number} (${e.inhalt.format}), noch ${verbleibend} in der Warteschlange.`);
-ausgabe(`gefunden=true\nissue=${issue.number}\nrest=${verbleibend}\n`);
+ausgabe(`gefunden=true\nissue=${issue.number}\nrest=${verbleibend}\nquote_warnung=${quoteWarnung}\n`);

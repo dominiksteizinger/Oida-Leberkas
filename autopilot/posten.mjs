@@ -3,12 +3,16 @@
 import fs from "node:fs";
 import path from "node:path";
 import { captionText } from "./eintrag.mjs";
+import { pruefeWortfilter } from "./wortfilter.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const id = process.argv[2];
 if (!id) throw new Error("Aufruf: node posten.mjs <id>");
 const ordner = path.join(HIER, "..", "tagebuch", id);
 const e = JSON.parse(fs.readFileSync(path.join(ordner, "eintrag.json"), "utf8"));
+
+// Letzte Prüfung vor dem Posten: Leberkäse/Semmel nie in Text, Caption oder Hashtags
+pruefeWortfilter(e);
 
 const GRAPH = "https://graph.facebook.com";
 const TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN;
