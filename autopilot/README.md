@@ -38,7 +38,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
   - `szene`: `satz`, `klammern` (1–3)
 - `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`.
 - `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
-- `musik` (optional): wird zurzeit nicht verwendet, die Reels laufen ohne Ton.
+- `musik` (optional): wird ignoriert, die Reels laufen ohne Ton. Die alten Tracks und `musik_generator.py` liegen in der Git-Historie.
 - Nur Issues mit dem Label `warteschlange` zählen, und nur, wenn der Repo-Owner sie angelegt hat. Die Vorlage setzt das Label auch bei Fremden, deshalb filtert `holen.mjs` nach dem Absender.
 
 ## Einstellungen (Settings → Secrets and variables → Actions → Variables)
@@ -52,7 +52,6 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 
 Jeder Post hängt als Kommentar an der Sammelliste (Label `sammelliste`). 👍 oder 👎 am Kommentar, oder ein eigener Kommentar, der mit `gut` oder `schlecht` beginnt. Claude liest das, bevor neue Posts geschrieben werden.
 
-## Bilder und Musik
+## Bilder
 
 - `bilder/` ist die Bibliothek, `bibliothek.json` beschreibt jedes Bild in einer Zeile: `szene` für Bilder mit Hintergrund, `figur` für Reaktionsbilder auf Weiß (für das Format `antwort`).
-- `musik/` enthält lizenzfreie Tracks, `musik.json` beschreibt sie (`datei`, `titel`, `stimmung`, Lizenz). Neue Musik wirft Dominik in den Projektordner `eingang/musik/` mit der Lizenz in `lizenzen.md`.

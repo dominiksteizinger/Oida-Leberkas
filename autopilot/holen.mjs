@@ -16,7 +16,6 @@ const gh = (...args) => execFileSync("gh", args, { encoding: "utf8" });
 const ausgabe = (zeilen) => process.env.GITHUB_OUTPUT && fs.appendFileSync(process.env.GITHUB_OUTPUT, zeilen);
 
 const bibliothek = new Set(JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")).map((b) => b.datei));
-const musik = new Set(JSON.parse(fs.readFileSync(path.join(HIER, "musik.json"), "utf8")).map((m) => m.datei));
 
 function pruefe(body) {
   const block = body.match(/```json\s*([\s\S]*?)```/);
@@ -25,7 +24,6 @@ function pruefe(body) {
   const e = Eintrag.parse(roh);
   if (!OHNE_BILD.has(e.inhalt.format) && !e.bild) throw new Error(`Format ${e.inhalt.format} braucht ein Bild`);
   if (e.bild && !bibliothek.has(e.bild)) throw new Error(`Bild ${e.bild} gibt es nicht in bibliothek.json`);
-  if (e.musik && !musik.has(e.musik)) throw new Error(`Musik ${e.musik} gibt es nicht in musik.json`);
   return { e, wunschSlot: roh.slot ? String(roh.slot) : null };
 }
 
