@@ -90,6 +90,18 @@ Fällt die Stimme beim Posten trotzdem aus (Limit, Schlüssel), geht das Reel st
 - `HANDLE`: Name im Post, Standard `resi.requiem`.
 - `JINGLE` = `an`: Jingle ins Reel mischen. Braucht die Datei `autopilot/assets/jingle.mp3` (3 bis 5 s, höchstens 6 s). Fehlt die Datei, läuft das Reel ohne Jingle wie bisher. Standard ist das Ende: Das letzte Standbild steht, bis der Jingle durch ist. `JINGLE_POS` = `anfang` setzt ihn vor die Stimme.
 
+## Kommentare (seit 20.10.2026)
+
+`.github/workflows/kommentare.yml` läuft viermal am Tag und beantwortet neue Kommentare auf Instagram und YouTube automatisch aus dem festen Pool `antworten.json`. Keine Claude-API, kostet nichts.
+
+- `kommentare.mjs` ordnet jeden Kommentar per Wortliste ein: `lachen`, `relatable`, `lob`, `herbert`, `flirt` (Resi blitzt ab), `kritik`, `markiert` (nur @Namen). Echte Fragen, zu lange und unklare Kommentare bleiben unbeantwortet.
+- Nie beantwortet, sondern im Issue mit Label `kommentare` gemeldet (Dominik zugewiesen): Links und Werbung, Hass, Sexuelles und Körper, Krise und Trauer, vermutlich Minderjährige, Fragen zu KI oder Echtheit, Politik und Religion. Hass und Sexuelles werden dort nicht zitiert.
+- Grenzen: höchstens 10 Antworten am Tag, 3 pro Post, nur Kommentare der letzten 10 Tage. Jede Antwort höchstens alle 30 Tage und nie zweimal unter demselben Post. Ist eine Kategorie aufgebraucht, bleibt der Kommentar liegen.
+- `kommentare-log.json` merkt sich beantwortete und gemeldete Kommentar-IDs (keine Namen).
+- Neue Antworten: einfach in die passende Liste in `antworten.json` schreiben (Hochdeutsch, Deadpan, kurz). Tests: `node --test autopilot/kommentare.test.mjs`.
+- Abschalten: Repo-Variable `KOMMENTARE_ANTWORTEN` = `aus`. Probelauf per Hand: Actions → Kommentare → Run workflow („Nur anzeigen“).
+- Rechte: `instagram_manage_comments` und `youtube.force-ssl` (siehe `messung-anleitung.md`). Fehlt eins, wird die Plattform übersprungen.
+
 ## Bewertung
 
 Jeder Post hängt als Kommentar an der Sammelliste (Label `sammelliste`). 👍 oder 👎 am Kommentar, oder ein eigener Kommentar, der mit `gut` oder `schlecht` beginnt. Claude liest das, bevor neue Posts geschrieben werden.
