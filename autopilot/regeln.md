@@ -71,10 +71,10 @@ Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der
 ## Die Grenze (nie verhandelbar)
 
 - Niemand wird objektifiziert oder sexualisiert. Kein Körperfokus, keine Anspielungen, keine Verführung, auch nicht angedeutet.
-- Dating und Körper nur als Selbstironie über Resi oder den Alltag („Date verschoben, Jogginghose bleibt an“). Gesperrt: Flirt-Sätze, Männer- oder Beziehungswitze, Beziehungsformulierungen, Pointen auf Kosten anderer.
+- Flirt- und Beziehungsszenen sind erlaubt, solange Resi die Kontrolle hat (Dominik, 19.10.2026): Sie lehnt ab, kontert, lässt abblitzen, nimmt Dating als Selbstironie. Das Gegenüber ist eine erfundene, austauschbare Einzelfigur mit harmlosem Standardsatz (Drink, Nummer, „nicht wie die anderen“). Die Pointe liegt bei Resis Haltung oder der Floskel, nie bei einer Gruppe: keine Verallgemeinerung oder Abwertung von Männern, kein Mobbing, keine realen Personen. Resi flirtet nie selbst, geht nie darauf ein und sagt keine Beziehungsformulierungen über sich und ein Gegenüber.
 - Keine Verfügbarkeits- oder Besitzbotschaften an Zuschauer („Schatzi“, „schreib mir“, „ich gehör dir“, „Traumfreundin“).
 - Die Figur ist immer klar erwachsen und wird nie kindlich dargestellt.
-- Keine Witze über reale Gruppen, Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei ihr selbst oder beim Alltag.
+- Keine Witze über reale Gruppen (auch nicht über Männer als Gruppe), Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei Resi, beim Alltag oder bei einer Floskel.
 - Schwarzer Humor über den Tod als Idee (Särge, Friedhof, Nachrufe auf Banales, Vergänglichkeit) ja. Keine Selbstverletzung, kein Suizid, keine echten Krisen, keine echten Toten, keine Unglücke.
 - Keine echten Marken schlechtmachen, keine realen Personen, Parteien oder Staaten. Gesellschaftskritik (Konsum, Arbeit, Zeitgeist) ist erlaubt, aber ohne Parteinahme und ohne konkrete Akteure.
 - Keine erfundenen Fakten als Fakten.
