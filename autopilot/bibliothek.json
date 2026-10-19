@@ -74,5 +74,6 @@
  {"datei":"kino-allein.jpg","art":"szene","tags":["neutral"],"gesicht":"ja","kopf":[0.5,0.35],"beschreibung":"Sitzt allein in der Mitte einer leeren Reihe im dunklen Kino, Popcorn unberührt, Herbert daneben"},
  {"datei":"dach-teleskop-herbert.jpg","art":"szene","tags":["neutral"],"gesicht":"ja","kopf":[0.75,0.3],"beschreibung":"Sitzt nachts auf einem Dach neben einem Teleskop und zeigt Herbert den Mond"},
  {"datei":"heuriger-allein-semmel.jpg","art":"szene","tags":["herbst"],"gesicht":"ja","kopf":[0.5,0.42],"beschreibung":"Sitzt abends im Heurigengarten allein an einem langen Holztisch mit Traubensaft und Semmel, Lichterkette, Herbert daneben"},
- {"datei":"sofa-decke-handy.jpg","art":"szene","tags":["neutral"],"gesicht":"ja","kopf":[0.52,0.3],"beschreibung":"Sitzt spätnachts auf dem Sofa, bis zum Kinn in eine schwarze Decke gewickelt, Gesicht vom Handy beleuchtet, Herbert in der Decke neben ihr"}
+ {"datei":"sofa-decke-handy.jpg","art":"szene","tags":["neutral"],"gesicht":"ja","kopf":[0.52,0.3],"beschreibung":"Sitzt spätnachts auf dem Sofa, bis zum Kinn in eine schwarze Decke gewickelt, Gesicht vom Handy beleuchtet, Herbert in der Decke neben ihr"},
+ {"datei":"ubahn-sitzt-herbert.jpg","art":"szene","tags":["neutral"],"gesicht":"ja","kopf":[0.52,0.4],"beschreibung":"Sitzt tagsüber in der U-Bahn am Fenster, Hände im Schoß, ausdruckslos, andere starren aufs Handy, Herbert auf ihrer Schulter"}
 ]
