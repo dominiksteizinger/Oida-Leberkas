@@ -21,6 +21,8 @@ Trend-Musik (Instagram/TikTok) gibt es nur in den Apps und lässt sich per API n
    - Letzter Kommentar im Issue `trends`. Ist er älter als 2 Tage, `trends.yml` per workflow_dispatch starten und warten.
    - Letzte Kommentare im Issue `signale`.
    - Offene Warteschlange: alle offenen Issues mit Label `warteschlange` (Nummer und Body) als JSON nach `offen.json` speichern. Reichweite = Anzahl / 2 Tage.
+   - Neueste Auswertung `auswertung/<datum>.md` (Messung, montags): Posts mit den meisten Saves und Shares bekommen eine neue Folge mit neuer Wendung, schwache Formate seltener.
+   - Kommentare unter unseren Posts (im Trends-Kommentar): Fragen und Sprüche des Publikums werden zu Antwort-Karten (`antwort`, `von` erfunden, nie den echten Namen), nur wenn sie harmlos sind und den Send-Test bestehen.
    - Daumen in der Sammelliste (Bewertungen), `tagebuch/eintraege.json` (zuletzt gepostet, nichts wiederholen), `/mnt/project-files/ideen/ideen.md` (Ideen mit Status **frei** zuerst verwenden und dort auf „in Warteschlange #NR“ setzen).
 4. **Menge:** Die Warteschlange soll drei bis vier Wochen reichen (42 bis 56 offene Posts, zwei pro Tag). Neu schreiben: `56 − offen`, mindestens 4 (die Trend- und Anlass-Posts), höchstens 24. Fehlen danach Anlässe der nächsten fünf Wochen (Advent, Nikolo, Weihnachten, Silvester …), dafür Anlass-Posts mit `ab`/`bis` dazu.
 5. **Trend-Übersetzung (2 bis 4 Posts):** Aus `trends` nur Themen nehmen, die viele kennen und die harmlos sind (Wetter, Zeitumstellung, Feiertag, Ferien, ein viel gesuchtes Alltagsthema, ein Format, das gerade überall läuft). Daraus eine Situation aus Resis Alltag machen; der Trend ist Anlass, nicht Inhalt.
