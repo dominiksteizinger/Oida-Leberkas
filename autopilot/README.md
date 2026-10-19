@@ -54,7 +54,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 
 ## Stimmen-Cache
 
-Jeder gesprochene Satz liegt als Opus-Datei in `stimme-cache/` (Schlüssel: Stimme plus Text). Der Workflow „Stimmen vorab“ (`stimme-vorab.mjs`, 04:40 und 11:40 UTC, nur mit `STIMME` = `an`) rendert alle Posts der Warteschlange, sammelt die Sätze und füllt den Cache vor, höchstens 100 neue Sätze pro Lauf mit 8 s Abstand, damit das Free-Tier-Limit von Gemini-TTS hält. Bei einem 429 hört der Lauf auf und macht am nächsten Termin weiter. Per Hand: Actions → Stimmen vorab → Run workflow. Datum und Uhrzeit der Notizen-Oberfläche werden nicht gesprochen (`sprechtext` in `stimme.mjs`), sonst träfe der Cache nie.
+Jeder gesprochene Satz liegt als Opus-Datei in `stimme-cache/` (Schlüssel: Stimme plus Text). Der Workflow „Stimmen vorab“ (`stimme-vorab.mjs`, 08:30 und 20:30 UTC, nur mit `STIMME` = `an`) rendert alle Posts der Warteschlange, sammelt die Sätze und füllt den Cache vor, höchstens 100 neue Sätze pro Lauf mit 8 s Abstand, damit das Free-Tier-Limit von Gemini-TTS hält. Bei einem 429 hört der Lauf auf und macht am nächsten Termin weiter. Per Hand: Actions → Stimmen vorab → Run workflow. Datum und Uhrzeit der Notizen-Oberfläche werden nicht gesprochen (`sprechtext` in `stimme.mjs`), sonst träfe der Cache nie.
 
 Fällt die Stimme beim Posten trotzdem aus (Limit, Schlüssel), geht das Reel stumm raus, und der Lauf legt das Issue „Reel ohne Stimme gepostet“ (Label `stimme`) für Dominik an.
 
