@@ -1,0 +1,80 @@
+{
+  "hinweise": [
+    "Neuer Post. Ich sage nichts dazu. Er sagt genug.",
+    "Es gibt einen neuen Post. Ich habe es auch erst jetzt erfahren.",
+    "Neuer Post im Profil. Herbert hat ihn freigegeben.",
+    "Ein neuer Post. Anschauen ist freiwillig. Weiterschicken auch.",
+    "Ich habe wieder etwas gepostet. Ich entschuldige mich nicht.",
+    "Neuer Post. Wer ihn verschickt, weiß, an wen.",
+    "Frisch gepostet. Ohne Grund, aber mit Absicht.",
+    "Wie es ausgeht, steht im Profil. Ich verrate nichts.",
+    "Der Rest ist im neuen Post. Ich warte hier."
+  ],
+  "wetter": {
+    "sonne": [
+      { "gefuehlt": "Verdächtig", "zusatz": "Die Sonnenbrille bleibt schwarz." },
+      { "gefuehlt": "Zu fröhlich", "zusatz": "Ich bleibe vorsichtshalber drinnen." }
+    ],
+    "wolken": [
+      { "gefuehlt": "Angemessen", "zusatz": "Endlich Wetter mit Haltung." },
+      { "gefuehlt": "Wie ich", "zusatz": "Grau, ruhig, keine Pläne." }
+    ],
+    "nebel": [
+      { "gefuehlt": "Gemütlich", "zusatz": "Niemand sieht mich. Perfekt." },
+      { "gefuehlt": "Friedhofsromantik", "zusatz": "Sicht 50 m. Gesprächsbedarf null." }
+    ],
+    "regen": [
+      { "gefuehlt": "Persönlich", "zusatz": "Der Himmel hat auch keine Lust." },
+      { "gefuehlt": "Endlich ehrlich", "zusatz": "Der Schirm mit Spitze ist bereit." }
+    ],
+    "schnee": [
+      { "gefuehlt": "Leise", "zusatz": "Die Stadt hält endlich den Mund." },
+      { "gefuehlt": "Feierlich", "zusatz": "Alles weiß. Ich bleibe schwarz." }
+    ],
+    "gewitter": [
+      { "gefuehlt": "Dramatisch", "zusatz": "Herbert unter der Decke. Ich auch." }
+    ],
+    "hitze": [
+      { "gefuehlt": "Unzumutbar", "zusatz": "Schwarz bleibt. Aus Prinzip." }
+    ],
+    "frost": [
+      { "gefuehlt": "Wie mein Blick", "zusatz": "Endlich Wetter auf meinem Niveau." }
+    ]
+  },
+  "karten": [
+    { "id": "zeitumstellung-2026", "ab": "2026-10-24", "bis": "2026-10-25",
+      "inhalt": { "format": "storyfrage", "frage": "Freust du dich auf die Zeitumstellung?", "antwort": "Eine Stunde mehr. Ich verbringe sie wach im Dunkeln." } },
+    { "id": "halloween-2026", "ab": "2026-10-31", "bis": "2026-10-31",
+      "inhalt": { "format": "umfrage", "frage": "Als was gehst du zu Halloween?", "optionen": [{ "text": "Als ich", "prozent": 88 }, { "text": "Gar nicht", "prozent": 12 }], "fuss": "Mein Kostüm ist mein Alltag." } },
+    { "id": "allerheiligen-2026", "ab": "2026-11-01", "bis": "2026-11-01",
+      "inhalt": { "format": "notiz", "titel": "Allerheiligen", "absaetze": ["Ich wohne neben dem Zentralfriedhof.", "Heute ist die ganze Straße voller Besuch.", "Keiner davon für mich."] } },
+    { "id": "umfrage-wie-gehts",
+      "inhalt": { "format": "umfrage", "frage": "Wie geht es dir heute wirklich?", "optionen": [{ "text": "Gut", "prozent": 4 }, { "text": "Es ist Montag", "prozent": 71 }, { "text": "Frag nicht", "prozent": 25 }], "fuss": "Abgestimmt habe nur ich. Dreimal." } },
+    { "id": "termin-abgesagt",
+      "inhalt": { "format": "termin", "datum": "Heute", "titel": "Mit Leuten treffen", "zeit": "19:00 bis 21:00", "zeilen": ["Abgesagt um 18:52.", "Von beiden Seiten. Erleichtert."] } },
+    { "id": "horoskop-wecker",
+      "inhalt": { "format": "horoskop", "zeichen": "Skorpion", "symbol": "♏", "text": "Heute meldet sich jemand von früher. Es ist dein Wecker.", "werte": [{ "name": "Liebe", "saerge": 1 }, { "name": "Arbeit", "saerge": 4 }, { "name": "Schlaf", "saerge": 0 }] } },
+    { "id": "akku-stiegenhaus",
+      "inhalt": { "format": "akku", "name": "Sozialer Akku", "prozent": 3, "text": "Reicht noch für ein Nicken im Stiegenhaus. Nicht für ein Gespräch.", "knopf_links": "Später", "knopf_rechts": "Tür zu" } },
+    { "id": "notiz-frueh-schlafen",
+      "inhalt": { "format": "notiz", "titel": "Nachruf", "absaetze": ["Wir verabschieden heute meinen Vorsatz, früher schlafen zu gehen.", "Er wurde 22 Uhr alt.", "Er starb um 1:40 bei einem Video über Brückenbau."] } },
+    { "id": "abwesenheit-geistig",
+      "inhalt": { "format": "abwesenheit", "betreff": "Heute", "zeilen": ["Danke für deine Nachricht.", "Ich bin heute im Büro anwesend.", "Geistig bitte an Herbert wenden."], "gruss": "Mit freundlichen Grüßen aus der Gruft" } },
+    { "id": "storyfrage-wochenende",
+      "inhalt": { "format": "storyfrage", "frage": "Was machst du am Wochenende?", "antwort": "Ausschlafen. Dann bereuen, dass es schon dunkel ist." } },
+    { "id": "szene-produktiv",
+      "inhalt": { "format": "szene", "satz": "Heute wollte ich produktiv sein.", "klammern": ["Dann war es 15 Uhr.", "Dann war es dunkel."] } },
+    { "id": "fokus-nicht-stoeren",
+      "inhalt": { "format": "fokus", "titel": "Nicht stören", "status": "An bis morgen, 9:00", "text": "Resi hat Mitteilungen stummgeschaltet. Auch die, auf die sie wartet.", "ausnahmen": "Herbert" } },
+    { "id": "ladebalken-motivation",
+      "inhalt": { "format": "ladebalken", "titel": "Motivation wird geladen", "prozent": 12, "rest": "noch 3 Wochen", "fuss": "Bitte nicht ansprechen, bis der Balken voll ist." } },
+    { "id": "suchverlauf-wie-lange",
+      "inhalt": { "format": "suchverlauf", "eingabe": "wie lange ist", "vorschlaege": ["wie lange ist noch bis Freitag", "wie lange ist zu spät zum Absagen", "wie lange ist ein Montag wirklich", "wie lange ist man noch jung"] } },
+    { "id": "todo-drei-von-vier",
+      "inhalt": { "format": "todo", "titel": "Heute", "punkte": [{ "text": "Aufstehen", "erledigt": true }, { "text": "Duschen", "erledigt": true }, { "text": "Menschen ertragen", "erledigt": false }, { "text": "Wieder hinlegen", "erledigt": true }], "fazit": "Drei von vier. Den Rest nehme ich mir frei." } },
+    { "id": "timer-mittagspause",
+      "inhalt": { "format": "timer", "label": "Mittagspause", "zeit": "00:03", "fuss": "Reicht zum Seufzen. Essen wird knapp." } },
+    { "id": "mitteilungen-wecker",
+      "inhalt": { "format": "mitteilungen", "mitteilungen": [{ "app": "Wecker", "zeit": "6:30", "titel": "Aufstehen", "text": "Schlummern (9 Min.)" }, { "app": "Wecker", "zeit": "6:39", "titel": "Aufstehen", "text": "Schlummern (9 Min.)" }, { "app": "Wecker", "zeit": "6:48", "titel": "Wecker", "text": "Ich höre jetzt auch auf, an dich zu glauben." }] } }
+  ]
+}

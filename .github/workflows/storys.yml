@@ -1,0 +1,99 @@
+name: Storys
+# Instagram-Storys von Resi (seit 20.10.2026), Standbilder, keine Claude-API:
+# mittags (11 bis 15 Uhr Wien) eine Karte aus autopilot/storys.json oder an auffälligen Wettertagen die Wetter-Story,
+# abends (17 bis 21 Uhr) ein Hinweis auf den Post von 16 Uhr. Details: autopilot/README.md, Abschnitt „Storys“.
+# Gepostet wird nur mit den Repo-Variablen STORYS = an und POSTEN = an auf main, sonst Probebetrieb (Bild als Artefakt am Lauf).
+on:
+  schedule:
+    # GitHub startet geplante Läufe oft spät; stündlich, „storys.mjs bauen“ ordnet die Wiener Uhrzeit dem Slot zu
+    - cron: "52 8-20 * * *"
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "mittag oder abend, leer = nach aktueller Uhrzeit"
+        required: false
+        default: ""
+      datum:
+        description: "Datum (JJJJ-MM-TT), leer = heute"
+        required: false
+        default: ""
+      karte:
+        description: "ID einer bestimmten Karte aus storys.json (nur mittag), leer = automatisch"
+        required: false
+        default: ""
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: storys
+  cancel-in-progress: false
+jobs:
+  story:
+    runs-on: ubuntu-latest
+    env:
+      LIVE: ${{ vars.STORYS == 'an' && vars.POSTEN == 'an' && github.ref == 'refs/heads/main' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Abhängigkeiten
+        working-directory: autopilot
+        run: npm ci --no-audit --no-fund
+      - name: Story bauen
+        id: bau
+        working-directory: autopilot
+        run: |
+          fc-list | grep -qi "Noto Color Emoji" || (sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-color-emoji)
+          command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+          node storys.mjs bauen "${{ inputs.datum }}" "${{ inputs.slot }}" "${{ inputs.karte }}"
+      - name: Probe zeigen
+        if: steps.bau.outputs.gebaut == 'true' && env.LIVE != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: story-${{ steps.bau.outputs.id }}
+          path: tagebuch/storys/${{ steps.bau.outputs.id }}/story.jpg
+      - name: Bild hochladen
+        if: steps.bau.outputs.gebaut == 'true' && env.LIVE == 'true'
+        run: |
+          # Instagram holt das Bild über die Webseite (GitHub Pages), deshalb erst auf main
+          git config user.name "Resi Requiem Autopilot"
+          git config user.email "autopilot@users.noreply.github.com"
+          git add "tagebuch/storys/${{ steps.bau.outputs.id }}"
+          git diff --cached --quiet || git commit -m "Story ${{ steps.bau.outputs.id }}"
+          git pull --rebase origin main && git push origin HEAD:main
+      - name: Posten
+        if: steps.bau.outputs.gebaut == 'true' && env.LIVE == 'true'
+        working-directory: autopilot
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+        run: node storys.mjs posten "${{ steps.bau.outputs.id }}"
+      - name: Als gepostet eintragen
+        if: steps.bau.outputs.gebaut == 'true' && env.LIVE == 'true'
+        run: |
+          git add autopilot/story-log.json
+          git commit -m "Story gepostet ${{ steps.bau.outputs.id }}"
+          git pull --rebase origin main && git push origin HEAD:main
+      - name: Vorrat knapp melden
+        # Weniger als 5 offene Karten: der Sonntags-Nachschub schreibt neue, das Issue ist nur die Erinnerung
+        if: steps.bau.outputs.rest != '' && fromJSON(steps.bau.outputs.rest) < 5 && env.LIVE == 'true'
+        run: |
+          gh label create storys --repo "$GITHUB_REPOSITORY" --color FF4FA3 --description "Instagram-Storys" 2>/dev/null || true
+          if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label storys --state open --json number --jq '.[0].number // empty')" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label storys --assignee "${{ github.repository_owner }}" \
+              --title "Story-Karten knapp: nur noch ${{ steps.bau.outputs.rest }}" \
+              --body "In autopilot/storys.json sind nur noch ${{ steps.bau.outputs.rest }} Karten offen. Der Sonntags-Nachschub füllt auf (nachschub.md); bis dahin springt an leeren Tagen die Wetter-Story ein. Schließen, wenn wieder genug drin sind."
+          fi
+      - name: Fehlschlag melden
+        if: ${{ failure() && env.LIVE == 'true' }}
+        run: |
+          gh label create storys --repo "$GITHUB_REPOSITORY" --color FF4FA3 --description "Instagram-Storys" 2>/dev/null || true
+          LINK="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label storys --state open --search "Story fehlgeschlagen" --json number --jq '.[0].number // empty')
+          if [ -z "$NR" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label storys --assignee "${{ github.repository_owner }}" \
+              --title "Story fehlgeschlagen" --body "Lauf: $LINK. Der nächste stündliche Lauf versucht es im selben Zeitfenster noch einmal. Schließen, wenn Storys wieder rausgehen."
+          else
+            gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body "Wieder fehlgeschlagen: $LINK"
+          fi
