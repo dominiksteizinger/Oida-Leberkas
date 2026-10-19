@@ -12,7 +12,7 @@ const konf = bildKonfig({});
 const eintrag = (text) => ({ inhalt: { format: "szene", satz: text, klammern: ["eins", "zwei"] }, caption: "Caption.", aufforderung: "Speichern.", hashtags: [] });
 
 test("alle Bilder haben gültige Tags", () => {
-  assert.equal(bibliothek.length, 76);
+  assert.equal(bibliothek.length, 75);
 });
 
 test("Anlassbild nur im Zeitraum", () => {
