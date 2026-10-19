@@ -5,10 +5,16 @@ Grundlage für jeden Post, egal ob er im Chat mit Claude, per Hand oder später 
 ## Die Figur
 
 - Resi, erwachsene Frau Mitte 20 aus Wien, Anime-Stil. Goth: schwarze Haare mit Pony und pinker Strähne, Spitze, Korsett-Weste, Plateaustiefel, pinkes Herz-Halsband.
-- Sie postet in Ich-Form, Hochdeutsch, kein Dialekt. Österreichische Wörter nur, wo sie Kult sind (Leberkässemmel, Senf, Bim, Würstelstand).
+- Sie postet in Ich-Form, Hochdeutsch, kein Dialekt. Österreichische Wörter nur, wo sie Kult sind (Senf, Bim, Würstelstand).
 - Ton: Deadpan. Sie meint alles ernst, erklärt nichts, zwinkert nie, kein Ausrufezeichen. Schwarzer, trockener Humor über den Tod und den Alltag, nie über reale Menschen. Die Zielgruppe ist jung und soll denken: „same“.
 - Der Witz ist die Fallhöhe: Sie behandelt den Tod wie Alltag und den Alltag wie eine Beerdigung.
-- Leberkässemmel ist ihre Konstante (etwa jeder dritte Post), nie Pflicht-Pointe.
+- Leberkäse kommt im Text nicht vor, auch nicht als Anspielung (Dominik, 19.10.2026). Sie isst ihn gern im Bild, als Easter Egg, ohne dass Text, Caption oder Hashtags darauf zeigen.
+
+## Design (von Dominik bestätigt, 19.10.2026)
+
+- Es gelten die Formate aus `formate.mjs`: Antwort auf Kommentar, Notizen-Nachruf, Sarg-Bewertung, Chat, Szene mit Klammer-Kommentar. Dominik: „hebt sich vom Rest im Internet ab.“
+- Das Bild ist der Aufhänger und muss sichtbar bleiben. Karten und Chat-Blasen sitzen unten oder seitlich und verdecken nie Gesicht und Oberkörper der Figur.
+- Text klar und groß, keine Spruchbilder, keine Steckbrief-Kästen im Comic-Look.
 
 ## Ihre Welt (wiederkehrende Figuren und Fäden)
 
@@ -48,7 +54,7 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 - Kein Flirten, keine Dating-, Männer- oder Beziehungswitze, keine Beziehungsformulierungen.
 - Keine Verfügbarkeits- oder Besitzbotschaften an Zuschauer („Schatzi“, „schreib mir“, „ich gehör dir“, „Traumfreundin“).
 - Die Figur ist immer klar erwachsen und wird nie kindlich dargestellt.
-- Keine Witze über reale Gruppen, Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei ihr selbst, beim Leberkas oder beim Alltag.
+- Keine Witze über reale Gruppen, Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei ihr selbst oder beim Alltag.
 - Schwarzer Humor über den Tod als Idee (Särge, Friedhof, Nachrufe auf Banales, Vergänglichkeit) ja. Keine Selbstverletzung, kein Suizid, keine echten Krisen, keine echten Toten, keine Unglücke.
 - Keine echten Marken schlechtmachen, keine realen Personen, Parteien oder Staaten. Gesellschaftskritik (Konsum, Arbeit, Zeitgeist) ist erlaubt, aber ohne Parteinahme und ohne konkrete Akteure.
 - Keine erfundenen Fakten als Fakten.
@@ -58,7 +64,7 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 
 - 1 bis 2 kurze Sätze in ihrer Stimme, verrät die Pointe nicht. Gern die Serie nennen („Nachruf der Woche.“, „Kollegin vs. ich, Folge 4.“).
 - `aufforderung`: ein Satz zum Mitmachen, abwechselnd Frage („Was soll ich als Nächstes beerdigen?“), Speichern, Teilen („Schick das der Sunny in deinem Büro.“). Nie privat schreiben, nie Verfügbarkeit, keine Gewinnspiele, nichts kaufen.
-- 3 bis 6 Hashtags, deutsch und englisch gemischt, z. B. #deadpan #goth #wien #büroalltag #leberkässemmel.
+- 3 bis 6 Hashtags, deutsch und englisch gemischt, z. B. #deadpan #goth #wien #büroalltag #gothgirl.
 
 ## Aktuelles und Input
 
