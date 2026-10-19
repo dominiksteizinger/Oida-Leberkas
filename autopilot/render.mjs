@@ -63,8 +63,8 @@ async function reelModus() {
 // Karten und Text im Reel (Vollbild 1080x1920): Der Post sitzt im sicheren Bereich, Handle nach oben, nichts über dem Gesicht.
 const reelCss = (modus) => `
 html,body{height:1920px;overflow:hidden}.f{margin-top:${RAND_OBEN}px}
-.handle{bottom:auto!important;top:24px;text-shadow:0 2px 10px rgba(0,0,0,.8)}.st{bottom:150px!important}
-${modus === "opak" ? "" : `.f{background:transparent!important}.bg,.fig,.bild,.fade,.verlauf{display:none!important}
+.handle{bottom:auto!important;top:24px}.st{bottom:150px!important}
+${modus === "opak" ? "" : `.handle{text-shadow:0 2px 10px rgba(0,0,0,.8)}.f{background:transparent!important}.bg,.fig,.bild,.fade,.verlauf{display:none!important}
 body{position:relative}body::before{content:"";position:absolute;left:0;right:0;bottom:0;height:1000px;background:linear-gradient(transparent,rgba(13,10,13,.6))}
 .f>.t{top:860px!important}.f>.t p,.f>.t .k{background:rgba(13,10,13,.82);padding:10px 22px;border-radius:14px;display:table;margin:0 0 14px}`}`;
 
@@ -118,8 +118,9 @@ async function schritte(setup) {
     const ganz = spaet.map((e) => e.closest(".reply, .m, p, .k, .card") || e);
     gruppen.forEach((g, n) => { g.dataset.schritt = n; g.style.visibility = "hidden"; });
     ganz.forEach((g, n) => { g.dataset.schritt = gruppen.length + n; g.style.visibility = "hidden"; });
-    const setupOhne = [...setup].filter((t) => !spaet.some((e) => e.textContent.trim() === t));
-    return { schritte: [...gruppen, ...ganz].map((g) => g.textContent.replace(/\s+/g, " ").trim()), setup: setupOhne };
+    // Gesprochen wird im ersten Schritt nur, was dort zu sehen ist (Chat: nichts, der Kopf mit Name und „online“ ist Oberfläche)
+    const sichtbar = blaetter.filter((e) => !e.closest("[data-schritt]")).map((e) => e.textContent.trim());
+    return { schritte: [...gruppen, ...ganz].map((g) => g.textContent.replace(/\s+/g, " ").trim()), setup: einzeln === ".m" ? [] : sichtbar };
   }, { setup, einzeln: EINZELN[i.format] || null, aufruf });
   const liste = [];
   const anzahl = texte.schritte.length;

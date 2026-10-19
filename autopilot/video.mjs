@@ -131,7 +131,8 @@ if (sprecher.length) {
   const kopf = `[Script Info]\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\nWrapStyle: 0\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Unter,Inter,44,&H00FFFFFF,&H000000FF,&H00000000,&H99120A10,-1,0,0,0,100,100,0,0,3,14,0,2,110,110,300,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n`;
   const zeilen = sprecher.map((b) => {
     const von = b.start + VORLAUF;
-    const text = b.text.replace(/\s+/g, " ").replace(/[{}\\]/g, "").trim();
+    // Teile ohne Leerzeichen dazwischen („Ja.Er nimmt …“) im Untertitel trennen
+    const text = b.text.replace(/([.!?…])(?=\p{Lu})/gu, "$1 ").replace(/\s+/g, " ").replace(/[{}\\]/g, "").trim();
     return `Dialogue: 0,${assZeit(von)},${assZeit(von + b.ton.dauer)},Unter,,0,0,0,,${text}`;
   });
   fs.writeFileSync(path.join(ordner, "untertitel.ass"), kopf + zeilen.join("\n") + "\n");
