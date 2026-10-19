@@ -148,6 +148,7 @@ jobs:
           # Die Einzelbilder fürs Reel stecken schon im reel.mp4
           rm -f tagebuch/"$ID"/schritt-*.jpg tagebuch/"$ID"/schritte.json
           git add tagebuch
+          git add autopilot/stimme-cache 2>/dev/null || true
           # Ein neuer Versuch nach gescheitertem Posten kann dieselben Dateien erzeugen
           git diff --cached --quiet || git commit -m "Tagebuch $ID"
           if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
