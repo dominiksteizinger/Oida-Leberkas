@@ -24,4 +24,10 @@ test("Anlässe: 21 Tage, ohne doppelte Vorwarnung", () => {
 test("Schulferien: Zeitraum und deutscher Name", () => {
   const liste = [{ startDate: "2026-10-26", endDate: "2026-11-02", name: [{ language: "EN", text: "Autumn holidays" }, { language: "DE", text: "Herbstferien" }] }];
   assert.deepEqual(ferienLesen(liste), ["2026-10-26 bis 2026-11-02: Herbstferien"]);
+  const zwei = [
+    { startDate: "2026-11-02", endDate: "2026-11-06", name: [{ language: "DE", text: "Herbstferien" }], subdivisions: [{ code: "DE-BY", shortName: "BY" }] },
+    { startDate: "2026-10-26", endDate: "2026-10-31", name: [{ language: "DE", text: "Herbstferien" }], subdivisions: [{ code: "DE-NW", shortName: "NW" }] },
+    { startDate: "2026-11-02", endDate: "2026-11-06", name: [{ language: "DE", text: "Herbstferien" }], subdivisions: [{ code: "DE-BW", shortName: "BW" }] },
+  ];
+  assert.deepEqual(ferienLesen(zwei), ["2026-10-26 bis 2026-10-31: Herbstferien (NW)", "2026-11-02 bis 2026-11-06: Herbstferien (BY, BW)"]);
 });
