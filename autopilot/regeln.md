@@ -51,6 +51,7 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 - **Send-Test (hartes Kriterium):** Der Leser erkennt sich und denkt „das schicke ich meiner Freundin“. Jede Pointe hat einen denkbaren Adressaten (Kollegin, Mitbewohnerin, Mama). Fehlt er, wird der Post verworfen. Aufforderungen situativ, nie mit Zahl oder Quote.
 - **Resi ist Stimme, nicht Thema:** Die Situation gehört dem Leser (Gruppenchat, Geld, Schlaf, Handy, Familie, Wetter, Zu-spät-kommen, Wochenende, Date als Selbstironie). Mindestens 10 von 14 Posts pro Woche sind reine Alltagsposts.
 - **Ohne Vorwissen in 3 Sekunden verständlich:** keine Pointe, die eine frühere Folge, ein Insiderwort oder eine Rechnung braucht. Maßstab sind die Herbert-Posts 2 und 3: bekannte Situation, eine absurde Variable, Wende in der letzten Zeile. Serienbezug ist nur Bonus.
+- **Abblitz-Muster** (von Dominik am besten bewertet): Das Gegenüber sagt einen Standardsatz, Resi ist kürzer und ruhig, nimmt die Floskel wörtlich oder geht mit einer knappen Absage ab. Letzte Zeile höchstens sechs Wörter. Referenzen in `beispiele.md`.
 - Serien: Der Rahmen bleibt, die Wendung wechselt. Nach drei gleichen Folgen die vierte brechen.
 
 ## Pointen-Check (vor jedem Post)
