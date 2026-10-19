@@ -1,6 +1,6 @@
 // Sammelt einmal pro Woche, was in Österreich gerade Thema ist, als Markdown für den wöchentlichen Schreib-Lauf.
 // Quellen ohne Login: Google Trends (AT, DE), meistgelesene Wikipedia-Artikel (de, letzte 7 Tage), Reddit (Alltag, Schule, Job, Uni),
-// Schulferien Wien (OpenHolidays), kuriose Gedenktage,
+// Schulferien Österreich und Deutschland (OpenHolidays), kuriose Gedenktage,
 // YouTube-Trends AT (nur mit den vorhandenen YouTube-Secrets), Kommentare unter den eigenen Instagram-Posts, Anlässe der nächsten 21 Tage und harmlose ORF-Schlagzeilen.
 // Der Wortfilter aus anlaesse.mjs wirft Politik, Unglücke und Kriminalität vorab raus. Personen, Marken und Sport
 // filtert er nicht: Die Trends sind nur Anregung für ein Thema aus Resis Alltag, nie Vorlage (siehe autopilot/nachschub.md).
@@ -59,11 +59,21 @@ const reddit = async (sub) => {
   return redditLesen(await text.text());
 };
 
-// Schulferien Wien der nächsten 60 Tage (OpenHolidays API, frei, ohne Schlüssel): Ferienbeginn, letzte Schulwoche, Zeugnistag
-export const ferienLesen = (liste) => liste.map((f) => `${f.startDate} bis ${f.endDate}: ${(f.name.find((n) => n.language === "DE") || f.name[0]).text}`);
+// Schulferien der nächsten 60 Tage in AT und DE (OpenHolidays API, frei, ohne Schlüssel). Gleiche Ferien mehrerer Bundesländer
+// werden zu einer Zeile zusammengefasst, sortiert nach Beginn. Publikum (YouTube, 19.10.2026): Deutschland 37 %, Österreich 25 %.
+export const ferienLesen = (liste) => {
+  const zeilen = new Map();
+  for (const f of [...liste].sort((a, b) => a.startDate.localeCompare(b.startDate))) {
+    const kopf = `${f.startDate} bis ${f.endDate}: ${(f.name.find((n) => n.language === "DE") || f.name[0]).text}`;
+    const laender = (f.subdivisions || []).map((s) => s.shortName || s.code);
+    zeilen.set(kopf, [...(zeilen.get(kopf) || []), ...laender]);
+  }
+  return [...zeilen].map(([kopf, laender]) => (laender.length ? `${kopf} (${[...new Set(laender)].join(", ")})` : kopf));
+};
 async function schulferien(datum) {
   const bis = new Date(Date.parse(datum + "T12:00:00Z") + 60 * 864e5).toISOString().slice(0, 10);
-  return ferienLesen(await (await holen(`https://openholidaysapi.org/SchoolHolidays?countryIsoCode=AT&subdivisionCode=AT-9&languageIsoCode=DE&validFrom=${datum}&validTo=${bis}`, { headers: { ...UA, accept: "application/json" } })).json());
+  const land = async (code) => (await (await holen(`https://openholidaysapi.org/SchoolHolidays?countryIsoCode=${code}&languageIsoCode=DE&validFrom=${datum}&validTo=${bis}`, { headers: { ...UA, accept: "application/json" } })).json());
+  return ferienLesen([...(await land("DE")), ...(await land("AT"))]);
 }
 
 // Kuriose Gedenk- und Aktionstage (Tag der Jogginghose, Weltknuddeltag …), WordPress-Feed
@@ -110,12 +120,13 @@ const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export async function trends(datum) {
 const quellen = [
-  ["Google Trends Österreich (Suchanfragen der letzten Tage)", googleTrends],
+  ["Google Trends Deutschland (Suchanfragen der letzten Tage)", () => googleTrends("DE")],
+  ["Google Trends Österreich", () => googleTrends("AT")],
   ["Wikipedia de, meistgelesen (letzte 7 Tage)", () => wikipedia(datum)],
-  ["Google Trends Deutschland", () => googleTrends("DE")],
   ...REDDIT.map(([sub, was]) => [`Reddit r/${sub}, Top der Woche (${was})`, () => reddit(sub)]),
-  ["Schulferien Wien (nächste 60 Tage)", () => schulferien(datum)],
+  ["Schulferien Deutschland und Österreich (nächste 60 Tage)", () => schulferien(datum)],
   ["Kuriose Gedenk- und Aktionstage", kurioseTage],
+  ["YouTube-Trends Deutschland", () => youtube("DE")],
   ["YouTube-Trends Österreich", () => youtube()],
   ["YouTube-Comedy Deutschland", () => youtube("DE", "23")],
   ["ORF-Schlagzeilen (Wien, Science, Ö3, FM4)", schlagzeilen],

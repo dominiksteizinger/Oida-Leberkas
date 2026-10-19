@@ -2,11 +2,13 @@
 
 Damit die Warteschlange nie leer wird und Aktuelles mitkommt, ohne dass Dominik etwas tun muss. Seit 20.10.2026.
 
+**Publikum (YouTube-Studio, 19.10.2026): Deutschland 37 %, Österreich 25 %, Schweiz 2 %.** Deutsche Trends, Ferien und Anlässe zählen mindestens so viel wie österreichische. Themen müssen in Deutschland genauso funktionieren; Wien-Bezug nur als Würze, nie als Voraussetzung für die Pointe. Hochdeutsch, kein Dialekt. Länderspezifische Anlässe (Feiertag nur in AT oder DE, Ferien einzelner Bundesländer) nur, wenn die Pointe auch für die andere Seite verständlich ist.
+
 ## Wer macht was
 
 | Wann | Was | Wer |
 |---|---|---|
-| Sonntag früh | `trends.yml` sammelt Google Trends AT und DE, Wikipedia (de, meistgelesen), Reddit (r/wien, r/Austria, r/de, r/FragReddit, r/arbeitsleben, r/Studium, r/teenagers, r/Showerthoughts), YouTube-Trends AT und Comedy DE, Schulferien Wien (60 Tage), kuriose Aktionstage, Anlässe der nächsten 21 Tage, harmlose ORF-Schlagzeilen und Kommentare unter unseren Posts ins Issue mit Label `trends` | GitHub Action, gratis |
+| Sonntag früh | `trends.yml` sammelt Google Trends AT und DE, Wikipedia (de, meistgelesen), Reddit (r/wien, r/Austria, r/de, r/FragReddit, r/arbeitsleben, r/Studium, r/teenagers, r/Showerthoughts), YouTube-Trends DE und AT, Comedy DE, Schulferien DE und AT (60 Tage), kuriose Aktionstage, Anlässe der nächsten 21 Tage, harmlose ORF-Schlagzeilen und Kommentare unter unseren Posts ins Issue mit Label `trends` | GitHub Action, gratis |
 | täglich 7 Uhr | Wetter, Anlässe, Schlagzeilen ins Issue `signale` (Autopilot) | GitHub Action |
 | Sonntagabend | Schreib-Lauf nach dieser Anleitung: Posts schreiben, prüfen, Vorschau, Issues anlegen, Bericht im Projekt-Thread | geplante Claude-Aufgabe |
 | bei Bedarf | Bilder in Gemini erzeugen und in den Projektordner `eingang/` legen | Dominik, das Einzige, was bei ihm bleibt |
