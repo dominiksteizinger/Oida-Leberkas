@@ -55,3 +55,16 @@ test("Bericht bei zwei übersprungenen Quellen bricht nicht", () => {
   const text = bericht({ datum: "2026-10-20", tage: 28, posts, ig: { status: "uebersprungen", grund: "a" }, yt: { status: "uebersprungen", grund: "b" } });
   assert.match(text, /YouTube: \*\*übersprungen\*\*/);
 });
+
+test("YouTube: ohne Analytics-Zeile vorläufige Zähler aus der Data API", async () => {
+  const f = async (url) => {
+    if (url.includes("oauth2")) return json({ access_token: "a", scope: "yt-analytics.readonly youtube.readonly" });
+    if (url.includes("youtubeanalytics")) return json({ columnHeaders: [{ name: "video" }, { name: "views" }], rows: [] });
+    if (url.includes("/channels")) return json({ items: [{ contentDetails: { relatedPlaylists: { uploads: "UU1" } } }] });
+    if (url.includes("/playlistItems")) return json({ items: [{ contentDetails: { videoId: "v9" } }] });
+    return json({ items: [{ id: "v9", snippet: { title: youtubeTitel(e) }, statistics: { viewCount: "42", likeCount: "3" } }] });
+  };
+  const yt = await youtube({ env: { YOUTUBE_CLIENT_ID: "a", YOUTUBE_CLIENT_SECRET: "b", YOUTUBE_REFRESH_TOKEN: "c" }, posts, von: "2026-10-01", bis: "2026-10-20", f });
+  assert.equal(yt.werte[e.id].views, 42);
+  assert.equal(yt.vorlaeufig, 1);
+});

@@ -1,6 +1,6 @@
 # Anleitung: Rechte für die Wochenauswertung
 
-Die Wochenauswertung (`.github/workflows/messung.yml`, jeden Montag) braucht zwei Rechte, die die jetzigen Tokens nicht haben. Solange sie fehlen, läuft sie trotzdem und schreibt „übersprungen“ mit Grund in den Bericht. Tokens erzeugst nur du, nie in den Chat kopieren.
+Die Wochenauswertung (`.github/workflows/messung.yml`, jeden Montag) braucht Rechte, die die alten Tokens nicht hatten (YouTube erledigt am 19.10.2026). Solange sie fehlen, läuft sie trotzdem und schreibt „übersprungen“ mit Grund in den Bericht. Tokens erzeugst nur du, nie in den Chat kopieren.
 
 Beide Tokens werden in die **bestehenden** Secrets eingetragen. Der neue Token ersetzt den alten, Posten läuft damit weiter.
 
@@ -8,20 +8,50 @@ Secrets eintragen: [Settings → Secrets and variables → Actions](https://gith
 
 ---
 
-## Teil A: Instagram (`instagram_manage_insights`)
+## Teil A: Instagram (`instagram_manage_insights`, `instagram_manage_comments`)
 
-Am besten zusammen mit dem Token-Tausch Mitte Dezember, dann ist es ein Handgriff statt zwei.
+Der neue Token ersetzt den alten in `INSTAGRAM_ACCESS_TOKEN`. Er muss alles können, was der alte konnte (Posten), plus Insights lesen und Kommentare verwalten. Dauer etwa 10 Minuten.
 
-1. [Graph API Explorer](https://developers.facebook.com/tools/explorer/) öffnen und mit dem Facebook-Konto anmelden, das die Seite verwaltet.
-2. Rechts oben unter **Meta App** die App wählen, mit der der bisherige Token erzeugt wurde.
-3. Unter **User or Page** „User Token“ wählen.
-4. Unter **Permissions** alle Rechte des alten Tokens behalten und **`instagram_manage_insights`** dazunehmen. Zum Posten nötig sind mindestens: `instagram_basic`, `instagram_content_publish`, `pages_show_list`, `pages_read_engagement`, `business_management`; für Facebook zusätzlich `pages_manage_posts`. Welche der alte Token hat, zeigt der [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/) (alten Token einfügen → „Scopes“).
-5. **Generate Access Token** → im Fenster die Seite und das Instagram-Konto anhaken → bestätigen.
-6. Der Token gilt nur etwa eine Stunde. In langlebig (60 Tage) tauschen: im [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/) einfügen → **Debug** → unten **Extend Access Token** → neuen Token kopieren.
-7. Prüfen: Im Debugger muss unter „Scopes“ `instagram_manage_insights` stehen und „Expires“ etwa 60 Tage in der Zukunft liegen.
-8. Als Secret **`INSTAGRAM_ACCESS_TOKEN`** eintragen (siehe oben).
+**1. Alten Token prüfen (welche Rechte hat er?)**
+1. [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/) öffnen.
+2. Den alten Token einfügen. Du hast ihn nicht mehr im Klartext? Dann diesen Schritt überspringen und in Schritt 2 die Liste unten nehmen.
+3. **Debug** klicken. Unter „Scopes“ stehen die Rechte. Notieren.
 
-Hinweis: Läuft die App im Entwicklungsmodus und du bist Admin der App, funktioniert das Recht meines Wissens ohne App-Prüfung durch Meta. Fragt Meta trotzdem nach „Advanced Access“ oder App Review, schick mir die Meldung (ohne Token).
+**2. Neuen Token erzeugen**
+1. [Graph API Explorer](https://developers.facebook.com/tools/explorer/) öffnen, mit dem Facebook-Konto anmelden, das die Seite verwaltet.
+2. Rechts oben bei **Meta App**: dieselbe App wie bisher wählen.
+3. Bei **User or Page**: **User Token** (Nutzer-Token) wählen.
+4. Bei **Permissions** → **Add a Permission**: diese Rechte anhaken (alle, auch wenn einige schon da sind):
+   - `instagram_basic`
+   - `instagram_content_publish`
+   - `instagram_manage_insights` (neu, für die Auswertung)
+   - `instagram_manage_comments` (neu, für Kommentare)
+   - `pages_show_list`
+   - `pages_read_engagement`
+   - `pages_manage_posts` (für Facebook-Posts)
+   - `business_management`
+   - plus alles, was in Schritt 1 sonst noch unter „Scopes“ stand
+5. **Generate Access Token** klicken.
+6. Im Facebook-Fenster: **Mit … fortfahren** → bei „Seiten“ die Seite anhaken, bei „Instagram-Konten“ **resi.requiem** anhaken → alle Schalter an lassen → **Speichern** → **OK**.
+7. Oben im Feld „Access Token“ steht der neue Token. Er gilt nur etwa eine Stunde.
+
+**3. In einen 60-Tage-Token tauschen**
+1. Token kopieren und im [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken/) einfügen → **Debug**.
+2. Ganz unten **Extend Access Token** klicken (eventuell Passwort bestätigen).
+3. Unter dem Knopf erscheint der langlebige Token. Den kopieren.
+4. Prüfen: den langlebigen Token noch einmal einfügen → **Debug**. Bei „Expires“ steht ein Datum in etwa 60 Tagen, bei „Scopes“ stehen `instagram_manage_insights` und `instagram_manage_comments`.
+
+**4. Als Secret eintragen**
+1. [Secrets](https://github.com/dominiksteizinger/oida-leberkas/settings/secrets/actions) öffnen → bei `INSTAGRAM_ACCESS_TOKEN` auf den Stift → langlebigen Token einfügen → **Update secret**.
+
+**5. Testen**
+1. [Actions → Instagram-Verbindungstest](https://github.com/dominiksteizinger/oida-leberkas/actions/workflows/instagram-verbindungstest.yml) → **Run workflow**. Muss grün werden (sonst kann der Autopilot nicht posten, dann alten Zustand melden).
+2. [Actions → Wochenauswertung](https://github.com/dominiksteizinger/oida-leberkas/actions/workflows/messung.yml) → **Run workflow**. Im Issue „Wochenauswertung“ steht dann bei Instagram „ok“.
+3. Mir Bescheid geben, dann prüfe ich die Zahlen.
+
+Der Token läuft nach 60 Tagen ab. Der Autopilot meldet sich 14 Tage vorher per Issue, dann Schritte 2 bis 4 wiederholen.
+
+Fragt Meta nach „Advanced Access“ oder App Review: Als Admin der App im Entwicklungsmodus sollte es meines Wissens ohne gehen. Kommt die Meldung trotzdem, schick mir den Text (ohne Token).
 
 ---
 
