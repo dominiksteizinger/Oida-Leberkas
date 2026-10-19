@@ -3,7 +3,12 @@
 // STIMME_STIL wählt die Stimmlage: "trocken" (Standard) oder "muede" (Vergleich).
 // Fällt die Stimme aus (Fehler, Kontingent, kein Schlüssel), läuft das Reel stumm weiter; das Posten hängt nicht daran.
 import fs from "node:fs";
+import path from "node:path";
+import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
+
+// Satz-Cache: gesprochener Rohton je Stimme und Text, als Opus im Repo. Gleicher Satz = gleiche Stimme, ohne neuen API-Aufruf.
+const CACHE = path.join(path.dirname(new URL(import.meta.url).pathname), "stimme-cache");
 
 export const STIMME_AN = process.env.STIMME === "an";
 
@@ -18,7 +23,7 @@ const STIMMLAGEN = {
 };
 
 // Aufbereitung der Rohspur (siehe sprechen)
-const AUFBEREITUNG = "highpass=f=80,lowpass=f=11000,afftdn=nf=-30:nt=w,afade=t=in:d=0.03,areverse,afade=t=in:d=0.03,areverse,loudnorm=I=-16:TP=-1.5:LRA=11";
+const AUFBEREITUNG = "highpass=f=80,equalizer=f=4000:t=q:w=1.2:g=2.5,afade=t=in:d=0.03,areverse,afade=t=in:d=0.03,areverse,loudnorm=I=-16:TP=-1.5:LRA=11";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
@@ -43,11 +48,23 @@ async function anfrage(modell, stimme, text, schluessel) {
   }
 }
 
-// Einen Text sprechen: schreibt <ziel>.wav (44,1 kHz Stereo) und gibt die Dauer in Sekunden zurück
+// Einen Text sprechen: holt den Rohton aus dem Cache oder von Gemini, bereitet ihn auf und schreibt <ziel>.wav (44,1 kHz Stereo).
+// Gibt die Dauer in Sekunden zurück.
 export async function sprechen(text, ziel, stil = "trocken") {
-  const schluessel = process.env.GEMINI_API_KEY;
-  if (!schluessel) throw new Error("GEMINI_API_KEY fehlt");
   const { stimme } = STIMMLAGEN[stil] ?? STIMMLAGEN.trocken;
+  const cacheSchluessel = crypto.createHash("sha1").update(`${stimme}\n${text}`).digest("hex");
+  const roh = path.join(CACHE, `${cacheSchluessel}.opus`);
+  if (!fs.existsSync(roh)) {
+    await holeVonGemini(text, stimme, roh);
+  }
+  ff(["-i", roh, "-af", AUFBEREITUNG, "-ar", "44100", "-ac", "2", `${ziel}.wav`]);
+  return dauerVon(`${ziel}.wav`);
+}
+
+// Gemini ruft nur auf, wenn der Satz noch nicht im Cache liegt
+async function holeVonGemini(text, stimme, roh) {
+  const schluessel = process.env.GEMINI_API_KEY;
+  if (!schluessel) throw new Error("GEMINI_API_KEY fehlt, und der Satz ist nicht im Cache");
   for (const modell of MODELLE) {
     const antwort = await anfrage(modell, stimme, text, schluessel);
     if (antwort.status === 404) continue;
@@ -56,16 +73,18 @@ export async function sprechen(text, ziel, stil = "trocken") {
     const teil = daten.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
     if (!teil) throw new Error(`Gemini-TTS ${modell} lieferte kein Audio`);
     // Gemini liefert je nach Lauf WAV mit Kopf oder rohes PCM. Am Kopf erkennen, sonst als 16-Bit-PCM lesen
-    // (Probe 19.10.: als PCM gelesenes WAV ergab das Rauschen und Knacken am Satzanfang)
-    const roh = Buffer.from(teil.inlineData.data, "base64");
+    const daten64 = Buffer.from(teil.inlineData.data, "base64");
     const rate = /rate=(\d+)/.exec(teil.inlineData.mimeType || "")?.[1] ?? "24000";
-    fs.writeFileSync(`${ziel}.bin`, roh);
-    const eingabe = roh.subarray(0, 4).toString("ascii") === "RIFF"
-      ? ["-i", `${ziel}.bin`]
-      : ["-f", "s16le", "-ar", rate, "-ac", "1", "-i", `${ziel}.bin`];
-    ff([...eingabe, "-af", AUFBEREITUNG, "-ar", "44100", "-ac", "2", `${ziel}.wav`]);
-    fs.rmSync(`${ziel}.bin`);
-    return dauerVon(`${ziel}.wav`);
+    fs.mkdirSync(CACHE, { recursive: true });
+    const tmp = `${roh}.tmp`;
+    fs.writeFileSync(tmp, daten64);
+    const eingabe = daten64.subarray(0, 4).toString("ascii") === "RIFF"
+      ? ["-i", tmp]
+      : ["-f", "s16le", "-ar", rate, "-ac", "1", "-i", tmp];
+    ff([...eingabe, "-ac", "1", "-c:a", "libopus", "-b:a", "48k", roh]);
+    fs.rmSync(tmp);
+    console.log(`Gemini ${modell}: neuer Satz im Cache (${path.basename(roh)})`);
+    return;
   }
   throw new Error(`Kein TTS-Modell verfügbar (${MODELLE.join(", ")})`);
 }

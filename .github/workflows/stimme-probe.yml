@@ -33,6 +33,8 @@ jobs:
               rm -f "../tagebuch/$id/untertitel.ass"
             done
           done
+          # Satz-Cache mitgeben, damit er nach dem Merge im Repo landen kann
+          cp -r stimme-cache "$RUNNER_TEMP/probe/cache" 2>/dev/null || true
           ls -la "$RUNNER_TEMP/probe"
       - name: Auf Branch stimme-probe ablegen
         env:
@@ -40,7 +42,7 @@ jobs:
         run: |
           # Eigener Ordner ohne Verlauf: der Branch enthält nur die Probe-Dateien, nichts vom Repo
           ARBEIT="$RUNNER_TEMP/stimme-probe"
-          rm -rf "$ARBEIT" && mkdir -p "$ARBEIT/probe" && cp "$RUNNER_TEMP"/probe/* "$ARBEIT/probe/"
+          rm -rf "$ARBEIT" && mkdir -p "$ARBEIT/probe" && cp -r "$RUNNER_TEMP"/probe/* "$ARBEIT/probe/"
           cd "$ARBEIT"
           git init -q -b stimme-probe
           git config user.name "Resi Requiem Autopilot"
