@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { setupPointe } from "./eintrag.mjs";
-import { STIMME_AN, tonspuren } from "./stimme.mjs";
+import { STIMME_AN, tonspuren, dauerVon } from "./stimme.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const id = process.argv[2];
@@ -87,6 +87,27 @@ if (tonDaten) {
     b.dauer = Math.max(b.dauer, VORLAUF + b.ton.dauer + NACHLAUF);
   });
 }
+// Jingle (optional): autopilot/assets/jingle.mp3, nur mit Repo-Variable JINGLE="an". Fehlt die Datei oder ist sie länger als 6 s, läuft das Reel ohne.
+// JINGLE_POS="anfang" (Standard, Erkennungsmelodie) oder "ende". Das Standbild steht so lange, wie der Jingle läuft, und die Stimme setzt danach ein.
+const JINGLE_DATEI = path.join(HIER, "assets", "jingle.mp3");
+let jingle = null;
+if (process.env.JINGLE === "an" && fs.existsSync(JINGLE_DATEI)) {
+  try {
+    const laenge = dauerVon(JINGLE_DATEI);
+    if (laenge > 6) throw new Error(`${laenge.toFixed(1)} s, höchstens 6 s erlaubt`);
+    jingle = { datei: JINGLE_DATEI, dauer: Number(laenge.toFixed(1)), start: 0 };
+  } catch (e) {
+    console.warn(`Jingle aus, Reel ohne Jingle: ${e.message}`);
+  }
+}
+if (jingle) {
+  if (process.env.JINGLE_POS === "ende") {
+    jingle.start = bilder.reduce((a, b) => a + b.dauer, 0);
+    bilder.push({ datei: bilder.at(-1).datei, dauer: jingle.dauer });
+  } else {
+    bilder.unshift({ datei: bilder[0].datei, dauer: jingle.dauer });
+  }
+}
 bilder.forEach((b) => { b.dauer = Number(b.dauer.toFixed(1)); });
 const DAUER = Number(bilder.reduce((a, b) => a + b.dauer, 0).toFixed(1));
 console.log(`${bilder.length} Bilder, gesamt ${DAUER} s${tonDaten ? ", mit Stimme" : ""}`);
@@ -115,15 +136,19 @@ const untertitel = sprecher.length
   ? ";[v]subtitles=untertitel.ass:fontsdir=../../assets/fonts[vs]"
   : "";
 
+// Alle Tonspuren (Stimmteile und ggf. Jingle) auf ihren Startpunkt legen, dann zusammenmischen (die Teile überlappen nicht)
+const spuren = [
+  ...sprecher.map((b) => ({ datei: b.ton.wav, start: b.start + VORLAUF })),
+  ...(jingle ? [{ datei: jingle.datei, start: jingle.start, jingle: true }] : []),
+];
 let tonEingaben = [];
 let tonFilter = "";
-if (sprecher.length) {
-  // Jede Sprachspur auf ihren Startpunkt legen, dann alle zusammenmischen (die Teile überlappen nicht)
-  tonEingaben = sprecher.flatMap((b) => ["-i", b.ton.wav]);
-  tonFilter = `${sprecher.map((b, j) => `[${n + j}:a]adelay=${Math.round((b.start + VORLAUF) * 1000)}:all=1,apad=whole_dur=${DAUER}[a${j}]`).join(";")};${sprecher.map((_, j) => `[a${j}]`).join("")}amix=inputs=${sprecher.length}:duration=first:normalize=0[aus]`;
+if (spuren.length) {
+  tonEingaben = spuren.flatMap((s) => ["-i", s.datei]);
+  tonFilter = `${spuren.map((s, j) => `[${n + j}:a]${s.jingle ? "loudnorm=I=-16:TP=-1.5:LRA=11," : ""}adelay=${Math.round(s.start * 1000)}:all=1,apad=whole_dur=${DAUER}[a${j}]`).join(";")};${spuren.map((_, j) => `[a${j}]`).join("")}amix=inputs=${spuren.length}:duration=first:normalize=0[aus]`;
 }
-const stilleTonspur = sprecher.length ? [] : ["-f", "lavfi", "-t", String(DAUER), "-i", "anullsrc=r=44100:cl=stereo"];
-const tonAbbildung = sprecher.length ? "[aus]" : `${n}:a`;
+const stilleTonspur = spuren.length ? [] : ["-f", "lavfi", "-t", String(DAUER), "-i", "anullsrc=r=44100:cl=stereo"];
+const tonAbbildung = spuren.length ? "[aus]" : `${n}:a`;
 
 ff([
   ...bildEingaben, ...tonEingaben, ...stilleTonspur,
@@ -133,4 +158,5 @@ ff([
   "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", path.join(ordner, "reel.mp4"),
 ]);
 
-console.log(sprecher.length ? "Reel fertig (mit Stimme und Untertiteln)" : "Reel fertig (ohne Ton)");
+const tonText = [sprecher.length && "mit Stimme und Untertiteln", jingle && "mit Jingle"].filter(Boolean);
+console.log(`Reel fertig (${tonText.length ? tonText.join(", ") : "ohne Ton"})`);

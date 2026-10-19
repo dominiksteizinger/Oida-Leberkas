@@ -1,0 +1,51 @@
+name: Jingle-Probe
+# Probelauf für den Jingle (autopilot/assets/jingle.mp3): rendert einen bestehenden Tagebuch-Eintrag mit Stimme,
+# einmal mit Jingle am Anfang und einmal am Ende, und legt die MP4s auf dem Branch jingle-probe ab.
+# Nur von Hand (Actions > Jingle-Probe > Run workflow). Postet nichts und ändert weder main noch das Tagebuch.
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: Tagebuch-Eintrag
+        default: 2026-10-19-16
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    env:
+      STIMME: an
+      STIMME_STIL: ${{ vars.STIMME_STIL }}
+      JINGLE: an
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      ID: ${{ inputs.id }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abhängigkeiten
+        working-directory: autopilot
+        run: npm ci --no-audit --no-fund
+      - name: Reels mit Stimme und Jingle rendern
+        working-directory: autopilot
+        run: |
+          command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+          mkdir -p "$RUNNER_TEMP/probe"
+          for pos in anfang ende; do
+            JINGLE_POS=$pos node video.mjs "$ID"
+            cp "../tagebuch/$ID/reel.mp4" "$RUNNER_TEMP/probe/$ID-jingle-$pos.mp4"
+            git -C .. checkout -- "tagebuch/$ID" 2>/dev/null || true
+            rm -f "../tagebuch/$ID/untertitel.ass"
+          done
+          ls -la "$RUNNER_TEMP/probe"
+      - name: Auf Branch jingle-probe ablegen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Eigener Ordner ohne Verlauf: der Branch enthält nur die Probe-Dateien, nichts vom Repo
+          ARBEIT="$RUNNER_TEMP/jingle-probe"
+          rm -rf "$ARBEIT" && mkdir -p "$ARBEIT/probe" && cp -r "$RUNNER_TEMP"/probe/* "$ARBEIT/probe/"
+          cd "$ARBEIT"
+          git init -q -b jingle-probe
+          git config user.name "Resi Requiem Autopilot"
+          git config user.email "autopilot@users.noreply.github.com"
+          git add probe && git commit -qm "Jingle-Probe: Testreels mit Stimme und Jingle"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:refs/heads/jingle-probe
