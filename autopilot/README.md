@@ -54,7 +54,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 
 ## Nachschub und Trends (seit 20.10.2026)
 
-Jeden Sonntag sammelt `trends.yml` (`trends.mjs`), was in Österreich gerade Thema ist, ins Issue mit Label `trends`. Am Sonntagabend schreibt ein geplanter Claude-Lauf daraus und aus den Anlässen neue Posts, bis die Warteschlange wieder drei Wochen reicht. Ablauf: `nachschub.md`. Werkzeuge dafür:
+Jeden Sonntag sammelt `trends.yml` (`trends.mjs`), was in Österreich und Deutschland gerade Thema ist (Google Trends, Wikipedia, YouTube, acht Subreddits von r/wien bis r/teenagers, Schulferien Wien, kuriose Aktionstage, ORF, Kommentare unter unseren Posts), ins Issue mit Label `trends`. Am Sonntagabend schreibt ein geplanter Claude-Lauf daraus und aus den Anlässen neue Posts, bis die Warteschlange wieder drei Wochen reicht. Ablauf: `nachschub.md`. Werkzeuge dafür:
 
 - `node pruefen.mjs neu.json --warteschlange offen.json --issues issues.json`: prüft neue Posts mit denselben Regeln wie `holen.mjs` (Schema, Wortfilter, Bild, ab/bis, Saisonbilder, doppelt belegte Bilder) und baut die Issue-Texte.
 - `node vorschau.mjs neu.json <ordner>`: rendert die Posts als fertige Bilder, ohne Tagebuch und Webseite zu ändern.

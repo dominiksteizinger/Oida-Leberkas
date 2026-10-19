@@ -1,5 +1,6 @@
 // Sammelt einmal pro Woche, was in Österreich gerade Thema ist, als Markdown für den wöchentlichen Schreib-Lauf.
-// Quellen ohne Login: Google Trends (AT), meistgelesene Wikipedia-Artikel (de, letzte 7 Tage), Reddit r/wien und r/Austria,
+// Quellen ohne Login: Google Trends (AT, DE), meistgelesene Wikipedia-Artikel (de, letzte 7 Tage), Reddit (Alltag, Schule, Job, Uni),
+// Schulferien Wien (OpenHolidays), kuriose Gedenktage,
 // YouTube-Trends AT (nur mit den vorhandenen YouTube-Secrets), Kommentare unter den eigenen Instagram-Posts, Anlässe der nächsten 21 Tage und harmlose ORF-Schlagzeilen.
 // Der Wortfilter aus anlaesse.mjs wirft Politik, Unglücke und Kriminalität vorab raus. Personen, Marken und Sport
 // filtert er nicht: Die Trends sind nur Anregung für ein Thema aus Resis Alltag, nie Vorlage (siehe autopilot/nachschub.md).
@@ -27,7 +28,7 @@ export function googleLesen(xml) {
   });
 }
 
-const googleTrends = async () => googleLesen(await (await holen("https://trends.google.com/trending/rss?geo=AT")).text());
+const googleTrends = async (geo = "AT") => googleLesen(await (await holen(`https://trends.google.com/trending/rss?geo=${geo}`)).text());
 
 async function wikipedia(datum) {
   // Die Tages-Toplisten der letzten 7 Tage zusammenzählen
@@ -46,7 +47,17 @@ async function wikipedia(datum) {
 
 // Atom-Feed: Titel der Einträge, nicht der des Feeds
 export const redditLesen = (xml) => [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map(([, e]) => tag(e, "title")[0]).filter(Boolean);
-const reddit = async (sub) => redditLesen(await (await holen(`https://www.reddit.com/r/${sub}/top/.rss?t=week&limit=25`)).text());
+const reddit = async (sub) => (await pause(), redditLesen(await (await holen(`https://www.reddit.com/r/${sub}/top/.rss?t=week&limit=25`)).text()));
+
+// Schulferien Wien der nächsten 60 Tage (OpenHolidays API, frei, ohne Schlüssel): Ferienbeginn, letzte Schulwoche, Zeugnistag
+export const ferienLesen = (liste) => liste.map((f) => `${f.startDate} bis ${f.endDate}: ${(f.name.find((n) => n.language === "DE") || f.name[0]).text}`);
+async function schulferien(datum) {
+  const bis = new Date(Date.parse(datum + "T12:00:00Z") + 60 * 864e5).toISOString().slice(0, 10);
+  return ferienLesen(await (await holen(`https://openholidaysapi.org/SchoolHolidays?countryIsoCode=AT&subdivisionCode=AT-9&languageIsoCode=DE&validFrom=${datum}&validTo=${bis}`, { headers: { ...UA, accept: "application/json" } })).json());
+}
+
+// Kuriose Gedenk- und Aktionstage (Tag der Jogginghose, Weltknuddeltag …), WordPress-Feed
+const kurioseTage = async () => tag(await (await holen("https://www.kuriose-feiertage.de/feed/")).text(), "title").slice(1);
 
 async function youtube() {
   const { YOUTUBE_CLIENT_ID: id, YOUTUBE_CLIENT_SECRET: secret, YOUTUBE_REFRESH_TOKEN: refresh } = process.env;
@@ -80,13 +91,21 @@ export function anlaesse(datum) {
   return liste;
 }
 
+// Subreddits mit Alltag, Schule, Studium, Job und Beziehungen; was dort hochgewählt wird, kennt das Publikum aus dem eigenen Leben
+const REDDIT = [
+  ["wien", "Wien"], ["Austria", "Österreich"], ["de", "Deutschland"], ["FragReddit", "Alltagsfragen"],
+  ["arbeitsleben", "Job"], ["Studium", "Uni"], ["teenagers", "Teenager, englisch"], ["2meirl4meirl", "relatable, englisch"],
+];
+const pause = () => new Promise((r) => setTimeout(r, 5000));
+
 export async function trends(datum) {
 const quellen = [
   ["Google Trends Österreich (Suchanfragen der letzten Tage)", googleTrends],
   ["Wikipedia de, meistgelesen (letzte 7 Tage)", () => wikipedia(datum)],
-  ["Reddit r/wien, Top der Woche", () => reddit("wien")],
-  // Reddit antwortet auf zwei Abrufe kurz hintereinander mit 429, deshalb eine kleine Pause
-  ["Reddit r/Austria, Top der Woche", async () => { await new Promise((r) => setTimeout(r, 5000)); return reddit("Austria"); }],
+  ["Google Trends Deutschland", () => googleTrends("DE")],
+  ...REDDIT.map(([sub, was]) => [`Reddit r/${sub}, Top der Woche (${was})`, () => reddit(sub)]),
+  ["Schulferien Wien (nächste 60 Tage)", () => schulferien(datum)],
+  ["Kuriose Gedenk- und Aktionstage", kurioseTage],
   ["YouTube-Trends Österreich", youtube],
   ["ORF-Schlagzeilen (Wien, Science, Ö3, FM4)", schlagzeilen],
   ["Kommentare unter unseren Instagram-Posts", kommentare],
