@@ -128,9 +128,14 @@ jobs:
           # Emojis in den Handy-Formaten (Wetter, Captcha usw.) brauchen eine Farb-Emoji-Schrift
           fc-list | grep -qi "Noto Color Emoji" || (sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-color-emoji)
           node render.mjs "${{ steps.zeit.outputs.id }}"
-      - name: Reel (ohne Ton)
+      - name: Reel (mit oder ohne Stimme)
         if: steps.holen.outputs.gefunden == 'true'
         working-directory: autopilot
+        env:
+          # Stimme nur, wenn die Repo-Variable STIMME "an" ist; sonst stumm wie bisher
+          STIMME: ${{ vars.STIMME }}
+          STIMME_STIL: ${{ vars.STIMME_STIL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
           node video.mjs "${{ steps.zeit.outputs.id }}"
