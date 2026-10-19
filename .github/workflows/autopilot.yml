@@ -1,7 +1,7 @@
 name: Autopilot
 # Zweimal am Tag ein Post von Resi Requiem: um 7:00 und um 16:00 Wiener Zeit.
 # Der Post kommt fertig geschrieben aus der Warteschlange (Issues mit Label „warteschlange“), hier wird er nur
-# gerendert, als Reel mit Musik gebaut, ins Tagebuch der Webseite eingetragen und gepostet. Keine Claude-API.
+# gerendert, als Reel ohne Ton gebaut, ins Tagebuch der Webseite eingetragen und gepostet. Keine Claude-API.
 # Solange die Repo-Variable POSTEN nicht "an" ist, läuft alles im Probebetrieb:
 # Die Ergebnisse landen nur auf dem Branch autopilot-probe, gepostet wird nichts und die Warteschlange bleibt, wie sie ist.
 on:
@@ -167,6 +167,22 @@ jobs:
           for NR in $(gh issue list --repo "$GITHUB_REPOSITORY" --label leer --state open --json number --jq '.[].number'); do
             gh issue close "$NR" --repo "$GITHUB_REPOSITORY" --comment "Es wird wieder gepostet."
           done
+      - name: Token prüfen
+        id: token
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' && steps.zeit.outputs.slot == '07'
+        working-directory: autopilot
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+        run: node token.mjs
+      - name: Token-Ablauf melden
+        if: steps.token.outputs.tage != '' && fromJSON(steps.token.outputs.tage) < 14
+        run: |
+          gh label create token --repo "$GITHUB_REPOSITORY" --color D73A4A --description "Instagram-Token läuft bald ab" 2>/dev/null || true
+          if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label token --state open --json number --jq '.[0].number // empty')" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label token --assignee "${{ github.repository_owner }}" \
+              --title "Instagram-Token läuft in ${{ steps.token.outputs.tage }} Tagen ab" \
+              --body "Ohne neuen Token bricht das Posten ab. Neuen Token erzeugen und als Secret INSTAGRAM_ACCESS_TOKEN eintragen, dann dieses Issue schließen."
+          fi
       - name: Bildvorrat prüfen
         id: vorrat
         if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
