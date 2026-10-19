@@ -1,0 +1,39 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { pruefeAlle } from "./pruefen.mjs";
+
+const szene = (extra = {}) => ({ titel: "Post 99 (szene): Test", inhalt: { format: "szene", satz: "Montag.", klammern: ["Schon wieder."] }, bild: "kaffee-muede.jpg", caption: "Montag.", hashtags: ["#wien"], ...extra });
+
+test("gültiger Post ergibt Issue-Text mit JSON-Block, ohne titel und notiz", () => {
+  const [r] = pruefeAlle([szene({ notiz: "Trend-Post." })], [], "2026-10-19");
+  assert.deepEqual(r.fehler, []);
+  assert.equal(r.issue.title, "Post 99 (szene): Test");
+  assert.match(r.issue.body, /^Trend-Post\.\n\n```json\n\{"inhalt"/);
+  assert.doesNotMatch(r.issue.body, /"titel"|"notiz"/);
+});
+
+test("Wortfilter, unbekanntes Bild, kaputtes Datum", () => {
+  const [r] = pruefeAlle([szene({ caption: "Semmel", bild: "gibtsnicht.jpg", bis: "2026-1-1" })], [], "2026-10-19");
+  assert.equal(r.fehler.length, 3);
+});
+
+test("Bild schon in der Warteschlange oder doppelt im Satz", () => {
+  const offen = [{ number: 50, body: "x\n```json\n{\"bild\":\"kaffee-muede.jpg\"}\n```" }];
+  assert.match(pruefeAlle([szene()], offen, "2026-10-19")[0].fehler.join(), /#50/);
+  const r = pruefeAlle([szene(), szene({ titel: "zwei" })], [], "2026-10-19");
+  assert.deepEqual(r[0].fehler, []);
+  assert.match(r[1].fehler.join(), /neuem Post 1/);
+});
+
+test("Anlassbild braucht ab/bis im Zeitraum, Saisonbild muss bis zum Horizont passen", () => {
+  assert.match(pruefeAlle([szene({ bild: "allerheiligen-grablicht.jpg" })], [], "2026-10-19")[0].fehler.join(), /Anlassbild/);
+  assert.deepEqual(pruefeAlle([szene({ bild: "allerheiligen-grablicht.jpg", ab: "2026-11-01", bis: "2026-11-02" })], [], "2026-10-19")[0].fehler, []);
+  assert.match(pruefeAlle([szene({ bild: "herbstlaub-strasse.jpg" })], [], "2026-11-10")[0].fehler.join(), /passt am/);
+  assert.deepEqual(pruefeAlle([szene({ bild: "herbstlaub-strasse.jpg", bis: "2026-11-30" })], [], "2026-11-10")[0].fehler, []);
+});
+
+test("Format ohne Bild nur bei notiz und chat; bis in der Vergangenheit", () => {
+  const ohne = szene(); delete ohne.bild;
+  assert.match(pruefeAlle([ohne], [], "2026-10-19")[0].fehler.join(), /braucht ein Bild/);
+  assert.match(pruefeAlle([szene({ bis: "2026-10-01" })], [], "2026-10-19")[0].fehler.join(), /Vergangenheit/);
+});

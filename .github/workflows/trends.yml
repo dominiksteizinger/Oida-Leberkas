@@ -1,0 +1,40 @@
+name: Trends
+# Einmal pro Woche: Was ist in Österreich gerade Thema? (Google Trends, Wikipedia, Reddit, YouTube, Anlässe, ORF)
+# Das Ergebnis hängt als Kommentar am Issue mit Label „trends“. Der wöchentliche Schreib-Lauf (Claude, Sonntagabend)
+# liest es dort und macht daraus eigene Resi-Posts (autopilot/nachschub.md). Keine Claude-API, kostet nichts.
+on:
+  schedule:
+    # Sonntag früh UTC; GitHub startet geplante Läufe manchmal Stunden später, der Schreib-Lauf ist erst am Abend
+    - cron: "23 5 * * 0"
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: trends
+  cancel-in-progress: false
+jobs:
+  sammeln:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Trends sammeln
+        working-directory: autopilot
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: node trends.mjs > "$RUNNER_TEMP/trends.md" && cat "$RUNNER_TEMP/trends.md"
+      - name: Ans Trends-Issue hängen
+        run: |
+          gh label create trends --repo "$GITHUB_REPOSITORY" --color 5319E7 --description "Wöchentliche Trends für den Schreib-Lauf" 2>/dev/null || true
+          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label trends --state open --json number --jq '.[0].number // empty')
+          [ -z "$NR" ] && NR=$(gh issue create --repo "$GITHUB_REPOSITORY" --title "Trends" --label trends --body "Jeden Sonntag hängen hier die Trends der Woche an. Der Schreib-Lauf macht daraus eigene Resi-Posts (autopilot/nachschub.md)." | grep -o '[0-9]*$')
+          gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/trends.md"
