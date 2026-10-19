@@ -1,6 +1,6 @@
 # Beispiele
 
-Zeigen den Ton für Resi Requiem. Keine Vorlagen zum Abwandeln: Motive und Pointen von hier nie wörtlich übernehmen. Dominik pflegt die Liste und bewertet in der Sammelliste (siehe README). Stand 18.10.2026.
+Zeigen den Ton für Resi Requiem. Keine Vorlagen zum Abwandeln: Motive und Pointen von hier nie wörtlich übernehmen. Dominik pflegt die Liste und bewertet in der Sammelliste (siehe README). Stand 19.10.2026. Leberkäse kommt im Text nicht mehr vor (siehe regeln.md).
 
 ## Gut
 
@@ -23,11 +23,11 @@ Zeigen den Ton für Resi Requiem. Keine Vorlagen zum Abwandeln: Motive und Point
 - **#9 Großraumbüro, Montag 8:00** – 1 Sarg – „Zu hell, zu laut, alle leben. Würde nicht nochmal sterben hier.“
 
 ### chat (Kollegin vs. ich)
-- Sunny: „Kommst du heute mit zum Afterwork? 🍹“ / Sunny: „Wird lustig!!“ / [18:02] / → Resi: „Ich hab schon was vor.“ / Resi: „Daheim sitzen und an den Tod denken.“ / Resi: „Mit Leberkässemmel.“
+- Sunny: „Kommst du heute mit zum Afterwork? 🍹“ / Sunny: „Wird lustig!!“ / [18:02] / → Resi: „Ich hab schon was vor.“ / Resi: „Daheim sitzen und an den Tod denken.“
   Warum: Sunny meint es gut, Resi bleibt freundlich, die Pointe ist ihr Lebensentwurf.
 
 ### szene
-- Bild: Herbert klaut von der Semmel. „Herbert wohnt bei mir.“ [zahlt keine Miete] [klaut] [Familie halt]
+- Bild: Herbert klaut ihr das Essen. „Herbert wohnt bei mir.“ [zahlt keine Miete] [klaut] [Familie halt]
   Warum: Klammern wie Untertitel, Steigerung bis zum warmen Rest.
 - Bild: Büro, Montag. „Montag, 8:01.“ [lebe noch] [leider]
 
@@ -42,8 +42,10 @@ Zeigen den Ton für Resi Requiem. Keine Vorlagen zum Abwandeln: Motive und Point
 - Satz über gerahmtem Bild mit Schnörkelschrift („Leberkäse ist Liebe“)
   Warum abgelehnt: das Spruchbild-Layout wirkt wie Facebook 2010. Immer eines der fünf Formate verwenden.
 - Nachruf auf eine echte verstorbene Person oder ein echtes Unglück
-  Warum abgelehnt: Grenze. Nachrufe nur auf Banales (Sommer, Akku, Motivation, die letzte Semmel).
+  Warum abgelehnt: Grenze. Nachrufe nur auf Banales (Sommer, Akku, Motivation).
 - Caption „Weil Leberkäse eben immer hilft, wenn man traurig ist.“
   Warum abgelehnt: die Caption erklärt die Pointe.
+- Jede Text-Pointe mit Leberkäse („Der Leberkäse versteht mich.“)
+  Warum abgelehnt: wirkt wie Boomer-Humor (Dominik, 19.10.2026). Leberkäse nur im Bild als Easter Egg.
 - Chat, in dem Sunny dumm dasteht oder beleidigt wird
   Warum abgelehnt: die Pointe liegt bei Resis Haltung, nicht auf Kosten der Kollegin.
