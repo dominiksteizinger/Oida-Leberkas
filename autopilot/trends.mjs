@@ -59,12 +59,18 @@ async function schulferien(datum) {
 // Kuriose Gedenk- und Aktionstage (Tag der Jogginghose, Weltknuddeltag …), WordPress-Feed
 const kurioseTage = async () => tag(await (await holen("https://www.kuriose-feiertage.de/feed/")).text(), "title").slice(1);
 
-async function youtube() {
+// Feddit (Lemmy, deutschsprachig, offene API): Ersatz, falls Reddit die Runner-IPs sperrt
+const feddit = async (gemeinschaft) => (await (await holen(`https://feddit.org/api/v3/post/list?sort=TopWeek&limit=25&community_name=${gemeinschaft}`, { headers: { ...UA, accept: "application/json" } })).json()).posts.map((p) => p.post.name);
+
+// Mastodon: meistgenutzte Hashtags der letzten Tage
+const mastodon = async () => (await (await holen("https://mastodon.social/api/v1/trends/tags?limit=20", { headers: { ...UA, accept: "application/json" } })).json()).map((t) => `#${t.name}`);
+
+async function youtube(region = "AT", kategorie = "") {
   const { YOUTUBE_CLIENT_ID: id, YOUTUBE_CLIENT_SECRET: secret, YOUTUBE_REFRESH_TOKEN: refresh } = process.env;
   if (!id || !secret || !refresh) throw new Error("keine YouTube-Secrets");
   const token = await (await fetch("https://oauth2.googleapis.com/token", { method: "POST", body: new URLSearchParams({ client_id: id, client_secret: secret, refresh_token: refresh, grant_type: "refresh_token" }) })).json();
   if (!token.access_token) throw new Error(token.error || "kein Token");
-  const j = await (await holen("https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=AT&maxResults=25", { headers: { ...UA, authorization: `Bearer ${token.access_token}` } })).json();
+  const j = await (await holen(`https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=${region}&maxResults=25${kategorie && `&videoCategoryId=${kategorie}`}`, { headers: { ...UA, authorization: `Bearer ${token.access_token}` } })).json();
   return j.items.map((v) => `${v.snippet.title} (${v.snippet.channelTitle})`);
 }
 
@@ -94,7 +100,8 @@ export function anlaesse(datum) {
 // Subreddits mit Alltag, Schule, Studium, Job und Beziehungen; was dort hochgewählt wird, kennt das Publikum aus dem eigenen Leben
 const REDDIT = [
   ["wien", "Wien"], ["Austria", "Österreich"], ["de", "Deutschland"], ["FragReddit", "Alltagsfragen"],
-  ["arbeitsleben", "Job"], ["Studium", "Uni"], ["teenagers", "Teenager, englisch"], ["2meirl4meirl", "relatable, englisch"],
+  ["arbeitsleben", "Job"], ["Studium", "Uni"], ["ich_iel", "relatable, deutsch"], ["teenagers", "Teenager, englisch"], ["2meirl4meirl", "relatable, englisch"],
+  ["me_irl", "relatable, englisch"], ["Showerthoughts", "Alltagsgedanken, englisch"],
 ];
 const pause = () => new Promise((r) => setTimeout(r, 5000));
 
@@ -106,7 +113,10 @@ const quellen = [
   ...REDDIT.map(([sub, was]) => [`Reddit r/${sub}, Top der Woche (${was})`, () => reddit(sub)]),
   ["Schulferien Wien (nächste 60 Tage)", () => schulferien(datum)],
   ["Kuriose Gedenk- und Aktionstage", kurioseTage],
-  ["YouTube-Trends Österreich", youtube],
+  ["Feddit ich_iel, Top der Woche (falls Reddit gesperrt)", () => feddit("ich_iel")],
+  ["YouTube-Trends Österreich", () => youtube()],
+  ["YouTube-Comedy Deutschland", () => youtube("DE", "23")],
+  ["Mastodon-Hashtags", mastodon],
   ["ORF-Schlagzeilen (Wien, Science, Ö3, FM4)", schlagzeilen],
   ["Kommentare unter unseren Instagram-Posts", kommentare],
 ];

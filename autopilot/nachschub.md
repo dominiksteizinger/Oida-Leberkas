@@ -6,7 +6,7 @@ Damit die Warteschlange nie leer wird und Aktuelles mitkommt, ohne dass Dominik 
 
 | Wann | Was | Wer |
 |---|---|---|
-| Sonntag früh | `trends.yml` sammelt Google Trends AT und DE, Wikipedia (de, meistgelesen), Reddit (r/wien, r/Austria, r/de, r/FragReddit, r/arbeitsleben, r/Studium, r/teenagers, r/2meirl4meirl), YouTube-Trends AT, Schulferien Wien (60 Tage), kuriose Aktionstage, Anlässe der nächsten 21 Tage, harmlose ORF-Schlagzeilen und Kommentare unter unseren Posts ins Issue mit Label `trends` | GitHub Action, gratis |
+| Sonntag früh | `trends.yml` sammelt Google Trends AT und DE, Wikipedia (de, meistgelesen), Reddit (r/wien, r/Austria, r/de, r/FragReddit, r/arbeitsleben, r/Studium, r/ich_iel, r/teenagers, r/2meirl4meirl, r/me_irl, r/Showerthoughts; Feddit ich_iel als Ersatz), YouTube-Trends AT und Comedy DE, Mastodon-Hashtags, Schulferien Wien (60 Tage), kuriose Aktionstage, Anlässe der nächsten 21 Tage, harmlose ORF-Schlagzeilen und Kommentare unter unseren Posts ins Issue mit Label `trends` | GitHub Action, gratis |
 | täglich 7 Uhr | Wetter, Anlässe, Schlagzeilen ins Issue `signale` (Autopilot) | GitHub Action |
 | Sonntagabend | Schreib-Lauf nach dieser Anleitung: Posts schreiben, prüfen, Vorschau, Issues anlegen, Bericht im Projekt-Thread | geplante Claude-Aufgabe |
 | bei Bedarf | Bilder in Gemini erzeugen und in den Projektordner `eingang/` legen | Dominik, das Einzige, was bei ihm bleibt |
@@ -28,7 +28,7 @@ Trend-Musik (Instagram/TikTok) gibt es nur in den Apps und lässt sich per API n
 5. **Trend-Übersetzung (2 bis 4 Posts):** Aus `trends` nur Themen nehmen, die viele kennen und die harmlos sind (Wetter, Zeitumstellung, Feiertag, Ferien, ein viel gesuchtes Alltagsthema, ein Format, das gerade überall läuft). Daraus eine Situation aus Resis Alltag machen; der Trend ist Anlass, nicht Inhalt.
    - Nie: Namen realer Personen, Marken, Sender, Sendungen, Vereine, Spiele, Filme; Politik, Unglücke, Kriminalität, Krankheit, Sport-Ergebnisse. Keine fremden Memes, Sounds oder Texte nachbauen, nur das Format mit der eigenen Figur.
    - Jeder Trend-Post bekommt `"bis"` (Datum, bis zu dem das Thema noch frisch ist, meist heute + 7 Tage) und `"trend": "<Quelle>: <Begriff>"`. Posts mit `bis` kommen in der Warteschlange vor allen anderen dran (`reihenfolge.mjs`).
-   - Teenie- und Relatable-Quellen (r/teenagers, r/2meirl4meirl, r/FragReddit, r/Studium, r/arbeitsleben) liefern nur das Thema oder Gefühl (Schule, Prüfungen, erster Job, Montag, Gruppenchat). Nie Text, Witz oder Bild übernehmen, englische Posts nie übersetzen; Resi erlebt es selbst, auf Hochdeutsch.
+   - Teenie- und Relatable-Quellen (r/ich_iel, r/teenagers, r/2meirl4meirl, r/me_irl, r/Showerthoughts, r/FragReddit, r/Studium, r/arbeitsleben) liefern nur das Thema oder Gefühl (Schule, Prüfungen, erster Job, Montag, Gruppenchat). Nie Text, Witz oder Bild übernehmen, englische Posts nie übersetzen; Resi erlebt es selbst, auf Hochdeutsch.
    - Schulferien und kuriose Aktionstage sind Anlässe: Post mit `ab`/`bis` auf den Zeitraum legen.
    - Findet sich nichts Taugliches, keinen Trend-Post erzwingen.
 6. **Schreiben:** nach `regeln.md`, `beispiele.md` und `wissen/pointen-check.md`. Mix wie in `regeln.md` (10 bis 12 Alltag von 14, Abblitz-Muster mit `"mechanik": "absage"`, höchstens 3 davon pro 14). Jeder Post besteht Send-Test und 3-Sekunden-Test, Punkteskala mindestens 14 von 20. Hochdeutsch, Leberkäse und Semmel nie im Text.
