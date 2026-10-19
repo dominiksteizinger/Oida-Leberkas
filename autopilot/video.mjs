@@ -88,7 +88,7 @@ if (tonDaten) {
   });
 }
 // Jingle (optional): autopilot/assets/jingle.mp3, nur mit Repo-Variable JINGLE="an". Fehlt die Datei oder ist sie länger als 6 s, läuft das Reel ohne.
-// JINGLE_POS="anfang" (Standard, Erkennungsmelodie) oder "ende". Das Standbild steht so lange, wie der Jingle läuft, und die Stimme setzt danach ein.
+// JINGLE_POS="ende" (Standard, Dominik 19.10.2026) oder "anfang". Das Standbild steht so lange, wie der Jingle läuft; Jingle und Stimme überlappen nie.
 const JINGLE_DATEI = path.join(HIER, "assets", "jingle.mp3");
 let jingle = null;
 if (process.env.JINGLE === "an" && fs.existsSync(JINGLE_DATEI)) {
@@ -101,11 +101,11 @@ if (process.env.JINGLE === "an" && fs.existsSync(JINGLE_DATEI)) {
   }
 }
 if (jingle) {
-  if (process.env.JINGLE_POS === "ende") {
+  if (process.env.JINGLE_POS === "anfang") {
+    bilder.unshift({ datei: bilder[0].datei, dauer: jingle.dauer });
+  } else {
     jingle.start = bilder.reduce((a, b) => a + b.dauer, 0);
     bilder.push({ datei: bilder.at(-1).datei, dauer: jingle.dauer });
-  } else {
-    bilder.unshift({ datei: bilder[0].datei, dauer: jingle.dauer });
   }
 }
 bilder.forEach((b) => { b.dauer = Number(b.dauer.toFixed(1)); });

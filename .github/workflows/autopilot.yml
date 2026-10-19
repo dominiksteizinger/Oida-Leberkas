@@ -136,7 +136,7 @@ jobs:
           STIMME: ${{ vars.STIMME }}
           STIMME_STIL: ${{ vars.STIMME_STIL }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Jingle nur mit JINGLE="an" und vorhandener Datei autopilot/assets/jingle.mp3; JINGLE_POS "anfang" (Standard) oder "ende"
+          # Jingle nur mit JINGLE="an" und vorhandener Datei autopilot/assets/jingle.mp3; JINGLE_POS "ende" (Standard) oder "anfang"
           JINGLE: ${{ vars.JINGLE }}
           JINGLE_POS: ${{ vars.JINGLE_POS }}
         run: |
