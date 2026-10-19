@@ -67,7 +67,7 @@ jobs:
           ID=$(jq -r '.data[0].id // empty' media.json)
           if [ -z "$ID" ]; then jq '{error: .error.message}' media.json; echo "::error::Keine Medien lesbar"; exit 1; fi
           jq '.data[0] | {timestamp, media_product_type}' media.json
-          curl -sS -G "https://graph.facebook.com/$ID/insights" --data-urlencode "metric=reach,saved,shares,views" \
+          curl -sS -G "https://graph.facebook.com/$ID/insights" --data-urlencode "metric=reach,saved" \
             --data-urlencode "access_token=$TOKEN" > ins.json
           jq '{insights: [.data[]? | {name, wert: (.values[0].value // .total_value.value)}], error: .error.message}' ins.json
           curl -sS -G "https://graph.facebook.com/$ID/comments" --data-urlencode "fields=id,timestamp" \
