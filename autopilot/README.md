@@ -30,7 +30,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 }
 ```
 
-- `inhalt.format` ist eines von `antwort`, `notiz`, `bewertung`, `chat`, `szene` oder einer der Handy-Oberflächen (seit 19.10.2026) `mitteilungen`, `termin`, `wetter`, `umfrage`, `wiedergabe`, `sprachnachricht`, `suchverlauf`, `fehlermeldung`, `todo`, `beleg`. Felder und Längen stehen in `eintrag.mjs`, Ton und Grenzen in `regeln.md`, Beispiele in `beispiele.md`.
+- `inhalt.format` ist eines von `antwort`, `notiz`, `bewertung`, `chat`, `szene` oder einer der Handy-Oberflächen (seit 19.10.2026) `mitteilungen`, `termin`, `wetter`, `umfrage`, `wiedergabe`, `sprachnachricht`, `suchverlauf`, `fehlermeldung`, `todo`, `beleg`, `storyfrage`, `aktivitaet`, `akku`, `abwesenheit`, `sendung`, `horoskop`, `uebersetzer`, `ladebalken`, `navigation`, `passwort`, `notfallkontakt`, `fokus`, `gruppe`, `speicher`, `timer`, `konto`, `einladung`, `update`, `serie`, `captcha`. Die Felder der Formate ab `storyfrage` stehen nur in `eintrag.mjs`. Felder und Längen stehen in `eintrag.mjs`, Ton und Grenzen in `regeln.md`, Beispiele in `beispiele.md`.
   - `antwort`: `von`, `kommentar`, `zeilen` (1–3)
   - `notiz`: `titel`, `absaetze` (2–5, der letzte ist die Pointe)
   - `bewertung`: `nr`, `ort`, `saerge` (0–5), `text`

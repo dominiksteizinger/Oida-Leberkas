@@ -124,7 +124,10 @@ jobs:
       - name: Rendern
         if: steps.holen.outputs.gefunden == 'true'
         working-directory: autopilot
-        run: node render.mjs "${{ steps.zeit.outputs.id }}"
+        run: |
+          # Emojis in den Handy-Formaten (Wetter, Captcha usw.) brauchen eine Farb-Emoji-Schrift
+          fc-list | grep -qi "Noto Color Emoji" || (sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-color-emoji)
+          node render.mjs "${{ steps.zeit.outputs.id }}"
       - name: Reel (ohne Ton)
         if: steps.holen.outputs.gefunden == 'true'
         working-directory: autopilot

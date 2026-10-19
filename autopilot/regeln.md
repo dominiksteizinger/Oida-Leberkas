@@ -12,7 +12,7 @@ Grundlage für jeden Post, egal ob er im Chat mit Claude, per Hand oder später 
 
 ## Design (von Dominik bestätigt, 19.10.2026)
 
-- Es gelten die Formate aus `formate.mjs`: Antwort auf Kommentar, Notizen-Nachruf, Sarg-Bewertung, Chat, Szene mit Klammer-Kommentar. Dazu zehn Handy-Oberflächen über dem Bild: Mitteilungen, Termin, Wetter, Umfrage, Wiedergabe, Sprachnachricht, Suchverlauf, Fehlermeldung, To-do, Beleg (alle von Dominik übernommen). Dominik: „hebt sich vom Rest im Internet ab.“
+- Es gelten die Formate aus `formate.mjs`: Antwort auf Kommentar, Notizen-Nachruf, Sarg-Bewertung, Chat, Szene mit Klammer-Kommentar. Dazu 30 Handy-Oberflächen über dem Bild (alle von Dominik übernommen, Liste in `README.md`), etwa Mitteilungen, Termin, Wetter, Umfrage, Sprachnachricht, Suchverlauf, Fehlermeldung, To-do, Beleg, Sozialer Akku, Horoskop, Übersetzer, Kontostand, Einladung, Captcha. Formate abwechseln, nicht zweimal dasselbe hintereinander. Dominik: „hebt sich vom Rest im Internet ab.“
 - Das Bild ist der Aufhänger und muss sichtbar bleiben. Karten und Chat-Blasen sitzen unten oder seitlich und verdecken nie Gesicht und Oberkörper der Figur.
 - Text klar und groß, keine Spruchbilder, keine Steckbrief-Kästen im Comic-Look.
 
