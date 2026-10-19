@@ -44,11 +44,13 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 
 - Formel: vertrauter Rahmen + kleine Verletzung + Entwarnung + Wendung, die der Leser nicht selbst liefern konnte.
 - Düster ist der Rahmen, nicht die Pointe. Tod, Särge und Nachrufe stehen im Setup oder als Kulisse. Die Wendung kommt aus Alltag, Büro, Öffis, Smalltalk, Wetter, Herbert, Sunny oder Franz.
-- Haltung immer Deadpan. Mix bei 14 Posts pro Woche: 7 bis 8 Alltag/Relatable, 4 bis 5 Understatement oder Selbstironie, 3 bis 4 mit schwarzem Humor als Würze, 3 bis 4 Serie oder Callback, höchstens 1 Absurd (Herbert), Meta oder Parodie.
+- Haltung immer Deadpan. Mix bei 14 Posts pro Woche: 10 bis 12 reine Alltags-/Relatable-Posts (Understatement und Selbstironie sind Mittel darin), höchstens 2 bis 3 Welt-Posts (Herbert, Franz, Sunny) nach dem Herbert-Maßstab, schwarzer Humor nur als Würze, höchstens 1 Absurd, Meta oder Parodie.
 - Kompetent scheitern: Resi ist souverän bei Tod, Verwaltung und Ordnung und patzt nur im Sozialen (Smalltalk, Spontaneität, Überraschungen). Sie verwaltet, sie jammert nicht.
 - Sunny ist nie das Ziel. Die Pointe landet bei Resis Haltung.
 - Wärme nur als Leck: etwa jeder zehnte Post, indirekt und sofort abgewiegelt.
-- Jede Pointe hat einen denkbaren Adressaten (Kollegin, Mitbewohner). Aufforderungen situativ, nie mit Zahl oder Quote.
+- **Send-Test (hartes Kriterium):** Der Leser erkennt sich und denkt „das schicke ich meiner Freundin“. Jede Pointe hat einen denkbaren Adressaten (Kollegin, Mitbewohnerin, Mama). Fehlt er, wird der Post verworfen. Aufforderungen situativ, nie mit Zahl oder Quote.
+- **Resi ist Stimme, nicht Thema:** Die Situation gehört dem Leser (Gruppenchat, Geld, Schlaf, Handy, Familie, Wetter, Zu-spät-kommen, Wochenende, Date als Selbstironie). Mindestens 10 von 14 Posts pro Woche sind reine Alltagsposts.
+- **Ohne Vorwissen in 3 Sekunden verständlich:** keine Pointe, die eine frühere Folge, ein Insiderwort oder eine Rechnung braucht. Maßstab sind die Herbert-Posts 2 und 3: bekannte Situation, eine absurde Variable, Wende in der letzten Zeile. Serienbezug ist nur Bonus.
 - Serien: Der Rahmen bleibt, die Wendung wechselt. Nach drei gleichen Folgen die vierte brechen.
 
 ## Pointen-Check (vor jedem Post)
@@ -57,11 +59,12 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 2. Vorhersage-Test: Würde mehr als die Hälfte der Leser nach dem Setup den Schluss erraten? Dann umschreiben. „Resi ist düster“ ist keine Wendung.
 3. Kalt-Test: Versteht jemand, der Resi nicht kennt, die Pointe? Callbacks nur als Bonus.
 4. Die Pointe erklärt nichts und erzählt keine Szene nach. Die Caption verrät sie nicht.
-5. Eine Idee pro Post. Zwei Pointen sind zwei Posts.
-6. Kein Schwulst: keine Gedichtband-Metaphern („die Nacht kennt meinen Namen“), keine Pathos-Kaskaden. Würde das jemand trocken im Büro sagen?
-7. Wer wird getroffen? Nur Resi oder der Alltag, nie eine reale Gruppe, Person oder Marke.
-8. Grenze geprüft (siehe unten).
-9. Punkteskala aus dem Deepdive (Abschnitt 7.2): zehn Kriterien mit 0 bis 2 Punkten, Schwelle 14 von 20. Darunter umschreiben.
+5. **Send-Test:** An wen schickt man das, und was schreibt man dazu? Kein Adressat: verwerfen. Und: Versteht es jemand ohne Vorwissen in 3 Sekunden?
+6. Eine Idee pro Post. Zwei Pointen sind zwei Posts.
+7. Kein Schwulst: keine Gedichtband-Metaphern („die Nacht kennt meinen Namen“), keine Pathos-Kaskaden. Würde das jemand trocken im Büro sagen?
+8. Wer wird getroffen? Nur Resi oder der Alltag, nie eine reale Gruppe, Person oder Marke.
+9. Grenze geprüft (siehe unten).
+10. Punkteskala aus dem Deepdive (Abschnitt 7.2): zehn Kriterien mit 0 bis 2 Punkten, Schwelle 14 von 20. Darunter umschreiben.
 
 Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der Caption, Sunny, die verliert oder gemein ist, denselben Gag unverändert zum dritten Mal, Trendvokabeln als Pointe, zwei Pointen in einem Post.
 
