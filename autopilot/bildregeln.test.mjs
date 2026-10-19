@@ -11,8 +11,10 @@ const bibliothek = pruefeTags(JSON.parse(fs.readFileSync(path.join(HIER, "biblio
 const konf = bildKonfig({});
 const eintrag = (text) => ({ inhalt: { format: "szene", satz: text, klammern: ["eins", "zwei"] }, caption: "Caption.", aufforderung: "Speichern.", hashtags: [] });
 
-test("alle Bilder haben gültige Tags", () => {
-  assert.equal(bibliothek.length, 75);
+test("alle Bilder haben gültige Tags und eine Datei", () => {
+  // pruefeTags oben wirft bei ungültigen Tags; hier nur, dass jede Datei existiert (die Zahl wächst mit jedem neuen Bild)
+  assert.ok(bibliothek.length >= 75);
+  for (const b of bibliothek) assert.ok(fs.existsSync(path.join(HIER, "bilder", b.datei)), `${b.datei} fehlt in autopilot/bilder`);
 });
 
 test("Anlassbild nur im Zeitraum", () => {
