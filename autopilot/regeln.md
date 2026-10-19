@@ -85,6 +85,8 @@ Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der
 
 - 1 bis 2 kurze Sätze in ihrer Stimme, verrät die Pointe nicht. Gern die Serie nennen („Nachruf der Woche.“, „Kollegin vs. ich, Folge 4.“).
 - `aufforderung`: ein Satz zum Mitmachen, abwechselnd Frage („Was soll ich als Nächstes beerdigen?“), Speichern, Teilen („Schick das der Sunny in deinem Büro.“). Nie privat schreiben, nie Verfügbarkeit, keine Gewinnspiele, nichts kaufen.
+  Höchstens ein Drittel der Posts beginnt mit „Schick das …“ (Gesamt-Check 19.10.2026: 50 von 65 taten es, das wird zum Ritual). Andere Formen: Frage zur Situation („Wie oft drückst du Schlummern?“), Zuordnung („Welche Kollegin ist das?“), „Speichern für Montag.“, „Wer ist bei euch die Sunny?“.
+- `mechanik` (optional): Tag für die Humor-Quote, z. B. `absage` für „Resi weist ab / sagt knapp Nein“. Höchstens 3 von 14 Posts mit derselben Mechanik, nie mehr als 2 hintereinander (`humorquote.mjs`). Jeder Post mit Abblitz- oder Rückzugspointe bekommt `"mechanik": "absage"`.
 - 3 bis 6 Hashtags, deutsch und englisch gemischt, z. B. #deadpan #goth #wien #büroalltag #gothgirl.
 
 ## Aktuelles und Input

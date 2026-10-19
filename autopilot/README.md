@@ -52,6 +52,22 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 - `musik` (optional): wird ignoriert, die Reels laufen ohne Ton. Die alten Tracks und `musik_generator.py` liegen in der Git-Historie.
 - Nur Issues mit dem Label `warteschlange` zählen, und nur, wenn der Repo-Owner sie angelegt hat. Die Vorlage setzt das Label auch bei Fremden, deshalb filtert `holen.mjs` nach dem Absender.
 
+## Wortfilter und Humor-Quote (seit 19.10.2026)
+
+- **Wortfilter** (`wortfilter.mjs`): Kommen Leberkäse, Leberkas oder Semmel (auch 🥖) in Text, Namen, Caption, Aufforderung oder Hashtags vor, lehnt `holen.mjs` den Post ab (Kommentar plus Label `fehler`), `posten.mjs` prüft vor dem Posten noch einmal. Der Bildname zählt nicht, im Bild bleibt die Semmel als Easter Egg.
+- **Humor-Quote** (`humorquote.mjs`): Optionales Feld `mechanik` im Post-JSON, ein kleingeschriebenes Wort, z. B. `"mechanik": "absage"` für „Resi weist ab / sagt knapp Nein“. Höchstens 2 gleiche Mechaniken hintereinander und höchstens 3 von 14 Posts. Sonst wird der Post zurückgestellt und ein anderer kommt dran. Passt nichts anderes, geht er trotzdem raus und Dominik bekommt ein Issue mit Label `mechanik`. Anlass-Posts (`ab`/`bis`) werden nie zurückgestellt. Posts ohne `mechanik` zählen nicht.
+- Tests: `node --test autopilot/*.test.mjs`
+
+## Heartbeat (seit 19.10.2026)
+
+`heartbeat.yml` läuft stündlich über den GitHub-Cron, unabhängig von cron-job.org. Ist der Morgenslot um 12 Uhr oder der Nachmittagsslot um 20 Uhr (Wien) noch nicht gepostet, legt `heartbeat.mjs` ein Issue „Slot … nicht gepostet“ (Label `ausfall`) an, mit dem letzten Autopilot-Lauf und der wahrscheinlichen Ursache (kein Lauf = cron-job.org prüfen). Es schließt sich, sobald der Slot nachgeholt ist. Nur bei `POSTEN` = `an`.
+
+Weil der GitHub-Cron selbst oft spät kommt, kann cron-job.org den Heartbeat zusätzlich anstoßen: zwei weitere Jobs wie die bestehenden (POST auf `.../actions/workflows/heartbeat.yml/dispatches`, Body `{"ref":"main"}`, gleicher Token) um 12:20 und 20:20 Europe/Vienna.
+
+## Wochenauswertung (seit 19.10.2026)
+
+`messung.yml` läuft jeden Montag um 5:30 UTC (per Hand: Actions → Wochenauswertung → Run workflow). `messung.mjs` holt für die geposteten Posts der letzten 28 Tage die Instagram-Insights (Views, Reichweite, Shares, Saves, Likes, Kommentare, Ø Wiedergabezeit) und YouTube Analytics (Views, Ø Wiedergabedauer und -anteil, Likes, Shares) und schreibt `auswertung/<datum>.md`, gruppiert nach Format, Aufforderung, Slot und Mechanik. Der Bericht hängt auch als Kommentar am Issue „Wochenauswertung“ (Label `auswertung`). Zuordnung: Instagram über die Caption, YouTube über den Titel. Fehlen Token oder Rechte, steht „übersprungen“ mit Grund im Bericht. Welche Rechte nötig sind: `messung-anleitung.md`.
+
 ## Stimmen-Cache
 
 Jeder gesprochene Satz liegt als Opus-Datei in `stimme-cache/` (Schlüssel: Stimme plus Text). Der Workflow „Stimmen vorab“ (`stimme-vorab.mjs`, 08:30 und 20:30 UTC, nur mit `STIMME` = `an`) rendert alle Posts der Warteschlange, sammelt die Sätze und füllt den Cache vor, höchstens 100 neue Sätze pro Lauf mit 8 s Abstand, damit das Free-Tier-Limit von Gemini-TTS hält. Bei einem 429 hört der Lauf auf und macht am nächsten Termin weiter. Per Hand: Actions → Stimmen vorab → Run workflow. Datum und Uhrzeit der Notizen-Oberfläche werden nicht gesprochen (`sprechtext` in `stimme.mjs`), sonst träfe der Cache nie.
