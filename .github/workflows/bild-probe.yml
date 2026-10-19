@@ -1,13 +1,13 @@
 name: Bild-Probe
-# Erzeugt neue Resi-Bilder über die Gemini-API (bildgen.mjs, ca. 3–7 Cent pro Bild) und legt sie auf dem Branch bild-probe ab.
-# Nur von Hand. Ändert weder main noch die Bibliothek; was taugt, übernimmt Claude danach per PR in autopilot/bilder.
+# Erzeugt neue Resi-Bilder über die Gemini-API (bildgen.mjs, ca. 3–7 Cent pro Bild, höchstens 15 pro Monat) und legt sie auf dem Branch bild-probe ab.
+# Nur von Hand (auch vom wöchentlichen Schreib-Lauf). Ändert auf main nur den Zähler bild-log.json, nicht die Bibliothek; was taugt, übernimmt Claude danach per PR in autopilot/bilder.
 on:
   workflow_dispatch:
     inputs:
       auftraege:
         description: "JSON-Datei mit den Szenen (relativ zu autopilot/)"
         required: false
-        default: "bilder-probe.json"
+        default: "bild-auftraege/2026-10-20.json"
 permissions:
   contents: write
 concurrency:
@@ -26,6 +26,14 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node bildgen.mjs "${{ inputs.auftraege }}" "$RUNNER_TEMP/bilder"
+      - name: Zähler für den Monatsdeckel auf main sichern
+        run: |
+          git config user.name "Resi Requiem Autopilot"
+          git config user.email "autopilot@users.noreply.github.com"
+          git add autopilot/bild-log.json
+          git diff --cached --quiet && exit 0
+          git commit -qm "Bild-Log: neue Gemini-Bilder gezählt"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
       - name: Auf Branch bild-probe ablegen
         run: |
           # Eigener Ordner ohne Verlauf: der Branch enthält nur die Probebilder
