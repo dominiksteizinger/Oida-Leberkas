@@ -75,12 +75,12 @@ async function holeVonGemini(text, stimme, roh) {
     // Gemini liefert je nach Lauf WAV mit Kopf oder rohes PCM. Am Kopf erkennen, sonst als 16-Bit-PCM lesen
     const daten64 = Buffer.from(teil.inlineData.data, "base64");
     const rate = /rate=(\d+)/.exec(teil.inlineData.mimeType || "")?.[1] ?? "24000";
+    fs.mkdirSync(CACHE, { recursive: true });
     const tmp = `${roh}.tmp`;
     fs.writeFileSync(tmp, daten64);
     const eingabe = daten64.subarray(0, 4).toString("ascii") === "RIFF"
       ? ["-i", tmp]
       : ["-f", "s16le", "-ar", rate, "-ac", "1", "-i", tmp];
-    fs.mkdirSync(CACHE, { recursive: true });
     ff([...eingabe, "-ac", "1", "-c:a", "libopus", "-b:a", "48k", roh]);
     fs.rmSync(tmp);
     console.log(`Gemini ${modell}: neuer Satz im Cache (${path.basename(roh)})`);
