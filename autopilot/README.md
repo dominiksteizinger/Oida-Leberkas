@@ -30,12 +30,22 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 }
 ```
 
-- `inhalt.format` ist eines von `antwort`, `notiz`, `bewertung`, `chat`, `szene`. Felder und Längen stehen in `eintrag.mjs`, Ton und Grenzen in `regeln.md`, Beispiele in `beispiele.md`.
+- `inhalt.format` ist eines von `antwort`, `notiz`, `bewertung`, `chat`, `szene` oder einer der Handy-Oberflächen (seit 19.10.2026) `mitteilungen`, `termin`, `wetter`, `umfrage`, `wiedergabe`, `sprachnachricht`, `suchverlauf`, `fehlermeldung`, `todo`, `beleg`. Felder und Längen stehen in `eintrag.mjs`, Ton und Grenzen in `regeln.md`, Beispiele in `beispiele.md`.
   - `antwort`: `von`, `kommentar`, `zeilen` (1–3)
   - `notiz`: `titel`, `absaetze` (2–5, der letzte ist die Pointe)
   - `bewertung`: `nr`, `ort`, `saerge` (0–5), `text`
   - `chat`: `name`, `nachrichten` (`wer`: `sie`, `ich` oder `zeit`)
   - `szene`: `satz`, `klammern` (1–3)
+  - `mitteilungen`: `mitteilungen` (2–4, je `app`, `zeit`, `titel`, `text`; die letzte ist die Pointe)
+  - `termin`: `datum`, `titel`, `zeit`, `zeilen` (1–3, Pointe)
+  - `wetter`: `ort`, `temperatur`, `lage`, `gefuehlt` (Pointe), `zusatz`
+  - `umfrage`: `frage`, `optionen` (2–3, je `text`, `prozent`), `fuss`
+  - `wiedergabe`: `titel` (Pointe), `kuenstler`, `position`, `dauer`, `fortschritt` (0–100)
+  - `sprachnachricht`: `name`, `dauer_sie`, `dauer_ich`, `transkript` (Pointe)
+  - `suchverlauf`: `eingabe`, `vorschlaege` (3–5)
+  - `fehlermeldung`: `titel`, `text`, `knopf_links`, `knopf_rechts` (Pointe)
+  - `todo`: `titel`, `punkte` (3–5, je `text`, `erledigt`), `fazit`
+  - `beleg`: `titel`, `untertitel`, `posten` (3–6, je `name`, `menge`), `summe`, `fuss`
 - `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`.
 - `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
 - `musik` (optional): wird ignoriert, die Reels laufen ohne Ton. Die alten Tracks und `musik_generator.py` liegen in der Git-Historie.
