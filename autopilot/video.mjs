@@ -4,6 +4,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import { setupPointe } from "./eintrag.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const id = process.argv[2];
@@ -37,6 +38,7 @@ function texte() {
       while (ende > 1 && n[ende - 1].wer === "ich") ende--;
       return [n.slice(0, ende).map((m) => m.text).join(" "), n.slice(ende).map((m) => m.text).join(" ")];
     }
+    default: return setupPointe(i);
   }
 }
 const [setupText, pointeText] = texte();
