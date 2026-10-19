@@ -110,7 +110,25 @@ export async function youtube({ env, posts, von, bis, f = fetch }) {
     if (p) werte[p.id] = { ...z, link: `https://youtube.com/shorts/${z.video}` };
     else rest.push({ ...z, titel: titel[z.video], link: `https://youtube.com/shorts/${z.video}` });
   }
-  return { status: "ok", werte, rest, ohneTitel: !scope.includes("youtube.readonly") };
+  // Analytics hinkt 1 bis 3 Tage hinterher. Für Posts ohne Analytics-Zeile die aktuellen Zähler aus der Data API (nur Views, Likes, Kommentare)
+  let vorlaeufig = 0;
+  if (scope.includes("youtube.readonly") && posts.some((p) => !werte[p.id])) {
+    const kanal = await (await f("https://www.googleapis.com/youtube/v3/channels?part=contentDetails&mine=true", { headers: kopf })).json();
+    const liste = kanal.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+    if (liste) {
+      const items = (await (await f(`https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&maxResults=50&playlistId=${liste}`, { headers: kopf })).json()).items || [];
+      const ids = items.map((i) => i.contentDetails.videoId).join(",");
+      const videos = ids ? (await (await f(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${ids}`, { headers: kopf })).json()).items || [] : [];
+      for (const v of videos) {
+        const p = nachTitel.get(norm(v.snippet.title));
+        if (!p || werte[p.id]) continue;
+        const st = v.statistics || {};
+        werte[p.id] = { views: Number(st.viewCount ?? 0), likes: Number(st.likeCount ?? 0), comments: Number(st.commentCount ?? 0), link: `https://youtube.com/shorts/${v.id}`, vorlaeufig: true };
+        vorlaeufig++;
+      }
+    }
+  }
+  return { status: "ok", werte, rest, vorlaeufig, ohneTitel: !scope.includes("youtube.readonly") };
 }
 
 // Gleicher Titel wie in youtube.mjs
@@ -127,7 +145,7 @@ const mittel = (liste, f) => { const v = liste.map(f).filter((x) => typeof x ===
 export function bericht({ datum, tage, posts, ig, yt }) {
   const z = [`# Wochenauswertung ${datum}`, "", `Posts der letzten ${tage} Tage: ${posts.length}. Werte sind Gesamtstände zum Abrufzeitpunkt, junge Posts (unter 24 h) sind noch nicht aussagekräftig.`, ""];
   z.push("## Status der Abfragen", "");
-  for (const [name, r] of [["Instagram", ig], ["YouTube", yt]]) z.push(r.status === "ok" ? `- ${name}: ok` : `- ${name}: **übersprungen**: ${r.grund}. Anleitung: autopilot/messung-anleitung.md`);
+  for (const [name, r] of [["Instagram", ig], ["YouTube", yt]]) z.push(r.status === "ok" ? `- ${name}: ok${r.vorlaeufig ? ` (${r.vorlaeufig} Posts nur mit aktuellen Zählern, Analytics kommt mit 1 bis 3 Tagen Verzug; Ø-Wiedergabe fehlt dort noch)` : ""}` : `- ${name}: **übersprungen**: ${r.grund}. Anleitung: autopilot/messung-anleitung.md`);
   z.push("");
   const igw = (id) => (ig.status === "ok" ? ig.werte[id] || {} : {});
   const ytw = (id) => (yt.status === "ok" ? yt.werte[id] || {} : {});
