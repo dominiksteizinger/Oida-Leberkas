@@ -28,12 +28,13 @@ for (const issue of offen) {
   const id = `vorab-${issue.number}`;
   const ordner = path.join(HIER, "..", "tagebuch", id);
   try {
-    const roh = JSON.parse(issue.body.match(/```json\s*([\s\S]*?)```/)[1]);
-    const e = Eintrag.parse(roh);
+    const post = JSON.parse(issue.body.match(/```json\s*([\s\S]*?)```/)[1]);
+    const e = Eintrag.parse(post);
     fs.mkdirSync(ordner, { recursive: true });
     fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id, datum: "2026-11-10", slot: "07", ...e }));
     execFileSync("node", ["render.mjs", id], { cwd: HIER, stdio: "ignore" });
-    for (const s of JSON.parse(fs.readFileSync(path.join(ordner, "schritte.json"), "utf8"))) {
+    const roh = JSON.parse(fs.readFileSync(path.join(ordner, "schritte.json"), "utf8"));
+    for (const s of Array.isArray(roh) ? roh : roh.schritte) {
       const t = sprechtext(s.text);
       if (t && !gesehen.has(t)) { gesehen.add(t); saetze.push({ t, issue: issue.number }); }
     }

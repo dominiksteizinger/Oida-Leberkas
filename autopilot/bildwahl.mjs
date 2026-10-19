@@ -1,5 +1,5 @@
 // Zeigt, welche Bilder für einen Tag infrage kommen, in Reihenfolge der Empfehlung.
-//   node bildwahl.mjs [JJJJ-MM-TT]            Kandidaten für den Tag (heute, sonst das angegebene Datum)
+//   node bildwahl.mjs [JJJJ-MM-TT]            Kandidaten für den Tag (heute, sonst das angegebene Datum), Bilder mit sichtbarem Gesicht zuerst
 //   node bildwahl.mjs --verlauf <datei.jpg>   frühere Nutzungen und Texte eines Bildes (für einen neuen, anderen Text)
 import fs from "node:fs";
 import path from "node:path";
@@ -25,6 +25,6 @@ const liste = kandidaten({ bibliothek, nutzung, datum, konf });
 console.log(`Bilder für ${datum} (Recycling ${konf.recycling ? `an, Abstand ${konf.abstand} Tage` : "aus"}):`);
 for (const k of liste) {
   const stand = k.wiederverwendung ? `zuletzt ${k.letzte}, vor ${tageZwischen(k.letzte, datum)} Tagen` : "ungenutzt";
-  console.log(`- ${k.datei} (${stand}): ${k.beschreibung}`);
+  console.log(`- ${k.datei} (${stand}${k.gesicht === "ja" ? "" : ", Gesicht nicht gut sichtbar"}): ${k.beschreibung}`);
 }
 if (!liste.length) console.log("Kein Bild passt. Neue Bilder nötig.");

@@ -35,6 +35,9 @@ export function pruefeTags(bibliothek) {
   for (const b of bibliothek) {
     if (!Array.isArray(b.tags) || !b.tags.length) throw new Error(`${b.datei} hat keine tags`);
     for (const t of b.tags) if (!(t in TAGS)) throw new Error(`${b.datei}: unbekannter Tag „${t}“`);
+    // gesicht: sind Gesicht und Augen im Bild gut zu sehen (fürs Reel)? kopf: Gesichtsmitte x und Kinn y als Anteil der Bildgröße
+    if (b.gesicht !== "ja" && b.gesicht !== "nein") throw new Error(`${b.datei}: gesicht muss "ja" oder "nein" sein`);
+    if (b.kopf !== undefined && !(Array.isArray(b.kopf) && b.kopf.length === 2 && b.kopf.every((v) => typeof v === "number" && v >= 0 && v <= 1))) throw new Error(`${b.datei}: kopf muss [x, y] zwischen 0 und 1 sein`);
   }
   return bibliothek;
 }
@@ -108,18 +111,18 @@ export function pruefeBild({ bibliothek, nutzung, bild, datum, konf, id, e }) {
   return { ok: true, wiederverwendung: true };
 }
 
-// Alle Bilder, die am Tag passen, in Reihenfolge: ungenutzte zuerst (saisonale vor den übrigen),
-// danach wiederverwendbare nach ältester letzter Nutzung.
+// Alle Bilder, die am Tag passen, in Reihenfolge: Bilder mit sichtbarem Gesicht zuerst (fürs Reel),
+// darin ungenutzte vor wiederverwendbaren (saisonale vor den übrigen), danach nach ältester letzter Nutzung.
 export function kandidaten({ bibliothek, nutzung, datum, konf, id }) {
   const liste = [];
   for (const b of bibliothek) {
     const r = pruefeBild({ bibliothek, nutzung, bild: b.datei, datum, konf, id });
     if (!r.ok) continue;
     const letzte = nutzung.filter((n) => n.bild === b.datei && n.id !== id).reduce((a, n) => (n.datum > a ? n.datum : a), "");
-    liste.push({ datei: b.datei, beschreibung: b.beschreibung, wiederverwendung: r.wiederverwendung, letzte, saisonal: saisonal(b) });
+    liste.push({ datei: b.datei, beschreibung: b.beschreibung, gesicht: b.gesicht, wiederverwendung: r.wiederverwendung, letzte, saisonal: saisonal(b) });
   }
   const rang = (x) => (!x.wiederverwendung ? (x.saisonal ? 0 : 1) : 2);
-  return liste.sort((a, b) => rang(a) - rang(b) || (a.letzte < b.letzte ? -1 : a.letzte > b.letzte ? 1 : 0));
+  return liste.sort((a, b) => (a.gesicht === "ja" ? 0 : 1) - (b.gesicht === "ja" ? 0 : 1) || rang(a) - rang(b) || (a.letzte < b.letzte ? -1 : a.letzte > b.letzte ? 1 : 0));
 }
 
 export function verbuchen(nutzung, { id, datum, slot, bild, e }) {
