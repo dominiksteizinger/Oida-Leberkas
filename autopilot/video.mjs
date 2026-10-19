@@ -3,7 +3,7 @@
 // Vollbild (19.10.2026): Fotos füllen den ganzen Schirm, am Gesicht ausgerichtet, mit langsamem Zoom; Karten und Text liegen
 // unbewegt darüber (leichter Parallax-Effekt). Reaktionsbilder und Karten ohne Bild zoomen als Ganzes ganz leicht.
 // Standard ist stumm (Dominik 18.10.2026). Mit der Repo-Variable STIMME="an" liest eine KI-Stimme jeden Teil vor
-// und Untertitel laufen mit (untertitel.ass). Schlägt die Stimme fehl, bleibt das Reel stumm.
+// (Dominik 19.10.2026: Text im Bild wird gesprochen, keine Untertitel dazu; mit UNTERTITEL="an" laufen sie wieder mit). Schlägt die Stimme fehl, bleibt das Reel stumm.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -20,7 +20,8 @@ const i = eintrag.inhalt;
 
 // Standzeit nach Textmenge: ca. 3,5 Wörter pro Sekunde plus 1 s Orientierung, mit Unter- und Obergrenze
 const woerter = (s) => s.split(/\s+/).filter(Boolean).length;
-const lesezeit = (s, min, max) => Math.min(max, Math.max(min, 1 + woerter(s) / 3.5));
+// Ohne Stimme knapp (Dominik 19.10.2026: stumme Reels wirkten endlos); mit Stimme bestimmt der gesprochene Satz die Standzeit
+const lesezeit = (s, min, max) => Math.min(max, Math.max(min, 0.5 + woerter(s) / 4));
 function texte() {
   switch (i.format) {
     case "antwort": return [i.kommentar, i.zeilen.join(" ")];
@@ -65,7 +66,7 @@ if (fs.existsSync(schritteDatei)) {
     // schritte.json: Teil 0 ist das Setup, jeder weitere Teil ist der neue Text
     text: x.text,
     // Chat startet leer und füllt sich Blase für Blase, sonst steht das Setup lang genug zum Lesen. Ohne Setup-Text (Aufforderung ans Ende verschoben): kurz nur das Bild
-    dauer: n === 0 ? (["chat", "notiz"].includes(i.format) || !x.text ? 1.2 : lesezeit(x.text, 2.5, 6)) : lesezeit(x.text, 1.6, 4) + (n === s.length - 1 ? 1.5 : 0),
+    dauer: n === 0 ? (["chat", "notiz"].includes(i.format) || !x.text ? 1.2 : lesezeit(x.text, 2, 5)) : lesezeit(x.text, 1.3, 3.5) + (n === s.length - 1 ? 0.8 : 0),
   }));
 } else {
   bilder = [
@@ -126,7 +127,8 @@ console.log(`${bilder.length} Bilder, gesamt ${DAUER} s${tonDaten ? ", mit Stimm
 let start = 0;
 for (const b of bilder) { b.start = start; start += b.dauer; }
 const sprecher = bilder.filter((b) => b.ton && b.text);
-if (sprecher.length) {
+const UNTERTITEL = process.env.UNTERTITEL === "an" && sprecher.length > 0;
+if (UNTERTITEL) {
   // Untertitel als ASS mit 1080x1920 als Bezug, damit Größe und Rand stimmen (SRT skalierte zu groß)
   const kopf = `[Script Info]\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\nWrapStyle: 0\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Unter,Inter,44,&H00FFFFFF,&H000000FF,&H00000000,&H99120A10,-1,0,0,0,100,100,0,0,3,14,0,2,110,110,300,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n`;
   const zeilen = sprecher.map((b) => {
@@ -143,7 +145,8 @@ const n = bilder.length;
 const FRAMES = Math.round(DAUER * 30);
 const zoom = (stark, ax, ay) => `scale=2160:3840,setsar=1,zoompan=z='1+${stark}*on/${FRAMES}':x='(iw-iw/zoom)*${ax}':y='(ih-ih/zoom)*${ay}':d=1:s=1080x1920:fps=30`;
 const bild = eintrag.bild && path.join(HIER, "bilder", eintrag.bild);
-const kopf = bild && JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")).find((b) => b.datei === eintrag.bild)?.kopf;
+const bildInfo = bild ? JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")).find((b) => b.datei === eintrag.bild) || {} : {};
+const kopf = bildInfo.kopf;
 const mitFoto = ["foto", "breit"].includes(modus) && bild;
 const versatz = mitFoto ? 1 : 0;
 const bildEingaben = [
@@ -155,8 +158,10 @@ const kette = `${teile};${bilder.map((_, k) => `[v${k}]`).join("")}concat=n=${n}
 let bildFilter;
 if (modus === "foto" && bild) {
   // 9:16-Ausschnitt um die Gesichtsmitte, volle Höhe; Zoom Richtung Kopf (oben), das Gesicht bleibt immer im Bild
+  // Ausschnitt so mittig wie möglich (Herbert und andere Bildteile am Rand bleiben drin), das Gesicht aber mit Abstand zum Rand
   const kx = kopf ? kopf[0] : 0.5;
-  bildFilter = `[0:v]crop=w='trunc(ih*9/32)*2':h=ih:x='min(max(${kx}*iw-ih*9/32,0),iw-ih*9/16)':y=0,${zoom(0.07, 0.5, 0.15)}[hg];${kette}[ov];[hg][ov]overlay=0:0:format=auto,format=yuv420p[v]`;
+  const mitte = Math.min(Math.max(bildInfo.mitte ?? 0.5, kx - 0.22), kx + 0.22);
+  bildFilter = `[0:v]crop=w='trunc(ih*9/32)*2':h=ih:x='min(max(${mitte.toFixed(3)}*iw-ih*9/32,0),iw-ih*9/16)':y=0,${zoom(0.035, 0.5, 0.15)}[hg];${kette}[ov];[hg][ov]overlay=0:0:format=auto,format=yuv420p[v]`;
 } else if (modus === "breit" && bild) {
   // Querformat: unscharfer, dunkler Vollbild-Hintergrund aus demselben Bild, das ganze Bild scharf in der Mitte
   bildFilter = `[0:v]split[b1][b2];[b1]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=40:2,eq=brightness=-0.18[bb];[b2]scale=1080:-2[bs];[bb][bs]overlay=0:(H-h)/2,${zoom(0.05, 0.5, 0.5)}[hg];${kette}[ov];[hg][ov]overlay=0:0:format=auto,format=yuv420p[v]`;
@@ -165,7 +170,7 @@ if (modus === "foto" && bild) {
 } else {
   bildFilter = `${kette},format=yuv420p[v]`;
 }
-const untertitel = sprecher.length
+const untertitel = UNTERTITEL
   ? ";[v]subtitles=untertitel.ass:fontsdir=../../assets/fonts[vs]"
   : "";
 
@@ -186,10 +191,10 @@ const tonAbbildung = spuren.length ? "[aus]" : `${n + versatz}:a`;
 ff([
   ...bildEingaben, ...tonEingaben, ...stilleTonspur,
   "-filter_complex", `${bildFilter}${untertitel}${tonFilter ? `;${tonFilter}` : ""}`,
-  "-map", sprecher.length ? "[vs]" : "[v]", "-map", tonAbbildung,
+  "-map", UNTERTITEL ? "[vs]" : "[v]", "-map", tonAbbildung,
   "-c:v", "libx264", "-preset", "medium", "-crf", "26", "-pix_fmt", "yuv420p", "-r", "30",
   "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", path.join(ordner, "reel.mp4"),
 ]);
 
-const tonText = [sprecher.length && "mit Stimme und Untertiteln", jingle && "mit Jingle"].filter(Boolean);
+const tonText = [sprecher.length && (UNTERTITEL ? "mit Stimme und Untertiteln" : "mit Stimme"), jingle && "mit Jingle"].filter(Boolean);
 console.log(`Reel fertig (${tonText.length ? tonText.join(", ") : "ohne Ton"})`);
