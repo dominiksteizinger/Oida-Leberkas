@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-19-07",
+    "datum": "2026-10-19",
+    "slot": "07",
+    "format": "szene",
+    "bild": "friedhofsbank-herbst.jpg",
+    "text": "Schick das der Person, die du auf deinem Begräbnis haben willst. [erste Reihe] [Handy aus] [bringt Semmeln mit]",
+    "bilder": [
+      "tagebuch/2026-10-19-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-18-16",
     "datum": "2026-10-18",
     "slot": "16",
