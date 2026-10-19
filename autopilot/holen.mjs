@@ -1,5 +1,5 @@
 // Holt den nächsten fertigen Post aus der Warteschlange: offene Issues mit Label „warteschlange“, ältestes zuerst.
-// Labels kann nur setzen, wer Schreibrechte am Repo hat; fremde Issues kommen so nicht in die Warteschlange.
+// Nur Issues vom Repo-Owner zählen: Die Vorlage „Fertiger Post“ setzt das Label auch bei Fremden, das Repo ist öffentlich.
 // Der Post steht als JSON-Block im Issue (Aufbau siehe eintrag.mjs und README). Ergebnis: tagebuch/<id>/eintrag.json
 import fs from "node:fs";
 import path from "node:path";
@@ -29,7 +29,10 @@ function pruefe(body) {
   return { e, wunschSlot: roh.slot ? String(roh.slot) : null };
 }
 
-const offen = JSON.parse(gh("issue", "list", "--repo", repo, "--label", "warteschlange", "--state", "open", "--limit", "100", "--json", "number,body,createdAt"))
+// Nur Issues vom Repo-Owner: Die Vorlage „Fertiger Post“ setzt das Label automatisch, auch bei Fremden.
+const owner = process.env.GITHUB_REPOSITORY_OWNER;
+if (!owner) throw new Error("GITHUB_REPOSITORY_OWNER fehlt");
+const offen = JSON.parse(gh("issue", "list", "--repo", repo, "--label", "warteschlange", "--state", "open", "--author", owner, "--limit", "100", "--json", "number,body,createdAt"))
   .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
 const passend = [];

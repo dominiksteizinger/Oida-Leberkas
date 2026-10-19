@@ -39,7 +39,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 - `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`.
 - `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
 - `musik` (optional): wird zurzeit nicht verwendet, die Reels laufen ohne Ton.
-- Nur Issues mit dem Label `warteschlange` zählen, und Labels setzen kann nur, wer Schreibrechte hat.
+- Nur Issues mit dem Label `warteschlange` zählen, und nur, wenn der Repo-Owner sie angelegt hat. Die Vorlage setzt das Label auch bei Fremden, deshalb filtert `holen.mjs` nach dem Absender.
 
 ## Einstellungen (Settings → Secrets and variables → Actions → Variables)
 
