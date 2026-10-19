@@ -32,6 +32,7 @@ export const sprechtext = (text) => String(text)
   .replace(/\s+/g, " ")
   .trim();
 
+const erschoepft = new Set();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
 
@@ -87,8 +88,11 @@ async function holeVonGemini(text, stimme, roh) {
   const schluessel = process.env.GEMINI_API_KEY;
   if (!schluessel) throw new Error("GEMINI_API_KEY fehlt, und der Satz ist nicht im Cache");
   for (const modell of MODELLE) {
+    if (erschoepft.has(modell)) continue;
     const antwort = await anfrage(modell, stimme, text, schluessel);
     if (antwort.status === 404) continue;
+    // Kontingent des Modells aufgebraucht (nach den Wiederholungen in anfrage): in diesem Lauf nicht mehr versuchen, das nächste Modell hat ein eigenes Kontingent
+    if (antwort.status === 429) { erschoepft.add(modell); console.warn(`Gemini-TTS ${modell}: Kontingent aufgebraucht, nächstes Modell`); continue; }
     if (!antwort.ok) throw new Error(`Gemini-TTS ${modell}: ${antwort.status} ${(await antwort.text()).slice(0, 300)}`);
     const daten = await antwort.json();
     const teil = daten.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
@@ -107,7 +111,7 @@ async function holeVonGemini(text, stimme, roh) {
     console.log(`Gemini ${modell}: neuer Satz im Cache (${path.basename(roh)})`);
     return;
   }
-  throw new Error(`Kein TTS-Modell verfügbar (${MODELLE.join(", ")})`);
+  throw new Error(`Kein TTS-Modell verfügbar oder Tageskontingent aufgebraucht (${MODELLE.join(", ")}), HTTP 429`);
 }
 
 // Für jeden Bildteil die Sprachspur: { wav, dauer } oder null, wenn der Teil keinen Text hat

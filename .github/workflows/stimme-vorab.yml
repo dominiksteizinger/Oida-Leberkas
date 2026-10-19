@@ -1,9 +1,9 @@
 name: Stimmen vorab
 # Füllt zweimal täglich den Stimmen-Cache (Gemini-TTS) für die Posts in der Warteschlange, verteilt unter dem Free-Tier-Limit,
-# damit die Reels live ohne Gemini-Aufruf eine Stimme bekommen. Läuft vor dem Morgen- und dem Nachmittagspost.
+# damit die Reels live ohne Gemini-Aufruf eine Stimme bekommen. Läuft nach dem Tageswechsel des Gemini-Kontingents (Mitternacht Pazifik, 07 oder 08 Uhr UTC).
 on:
   schedule:
-    - cron: "40 4,11 * * *"
+    - cron: "30 8,20 * * *"
   workflow_dispatch:
     inputs:
       max:
@@ -44,10 +44,14 @@ jobs:
           MAX: ${{ inputs.max }}
         run: node stimme-vorab.mjs --max "${MAX:-100}"
       - name: Cache einchecken
+        if: ${{ !cancelled() }}
         run: |
           git config user.name "Resi Requiem Autopilot"
           git config user.email "autopilot@users.noreply.github.com"
+          # Das Rendern ändert tagebuch/eintraege.json, das gehört nicht in den Commit (und blockiert sonst das Rebase)
+          git checkout -- .
           git add autopilot/stimme-cache
           git diff --cached --quiet && exit 0
           git commit -m "Stimmen-Cache: ${{ steps.vorab.outputs.neu }} neue Sätze"
-          for i in 1 2 3; do git pull --rebase origin main && git push origin HEAD:main && break || sleep 5; done
+          for i in 1 2 3; do git pull --rebase origin main && git push origin HEAD:main && exit 0; sleep 5; done
+          echo "Push fehlgeschlagen" >&2; exit 1
