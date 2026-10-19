@@ -9,8 +9,30 @@ const HIER = path.dirname(new URL(import.meta.url).pathname);
 const id = process.argv[2];
 if (!id) throw new Error("Aufruf: node video.mjs <id>");
 const ordner = path.join(HIER, "..", "tagebuch", id);
-const SETUP = 2.8;
-const DAUER = 8;
+const i = JSON.parse(fs.readFileSync(path.join(ordner, "eintrag.json"), "utf8")).inhalt;
+
+// Standzeit nach Textmenge: ca. 3,5 Wörter pro Sekunde plus 1 s Orientierung, mit Unter- und Obergrenze
+const woerter = (s) => s.split(/\s+/).filter(Boolean).length;
+const lesezeit = (s, min, max) => Math.min(max, Math.max(min, 1 + woerter(s) / 3.5));
+function texte() {
+  switch (i.format) {
+    case "antwort": return [i.kommentar, i.zeilen.join(" ")];
+    case "notiz": return [`${i.titel} ${i.absaetze.slice(0, -1).join(" ")}`, i.absaetze.at(-1)];
+    case "bewertung": return [i.ort, i.text];
+    case "szene": return [i.satz, i.klammern.join(" ")];
+    case "chat": {
+      // wie in formate.mjs: Setup bis zu Resis letzten Antworten
+      const n = i.nachrichten.filter((m) => m.wer !== "zeit");
+      let ende = n.length;
+      while (ende > 1 && n[ende - 1].wer === "ich") ende--;
+      return [n.slice(0, ende).map((m) => m.text).join(" "), n.slice(ende).map((m) => m.text).join(" ")];
+    }
+  }
+}
+const [setupText, pointeText] = texte();
+const SETUP = Number(lesezeit(setupText, 2.5, 7).toFixed(1));
+const DAUER = Number((SETUP + lesezeit(pointeText, 3, 6)).toFixed(1));
+console.log(`Setup ${SETUP} s, gesamt ${DAUER} s`);
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
 
 // Beide Stufen hochkant auf dunklem Grund, ohne Bewegung (Standbild); harter Schnitt von Setup auf Pointe
