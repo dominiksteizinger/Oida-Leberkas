@@ -101,3 +101,10 @@ test("verbuchen ersetzt denselben Eintrag und speichert den Fingerabdruck", () =
   assert.equal(n.length, 1);
   assert.equal(n[0].fingerabdruck.inhalt, fingerabdruck(eintrag("Zwei.")).inhalt);
 });
+
+test("Reel-Bildwahl: Bilder mit sichtbarem Gesicht kommen zuerst", () => {
+  const liste = kandidaten({ bibliothek, nutzung: [], datum: "2026-10-19", konf });
+  const erstesOhne = liste.findIndex((k) => k.gesicht !== "ja");
+  assert.ok(erstesOhne > 0);
+  assert.ok(liste.slice(erstesOhne).every((k) => k.gesicht !== "ja"));
+});

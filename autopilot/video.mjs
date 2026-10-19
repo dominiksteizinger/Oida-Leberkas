@@ -1,5 +1,7 @@
-// Macht aus dem Post ein Reel: erst das Setup, dann erscheinen die neuen Teile nacheinander (schritt-NN.jpg aus render.mjs).
+// Macht aus dem Post ein Reel: erst das Setup, dann erscheinen die neuen Teile nacheinander (schritt-NN.png aus render.mjs).
 // Ergebnis: tagebuch/<id>/reel.mp4 (1080x1920) für Instagram-Reels und YouTube Shorts.
+// Vollbild (19.10.2026): Fotos füllen den ganzen Schirm, am Gesicht ausgerichtet, mit langsamem Zoom; Karten und Text liegen
+// unbewegt darüber (leichter Parallax-Effekt). Reaktionsbilder und Karten ohne Bild zoomen als Ganzes ganz leicht.
 // Standard ist stumm (Dominik 18.10.2026). Mit der Repo-Variable STIMME="an" liest eine KI-Stimme jeden Teil vor
 // und Untertitel laufen mit (untertitel.ass). Schlägt die Stimme fehl, bleibt das Reel stumm.
 import fs from "node:fs";
@@ -13,7 +15,8 @@ const HIER = path.dirname(new URL(import.meta.url).pathname);
 const id = process.argv[2];
 if (!id) throw new Error("Aufruf: node video.mjs <id>");
 const ordner = path.join(HIER, "..", "tagebuch", id);
-const i = JSON.parse(fs.readFileSync(path.join(ordner, "eintrag.json"), "utf8")).inhalt;
+const eintrag = JSON.parse(fs.readFileSync(path.join(ordner, "eintrag.json"), "utf8"));
+const i = eintrag.inhalt;
 
 // Standzeit nach Textmenge: ca. 3,5 Wörter pro Sekunde plus 1 s Orientierung, mit Unter- und Obergrenze
 const woerter = (s) => s.split(/\s+/).filter(Boolean).length;
@@ -52,14 +55,17 @@ const assZeit = (s) => { const h = Math.floor(s / 3600), m = Math.floor((s % 360
 const [setupText, pointeText] = texte();
 const schritteDatei = path.join(ordner, "schritte.json");
 let bilder;
+let modus = "alt";
 if (fs.existsSync(schritteDatei)) {
-  const s = JSON.parse(fs.readFileSync(schritteDatei, "utf8"));
+  const roh = JSON.parse(fs.readFileSync(schritteDatei, "utf8"));
+  const s = Array.isArray(roh) ? roh : roh.schritte;
+  modus = Array.isArray(roh) ? "alt" : roh.modus;
   bilder = s.map((x, n) => ({
     datei: x.datei,
     // schritte.json: Teil 0 ist das Setup, jeder weitere Teil ist der neue Text
     text: x.text,
-    // Chat startet leer und füllt sich Blase für Blase, sonst steht das Setup lang genug zum Lesen
-    dauer: n === 0 ? (["chat", "notiz"].includes(i.format) ? 1 : lesezeit(setupText, 2.5, 6)) : lesezeit(x.text, 1.6, 4) + (n === s.length - 1 ? 1.5 : 0),
+    // Chat startet leer und füllt sich Blase für Blase, sonst steht das Setup lang genug zum Lesen. Ohne Setup-Text (Aufforderung ans Ende verschoben): kurz nur das Bild
+    dauer: n === 0 ? (["chat", "notiz"].includes(i.format) || !x.text ? 1.2 : lesezeit(x.text, 2.5, 6)) : lesezeit(x.text, 1.6, 4) + (n === s.length - 1 ? 1.5 : 0),
   }));
 } else {
   bilder = [
@@ -119,10 +125,10 @@ console.log(`${bilder.length} Bilder, gesamt ${DAUER} s${tonDaten ? ", mit Stimm
 // Startzeit jedes Teils im Reel; danach Sprachspur und Untertitel dazu
 let start = 0;
 for (const b of bilder) { b.start = start; start += b.dauer; }
-const sprecher = bilder.filter((b) => b.ton);
+const sprecher = bilder.filter((b) => b.ton && b.text);
 if (sprecher.length) {
   // Untertitel als ASS mit 1080x1920 als Bezug, damit Größe und Rand stimmen (SRT skalierte zu groß)
-  const kopf = `[Script Info]\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\nWrapStyle: 0\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Unter,Inter,44,&H00FFFFFF,&H000000FF,&H00000000,&H99120A10,-1,0,0,0,100,100,0,0,3,14,0,2,90,90,230,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n`;
+  const kopf = `[Script Info]\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\nWrapStyle: 0\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Unter,Inter,44,&H00FFFFFF,&H000000FF,&H00000000,&H99120A10,-1,0,0,0,100,100,0,0,3,14,0,2,110,110,300,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n`;
   const zeilen = sprecher.map((b) => {
     const von = b.start + VORLAUF;
     const text = b.text.replace(/\s+/g, " ").replace(/[{}\\]/g, "").trim();
@@ -131,11 +137,33 @@ if (sprecher.length) {
   fs.writeFileSync(path.join(ordner, "untertitel.ass"), kopf + zeilen.join("\n") + "\n");
 }
 
-// Alle Bilder hochkant auf dunklem Grund, ohne Bewegung; harte Schnitte von Teil zu Teil
-const stufe = (n) => `[${n}:v]scale=1080:-2,fps=30,pad=1080:1920:0:285:color=0x0D090C,setsar=1[v${n}]`;
+// Bildspur. Zoom über das ganze Reel (nicht pro Teil), damit nichts springt; zoompan arbeitet auf doppelter Auflösung, damit nichts ruckelt.
 const n = bilder.length;
-const bildEingaben = bilder.flatMap((b) => ["-loop", "1", "-t", String(b.dauer), "-i", path.join(ordner, b.datei)]);
-const bildFilter = `${bilder.map((_, k) => stufe(k)).join(";")};${bilder.map((_, k) => `[v${k}]`).join("")}concat=n=${n}:v=1:a=0[v]`;
+const FRAMES = Math.round(DAUER * 30);
+const zoom = (stark, ax, ay) => `scale=2160:3840,setsar=1,zoompan=z='1+${stark}*on/${FRAMES}':x='(iw-iw/zoom)*${ax}':y='(ih-ih/zoom)*${ay}':d=1:s=1080x1920:fps=30`;
+const bild = eintrag.bild && path.join(HIER, "bilder", eintrag.bild);
+const kopf = bild && JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")).find((b) => b.datei === eintrag.bild)?.kopf;
+const mitFoto = ["foto", "breit"].includes(modus) && bild;
+const versatz = mitFoto ? 1 : 0;
+const bildEingaben = [
+  ...(mitFoto ? ["-loop", "1", "-framerate", "30", "-t", String(DAUER), "-i", bild] : []),
+  ...bilder.flatMap((b) => ["-loop", "1", "-framerate", "30", "-t", String(b.dauer), "-i", path.join(ordner, b.datei)]),
+];
+const teile = bilder.map((_, k) => `[${k + versatz}:v]${modus === "alt" ? "scale=1080:-2,pad=1080:1920:0:285:color=0x0D090C," : ""}fps=30,format=rgba,setsar=1[v${k}]`).join(";");
+const kette = `${teile};${bilder.map((_, k) => `[v${k}]`).join("")}concat=n=${n}:v=1:a=0`;
+let bildFilter;
+if (modus === "foto" && bild) {
+  // 9:16-Ausschnitt um die Gesichtsmitte, volle Höhe; Zoom Richtung Kopf (oben), das Gesicht bleibt immer im Bild
+  const kx = kopf ? kopf[0] : 0.5;
+  bildFilter = `[0:v]crop=w='trunc(ih*9/32)*2':h=ih:x='min(max(${kx}*iw-ih*9/32,0),iw-ih*9/16)':y=0,${zoom(0.07, 0.5, 0.15)}[hg];${kette}[ov];[hg][ov]overlay=0:0:format=auto,format=yuv420p[v]`;
+} else if (modus === "breit" && bild) {
+  // Querformat: unscharfer, dunkler Vollbild-Hintergrund aus demselben Bild, das ganze Bild scharf in der Mitte
+  bildFilter = `[0:v]split[b1][b2];[b1]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=40:2,eq=brightness=-0.18[bb];[b2]scale=1080:-2[bs];[bb][bs]overlay=0:(H-h)/2,${zoom(0.05, 0.5, 0.5)}[hg];${kette}[ov];[hg][ov]overlay=0:0:format=auto,format=yuv420p[v]`;
+} else if (modus === "opak") {
+  bildFilter = `${kette},format=yuv420p,${zoom(0.035, 0.5, 0.5)}[v]`;
+} else {
+  bildFilter = `${kette},format=yuv420p[v]`;
+}
 const untertitel = sprecher.length
   ? ";[v]subtitles=untertitel.ass:fontsdir=../../assets/fonts[vs]"
   : "";
@@ -149,10 +177,10 @@ let tonEingaben = [];
 let tonFilter = "";
 if (spuren.length) {
   tonEingaben = spuren.flatMap((s) => ["-i", s.datei]);
-  tonFilter = `${spuren.map((s, j) => `[${n + j}:a]${s.jingle ? "loudnorm=I=-16:TP=-1.5:LRA=11," : ""}adelay=${Math.round(s.start * 1000)}:all=1,apad=whole_dur=${DAUER}[a${j}]`).join(";")};${spuren.map((_, j) => `[a${j}]`).join("")}amix=inputs=${spuren.length}:duration=first:normalize=0[aus]`;
+  tonFilter = `${spuren.map((s, j) => `[${n + versatz + j}:a]${s.jingle ? "loudnorm=I=-16:TP=-1.5:LRA=11," : ""}adelay=${Math.round(s.start * 1000)}:all=1,apad=whole_dur=${DAUER}[a${j}]`).join(";")};${spuren.map((_, j) => `[a${j}]`).join("")}amix=inputs=${spuren.length}:duration=first:normalize=0[aus]`;
 }
 const stilleTonspur = spuren.length ? [] : ["-f", "lavfi", "-t", String(DAUER), "-i", "anullsrc=r=44100:cl=stereo"];
-const tonAbbildung = spuren.length ? "[aus]" : `${n}:a`;
+const tonAbbildung = spuren.length ? "[aus]" : `${n + versatz}:a`;
 
 ff([
   ...bildEingaben, ...tonEingaben, ...stilleTonspur,

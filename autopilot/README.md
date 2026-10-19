@@ -9,7 +9,7 @@ Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die
 1. **Signale** (nur um 7): Wetter für Wien (Open-Meteo, mit Sonnenuntergang), Feiertage und Anlässe als Kommentar im Issue mit Label `signale`. Daraus entstehen die nächsten Posts.
 2. `holen.mjs`: nimmt den ältesten offenen Post aus der Warteschlange (Issues mit Label `warteschlange`) und prüft ihn. Fehlerhafte Posts bekommen einen Kommentar und das Label `fehler`. Ist nichts da, öffnet der Lauf ein Issue mit Label `leer` und weist es Dominik zu.
 3. `render.mjs`: rendert `tagebuch/<datum>-<slot>/post-a.jpg` (nur Setup), `post.jpg` (ganzer Post) und `schritt-NN.jpg` plus `schritte.json` (die neuen Teile einzeln aufgedeckt) und trägt ihn in `tagebuch/eintraege.json` ein. Die Startseite zeigt die neuesten Einträge.
-4. `video.mjs`: macht daraus ein Reel ohne Ton: erst das Setup, dann erscheint jeder neue Teil (Zeile, Blase, Absatz) einzeln, die Standzeit richtet sich nach der Textlänge. Chat-Blasen und Notiz-Absätze erscheinen von Anfang an nacheinander.
+4. `video.mjs`: macht daraus ein Reel (1080x1920, Vollbild): erst das Setup, dann erscheint jeder neue Teil (Zeile, Blase, Absatz) einzeln, die Standzeit richtet sich nach der Textlänge. Chat-Blasen und Notiz-Absätze erscheinen von Anfang an nacheinander. Fotos füllen den ganzen Schirm, am Gesicht ausgerichtet (`kopf` in `bibliothek.json`), mit langsamem Zoom; Karten bleiben ruhig darüber, in den sicheren Zonen (oben ca. 285 px, unten ca. 285 px frei) und unter dem Gesicht. Querformat-Bilder liegen scharf auf einem unscharfen Vollbild-Hintergrund, Reaktionsbilder und Karten ohne Bild zoomen als Ganzes leicht. Eine Aufforderung im Kartentext („Schick das …“) kommt im Reel nie zuerst, sondern als letzter Schritt.
 5. `posten.mjs`: Instagram als Reel (oder Bild) und, wenn `FACEBOOK_POSTEN=an`, Facebook-Seite.
 6. `youtube.mjs`: das Reel als YouTube Short, wenn `YOUTUBE_POSTEN=an`.
 7. Danach wird das Warteschlangen-Issue geschlossen und der Post kommt zur Bewertung in die Sammelliste.
@@ -72,7 +72,7 @@ Jeder Post hängt als Kommentar an der Sammelliste (Label `sammelliste`). 👍 o
 
 ## Bilder
 
-- `bilder/` ist die Bibliothek, `bibliothek.json` beschreibt jedes Bild in einer Zeile: `szene` für Bilder mit Hintergrund, `figur` für Reaktionsbilder auf Weiß (für das Format `antwort`), dazu `tags`.
+- `bilder/` ist die Bibliothek, `bibliothek.json` beschreibt jedes Bild in einer Zeile: `szene` für Bilder mit Hintergrund, `figur` für Reaktionsbilder auf Weiß (für das Format `antwort`), dazu `tags`, `gesicht` (`ja`, wenn Gesicht und Augen gut zu sehen sind; `bildwahl.mjs` schlägt diese Bilder zuerst vor) und bei Szenen im Hochformat `kopf` = [Gesichtsmitte x, Kinn y] als Anteil der Bildgröße (Bildausschnitt und Kartenlage im Reel).
 
 ### Bild-Recycling (seit 19.10.2026)
 
