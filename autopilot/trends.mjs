@@ -10,7 +10,7 @@ const datum = (import.meta.url === `file://${process.argv[1]}` && process.argv[2
 const UA = { "user-agent": "oida-leberkas-trends/1.0 (https://oidaleberkas.at)" };
 const MAX = 15;
 
-const entities = (s) => s.replace(/<!\[CDATA\[|\]\]>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim();
+const entities = (s) => s.replace(/<!\[CDATA\[|\]\]>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim();
 const holen = async (url, opt = {}) => {
   const res = await fetch(url, { headers: UA, signal: AbortSignal.timeout(10000), ...opt });
   if (!res.ok) throw new Error(`${res.status}`);
@@ -74,7 +74,8 @@ const quellen = [
   ["Google Trends Österreich (Suchanfragen der letzten Tage)", googleTrends],
   ["Wikipedia de, meistgelesen (letzte 7 Tage)", () => wikipedia(datum)],
   ["Reddit r/wien, Top der Woche", () => reddit("wien")],
-  ["Reddit r/Austria, Top der Woche", () => reddit("Austria")],
+  // Reddit antwortet auf zwei Abrufe kurz hintereinander mit 429, deshalb eine kleine Pause
+  ["Reddit r/Austria, Top der Woche", async () => { await new Promise((r) => setTimeout(r, 5000)); return reddit("Austria"); }],
   ["YouTube-Trends Österreich", youtube],
   ["ORF-Schlagzeilen (Wien, Science, Ö3, FM4)", schlagzeilen],
 ];
