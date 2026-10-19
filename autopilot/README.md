@@ -57,7 +57,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 - `FACEBOOK_POSTEN` = `an`: zusätzlich auf der Facebook-Seite posten.
 - `YOUTUBE_POSTEN` = `an`: Reel als Short hochladen. `YOUTUBE_SICHTBARKEIT` = `private` oder `unlisted` zum Testen.
 - `HANDLE`: Name im Post, Standard `resi.requiem`.
-- `JINGLE` = `an`: Jingle ins Reel mischen. Braucht die Datei `autopilot/assets/jingle.mp3` (3 bis 5 s, höchstens 6 s). Fehlt die Datei, läuft das Reel ohne Jingle wie bisher. `JINGLE_POS` = `ende` setzt ihn ans Ende, Standard ist der Anfang (Erkennungsmelodie). Im Anfang steht das erste Standbild, bis der Jingle durch ist, dann setzt die Stimme ein.
+- `JINGLE` = `an`: Jingle ins Reel mischen. Braucht die Datei `autopilot/assets/jingle.mp3` (3 bis 5 s, höchstens 6 s). Fehlt die Datei, läuft das Reel ohne Jingle wie bisher. Standard ist das Ende: Das letzte Standbild steht, bis der Jingle durch ist. `JINGLE_POS` = `anfang` setzt ihn vor die Stimme.
 
 ## Bewertung
 
