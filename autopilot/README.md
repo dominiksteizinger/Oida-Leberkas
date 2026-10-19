@@ -60,6 +60,20 @@ Jeden Sonntag sammelt `trends.yml` (`trends.mjs`), was in Österreich und Deutsc
 - `node vorschau.mjs neu.json <ordner>`: rendert die Posts als fertige Bilder, ohne Tagebuch und Webseite zu ändern.
 - Optionales Feld `trend` im Post-JSON: Herkunft eines Trend-Posts (nur zur Nachverfolgung, wird nicht gepostet).
 
+## Storys (seit 20.10.2026)
+
+`.github/workflows/storys.yml` postet zwei Instagram-Storys am Tag als Standbild (1080x1920), zusätzlich zu den Posts. Gratis, keine Claude-API. Läuft stündlich, `storys.mjs` ordnet die Wiener Uhrzeit dem Slot zu:
+
+- **Mittag (11 bis 15 Uhr):** eine Karte aus `storys.json`. Anlass-Karten (`ab`/`bis`) zuerst, an auffälligen Wettertagen (Nebel, Regen, Schnee, Gewitter, Hitze, Frost; höchstens alle 3 Tage) die Wetter-Story mit echten Werten von Open-Meteo und einer Zeile aus `storys.json` → `wetter`. Ist keine Karte mehr da, springt die Wetter-Story ein.
+- **Abend (17 bis 21 Uhr):** Hinweis auf den Post von 16 Uhr: Setup des Posts (ohne Pointe) im Rahmen, Label „NEUER POST“, darunter eine Zeile aus `hinweise`. Erst wenn der Post gepostet ist.
+
+Aufbau einer Karte in `storys.json` → `karten`: `{ "id", "inhalt", "bild"?, "ab"?, "bis"? }`. `inhalt` ist derselbe wie bei Posts (alle Formate aus `eintrag.mjs`), gerendert wird mit `render.mjs` in der Reel-Anordnung (Foto als Vollbild am Gesicht ausgerichtet, Karte in den sicheren Zonen). Ohne `bild` sucht `storyplan.mjs` eins aus: Hochformat-Szene, passt zur Jahreszeit, keine einmaligen Anlassbilder, nicht in den Posts der letzten 3 Tage und nicht in den Storys der letzten 10 Tage. Jede Karte geht nur einmal raus; `story-log.json` merkt sich, was gepostet wurde.
+
+- Per API gibt es keine Sticker (Umfrage, Frage, Link, Musik, Ort). Umfrage und Fragen-Sticker sind nur Optik im Bild.
+- Prüfen: `node storys.mjs pruefen` (Schema, Wortfilter, Bilder, doppelte IDs, Vorrat). Vorschau: `node storys.mjs vorschau <ordner> [datum] [karten-id …]`. Tests: `node --test autopilot/storyplan.test.mjs`.
+- Weniger als 5 offene Karten: Issue mit Label `storys`. Nachschub schreibt der Sonntagslauf (`nachschub.md`).
+- Einschalten: Repo-Variable `STORYS` = `an` (zusätzlich zu `POSTEN` = `an`). Ohne läuft alles im Probebetrieb: Das Bild hängt als Artefakt am Lauf, gepostet wird nichts. Probelauf per Hand: Actions → Storys → Run workflow (Slot, Datum, Karte wählbar).
+
 ## Wortfilter und Humor-Quote (seit 19.10.2026)
 
 - **Wortfilter** (`wortfilter.mjs`): Kommen Leberkäse, Leberkas oder Semmel (auch 🥖) in Text, Namen, Caption, Aufforderung oder Hashtags vor, lehnt `holen.mjs` den Post ab (Kommentar plus Label `fehler`), `posten.mjs` prüft vor dem Posten noch einmal. Der Bildname zählt nicht, im Bild bleibt die Semmel als Easter Egg.

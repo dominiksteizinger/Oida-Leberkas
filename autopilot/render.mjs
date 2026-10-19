@@ -146,6 +146,8 @@ for (const [stufe, name] of [["a", "post-a"], ["b", "post"]]) {
 
 await browser.close();
 
+// Storys (storys.mjs) stehen nicht im Tagebuch der Webseite
+if (process.env.KEIN_TAGEBUCH) process.exit(0);
 const liste = path.join(WURZEL, "tagebuch", "eintraege.json");
 const alle = fs.existsSync(liste) ? JSON.parse(fs.readFileSync(liste, "utf8")) : [];
 const neu = { id, datum: e.datum, slot: e.slot, format: i.format, bild: e.bild || null, text: kurzfassung(i), bilder: [`tagebuch/${id}/post.jpg`] };
