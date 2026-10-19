@@ -17,6 +17,9 @@ const STIMMLAGEN = {
   muede: { stimme: "Callirrhoe" },
 };
 
+// Aufbereitung der Rohspur (siehe sprechen)
+const AUFBEREITUNG = "highpass=f=80,lowpass=f=11000,afftdn=nf=-30:nt=w,afade=t=in:d=0.03,areverse,afade=t=in:d=0.03,areverse,loudnorm=I=-16:TP=-1.5:LRA=11";
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
 
@@ -52,14 +55,16 @@ export async function sprechen(text, ziel, stil = "trocken") {
     const daten = await antwort.json();
     const teil = daten.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
     if (!teil) throw new Error(`Gemini-TTS ${modell} lieferte kein Audio`);
-    // Rohes PCM, Abtastrate steht im mimeType (sonst 24 kHz, Standard von Gemini-TTS)
+    // Gemini liefert je nach Lauf WAV mit Kopf oder rohes PCM. Am Kopf erkennen, sonst als 16-Bit-PCM lesen
+    // (Probe 19.10.: als PCM gelesenes WAV ergab das Rauschen und Knacken am Satzanfang)
+    const roh = Buffer.from(teil.inlineData.data, "base64");
     const rate = /rate=(\d+)/.exec(teil.inlineData.mimeType || "")?.[1] ?? "24000";
-    console.log(`TTS ${modell}: ${teil.inlineData.mimeType || "ohne mimeType"}, ${Buffer.from(teil.inlineData.data, "base64").length} Bytes`);
-    fs.writeFileSync(`${ziel}.pcm`, Buffer.from(teil.inlineData.data, "base64"));
-    // Aufbereitung je Satz: Rumpel und Zischen über 11 kHz raus, leichte Rauschminderung,
-    // 30 ms Ein- und Ausblenden gegen Knackser an den Satzgrenzen, dann gleichmäßige Lautheit
-    ff(["-f", "s16le", "-ar", rate, "-ac", "1", "-i", `${ziel}.pcm`, "-af", AUFBEREITUNG, "-ar", "44100", "-ac", "2", `${ziel}.wav`]);
-    fs.rmSync(`${ziel}.pcm`);
+    fs.writeFileSync(`${ziel}.bin`, roh);
+    const eingabe = roh.subarray(0, 4).toString("ascii") === "RIFF"
+      ? ["-i", `${ziel}.bin`]
+      : ["-f", "s16le", "-ar", rate, "-ac", "1", "-i", `${ziel}.bin`];
+    ff([...eingabe, "-af", AUFBEREITUNG, "-ar", "44100", "-ac", "2", `${ziel}.wav`]);
+    fs.rmSync(`${ziel}.bin`);
     return dauerVon(`${ziel}.wav`);
   }
   throw new Error(`Kein TTS-Modell verfügbar (${MODELLE.join(", ")})`);
