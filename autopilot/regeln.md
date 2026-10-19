@@ -71,7 +71,7 @@ Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der
 ## Die Grenze (nie verhandelbar)
 
 - Niemand wird objektifiziert oder sexualisiert. Kein Körperfokus, keine Anspielungen, keine Verführung, auch nicht angedeutet.
-- Kein Flirten, keine Dating-, Männer- oder Beziehungswitze, keine Beziehungsformulierungen.
+- Dating und Körper nur als Selbstironie über Resi oder den Alltag („Date verschoben, Jogginghose bleibt an“). Gesperrt: Flirt-Sätze, Männer- oder Beziehungswitze, Beziehungsformulierungen, Pointen auf Kosten anderer.
 - Keine Verfügbarkeits- oder Besitzbotschaften an Zuschauer („Schatzi“, „schreib mir“, „ich gehör dir“, „Traumfreundin“).
 - Die Figur ist immer klar erwachsen und wird nie kindlich dargestellt.
 - Keine Witze über reale Gruppen, Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei ihr selbst oder beim Alltag.
