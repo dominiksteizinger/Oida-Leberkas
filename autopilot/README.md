@@ -8,8 +8,8 @@ Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die
 
 1. **Signale** (nur um 7): Wetter für Wien (Open-Meteo, mit Sonnenuntergang), Feiertage und Anlässe als Kommentar im Issue mit Label `signale`. Daraus entstehen die nächsten Posts.
 2. `holen.mjs`: nimmt den ältesten offenen Post aus der Warteschlange (Issues mit Label `warteschlange`) und prüft ihn. Fehlerhafte Posts bekommen einen Kommentar und das Label `fehler`. Ist nichts da, öffnet der Lauf ein Issue mit Label `leer` und weist es Dominik zu.
-3. `render.mjs`: rendert `tagebuch/<datum>-<slot>/post-a.jpg` (nur Setup) und `post.jpg` (ganzer Post) und trägt ihn in `tagebuch/eintraege.json` ein. Die Startseite zeigt die neuesten Einträge.
-4. `video.mjs`: macht daraus ein 8-Sekunden-Reel (Setup, harter Schnitt, Pointe) ohne Ton.
+3. `render.mjs`: rendert `tagebuch/<datum>-<slot>/post-a.jpg` (nur Setup), `post.jpg` (ganzer Post) und `schritt-NN.jpg` plus `schritte.json` (die neuen Teile einzeln aufgedeckt) und trägt ihn in `tagebuch/eintraege.json` ein. Die Startseite zeigt die neuesten Einträge.
+4. `video.mjs`: macht daraus ein Reel ohne Ton: erst das Setup, dann erscheint jeder neue Teil (Zeile, Blase, Absatz) einzeln, die Standzeit richtet sich nach der Textlänge. Chat-Blasen und Notiz-Absätze erscheinen von Anfang an nacheinander.
 5. `posten.mjs`: Instagram als Reel (oder Bild) und, wenn `FACEBOOK_POSTEN=an`, Facebook-Seite.
 6. `youtube.mjs`: das Reel als YouTube Short, wenn `YOUTUBE_POSTEN=an`.
 7. Danach wird das Warteschlangen-Issue geschlossen und der Post kommt zur Bewertung in die Sammelliste.
@@ -35,7 +35,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
   - `notiz`: `titel`, `absaetze` (2–5, der letzte ist die Pointe)
   - `bewertung`: `nr`, `ort`, `saerge` (0–5), `text`
   - `chat`: `name`, `nachrichten` (`wer`: `sie`, `ich` oder `zeit`)
-  - `szene`: `satz`, `klammern` (1–3)
+  - `szene`: `satz`, `klammern` (1–3 kurze Zeilen unter dem Satz, ohne Klammern dargestellt, erscheinen im Reel nacheinander)
   - `mitteilungen`: `mitteilungen` (2–4, je `app`, `zeit`, `titel`, `text`; die letzte ist die Pointe)
   - `termin`: `datum`, `titel`, `zeit`, `zeilen` (1–3, Pointe)
   - `wetter`: `ort`, `temperatur`, `lage`, `gefuehlt` (Pointe), `zusatz`
