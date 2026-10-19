@@ -78,7 +78,7 @@ jobs:
           ID="${{ steps.zeit.outputs.id }}"
           # Live zählt die Datei gepostet.txt oder der Abhak-Kommentar „Gepostet als …“ an einem Warteschlangen-Issue
           ABGEHAKT=$([ "$LIVE" = "true" ] && gh issue list --repo "$GITHUB_REPOSITORY" --label warteschlange --state closed --limit 30 \
-            --json comments --jq ".[].comments[].body" | grep -c "^Gepostet als $ID\.$" || true)
+            --json comments --jq '.[].comments[] | select(.author.login == "github-actions") | .body' | grep -c "^Gepostet als $ID\.$" || true)
           if { [ "$LIVE" = "true" ] && { [ -f "tagebuch/$ID/gepostet.txt" ] || [ "${ABGEHAKT:-0}" != "0" ]; }; } || \
              { [ "$LIVE" != "true" ] && [ "${{ github.event_name }}" = "schedule" ] && [ -f "tagebuch/$ID/post.jpg" ]; }; then
             echo "Post ${{ steps.zeit.outputs.id }} gibt es schon."; echo "weiter=false" >> "$GITHUB_OUTPUT"
@@ -242,4 +242,28 @@ jobs:
             gh issue create --repo "$GITHUB_REPOSITORY" --label bilder --assignee "${{ github.repository_owner }}" \
               --title "Bildbibliothek fast leer: nur noch ${{ steps.vorrat.outputs.frei }} passende Bilder" \
               --body "Von ${{ steps.vorrat.outputs.gesamt }} Bildern passen heute nur noch ${{ steps.vorrat.outputs.frei }} (${{ steps.vorrat.outputs.unbenutzt }} ungenutzt, der Rest recycelt nach Abstandsregel). Zeit für eine neue Runde in Gemini; die Bilder im Projekt-Chat hochladen, dann kommen sie in die Bibliothek. Dieses Issue schließen, wenn sie drin sind."
+          fi
+      - name: Warteschlange wird knapp
+        # Weniger als 8 Posts übrig = weniger als 4 Tage Vorrat: Erinnerung an Dominik
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' && fromJSON(steps.holen.outputs.rest || '99') < 8
+        run: |
+          gh label create knapp --repo "$GITHUB_REPOSITORY" --color FBCA04 --description "Warteschlange fast leer" 2>/dev/null || true
+          if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label knapp --state open --json number --jq '.[0].number // empty')" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label knapp --assignee "${{ github.repository_owner }}" \
+              --title "Warteschlange knapp: nur noch ${{ steps.holen.outputs.rest }} Posts" \
+              --body "Bei zwei Posts am Tag reicht der Vorrat noch ${{ steps.holen.outputs.rest }} Posts lang. Neue Posts im Projekt-Chat schreiben lassen. Dieses Issue schließen, wenn wieder genug in der Warteschlange liegen."
+          fi
+      - name: Lauf fehlgeschlagen melden
+        # Scheitert ein Live-Lauf (Instagram, YouTube, Rendern), bekommt Dominik ein Issue. Der nächste Lauf versucht den Slot erneut.
+        if: ${{ failure() && env.LIVE == 'true' }}
+        run: |
+          gh label create lauf-fehler --repo "$GITHUB_REPOSITORY" --color D73A4A --description "Autopilot-Lauf fehlgeschlagen" 2>/dev/null || true
+          LINK="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label lauf-fehler --state open --json number --jq '.[0].number // empty')
+          if [ -z "$NR" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label lauf-fehler --assignee "${{ github.repository_owner }}" \
+              --title "Autopilot-Lauf fehlgeschlagen: ${{ steps.zeit.outputs.id }}" \
+              --body "Lauf: $LINK. Der Slot gilt nicht als gepostet, der nächste Lauf versucht es erneut. Schließen, wenn wieder gepostet wird."
+          else
+            gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body "Wieder fehlgeschlagen (${{ steps.zeit.outputs.id }}): $LINK"
           fi
