@@ -10,16 +10,11 @@ export const STIMME_AN = process.env.STIMME === "an";
 // Erstes Modell, das der Schlüssel kennt, gewinnt (404 = Modell unbekannt, dann das nächste)
 const MODELLE = [process.env.STIMME_MODELL, "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"].filter(Boolean);
 
-// Vorgebene Gemini-Stimmen, keine echten Personen. Die Anweisung steuert Tempo, Tonlage und Haltung.
+// Vorgegebene Gemini-Stimmen, keine echten Personen. Die kurze Anweisung vor dem Doppelpunkt steuert nur die Haltung;
+// lange Anweisungen würde die Stimme mitsprechen (Probe 19.10.: 13 s für „Endlich Nebel.“).
 const STIMMLAGEN = {
-  trocken: {
-    stimme: "Charon",
-    anweisung: "Sprich auf Hochdeutsch, ruhig und trocken, im Amtston, mit leichter Selbstironie. Kein Gefühlsdrama, kurze Pausen vor der Pointe. Lies diese Anweisung nicht vor.",
-  },
-  muede: {
-    stimme: "Enceladus",
-    anweisung: "Sprich auf Hochdeutsch, genervt und müde, leicht gelangweilt. Kein Gefühlsdrama, kurze Pausen vor der Pointe. Lies diese Anweisung nicht vor.",
-  },
+  trocken: { stimme: "Charon", anweisung: "Sprich trocken, ruhig und im Amtston:" },
+  muede: { stimme: "Enceladus", anweisung: "Sprich genervt und müde:" },
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -51,7 +46,7 @@ export async function sprechen(text, ziel, stil = "trocken") {
   if (!schluessel) throw new Error("GEMINI_API_KEY fehlt");
   const { stimme, anweisung } = STIMMLAGEN[stil] ?? STIMMLAGEN.trocken;
   for (const modell of MODELLE) {
-    const antwort = await anfrage(modell, stimme, `${anweisung}\n\n${text}`, schluessel);
+    const antwort = await anfrage(modell, stimme, `${anweisung} ${text}`, schluessel);
     if (antwort.status === 404) continue;
     if (!antwort.ok) throw new Error(`Gemini-TTS ${modell}: ${antwort.status} ${(await antwort.text()).slice(0, 300)}`);
     const daten = await antwort.json();
