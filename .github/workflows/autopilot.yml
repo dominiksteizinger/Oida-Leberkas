@@ -9,7 +9,7 @@ on:
     # GitHub rechnet in UTC und startet geplante Läufe oft Stunden zu spät oder lässt sie ganz aus.
     # Deshalb stündlich: der Schritt „Zeitfenster“ ordnet jeden Lauf dem fälligen Slot zu,
     # „Schon gepostet?“ sorgt dafür, dass jeder Slot nur einmal gepostet wird.
-    - cron: "17 4-22 * * *"
+    - cron: "37 4-22 * * *"
   # Probeläufe per Hand (Actions > Autopilot > Run workflow)
   workflow_dispatch:
     inputs:
