@@ -10,11 +10,11 @@ export const STIMME_AN = process.env.STIMME === "an";
 // Erstes Modell, das der Schlüssel kennt, gewinnt (404 = Modell unbekannt, dann das nächste)
 const MODELLE = [process.env.STIMME_MODELL, "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"].filter(Boolean);
 
-// Vorgegebene Gemini-Stimmen, keine echten Personen. Die kurze Anweisung vor dem Doppelpunkt steuert nur die Haltung;
+// Vorgegebene weibliche Gemini-Stimmen, keine echten Personen. Kore: fest, sachlich. Callirrhoe: locker, müde. Die kurze Anweisung vor dem Doppelpunkt steuert nur die Haltung;
 // lange Anweisungen würde die Stimme mitsprechen (Probe 19.10.: 13 s für „Endlich Nebel.“).
 const STIMMLAGEN = {
-  trocken: { stimme: "Charon", anweisung: "Sprich trocken, ruhig und im Amtston:" },
-  muede: { stimme: "Enceladus", anweisung: "Sprich genervt und müde:" },
+  trocken: { stimme: "Kore", anweisung: "Sprich trocken, ruhig und im Amtston:" },
+  muede: { stimme: "Callirrhoe", anweisung: "Sprich genervt und müde:" },
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
