@@ -1,4 +1,4 @@
-// Holt den nächsten fertigen Post aus der Warteschlange: offene Issues mit Label „warteschlange“, ältestes zuerst.
+// Holt den nächsten fertigen Post aus der Warteschlange: offene Issues mit Label „warteschlange“, Posts mit Ablaufdatum zuerst, sonst ältestes zuerst.
 // Nur Issues vom Repo-Owner zählen: Die Vorlage „Fertiger Post“ setzt das Label auch bei Fremden, das Repo ist öffentlich.
 // Der Post steht als JSON-Block im Issue (Aufbau siehe eintrag.mjs und README). Ergebnis: tagebuch/<id>/eintrag.json
 // Prüft außerdem die Bildregeln (Saison, Mindestabstand, kein identischer Text) und trägt die Nutzung in nutzung.json ein.
@@ -10,6 +10,7 @@ import { OHNE_BILD } from "./formate.mjs";
 import { bildKonfig, pruefeBild, pruefeTags, verbuchen } from "./bildregeln.mjs";
 import { pruefeWortfilter } from "./wortfilter.mjs";
 import { mechanikLesen, pruefeQuote, verlaufLesen } from "./humorquote.mjs";
+import { reihenfolge } from "./reihenfolge.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const WURZEL = path.join(HIER, "..");
@@ -46,7 +47,7 @@ if (!owner) throw new Error("GITHUB_REPOSITORY_OWNER fehlt");
 const gewaehlt = process.env.ISSUE ? Number(process.env.ISSUE) : null;
 const offen = JSON.parse(gh("issue", "list", "--repo", repo, "--label", "warteschlange", "--state", "open", "--author", owner, "--limit", "100", "--json", "number,body,createdAt"))
   .filter((issue) => !gewaehlt || issue.number === gewaehlt)
-  .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  .sort(reihenfolge);
 
 const ablehnen = (issue, meldung) => {
   console.error(`Issue #${issue.number} übersprungen: ${meldung}`);

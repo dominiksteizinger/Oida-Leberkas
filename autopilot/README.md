@@ -7,7 +7,7 @@ Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die
 ## Ablauf eines Laufs
 
 1. **Signale** (nur um 7): Wetter für Wien (Open-Meteo, mit Sonnenuntergang), Feiertage und Anlässe als Kommentar im Issue mit Label `signale`. Daraus entstehen die nächsten Posts.
-2. `holen.mjs`: nimmt den ältesten offenen Post aus der Warteschlange (Issues mit Label `warteschlange`) und prüft ihn. Fehlerhafte Posts bekommen einen Kommentar und das Label `fehler`. Ist nichts da, öffnet der Lauf ein Issue mit Label `leer` und weist es Dominik zu.
+2. `holen.mjs`: nimmt den nächsten offenen Post aus der Warteschlange (Posts mit `bis` zuerst, sonst den ältesten) (Issues mit Label `warteschlange`) und prüft ihn. Fehlerhafte Posts bekommen einen Kommentar und das Label `fehler`. Ist nichts da, öffnet der Lauf ein Issue mit Label `leer` und weist es Dominik zu.
 3. `render.mjs`: rendert `tagebuch/<datum>-<slot>/post-a.jpg` (nur Setup), `post.jpg` (ganzer Post) und `schritt-NN.jpg` plus `schritte.json` (die neuen Teile einzeln aufgedeckt) und trägt ihn in `tagebuch/eintraege.json` ein. Die Startseite zeigt die neuesten Einträge.
 4. `video.mjs`: macht daraus ein Reel (1080x1920, Vollbild): erst das Setup, dann erscheint jeder neue Teil (Zeile, Blase, Absatz) einzeln, die Standzeit richtet sich nach der Textlänge. Chat-Blasen und Notiz-Absätze erscheinen von Anfang an nacheinander. Fotos füllen den ganzen Schirm, am Gesicht ausgerichtet (`kopf` in `bibliothek.json`), mit langsamem Zoom; Karten bleiben ruhig darüber, ohne Untertitel (Text im Bild wird gesprochen; `UNTERTITEL=an` schaltet sie wieder ein), in den sicheren Zonen (oben ca. 285 px, unten ca. 285 px frei) und unter dem Gesicht. Querformat-Bilder liegen scharf auf einem unscharfen Vollbild-Hintergrund, Reaktionsbilder und Karten ohne Bild zoomen als Ganzes leicht. Eine Aufforderung im Kartentext („Schick das …“) kommt im Reel nie zuerst, sondern als letzter Schritt.
 5. `posten.mjs`: Instagram als Reel (oder Bild) und, wenn `FACEBOOK_POSTEN=an`, Facebook-Seite.
@@ -48,9 +48,17 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
   - `beleg`: `titel`, `untertitel`, `posten` (3–6, je `name`, `menge`), `summe`, `fuss`
 - `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`.
 - `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
-- `ab`, `bis` (optional, `JJJJ-MM-TT`): Post nur in diesem Zeitraum, für Anlässe (Allerheiligen, 11.11., Freitag der 13.). Vor `ab` wird der Post übersprungen und bleibt in der Warteschlange, nach `bis` bekommt das Issue einen Kommentar und das Label `fehler` („Anlass vorbei“). Anlass-Posts zuerst anlegen, damit sie am Tag vor den freien Posts drankommen.
+- `ab`, `bis` (optional, `JJJJ-MM-TT`): Post nur in diesem Zeitraum, für Anlässe (Allerheiligen, 11.11., Freitag der 13.). Vor `ab` wird der Post übersprungen und bleibt in der Warteschlange, nach `bis` bekommt das Issue einen Kommentar und das Label `fehler` („Anlass vorbei“). Posts mit `bis` (Anlass oder Trend) kommen vor allen freien Posts dran, das früheste Ende zuerst (`reihenfolge.mjs`, seit 20.10.2026).
 - `musik` (optional): wird ignoriert, die Reels laufen ohne Ton. Die alten Tracks und `musik_generator.py` liegen in der Git-Historie.
 - Nur Issues mit dem Label `warteschlange` zählen, und nur, wenn der Repo-Owner sie angelegt hat. Die Vorlage setzt das Label auch bei Fremden, deshalb filtert `holen.mjs` nach dem Absender.
+
+## Nachschub und Trends (seit 20.10.2026)
+
+Jeden Sonntag sammelt `trends.yml` (`trends.mjs`), was in Österreich gerade Thema ist, ins Issue mit Label `trends`. Am Sonntagabend schreibt ein geplanter Claude-Lauf daraus und aus den Anlässen neue Posts, bis die Warteschlange wieder drei Wochen reicht. Ablauf: `nachschub.md`. Werkzeuge dafür:
+
+- `node pruefen.mjs neu.json --warteschlange offen.json --issues issues.json`: prüft neue Posts mit denselben Regeln wie `holen.mjs` (Schema, Wortfilter, Bild, ab/bis, Saisonbilder, doppelt belegte Bilder) und baut die Issue-Texte.
+- `node vorschau.mjs neu.json <ordner>`: rendert die Posts als fertige Bilder, ohne Tagebuch und Webseite zu ändern.
+- Optionales Feld `trend` im Post-JSON: Herkunft eines Trend-Posts (nur zur Nachverfolgung, wird nicht gepostet).
 
 ## Wortfilter und Humor-Quote (seit 19.10.2026)
 
