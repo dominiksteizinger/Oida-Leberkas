@@ -13,7 +13,7 @@ Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die
 5. `posten.mjs`: Instagram als Reel (oder Bild) und, wenn `FACEBOOK_POSTEN=an`, Facebook-Seite.
 6. `youtube.mjs`: das Reel als YouTube Short, wenn `YOUTUBE_POSTEN=an`.
 7. Danach wird das Warteschlangen-Issue geschlossen und der Post kommt zur Bewertung in die Sammelliste.
-8. `vorrat.mjs`: Sind weniger als 7 Bibliotheksbilder noch nie verwendet worden, öffnet der Lauf ein Issue mit Label `bilder` und weist es Dominik zu. Das ist die Erinnerung, neue Bilder in Gemini zu machen.
+8. `vorrat.mjs`: Passen heute weniger als 7 Bilder (ungenutzte plus recycelbare nach Abstandsregel, siehe „Bild-Recycling“), öffnet der Lauf ein Issue mit Label `bilder` und weist es Dominik zu. Das ist die Erinnerung, neue Bilder in Gemini zu machen.
 
 ## Einen Post in die Warteschlange legen
 
@@ -65,4 +65,16 @@ Jeder Post hängt als Kommentar an der Sammelliste (Label `sammelliste`). 👍 o
 
 ## Bilder
 
-- `bilder/` ist die Bibliothek, `bibliothek.json` beschreibt jedes Bild in einer Zeile: `szene` für Bilder mit Hintergrund, `figur` für Reaktionsbilder auf Weiß (für das Format `antwort`).
+- `bilder/` ist die Bibliothek, `bibliothek.json` beschreibt jedes Bild in einer Zeile: `szene` für Bilder mit Hintergrund, `figur` für Reaktionsbilder auf Weiß (für das Format `antwort`), dazu `tags`.
+
+### Bild-Recycling (seit 19.10.2026)
+
+Hintergrundbilder dürfen mit neuem Text wieder verwendet werden. Regeln in `bildregeln.mjs`, Tests in `bildregeln.test.mjs` (`node --test autopilot/bildregeln.test.mjs`).
+
+- `tags`: `neutral`, Jahreszeit (`herbst`, `winter`) oder Anlass (`advent`, `weihnachten`, `silvester`, `halloween`, `allerheiligen`, `zeitumstellung`). Neue Tags mit Zeitraum in `bildregeln.mjs` eintragen.
+- Anlassbilder kommen nur in ihrem Zeitraum und nur einmal. Jahreszeit-Bilder nur in ihrer Jahreszeit, dort recycelbar. Neutrale Bilder immer.
+- Ungenutzte Bilder haben Vorrang. Erst wenn keins mehr passt, kommt ein schon verwendetes, frühestens nach 21 Tagen, das am längsten nicht verwendete zuerst. Nie dasselbe Bild am selben oder am Folgetag.
+- Bei einer Wiederverwendung muss der Text neu sein: identischer Inhalt oder identische Caption wie bei einer früheren Nutzung des Bildes wird abgelehnt.
+- `nutzung.json` ist der Nutzungsverlauf (Datum, Slot, Bild, Text, Fingerabdruck). `holen.mjs` prüft die Regeln für den gewählten Post und trägt ihn ein; verstößt er dagegen, bekommt das Issue einen Kommentar und das Label `fehler`.
+- Bild wählen beim Schreiben: `node autopilot/bildwahl.mjs [JJJJ-MM-TT]` listet die passenden Bilder in Reihenfolge, `node autopilot/bildwahl.mjs --verlauf <datei>` zeigt die früheren Texte eines Bildes. Nicht zwei Posts mit demselben Bild gleichzeitig in die Warteschlange legen.
+- Variablen: `BILD_RECYCLING` = `aus` schaltet das Recycling ab (nur ungenutzte Bilder, wie früher). `BILD_ABSTAND_TAGE` ändert den Mindestabstand (Standard 21).

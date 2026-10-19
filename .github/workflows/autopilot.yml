@@ -112,6 +112,9 @@ jobs:
           node holen.mjs "${{ steps.zeit.outputs.id }}" "${{ steps.zeit.outputs.datum }}" "${{ steps.zeit.outputs.slot }}"
         env:
           ISSUE: ${{ inputs.issue }}
+          # Bild-Recycling: BILD_RECYCLING "aus" = nur ungenutzte Bilder; BILD_ABSTAND_TAGE Standard 21
+          BILD_RECYCLING: ${{ vars.BILD_RECYCLING }}
+          BILD_ABSTAND_TAGE: ${{ vars.BILD_ABSTAND_TAGE }}
       - name: Warteschlange leer melden
         if: steps.holen.outputs.gefunden == 'false' && env.LIVE == 'true'
         run: |
@@ -152,6 +155,7 @@ jobs:
           rm -f tagebuch/"$ID"/schritt-*.jpg tagebuch/"$ID"/schritte.json
           git add tagebuch
           git add autopilot/stimme-cache 2>/dev/null || true
+          git add autopilot/nutzung.json
           # Ein neuer Versuch nach gescheitertem Posten kann dieselben Dateien erzeugen
           git diff --cached --quiet || git commit -m "Tagebuch $ID"
           if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
@@ -225,13 +229,17 @@ jobs:
         id: vorrat
         if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
         working-directory: autopilot
-        run: node vorrat.mjs
+        env:
+          BILD_RECYCLING: ${{ vars.BILD_RECYCLING }}
+          BILD_ABSTAND_TAGE: ${{ vars.BILD_ABSTAND_TAGE }}
+        run: node vorrat.mjs "${{ steps.zeit.outputs.datum }}"
       - name: Neue Bilder anfordern
-        if: steps.vorrat.outputs.unbenutzt != '' && fromJSON(steps.vorrat.outputs.unbenutzt) < 7
+        # Erst melden, wenn auch die recycelbaren Bilder knapp werden: frei zählt alle Bilder, die heute nach Saison und Abstandsregel passen
+        if: steps.vorrat.outputs.frei != '' && fromJSON(steps.vorrat.outputs.frei) < 7
         run: |
           gh label create bilder --repo "$GITHUB_REPOSITORY" --color 7B61FF --description "Bildbibliothek braucht Nachschub" 2>/dev/null || true
           if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label bilder --state open --json number --jq '.[0].number // empty')" ]; then
             gh issue create --repo "$GITHUB_REPOSITORY" --label bilder --assignee "${{ github.repository_owner }}" \
-              --title "Bildbibliothek fast leer: noch ${{ steps.vorrat.outputs.unbenutzt }} unbenutzte Bilder" \
-              --body "Von ${{ steps.vorrat.outputs.gesamt }} Bildern sind nur noch ${{ steps.vorrat.outputs.unbenutzt }} unbenutzt. Zeit für eine neue Runde in Gemini; die Bilder im Projekt-Chat hochladen, dann kommen sie in die Bibliothek. Dieses Issue schließen, wenn sie drin sind."
+              --title "Bildbibliothek fast leer: nur noch ${{ steps.vorrat.outputs.frei }} passende Bilder" \
+              --body "Von ${{ steps.vorrat.outputs.gesamt }} Bildern passen heute nur noch ${{ steps.vorrat.outputs.frei }} (${{ steps.vorrat.outputs.unbenutzt }} ungenutzt, der Rest recycelt nach Abstandsregel). Zeit für eine neue Runde in Gemini; die Bilder im Projekt-Chat hochladen, dann kommen sie in die Bibliothek. Dieses Issue schließen, wenn sie drin sind."
           fi
