@@ -37,6 +37,8 @@ export function pruefeTags(bibliothek) {
     for (const t of b.tags) if (!(t in TAGS)) throw new Error(`${b.datei}: unbekannter Tag „${t}“`);
     // gesicht: sind Gesicht und Augen im Bild gut zu sehen (fürs Reel)? kopf: Gesichtsmitte x und Kinn y als Anteil der Bildgröße
     if (b.gesicht !== "ja" && b.gesicht !== "nein") throw new Error(`${b.datei}: gesicht muss "ja" oder "nein" sein`);
+    // mitte (optional): Bildmitte x für den Reel-Ausschnitt, wenn wichtige Bildteile (z. B. Herbert) am Rand liegen
+    if (b.mitte !== undefined && !(typeof b.mitte === "number" && b.mitte >= 0 && b.mitte <= 1)) throw new Error(`${b.datei}: mitte muss zwischen 0 und 1 liegen`);
     if (b.kopf !== undefined && !(Array.isArray(b.kopf) && b.kopf.length === 2 && b.kopf.every((v) => typeof v === "number" && v >= 0 && v <= 1))) throw new Error(`${b.datei}: kopf muss [x, y] zwischen 0 und 1 sein`);
   }
   return bibliothek;
