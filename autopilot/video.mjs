@@ -115,8 +115,10 @@ if (jingle) {
   if (process.env.JINGLE_POS === "anfang") {
     bilder.unshift({ datei: bilder[0].datei, dauer: jingle.dauer });
   } else {
-    jingle.start = bilder.reduce((a, b) => a + b.dauer, 0);
-    bilder.push({ datei: bilder.at(-1).datei, dauer: jingle.dauer });
+    // Kurze Pause nach dem letzten Satz, dann der Jingle (Dominik 19.10.2026: eine halbe Sekunde später)
+    const PAUSE = 0.5;
+    jingle.start = bilder.reduce((a, b) => a + b.dauer, 0) + PAUSE;
+    bilder.push({ datei: bilder.at(-1).datei, dauer: PAUSE + jingle.dauer });
   }
 }
 bilder.forEach((b) => { b.dauer = Number(b.dauer.toFixed(1)); });
