@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { anlaesse, googleLesen, redditLesen } from "./trends.mjs";
+import { anlaesse, googleLesen, redditLesen, ferienLesen } from "./trends.mjs";
 
 test("Google-Trends-RSS: Suchbegriff, Menge und erste Schlagzeile", () => {
   const xml = `<rss><channel><title>Daily Search Trends</title><item><title>Zeitumstellung</title><ht:approx_traffic>20000+</ht:approx_traffic>
@@ -19,4 +19,9 @@ test("Anlässe: 21 Tage, ohne doppelte Vorwarnung", () => {
   assert.ok(liste.some((z) => z.startsWith("2026-11-01: Allerheiligen")));
   assert.ok(!liste.some((z) => z.includes("(in ")));
   assert.ok(!liste.some((z) => z.startsWith("2026-11-09")));
+});
+
+test("Schulferien: Zeitraum und deutscher Name", () => {
+  const liste = [{ startDate: "2026-10-26", endDate: "2026-11-02", name: [{ language: "EN", text: "Autumn holidays" }, { language: "DE", text: "Herbstferien" }] }];
+  assert.deepEqual(ferienLesen(liste), ["2026-10-26 bis 2026-11-02: Herbstferien"]);
 });
