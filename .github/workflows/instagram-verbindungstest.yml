@@ -31,13 +31,26 @@ jobs:
           jq '{id, name, error: .error.message}' me.json
           jq -e '.id' me.json > /dev/null
 
+      - name: Rechte des Tokens
+        run: |
+          curl -sS -G "https://graph.facebook.com/debug_token" \
+            --data-urlencode "input_token=$TOKEN" \
+            --data-urlencode "access_token=$TOKEN" > dbg.json
+          jq '{gueltig: .data.is_valid, typ: .data.type, laeuft_ab: (if (.data.expires_at // 0) == 0 then "nie" else (.data.expires_at | todate) end), scopes: .data.scopes, error: .error.message}' dbg.json
+          FEHLT=""
+          for s in instagram_basic instagram_content_publish instagram_manage_insights instagram_manage_comments pages_show_list pages_read_engagement; do
+            jq -e --arg s "$s" '.data.scopes | index($s)' dbg.json > /dev/null || FEHLT="$FEHLT $s"
+          done
+          if [ -n "$FEHLT" ]; then echo "::error::Es fehlen Rechte:$FEHLT"; exit 1; fi
+          echo "Alle nötigen Rechte vorhanden."
+
       - name: Instagram-Konto lesbar?
         run: |
           curl -sS -G "https://graph.facebook.com/$IG_USER_ID" \
             --data-urlencode "fields=username,followers_count,media_count" \
             --data-urlencode "access_token=$TOKEN" > ig.json
           jq '{username, followers_count, media_count, error: .error.message}' ig.json
-          jq -e '.username == "oidaleberkas"' ig.json > /dev/null
+          jq -e '.username == "resi.requiem" or .username == "oidaleberkas"' ig.json > /dev/null
 
       - name: Posting-Kontingent
         run: |
@@ -45,3 +58,19 @@ jobs:
             --data-urlencode "fields=config,quota_usage" \
             --data-urlencode "access_token=$TOKEN" > limit.json
           jq '{data, error: .error.message}' limit.json
+
+      - name: Insights und Kommentare lesbar?
+        run: |
+          curl -sS -G "https://graph.facebook.com/$IG_USER_ID/media" \
+            --data-urlencode "fields=id,timestamp,media_product_type" --data-urlencode "limit=1" \
+            --data-urlencode "access_token=$TOKEN" > media.json
+          ID=$(jq -r '.data[0].id // empty' media.json)
+          if [ -z "$ID" ]; then jq '{error: .error.message}' media.json; echo "::error::Keine Medien lesbar"; exit 1; fi
+          jq '.data[0] | {timestamp, media_product_type}' media.json
+          curl -sS -G "https://graph.facebook.com/$ID/insights" --data-urlencode "metric=reach,saved,shares,views" \
+            --data-urlencode "access_token=$TOKEN" > ins.json
+          jq '{insights: [.data[]? | {name, wert: (.values[0].value // .total_value.value)}], error: .error.message}' ins.json
+          curl -sS -G "https://graph.facebook.com/$ID/comments" --data-urlencode "fields=id,timestamp" \
+            --data-urlencode "access_token=$TOKEN" > kom.json
+          jq '{kommentare: (.data | length?), error: .error.message}' kom.json
+          jq -e '.data' ins.json > /dev/null && jq -e '.data' kom.json > /dev/null
