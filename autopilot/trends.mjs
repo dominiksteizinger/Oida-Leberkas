@@ -11,7 +11,7 @@ const datum = (import.meta.url === `file://${process.argv[1]}` && process.argv[2
 const UA = { "user-agent": "oida-leberkas-trends/1.0 (https://oidaleberkas.at)" };
 const MAX = 15;
 
-const entities = (s) => s.replace(/<!\[CDATA\[|\]\]>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim();
+const entities = (s) => s.replace(/<!\[CDATA\[|\]\]>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&#39;|&apos;/g, "'").replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n)).replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim();
 const holen = async (url, opt = {}) => {
   const res = await fetch(url, { headers: UA, signal: AbortSignal.timeout(10000), ...opt });
   if (!res.ok) throw new Error(`${res.status}`);
@@ -47,7 +47,17 @@ async function wikipedia(datum) {
 
 // Atom-Feed: Titel der Einträge, nicht der des Feeds
 export const redditLesen = (xml) => [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map(([, e]) => tag(e, "title")[0]).filter(Boolean);
-const reddit = async (sub) => (await pause(), redditLesen(await (await holen(`https://www.reddit.com/r/${sub}/top/.rss?t=week&limit=25`)).text()));
+// Reddit drosselt Abrufe ohne Login (429): langsam nacheinander, bei 429 einmal nach einer Minute nochmal
+const reddit = async (sub) => {
+  const url = `https://www.reddit.com/r/${sub}/top/.rss?t=week&limit=25`;
+  await pause(15000);
+  const text = await holen(url).catch(async (err) => {
+    if (err.message !== "429") throw err;
+    await pause(60000);
+    return holen(url);
+  });
+  return redditLesen(await text.text());
+};
 
 // Schulferien Wien der nächsten 60 Tage (OpenHolidays API, frei, ohne Schlüssel): Ferienbeginn, letzte Schulwoche, Zeugnistag
 export const ferienLesen = (liste) => liste.map((f) => `${f.startDate} bis ${f.endDate}: ${(f.name.find((n) => n.language === "DE") || f.name[0]).text}`);
@@ -57,13 +67,7 @@ async function schulferien(datum) {
 }
 
 // Kuriose Gedenk- und Aktionstage (Tag der Jogginghose, Weltknuddeltag …), WordPress-Feed
-const kurioseTage = async () => tag(await (await holen("https://www.kuriose-feiertage.de/feed/")).text(), "title").slice(1);
-
-// Feddit (Lemmy, deutschsprachig, offene API): Ersatz, falls Reddit die Runner-IPs sperrt
-const feddit = async (gemeinschaft) => (await (await holen(`https://feddit.org/api/v3/post/list?sort=TopWeek&limit=25&community_name=${gemeinschaft}`, { headers: { ...UA, accept: "application/json" } })).json()).posts.map((p) => p.post.name);
-
-// Mastodon: meistgenutzte Hashtags der letzten Tage
-const mastodon = async () => (await (await holen("https://mastodon.social/api/v1/trends/tags?limit=20", { headers: { ...UA, accept: "application/json" } })).json()).map((t) => `#${t.name}`);
+const kurioseTage = async () => tag(await (await holen("https://www.kuriose-feiertage.de/feed/")).text(), "title").filter((t) => !t.includes("kuriose-feiertage"));
 
 async function youtube(region = "AT", kategorie = "") {
   const { YOUTUBE_CLIENT_ID: id, YOUTUBE_CLIENT_SECRET: secret, YOUTUBE_REFRESH_TOKEN: refresh } = process.env;
@@ -100,10 +104,9 @@ export function anlaesse(datum) {
 // Subreddits mit Alltag, Schule, Studium, Job und Beziehungen; was dort hochgewählt wird, kennt das Publikum aus dem eigenen Leben
 const REDDIT = [
   ["wien", "Wien"], ["Austria", "Österreich"], ["de", "Deutschland"], ["FragReddit", "Alltagsfragen"],
-  ["arbeitsleben", "Job"], ["Studium", "Uni"], ["ich_iel", "relatable, deutsch"], ["teenagers", "Teenager, englisch"], ["2meirl4meirl", "relatable, englisch"],
-  ["me_irl", "relatable, englisch"], ["Showerthoughts", "Alltagsgedanken, englisch"],
+  ["arbeitsleben", "Job"], ["Studium", "Uni"], ["teenagers", "Teenager, englisch"], ["Showerthoughts", "Alltagsgedanken, englisch"],
 ];
-const pause = () => new Promise((r) => setTimeout(r, 5000));
+const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export async function trends(datum) {
 const quellen = [
@@ -113,10 +116,8 @@ const quellen = [
   ...REDDIT.map(([sub, was]) => [`Reddit r/${sub}, Top der Woche (${was})`, () => reddit(sub)]),
   ["Schulferien Wien (nächste 60 Tage)", () => schulferien(datum)],
   ["Kuriose Gedenk- und Aktionstage", kurioseTage],
-  ["Feddit ich_iel, Top der Woche (falls Reddit gesperrt)", () => feddit("ich_iel")],
   ["YouTube-Trends Österreich", () => youtube()],
   ["YouTube-Comedy Deutschland", () => youtube("DE", "23")],
-  ["Mastodon-Hashtags", mastodon],
   ["ORF-Schlagzeilen (Wien, Science, Ö3, FM4)", schlagzeilen],
   ["Kommentare unter unseren Instagram-Posts", kommentare],
 ];
