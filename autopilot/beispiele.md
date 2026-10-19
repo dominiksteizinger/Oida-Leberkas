@@ -28,7 +28,7 @@ Zeigen den Ton für Resi Requiem. Keine Vorlagen zum Abwandeln: Motive und Point
 
 ### szene
 - Bild: Herbert klaut ihr das Essen. „Herbert wohnt bei mir.“ [zahlt keine Miete] [klaut] [Familie halt]
-  Warum: Klammern wie Untertitel, Steigerung bis zum warmen Rest.
+  Warum: Zeilen wie Untertitel, eine nach der anderen, Steigerung bis zum warmen Rest.
 - Bild: Büro, Montag. „Montag, 8:01.“ [lebe noch] [leider]
 
 ## Schlecht

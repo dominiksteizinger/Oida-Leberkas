@@ -1,4 +1,4 @@
-// Macht aus dem Post ein Reel ohne Ton: erst das Setup (post-a.jpg), nach einer Pause der ganze Post (post.jpg).
+// Macht aus dem Post ein Reel ohne Ton: erst das Setup, dann erscheinen die neuen Teile nacheinander (schritt-NN.jpg aus render.mjs).
 // Ergebnis: tagebuch/<id>/reel.mp4 (1080x1920) für Instagram-Reels und YouTube Shorts.
 // Die Tonspur ist stumm (Dominik 18.10.2026: Reels ganz ohne Ton); sie bleibt drin, weil manche Plattformen eine erwarten.
 import fs from "node:fs";
@@ -41,17 +41,32 @@ function texte() {
     default: return setupPointe(i);
   }
 }
-const [setupText, pointeText] = texte();
-const SETUP = Number(lesezeit(setupText, 2.5, 7).toFixed(1));
-const DAUER = Number((SETUP + lesezeit(pointeText, 3, 6)).toFixed(1));
-console.log(`Setup ${SETUP} s, gesamt ${DAUER} s`);
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
 
-// Beide Stufen hochkant auf dunklem Grund, ohne Bewegung (Standbild); harter Schnitt von Setup auf Pointe
+// Bilder und Standzeiten: Setup, dann jeder neue Teil einzeln (schritte.json aus render.mjs). Ältere Einträge ohne Schritte: Setup, harter Schnitt, ganzer Post.
+const [setupText, pointeText] = texte();
+const schritteDatei = path.join(ordner, "schritte.json");
+let bilder;
+if (fs.existsSync(schritteDatei)) {
+  const s = JSON.parse(fs.readFileSync(schritteDatei, "utf8"));
+  bilder = s.map((x, n) => ({
+    datei: x.datei,
+    // Chat startet leer und füllt sich Blase für Blase, sonst steht das Setup lang genug zum Lesen
+    dauer: n === 0 ? (["chat", "notiz"].includes(i.format) ? 1 : lesezeit(setupText, 2.5, 6)) : lesezeit(x.text, 1.6, 4) + (n === s.length - 1 ? 1.5 : 0),
+  }));
+} else {
+  bilder = [{ datei: "post-a.jpg", dauer: lesezeit(setupText, 2.5, 7) }, { datei: "post.jpg", dauer: lesezeit(pointeText, 3, 6) }];
+}
+bilder.forEach((b) => { b.dauer = Number(b.dauer.toFixed(1)); });
+const DAUER = Number(bilder.reduce((a, b) => a + b.dauer, 0).toFixed(1));
+console.log(`${bilder.length} Bilder, gesamt ${DAUER} s`);
+
+// Alle Bilder hochkant auf dunklem Grund, ohne Bewegung; harte Schnitte von Teil zu Teil
 const stufe = (n) => `[${n}:v]scale=1080:-2,fps=30,pad=1080:1920:0:285:color=0x0D090C,setsar=1[v${n}]`;
-ff(["-loop", "1", "-t", String(SETUP), "-i", path.join(ordner, "post-a.jpg"), "-loop", "1", "-t", String(DAUER - SETUP), "-i", path.join(ordner, "post.jpg"), "-f", "lavfi", "-t", String(DAUER), "-i", "anullsrc=r=44100:cl=stereo",
-  "-filter_complex", `${stufe(0)};${stufe(1)};[v0][v1]concat=n=2:v=1:a=0[v]`,
-  "-map", "[v]", "-map", "2:a", "-c:v", "libx264", "-preset", "medium", "-crf", "26", "-pix_fmt", "yuv420p", "-r", "30",
+const n = bilder.length;
+ff([...bilder.flatMap((b) => ["-loop", "1", "-t", String(b.dauer), "-i", path.join(ordner, b.datei)]), "-f", "lavfi", "-t", String(DAUER), "-i", "anullsrc=r=44100:cl=stereo",
+  "-filter_complex", `${bilder.map((_, k) => stufe(k)).join(";")};${bilder.map((_, k) => `[v${k}]`).join("")}concat=n=${n}:v=1:a=0[v]`,
+  "-map", "[v]", "-map", `${n}:a`, "-c:v", "libx264", "-preset", "medium", "-crf", "26", "-pix_fmt", "yuv420p", "-r", "30",
   "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", path.join(ordner, "reel.mp4")]);
 
 console.log("Reel fertig (ohne Ton)");

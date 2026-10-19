@@ -140,6 +140,8 @@ jobs:
           ID="${{ steps.zeit.outputs.id }}"
           git config user.name "Resi Requiem Autopilot"
           git config user.email "autopilot@users.noreply.github.com"
+          # Die Einzelbilder fürs Reel stecken schon im reel.mp4
+          rm -f tagebuch/"$ID"/schritt-*.jpg tagebuch/"$ID"/schritte.json
           git add tagebuch
           # Ein neuer Versuch nach gescheitertem Posten kann dieselben Dateien erzeugen
           git diff --cached --quiet || git commit -m "Tagebuch $ID"

@@ -12,7 +12,7 @@ Grundlage für jeden Post, egal ob er im Chat mit Claude, per Hand oder später 
 
 ## Design (von Dominik bestätigt, 19.10.2026)
 
-- Es gelten die Formate aus `formate.mjs`: Antwort auf Kommentar, Notizen-Nachruf, Sarg-Bewertung, Chat, Szene mit Klammer-Kommentar. Dazu 30 Handy-Oberflächen über dem Bild (alle von Dominik übernommen, Liste in `README.md`), etwa Mitteilungen, Termin, Wetter, Umfrage, Sprachnachricht, Suchverlauf, Fehlermeldung, To-do, Beleg, Sozialer Akku, Horoskop, Übersetzer, Kontostand, Einladung, Captcha. Formate abwechseln, nicht zweimal dasselbe hintereinander. Dominik: „hebt sich vom Rest im Internet ab.“
+- Es gelten die Formate aus `formate.mjs`: Antwort auf Kommentar, Notizen-Nachruf, Sarg-Bewertung, Chat, Szene mit Untertitel-Zeilen. Dazu 30 Handy-Oberflächen über dem Bild (alle von Dominik übernommen, Liste in `README.md`), etwa Mitteilungen, Termin, Wetter, Umfrage, Sprachnachricht, Suchverlauf, Fehlermeldung, To-do, Beleg, Sozialer Akku, Horoskop, Übersetzer, Kontostand, Einladung, Captcha. Formate abwechseln, nicht zweimal dasselbe hintereinander. Dominik: „hebt sich vom Rest im Internet ab.“
 - Das Bild ist der Aufhänger und muss sichtbar bleiben. Karten und Chat-Blasen sitzen unten oder seitlich und verdecken nie Gesicht und Oberkörper der Figur.
 - Text klar und groß, keine Spruchbilder, keine Steckbrief-Kästen im Comic-Look.
 
@@ -26,7 +26,7 @@ Grundlage für jeden Post, egal ob er im Chat mit Claude, per Hand oder später 
 
 ## Die Formate
 
-Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). Das Reel zeigt zuerst nur das Setup (Stufe a), dann mit hartem Schnitt die Pointe.
+Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). Das Reel zeigt zuerst nur das Setup (Stufe a), dann erscheinen die neuen Teile nacheinander bis zur Pointe, nie alles auf einmal.
 
 | Format | Was | Setup (Stufe a) | Pointe |
 |---|---|---|---|
@@ -34,7 +34,7 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 | `notiz` | „Nachruf der Woche“ als Handy-Notiz, betrauert etwas Banales | alle Absätze außer dem letzten | letzter Absatz |
 | `bewertung` | „Sarg-Bewertung“ eines Alltagsorts, 0–5 Särge | Ort und Bild | Särge und Text |
 | `chat` | „Kollegin vs. ich“ als Chatverlauf | Sunnys Nachrichten | Resis letzte Antwort(en) |
-| `szene` | ein Satz über ein Bild, dazu Klammern wie Untertitel | Satz | Klammern |
+| `szene` | ein Satz über ein Bild, dazu kurze Zeilen wie Untertitel | Satz | Zeilen, eine nach der anderen |
 
 - Nicht zweimal hintereinander dasselbe Format. Pro Woche mindestens drei verschiedene.
 - Bilder: `antwort` braucht ein Bild mit `art: figur` (weißer Hintergrund), `bewertung` und `szene` ein Bild mit Hintergrund. `notiz` und `chat` kommen ohne Bild aus.

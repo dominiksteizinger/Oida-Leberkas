@@ -70,7 +70,7 @@ function szene(i, o) {
   const css = `.f{background:${g};color:${o.hell ? "#120A10" : "#fff"}}.bild{position:absolute;top:0;left:0;width:1080px;height:800px;object-fit:cover;object-position:50% ${o.hell ? "25%" : "50%"}}
 .verlauf{position:absolute;top:560px;left:0;right:0;height:240px;background:linear-gradient(transparent,${g})}
 .t{position:absolute;left:80px;right:80px;top:820px}.t p{margin:0 0 30px;font:800 54px/1.22 I}.k{font:600 44px/1.3 I;color:${o.hell ? "#E0337F" : "#FF4FA3"};margin:0 0 10px}`;
-  const klammern = o.stufe === "a" ? "" : i.klammern.map((k) => `<div class="k">[${esc(k)}]</div>`).join("");
+  const klammern = o.stufe === "a" ? "" : i.klammern.map((k) => `<div class="k">${esc(k)}</div>`).join("");
   return seite(css, `<img class="bild" src="${o.bild}"><div class="verlauf"></div><div class="t"><p>${esc(i.satz)}</p>${klammern}</div>`, o);
 }
 
