@@ -25,6 +25,13 @@ const STIMMLAGEN = {
 // Aufbereitung der Rohspur (siehe sprechen)
 const AUFBEREITUNG = "highpass=f=80,equalizer=f=4000:t=q:w=1.2:g=2.5,afade=t=in:d=0.03,areverse,afade=t=in:d=0.03,areverse,loudnorm=I=-16:TP=-1.5:LRA=11";
 
+// Gesprochen wird nur der Inhalt: Datum und Uhrzeit der Notizen-Oberfläche (ändern sich je Tag, der Satz-Cache träfe nie) und das Menü fallen weg
+export const sprechtext = (text) => String(text)
+  .replace(/\d{1,2}\. \p{L}+ \d{4} um \d{2}:\d{2}/u, "")
+  .replace(/^‹ Notizen Fertig\s*/, "")
+  .replace(/\s+/g, " ")
+  .trim();
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const ff = (args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
 
@@ -60,6 +67,20 @@ export async function sprechen(text, ziel, stil = "trocken") {
   ff(["-i", roh, "-af", AUFBEREITUNG, "-ar", "44100", "-ac", "2", `${ziel}.wav`]);
   return dauerVon(`${ziel}.wav`);
 }
+
+// Satz vorab in den Cache legen, ohne ihn aufzubereiten. Gibt false zurück, wenn er schon drin war.
+export async function vorfuellen(text, stil = "muede") {
+  const { stimme } = STIMMLAGEN[stil] ?? STIMMLAGEN.trocken;
+  const roh = path.join(CACHE, `${crypto.createHash("sha1").update(`${stimme}\n${text}`).digest("hex")}.opus`);
+  if (fs.existsSync(roh)) return false;
+  await holeVonGemini(text, stimme, roh);
+  return true;
+}
+
+export const imCache = (text, stil = "muede") => {
+  const { stimme } = STIMMLAGEN[stil] ?? STIMMLAGEN.trocken;
+  return fs.existsSync(path.join(CACHE, `${crypto.createHash("sha1").update(`${stimme}\n${text}`).digest("hex")}.opus`));
+};
 
 // Gemini ruft nur auf, wenn der Satz noch nicht im Cache liegt
 async function holeVonGemini(text, stimme, roh) {

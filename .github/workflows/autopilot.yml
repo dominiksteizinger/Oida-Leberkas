@@ -132,6 +132,7 @@ jobs:
           fc-list | grep -qi "Noto Color Emoji" || (sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-color-emoji)
           node render.mjs "${{ steps.zeit.outputs.id }}"
       - name: Reel (mit oder ohne Stimme)
+        id: reel
         if: steps.holen.outputs.gefunden == 'true'
         working-directory: autopilot
         env:
@@ -145,6 +146,21 @@ jobs:
         run: |
           command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
           node video.mjs "${{ steps.zeit.outputs.id }}"
+      - name: Stumm gepostet melden
+        # STIMME ist an, aber die Stimme fiel aus (Limit, Schlüssel, Modell): das Reel geht stumm raus, Dominik bekommt ein Issue
+        if: steps.reel.outputs.stumm != '' && env.LIVE == 'true'
+        env:
+          STUMM_GRUND: ${{ steps.reel.outputs.stumm }}
+        run: |
+          gh label create stimme --repo "$GITHUB_REPOSITORY" --color B9A3FF --description "Reel ging ohne Stimme raus" 2>/dev/null || true
+          TEXT="Reel ${{ steps.zeit.outputs.id }} wurde stumm gepostet. Grund: $STUMM_GRUND"
+          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label stimme --state open --json number --jq '.[0].number // empty')
+          if [ -z "$NR" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label stimme --assignee "${{ github.repository_owner }}" \
+              --title "Reel ohne Stimme gepostet" --body "$TEXT"$'\n\nMeist das Tageslimit von Gemini-TTS. Der Stimmen-Cache wird täglich nachgefüllt (Workflow „Stimmen vorab“), neue Sätze kommen dann am nächsten Tag aus dem Cache. Dieses Issue schließen, wenn es wieder klappt.'
+          else
+            gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body "$TEXT"
+          fi
       - name: Ins Tagebuch eintragen
         if: steps.holen.outputs.gefunden == 'true'
         run: |

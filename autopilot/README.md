@@ -48,8 +48,15 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
   - `beleg`: `titel`, `untertitel`, `posten` (3–6, je `name`, `menge`), `summe`, `fuss`
 - `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`.
 - `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
+- `ab`, `bis` (optional, `JJJJ-MM-TT`): Post nur in diesem Zeitraum, für Anlässe (Allerheiligen, 11.11., Freitag der 13.). Vor `ab` wird der Post übersprungen und bleibt in der Warteschlange, nach `bis` bekommt das Issue einen Kommentar und das Label `fehler` („Anlass vorbei“). Anlass-Posts zuerst anlegen, damit sie am Tag vor den freien Posts drankommen.
 - `musik` (optional): wird ignoriert, die Reels laufen ohne Ton. Die alten Tracks und `musik_generator.py` liegen in der Git-Historie.
 - Nur Issues mit dem Label `warteschlange` zählen, und nur, wenn der Repo-Owner sie angelegt hat. Die Vorlage setzt das Label auch bei Fremden, deshalb filtert `holen.mjs` nach dem Absender.
+
+## Stimmen-Cache
+
+Jeder gesprochene Satz liegt als Opus-Datei in `stimme-cache/` (Schlüssel: Stimme plus Text). Der Workflow „Stimmen vorab“ (`stimme-vorab.mjs`, 04:40 und 11:40 UTC, nur mit `STIMME` = `an`) rendert alle Posts der Warteschlange, sammelt die Sätze und füllt den Cache vor, höchstens 100 neue Sätze pro Lauf mit 8 s Abstand, damit das Free-Tier-Limit von Gemini-TTS hält. Bei einem 429 hört der Lauf auf und macht am nächsten Termin weiter. Per Hand: Actions → Stimmen vorab → Run workflow. Datum und Uhrzeit der Notizen-Oberfläche werden nicht gesprochen (`sprechtext` in `stimme.mjs`), sonst träfe der Cache nie.
+
+Fällt die Stimme beim Posten trotzdem aus (Limit, Schlüssel), geht das Reel stumm raus, und der Lauf legt das Issue „Reel ohne Stimme gepostet“ (Label `stimme`) für Dominik an.
 
 ## Einstellungen (Settings → Secrets and variables → Actions → Variables)
 
