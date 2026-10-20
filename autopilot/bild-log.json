@@ -58,5 +58,20 @@
     "datum": "2026-10-20",
     "datei": "sofa-partyoutfit-eingeschlafen.png",
     "modell": "gemini-2.5-flash-image"
+  },
+  {
+    "datum": "2026-10-20",
+    "datei": "kuechentisch-laptop-jobsuche.png",
+    "modell": "gemini-2.5-flash-image"
+  },
+  {
+    "datum": "2026-10-20",
+    "datei": "wg-kueche-muellsack.png",
+    "modell": "gemini-2.5-flash-image"
+  },
+  {
+    "datum": "2026-10-20",
+    "datei": "staubsauger-stolz.png",
+    "modell": "gemini-2.5-flash-image"
   }
 ]
