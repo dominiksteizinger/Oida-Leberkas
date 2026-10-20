@@ -18,15 +18,17 @@ const warte = (ms) => new Promise((r) => setTimeout(r, ms));
 const ausgabe = (zeilen) => process.env.GITHUB_OUTPUT && fs.appendFileSync(process.env.GITHUB_OUTPUT, zeilen);
 
 // Beim Einfügen ins Secret rutscht leicht ein Zeilenumbruch mit
-const geheim = (name) => (process.env[name] || "").trim();
+const geheim = (name) => (process.env[name] || "").replace(/\s+/g, "");
+// Content-Type wie bei curl, ohne den Zusatz „;charset=UTF-8“, den fetch sonst anhängt (TikTok meldete damit „malformed“)
 const token = await (await fetch(`${API}/oauth/token/`, {
   method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
   body: new URLSearchParams({
     client_key: geheim("TIKTOK_CLIENT_KEY"),
     client_secret: geheim("TIKTOK_CLIENT_SECRET"),
     refresh_token: geheim("TIKTOK_REFRESH_TOKEN"),
     grant_type: "refresh_token",
-  }),
+  }).toString(),
 })).json();
 if (!token.access_token) throw new Error(`TikTok-Zugang: ${token.error_description || token.error}`);
 const tage = Math.floor(token.refresh_expires_in / 86400);
