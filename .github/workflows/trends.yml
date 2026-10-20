@@ -1,23 +1,33 @@
 name: Trends
-# Einmal pro Woche: Was ist in Österreich gerade Thema? (Google Trends, Wikipedia, Reddit, YouTube, Anlässe, ORF)
+# Einmal pro Woche: Was ist in Deutschland und Österreich gerade Thema? (Google Trends, Wikipedia, Reddit, YouTube, Anlässe, ORF)
 # Das Ergebnis hängt als Kommentar am Issue mit Label „trends“. Der wöchentliche Schreib-Lauf (Claude, Sonntagabend)
 # liest es dort und macht daraus eigene Resi-Posts (autopilot/nachschub.md). Keine Claude-API, kostet nichts.
+# Dazu zweimal täglich der Kurzlauf (modus schnell) ans Issue „trends-schnell“ für den Trend-Schnellweg (autopilot/schnellweg.md).
+# Die geplante Claude-Aufgabe startet ihn auch selbst per workflow_dispatch, wenn der letzte Kurzlauf älter als 3 Stunden ist.
 on:
   schedule:
     # Sonntag früh UTC; GitHub startet geplante Läufe manchmal Stunden später, der Schreib-Lauf ist erst am Abend
     - cron: "23 5 * * 0"
+    # Kurzlauf vor den beiden Schnellweg-Läufen (6:50 und 15:20 Wien)
+    - cron: "11 3,12 * * *"
   workflow_dispatch:
+    inputs:
+      modus:
+        description: "woche (voll, etwa 7 Min) oder schnell (Kurzlauf für den Schnellweg, etwa 2 Min)"
+        required: false
+        default: "woche"
 permissions:
   contents: read
   issues: write
 concurrency:
-  group: trends
+  group: trends-${{ github.event.schedule == '11 3,12 * * *' && 'schnell' || inputs.modus || 'woche' }}
   cancel-in-progress: false
 jobs:
   sammeln:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
+      MODUS: ${{ github.event.schedule == '11 3,12 * * *' && 'schnell' || inputs.modus || 'woche' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,10 +42,19 @@ jobs:
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
-        run: node trends.mjs > "$RUNNER_TEMP/trends.md" && cat "$RUNNER_TEMP/trends.md"
+        run: |
+          if [ "$MODUS" = "schnell" ]; then node trends.mjs --schnell; else node trends.mjs; fi > "$RUNNER_TEMP/trends.md"
+          cat "$RUNNER_TEMP/trends.md"
       - name: Ans Trends-Issue hängen
         run: |
-          gh label create trends --repo "$GITHUB_REPOSITORY" --color 5319E7 --description "Wöchentliche Trends für den Schreib-Lauf" 2>/dev/null || true
-          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label trends --state open --json number --jq '.[0].number // empty')
-          [ -z "$NR" ] && NR=$(gh issue create --repo "$GITHUB_REPOSITORY" --title "Trends" --label trends --body "Jeden Sonntag hängen hier die Trends der Woche an. Der Schreib-Lauf macht daraus eigene Resi-Posts (autopilot/nachschub.md)." | grep -o '[0-9]*$')
+          if [ "$MODUS" = "schnell" ]; then
+            LABEL=trends-schnell; TITEL="Trends (schnell)"
+            TEXT="Zweimal täglich hängt hier der Kurzlauf an. Der Trend-Schnellweg macht daraus höchstens einen Resi-Post pro Tag (autopilot/schnellweg.md)."
+          else
+            LABEL=trends; TITEL="Trends"
+            TEXT="Jeden Sonntag hängen hier die Trends der Woche an. Der Schreib-Lauf macht daraus eigene Resi-Posts (autopilot/nachschub.md)."
+          fi
+          gh label create "$LABEL" --repo "$GITHUB_REPOSITORY" --color 5319E7 --description "Trends für die Schreib-Läufe" 2>/dev/null || true
+          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label "$LABEL" --state open --json number --jq '.[0].number // empty')
+          [ -z "$NR" ] && NR=$(gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITEL" --label "$LABEL" --body "$TEXT" | grep -o '[0-9]*$')
           gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/trends.md"

@@ -9,6 +9,7 @@ Damit die Warteschlange nie leer wird und Aktuelles mitkommt, ohne dass Dominik 
 | Wann | Was | Wer |
 |---|---|---|
 | Sonntag früh | `trends.yml` sammelt Google Trends AT und DE, Wikipedia (de, meistgelesen), Reddit (r/wien, r/Austria, r/de, r/FragReddit, r/arbeitsleben, r/Studium, r/teenagers, r/Showerthoughts), YouTube-Trends DE und AT, Comedy DE, Schulferien DE und AT (60 Tage), kuriose Aktionstage, Anlässe der nächsten 21 Tage, harmlose ORF-Schlagzeilen und Kommentare unter unseren Posts ins Issue mit Label `trends` | GitHub Action, gratis |
+| zweimal täglich | Kurzlauf `trends.yml` (Modus `schnell`) und Trend-Schnellweg: höchstens ein Trend-Post pro Tag, der im nächsten Slot kommt (`schnellweg.md`) | Action und geplante Claude-Aufgabe |
 | täglich 7 Uhr | Wetter, Anlässe, Schlagzeilen ins Issue `signale` (Autopilot) | GitHub Action |
 | Sonntagabend | Schreib-Lauf nach dieser Anleitung: Posts schreiben, prüfen, Vorschau, Issues anlegen, Bericht im Projekt-Thread | geplante Claude-Aufgabe |
 | bei Bedarf | Bilder in Gemini erzeugen und in den Projektordner `eingang/` legen | Dominik, das Einzige, was bei ihm bleibt |

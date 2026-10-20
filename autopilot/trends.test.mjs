@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { anlaesse, googleLesen, redditLesen, ferienLesen } from "./trends.mjs";
+import { anlaesse, googleLesen, redditLesen, ferienLesen, schnellQuellen } from "./trends.mjs";
 
 test("Google-Trends-RSS: Suchbegriff, Menge und erste Schlagzeile", () => {
   const xml = `<rss><channel><title>Daily Search Trends</title><item><title>Zeitumstellung</title><ht:approx_traffic>20000+</ht:approx_traffic>
@@ -30,4 +30,14 @@ test("Schulferien: Zeitraum und deutscher Name", () => {
     { startDate: "2026-11-02", endDate: "2026-11-06", name: [{ language: "DE", text: "Herbstferien" }], subdivisions: [{ code: "DE-BW", shortName: "BW" }] },
   ];
   assert.deepEqual(ferienLesen(zwei), ["2026-10-26 bis 2026-10-31: Herbstferien (NW)", "2026-11-02 bis 2026-11-06: Herbstferien (BY, BW)"]);
+});
+
+test("Schnellweg: Kurzlauf ohne langsame Wochenquellen, Anlässe nur 3 Tage", () => {
+  const namen = schnellQuellen("2026-10-20").map(([n]) => n);
+  assert.ok(namen.some((n) => n.startsWith("Google Trends Deutschland")));
+  assert.ok(namen.some((n) => n.includes("Top des Tages")));
+  assert.ok(!namen.some((n) => /Schulferien|Kuriose|Kommentare/.test(n)));
+  assert.equal(namen.filter((n) => n.startsWith("Reddit")).length, 4);
+  assert.ok(anlaesse("2026-10-30", 3).some((z) => z.startsWith("2026-11-01")));
+  assert.ok(!anlaesse("2026-10-30", 3).some((z) => z.startsWith("2026-11-02")));
 });
