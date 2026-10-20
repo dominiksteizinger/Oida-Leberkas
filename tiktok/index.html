@@ -28,9 +28,13 @@
 
 <div id="zurueck" hidden>
   <h3>2. Token holen</h3>
-  <p>TikTok hat einen Einmal-Code geliefert (gilt nur wenige Minuten). Diesen Befehl ins Terminal kopieren und ausführen. Er fragt nach dem Client Secret, das nicht angezeigt und nicht gespeichert wird.</p>
+  <p>TikTok hat einen Einmal-Code geliefert (gilt nur wenige Minuten). Den passenden Befehl kopieren und ausführen. Er fragt nach dem Client Secret, das nicht angezeigt und nicht gespeichert wird.</p>
+  <h3>Windows (PowerShell)</h3>
+  <pre id="befehl-win"></pre>
+  <button class="kopieren" data-ziel="befehl-win" type="button">Befehl kopieren</button>
+  <h3>Mac (Terminal)</h3>
   <pre id="befehl"></pre>
-  <button id="kopieren" type="button">Befehl kopieren</button>
+  <button class="kopieren" data-ziel="befehl" type="button">Befehl kopieren</button>
   <p>In der Antwort steht <code>refresh_token</code>. Diesen Wert (ohne Anführungszeichen) als GitHub-Secret <code>TIKTOK_REFRESH_TOKEN</code> eintragen.</p>
 </div>
 
@@ -73,8 +77,15 @@
         "--data-urlencode " + sh("code=" + q.get("code")) + " " +
         "--data-urlencode grant_type=authorization_code " +
         "--data-urlencode " + sh("redirect_uri=" + RUECK) + " | tr ',' '\\n'; unset TT_SECRET";
-      document.getElementById("kopieren").onclick = (ev) =>
-        navigator.clipboard.writeText(document.getElementById("befehl").textContent).then(() => (ev.target.textContent = "Kopiert"));
+      const ps = (v) => "'" + String(v).replace(/'/g, "''") + "'";
+      document.getElementById("befehl-win").textContent =
+        '$s = Read-Host "Client Secret" -AsSecureString; ' +
+        "$p = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($s)); " +
+        "Invoke-RestMethod -Method Post -Uri https://open.tiktokapis.com/v2/oauth/token/ -Body @{" +
+        "client_key=" + ps(key) + "; client_secret=$p; code=" + ps(q.get("code")) +
+        "; grant_type='authorization_code'; redirect_uri=" + ps(RUECK) + "} | Format-List; Remove-Variable p, s";
+      document.querySelectorAll(".kopieren").forEach((b) => (b.onclick = () =>
+        navigator.clipboard.writeText(document.getElementById(b.dataset.ziel).textContent).then(() => (b.textContent = "Kopiert"))));
       history.replaceState(null, "", RUECK);
       merke("tt_state");
     }
