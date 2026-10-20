@@ -44,7 +44,10 @@ test("Harmloses bekommt die richtige Kategorie", () => {
   assert.equal(f("Wie heißt du?"), undefined);
   assert.equal(einordnen("Wo ist das in Wien?").keine, "Frage");
   assert.equal(einordnen("Dreckswetter heute, mood").kategorie, "relatable");
-  assert.equal(einordnen("Mir geht es schlecht").kategorie, undefined);
+  assert.match(einordnen("Mir geht es schlecht").sperre, /Krise/);
+  assert.equal(f("Test"), "allgemein");
+  assert.equal(f("Bin gespannt was jetzt passiert"), "allgemein");
+  assert.equal(einordnen("x".repeat(150)).keine, "keine Kategorie");
   assert.equal(einordnen("Ich bin ein Krebs, passt").sperre, undefined);
   assert.equal(einordnen("Moritz kennt das").sperre, undefined);
 });

@@ -1,11 +1,15 @@
 name: Kommentare
-# Viermal am Tag: neue Kommentare auf Instagram und YouTube holen und harmlose aus dem festen Pool (autopilot/antworten.json) beantworten.
+# Viermal am Tag und nach jedem Autopilot-Lauf: neue Kommentare auf Instagram und YouTube holen und harmlose aus dem festen Pool (autopilot/antworten.json) beantworten.
 # Keine Claude-API, kostet nichts. Heikles (Hass, Sexuelles, KI-Fragen, Politik, Krisen, Minderjährige, Werbung) wird nie beantwortet,
 # sondern im Issue mit Label „kommentare“ gemeldet (Dominik zugewiesen). Abschalten: Repo-Variable KOMMENTARE_ANTWORTEN=aus.
 # Braucht die Rechte instagram_manage_comments und youtube.force-ssl; fehlt eins, wird die Plattform übersprungen.
 on:
   schedule:
     - cron: "41 6,10,15,19 * * *"
+  # Zusätzlich nach jedem Autopilot-Lauf: der wird per cron-job.org verlässlich angestoßen, GitHubs eigener Zeitplan lässt Läufe oft aus
+  workflow_run:
+    workflows: ["Autopilot"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       probe:
