@@ -94,7 +94,8 @@ for (let i = 0; i < anzahl; i++) {
 console.log(`TikTok: hochgeladen (${init.publish_id}), warte auf Verarbeitung`);
 const ziel = MODUS === "direkt" ? "PUBLISH_COMPLETE" : "SEND_TO_USER_INBOX";
 let zuletzt = "";
-for (let i = 0; i < 60; i++) {
+// Die Zustellung in die Inbox dauerte im Test gut 3 Minuten, daher bis zu 10 Minuten warten
+for (let i = 0; i < 120; i++) {
   const s = await api("post/publish/status/fetch/", { publish_id: init.publish_id });
   if (s.status !== zuletzt) console.log(`TikTok-Status: ${s.status}`);
   zuletzt = s.status;
@@ -106,4 +107,4 @@ for (let i = 0; i < 60; i++) {
   await warte(5000);
 }
 // Hochgeladen ist das Video; meldet TikTok das Ende nicht rechtzeitig, nur warnen statt den Lauf rot zu machen
-console.log(`::warning::TikTok hat nach 5 Minuten noch „${zuletzt}“ gemeldet. Das Video ist hochgeladen, bitte in der App nachsehen.`);
+console.log(`::warning::TikTok hat nach 10 Minuten noch „${zuletzt}“ gemeldet. Das Video ist hochgeladen, bitte in der App nachsehen.`);
