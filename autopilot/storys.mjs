@@ -1,6 +1,6 @@
 // Instagram-Storys für Resi (seit 20.10.2026). Standbilder 1080x1920, gratis, ohne Claude-API.
 //   node storys.mjs bauen [datum] [mittag|abend] [karten-id]  (ohne Slot: nach Wiener Uhrzeit)
-//     baut tagebuch/storys/<datum>-<slot>/story.jpg (GITHUB_OUTPUT: gebaut, id, art, rest)
+//     baut tagebuch/storys/<datum>-<slot>/story.jpg, mit JINGLE=an zusätzlich story.mp4 (GITHUB_OUTPUT: gebaut, id, art, rest)
 //   node storys.mjs posten <datum>-<slot>                       veröffentlicht die Story und trägt sie in story-log.json ein
 //   node storys.mjs pruefen                                      prüft storys.json und zeigt den Vorrat
 //   node storys.mjs vorschau <ordner> [datum] [karten-id …]      rendert Karten als Bild, ohne Log und ohne Posten
@@ -92,6 +92,21 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#120A10
   fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id: path.basename(ordner), art: "hinweis", post: path.basename(post), zeile }, null, 2) + "\n");
 }
 
+// Mit JINGLE="an" (wie bei den Reels, Dominik 20.10.2026) wird die Story ein kurzes Video: Standbild plus Jingle,
+// mindestens 5 s (Instagram zeigt Bild-Storys 5 s), sonst so lang wie der Jingle plus Nachlauf. Ohne Jingle bleibt es ein Bild.
+const JINGLE_DATEI = path.join(HIER, "assets", "jingle.mp3");
+function mitJingle(ordner) {
+  if (process.env.JINGLE !== "an" || !fs.existsSync(JINGLE_DATEI)) return false;
+  const laenge = Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", JINGLE_DATEI], { encoding: "utf8" }));
+  const dauer = Math.max(5, Math.ceil(laenge + 1.5)).toFixed(1);
+  execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-loop", "1", "-framerate", "30", "-t", dauer, "-i", path.join(ordner, "story.jpg"), "-i", JINGLE_DATEI,
+    "-filter_complex", "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,adelay=300:all=1,apad[a]", "-map", "0:v", "-map", "[a]", "-t", dauer,
+    "-c:v", "libx264", "-preset", "medium", "-crf", "24", "-pix_fmt", "yuv420p", "-r", "30", "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart",
+    path.join(ordner, "story.mp4")], { stdio: "inherit" });
+  console.log(`Story als Video mit Jingle (${dauer} s)`);
+  return true;
+}
+
 function vorratLesen() {
   const fehler = pruefeVorrat(roh, bibliothek);
   if (fehler.length) throw new Error(`storys.json fehlerhaft:\n${fehler.join("\n")}`);
@@ -111,7 +126,8 @@ async function bauen(datum, slot, kartenId) {
     if (process.env.LIVE === "true" && !fs.existsSync(path.join(post, "gepostet.txt"))) return nichts("Post von 16 Uhr ist noch nicht gepostet");
     const n = waehleHinweis(vorrat.hinweise, log);
     await hinweisRendern(ordner, post, vorrat.hinweise[n]);
-    fs.writeFileSync(path.join(ordner, "plan.json"), JSON.stringify({ id, datum, slot, art: "hinweis", hinweis: n, post: `${datum}-16` }) + "\n");
+    const video = mitJingle(ordner);
+    fs.writeFileSync(path.join(ordner, "plan.json"), JSON.stringify({ id, datum, slot, art: "hinweis", hinweis: n, post: `${datum}-16`, video }) + "\n");
     console.log(`Story ${id}: Hinweis auf ${datum}-16 („${vorrat.hinweise[n]}“)`);
     ausgabe(`gebaut=true\nid=${id}\nart=hinweis\n`);
     return;
@@ -130,7 +146,8 @@ async function bauen(datum, slot, kartenId) {
   const bild = brauchtBild(k.inhalt) ? k.bild || waehleBild({ bibliothek, nutzung, log, datum, lage: k.lage }) : null;
   if (brauchtBild(k.inhalt) && !bild) return nichts("kein passendes Bild");
   karteRendern(ordner, id, k.inhalt, bild);
-  const plan = { id, datum, slot, art: wahl.art, bild, ...(wahl.art === "karte" ? { karte: k.id } : { wetter: k.wetter }) };
+  const video = mitJingle(ordner);
+  const plan = { id, datum, slot, art: wahl.art, bild, video, ...(wahl.art === "karte" ? { karte: k.id } : { wetter: k.wetter }) };
   fs.writeFileSync(path.join(ordner, "plan.json"), JSON.stringify(plan) + "\n");
   const rest = offeneKarten(vorrat.karten, [...log, plan], datum).length;
   console.log(`Story ${id}: ${wahl.art} ${k.id} (${k.inhalt.format}${bild ? `, ${bild}` : ""}), noch ${rest} Karten offen`);
@@ -144,9 +161,10 @@ async function posten(id) {
   const GRAPH = "https://graph.facebook.com";
   const TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN;
   const IG = process.env.IG_USER_ID || "17841454284048783";
-  const url = `${process.env.SEITEN_URL || "https://oidaleberkas.at"}/tagebuch/storys/${id}/story.jpg`;
+  const video = fs.existsSync(path.join(ordner, "story.mp4"));
+  const url = `${process.env.SEITEN_URL || "https://oidaleberkas.at"}/tagebuch/storys/${id}/story.${video ? "mp4" : "jpg"}`;
   const warte = (ms) => new Promise((r) => setTimeout(r, ms));
-  // Warten, bis GitHub Pages das Bild ausliefert
+  // Warten, bis GitHub Pages die Datei ausliefert
   for (let i = 0; !(await fetch(url, { method: "HEAD" }).then((r) => r.ok).catch(() => false)); i++) {
     if (i >= 40) throw new Error("Story-Bild ist nach 10 Minuten noch nicht online");
     await warte(15000);
@@ -157,7 +175,7 @@ async function posten(id) {
     if (!res.ok || j.error) throw new Error(`${pfad}: ${j.error?.message || res.status}`);
     return j;
   }
-  const container = (await graph(`${IG}/media`, { media_type: "STORIES", image_url: url })).id;
+  const container = (await graph(`${IG}/media`, { media_type: "STORIES", ...(video ? { video_url: url } : { image_url: url }) })).id;
   for (let i = 0; ; i++) {
     const s = await (await fetch(`${GRAPH}/${container}?fields=status_code&access_token=${TOKEN}`)).json();
     if (s.status_code === "FINISHED") break;

@@ -71,6 +71,8 @@ Jeden Sonntag sammelt `trends.yml` (`trends.mjs`), was in Österreich und Deutsc
 
 Aufbau einer Karte in `storys.json` → `karten`: `{ "id", "inhalt", "bild"?, "ab"?, "bis"? }`. `inhalt` ist derselbe wie bei Posts (alle Formate aus `eintrag.mjs`), gerendert wird mit `render.mjs` in der Reel-Anordnung (Foto als Vollbild am Gesicht ausgerichtet, Karte in den sicheren Zonen). Ohne `bild` sucht `storyplan.mjs` eins aus: Hochformat-Szene, passt zur Jahreszeit, keine einmaligen Anlassbilder, nicht in den Posts der letzten 3 Tage und nicht in den Storys der letzten 10 Tage. Jede Karte geht nur einmal raus; `story-log.json` merkt sich, was gepostet wurde.
 
+- Ton: Mit `JINGLE` = `an` (wie bei den Reels) wird jede Story ein kurzes Video (Standbild plus Jingle, mindestens 5 s), sonst ein stummes Bild.
+- Wochentage: Nennt eine Karte einen Wochentag („Es ist Montag“), braucht sie `"tage": ["Montag"]` (oder `"alle"`, wenn der Tag nur allgemein gemeint ist); sie geht dann nur an diesen Tagen raus. `pruefen` lehnt Karten mit Wochentag ohne `tage` ab.
 - Per API gibt es keine Sticker (Umfrage, Frage, Link, Musik, Ort). Umfrage und Fragen-Sticker sind nur Optik im Bild.
 - Prüfen: `node storys.mjs pruefen` (Schema, Wortfilter, Bilder, doppelte IDs, Vorrat). Vorschau: `node storys.mjs vorschau <ordner> [datum] [karten-id …]`. Tests: `node --test autopilot/storyplan.test.mjs`.
 - Weniger als 5 offene Karten: Issue mit Label `storys`. Nachschub schreibt der Sonntagslauf (`nachschub.md`).

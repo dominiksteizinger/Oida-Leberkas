@@ -8,12 +8,18 @@ import { TAGS, passtZuDatum, tageZwischen } from "./bildregeln.mjs";
 import { wortfilter } from "./wortfilter.mjs";
 
 const datumRe = /^\d{4}-\d{2}-\d{2}$/;
+export const WOCHENTAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+export const wochentag = (datum) => WOCHENTAGE[new Date(`${datum}T12:00:00Z`).getUTCDay()];
+// Nennt eine Karte einen Wochentag („Es ist Montag“), muss sie sagen, an welchen Tagen sie rausdarf (Dominik 20.10.2026:
+// Montags-Story lief am Dienstag). "alle", wenn der Tag nur allgemein gemeint ist („noch bis Freitag“ geht nicht: dann Mo bis Do).
+const TAG_IM_TEXT = new RegExp(`\\b(${WOCHENTAGE.join("|")})s?\\b`, "i");
 export const Karte = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   inhalt: Inhalt,
   bild: z.string().optional(),
   ab: z.string().regex(datumRe).optional(),
   bis: z.string().regex(datumRe).optional(),
+  tage: z.union([z.literal("alle"), z.array(z.enum(WOCHENTAGE)).min(1)]).optional(),
 });
 const WetterZeile = z.object({ gefuehlt: z.string().min(1).max(18), zusatz: z.string().min(1).max(36) });
 export const LAGEN = { sonne: "Sonnig", wolken: "Bewölkt", nebel: "Nebel", regen: "Regen", schnee: "Schnee", gewitter: "Gewitter", hitze: "Heiß", frost: "Frost" };
@@ -43,6 +49,7 @@ export function pruefeVorrat(roh, bibliothek) {
     ids.add(k.id);
     if (k.bild && !dateien.has(k.bild)) fehler.push(`${k.id}: Bild ${k.bild} fehlt in bibliothek.json`);
     if (k.ab && k.bis && k.ab > k.bis) fehler.push(`${k.id}: ab liegt nach bis`);
+    if (!k.tage && TAG_IM_TEXT.test(JSON.stringify(k.inhalt))) fehler.push(`${k.id}: nennt einen Wochentag, braucht "tage" (z. B. ["Montag"] oder "alle")`);
     for (const t of wortfilter(k)) fehler.push(`${k.id}: verbotenes Wort „${t.wort}“ in ${t.feld}`);
   }
   r.data.hinweise.forEach((h, n) => wortfilter({ h }).forEach((t) => fehler.push(`hinweise[${n}]: verbotenes Wort „${t.wort}“`)));
@@ -51,9 +58,9 @@ export function pruefeVorrat(roh, bibliothek) {
 }
 
 const benutzt = (log) => new Set(log.filter((x) => x.karte).map((x) => x.karte));
-const imZeitraum = (k, datum) => (!k.ab || k.ab <= datum) && (!k.bis || datum <= k.bis);
+const imZeitraum = (k, datum) => (!k.ab || k.ab <= datum) && (!k.bis || datum <= k.bis) && (!k.tage || k.tage === "alle" || k.tage.includes(wochentag(datum)));
 
-// Karten, die heute raus dürfen: noch nie gepostet, im Zeitraum. Anlass-Karten (mit bis) zuerst, das früheste Ende vorn, sonst Reihenfolge der Datei.
+// Karten, die heute raus dürfen: noch nie gepostet, im Zeitraum, am richtigen Wochentag. Anlass-Karten (mit bis) zuerst, das früheste Ende vorn, sonst Reihenfolge der Datei.
 export function offeneKarten(karten, log, datum) {
   const weg = benutzt(log);
   const offen = karten.filter((k) => !weg.has(k.id) && imZeitraum(k, datum));

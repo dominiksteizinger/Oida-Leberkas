@@ -45,6 +45,9 @@ jobs:
       - name: Story bauen
         id: bau
         working-directory: autopilot
+        env:
+          # Wie bei den Reels: mit JINGLE="an" wird die Story ein kurzes Video mit Jingle
+          JINGLE: ${{ vars.JINGLE }}
         run: |
           fc-list | grep -qi "Noto Color Emoji" || (sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-color-emoji)
           command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
@@ -54,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: story-${{ steps.bau.outputs.id }}
-          path: tagebuch/storys/${{ steps.bau.outputs.id }}/story.jpg
+          path: tagebuch/storys/${{ steps.bau.outputs.id }}/story.*
       - name: Bild hochladen
         if: steps.bau.outputs.gebaut == 'true' && env.LIVE == 'true'
         run: |
