@@ -17,12 +17,14 @@ const MODUS = process.env.TIKTOK_MODUS || "entwurf";
 const warte = (ms) => new Promise((r) => setTimeout(r, ms));
 const ausgabe = (zeilen) => process.env.GITHUB_OUTPUT && fs.appendFileSync(process.env.GITHUB_OUTPUT, zeilen);
 
+// Beim Einfügen ins Secret rutscht leicht ein Zeilenumbruch mit
+const geheim = (name) => (process.env[name] || "").trim();
 const token = await (await fetch(`${API}/oauth/token/`, {
   method: "POST",
   body: new URLSearchParams({
-    client_key: process.env.TIKTOK_CLIENT_KEY,
-    client_secret: process.env.TIKTOK_CLIENT_SECRET,
-    refresh_token: process.env.TIKTOK_REFRESH_TOKEN,
+    client_key: geheim("TIKTOK_CLIENT_KEY"),
+    client_secret: geheim("TIKTOK_CLIENT_SECRET"),
+    refresh_token: geheim("TIKTOK_REFRESH_TOKEN"),
     grant_type: "refresh_token",
   }),
 })).json();
@@ -30,7 +32,7 @@ if (!token.access_token) throw new Error(`TikTok-Zugang: ${token.error_descripti
 const tage = Math.floor(token.refresh_expires_in / 86400);
 console.log(`TikTok: Refresh-Token gilt noch ${tage} Tage.`);
 ausgabe(`tage=${tage}\n`);
-if (token.refresh_token && token.refresh_token !== process.env.TIKTOK_REFRESH_TOKEN) {
+if (token.refresh_token && token.refresh_token !== geheim("TIKTOK_REFRESH_TOKEN")) {
   console.log("::warning::TikTok hat einen neuen Refresh-Token ausgegeben. Falls der nächste Lauf am Zugang scheitert, Token über oidaleberkas.at/tiktok/ neu holen.");
 }
 
