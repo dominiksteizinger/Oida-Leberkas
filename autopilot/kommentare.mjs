@@ -20,7 +20,7 @@ export const SPERREN = [
   ["Link oder Werbung", /https?:|www\.|\.(com|at|de|net|io)\b|t\.me|wa\.me|kooperation|collab|zusammenarbeit|werbung|sponsor|promo|business|dm me|schreib mir (eine )?dm|schreib mir privat|follower|abonnenten|check (my|mein)|mein profil|gewinnspiel|crypto|bitcoin|invest/i],
   ["Hass oder Beleidigung", /hure|schlampe|fotze|wichs|hurensohn|missgeburt|behindert|spast|nazi|hitler|neger|schwuchtel|kanake|fick|f\*ck|bitch|slut|whore|\bkys\b|bring dich um|stirb|kill yourself|arschloch|wixx|hässlich/i],
   ["sexuell oder Körper", /sex|nackt|nude|titt|brüste|boobs|\bass\b|sexy|heiß(?![\p{L}])|\bhot\b|körper|onlyfans|💦|🍆|🍑|👅/iu],
-  ["Krise oder Trauer", /gestorben|verstorben|beerdigung|begräbnis|suizid|selbstmord|umbringen|ritze|ritzen|geritzt|nicht mehr leben|will sterben|depress|missbrauch|klinik|hilfe!|bitte hilf/i],
+  ["Krise oder Trauer", /gestorben|verstorben|beerdigung|begräbnis|suizid|selbstmord|umbringen|ritze|ritzen|geritzt|nicht mehr leben|will sterben|depress|missbrauch|klinik|geht (es )?mir (so )?schlecht|mir geht es (so )?schlecht|mir gehts schlecht|traurig|einsam|ich weine|angst|hilfe!|bitte hilf/i],
   ["vermutlich minderjährig", /\bich bin (1[0-5]|[5-9])\b|\b(1[0-5]|[5-9]) jahre alt|volksschule|unterstufe|\b[1-4]\. klasse/i],
   ["Frage zu KI oder Echtheit", /\bki\b|\bai\b|künstlich|generiert|chatgpt|gemini|midjourney|\bbots?\b|bist du echt|ist das echt|\bfake\b|wer steckt|wer macht (das|die)|programm/i],
   ["Politik oder Religion", /övp|spö|fpö|grüne|neos|kickl|regierung|\bwahl|partei|politik|krieg|israel|gaza|palästin|ukrain|\brussland|\brussen|trump|putin|migra|flüchtl|ausländer|islam|jud(e|en)\b|kirche|religion|abtreib|gender/i],
@@ -49,7 +49,9 @@ export function einordnen(text) {
   const kat = KATEGORIEN.find(([, re]) => re.test(ohneNamen));
   // Echte Fragen beantwortet der Pool nicht (außer Flirt und Herbert, die haben passende Antworten)
   if (FRAGE.test(ohneNamen) && !(kat && ["flirt", "herbert"].includes(kat[0]))) return { keine: "Frage" };
-  return kat ? { kategorie: kat[0] } : { keine: "keine Kategorie" };
+  if (kat) return { kategorie: kat[0] };
+  // Alles Harmlose ohne Treffer bekommt eine Allzweck-Antwort, solange es kurz ist (Dominik 20.10.2026: Test-Kommentar blieb sonst liegen)
+  return ohneNamen.trim().length <= 140 ? { kategorie: "allgemein" } : { keine: "keine Kategorie" };
 }
 
 const tageZwischen = (a, b) => (Date.parse(b) - Date.parse(a)) / 864e5;

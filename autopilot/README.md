@@ -112,9 +112,9 @@ Fällt die Stimme beim Posten trotzdem aus (Limit, Schlüssel), geht das Reel st
 
 ## Kommentare (seit 20.10.2026)
 
-`.github/workflows/kommentare.yml` läuft viermal am Tag und beantwortet neue Kommentare auf Instagram und YouTube automatisch aus dem festen Pool `antworten.json`. Keine Claude-API, kostet nichts.
+`.github/workflows/kommentare.yml` läuft viermal am Tag und nach jedem Autopilot-Lauf und beantwortet neue Kommentare auf Instagram und YouTube automatisch aus dem festen Pool `antworten.json`. Keine Claude-API, kostet nichts.
 
-- `kommentare.mjs` ordnet jeden Kommentar per Wortliste ein: `lachen`, `relatable`, `lob`, `herbert`, `flirt` (Resi blitzt ab), `kritik`, `markiert` (nur @Namen). Echte Fragen, zu lange und unklare Kommentare bleiben unbeantwortet.
+- `kommentare.mjs` ordnet jeden Kommentar per Wortliste ein: `lachen`, `relatable`, `lob`, `herbert`, `flirt` (Resi blitzt ab), `kritik`, `markiert` (nur @Namen). Was in keine Kategorie passt und kurz ist, bekommt eine Allzweck-Antwort (`allgemein`). Echte Fragen und lange Kommentare bleiben unbeantwortet.
 - Nie beantwortet, sondern im Issue mit Label `kommentare` gemeldet (Dominik zugewiesen): Links und Werbung, Hass, Sexuelles und Körper, Krise und Trauer, vermutlich Minderjährige, Fragen zu KI oder Echtheit, Politik und Religion. Hass und Sexuelles werden dort nicht zitiert.
 - Grenzen: höchstens 10 Antworten am Tag, 3 pro Post, nur Kommentare der letzten 10 Tage. Jede Antwort höchstens alle 30 Tage und nie zweimal unter demselben Post. Ist eine Kategorie aufgebraucht, bleibt der Kommentar liegen.
 - `kommentare-log.json` merkt sich beantwortete und gemeldete Kommentar-IDs (keine Namen).
