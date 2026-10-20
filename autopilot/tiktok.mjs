@@ -91,9 +91,13 @@ for (let i = 0; i < anzahl; i++) {
   if (!res.ok) throw new Error(`TikTok-Upload Stück ${i + 1}/${anzahl}: ${res.status} ${await res.text()}`);
 }
 
+console.log(`TikTok: hochgeladen (${init.publish_id}), warte auf Verarbeitung`);
 const ziel = MODUS === "direkt" ? "PUBLISH_COMPLETE" : "SEND_TO_USER_INBOX";
+let zuletzt = "";
 for (let i = 0; i < 60; i++) {
   const s = await api("post/publish/status/fetch/", { publish_id: init.publish_id });
+  if (s.status !== zuletzt) console.log(`TikTok-Status: ${s.status}`);
+  zuletzt = s.status;
   if (s.status === ziel) {
     console.log(MODUS === "direkt" ? `TikTok: veröffentlicht (${init.publish_id})` : `TikTok: als Entwurf in der Inbox (${init.publish_id}), in der App veröffentlichen`);
     process.exit(0);
@@ -101,4 +105,5 @@ for (let i = 0; i < 60; i++) {
   if (s.status === "FAILED") throw new Error(`TikTok konnte das Video nicht verarbeiten: ${s.fail_reason}`);
   await warte(5000);
 }
-throw new Error("TikTok braucht zu lange für die Verarbeitung");
+// Hochgeladen ist das Video; meldet TikTok das Ende nicht rechtzeitig, nur warnen statt den Lauf rot zu machen
+console.log(`::warning::TikTok hat nach 5 Minuten noch „${zuletzt}“ gemeldet. Das Video ist hochgeladen, bitte in der App nachsehen.`);
