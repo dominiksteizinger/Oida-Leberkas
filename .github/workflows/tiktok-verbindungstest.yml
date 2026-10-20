@@ -1,6 +1,14 @@
 name: TikTok-Verbindungstest
 on:
   workflow_dispatch:
+    inputs:
+      post:
+        description: "Optional: Post-ID (z. B. 2026-10-20-07), dessen Reel testweise hochgeladen wird"
+        required: false
+      modus:
+        description: "entwurf (Inbox) oder direkt"
+        required: false
+        default: entwurf
 permissions:
   contents: read
 jobs:
@@ -46,3 +54,24 @@ jobs:
             -H "Content-Type: application/json; charset=UTF-8" > creator.json
           # Nur SELF_ONLY in der Liste heißt: App ist noch nicht geprüft, Direktposts wären privat. Entwürfe gehen trotzdem.
           jq '{fehler: .error.code, sichtbarkeit: .data.privacy_level_options, max_sekunden: .data.max_video_post_duration_sec}' creator.json
+  upload:
+    needs: test
+    if: inputs.post != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Abhängigkeiten
+        working-directory: autopilot
+        run: npm ci --no-audit --no-fund --ignore-scripts
+      - name: Reel hochladen
+        working-directory: autopilot
+        env:
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+          TIKTOK_MODUS: ${{ inputs.modus }}
+          TIKTOK_SICHTBARKEIT: SELF_ONLY
+        run: node tiktok.mjs "${{ inputs.post }}" "../tagebuch/${{ inputs.post }}/reel.mp4"
