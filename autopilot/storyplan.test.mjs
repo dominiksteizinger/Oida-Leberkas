@@ -10,9 +10,11 @@ const notiz = (id, extra = {}) => ({ id, inhalt: { format: "notiz", titel: "T", 
 test("Slots nach Wiener Stunde", () => {
   assert.equal(slotFuer(10), null);
   assert.equal(slotFuer(11), "mittag");
-  assert.equal(slotFuer(16), null);
+  assert.equal(slotFuer(15), "mittag");
+  assert.equal(slotFuer(16), "abend");
   assert.equal(slotFuer(17), "abend");
-  assert.equal(slotFuer(22), null);
+  assert.equal(slotFuer(23), "abend");
+  assert.equal(slotFuer(7), null);
 });
 
 test("Lage aus Wetterdaten", () => {

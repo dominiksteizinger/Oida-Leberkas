@@ -23,10 +23,11 @@ export const Vorrat = z.object({
   karten: z.array(Karte),
 });
 
-// Story-Slot nach Wiener Stunde: 11 bis 15 Uhr Mittag, 17 bis 21 Uhr Abend (GitHub-Cron kommt oft spät)
+// Story-Slot nach Wiener Stunde: 11 bis 15 Uhr Mittag, 16 bis 23 Uhr Abend. Angestoßen vom Autopilot-Lauf (cron-job.org 11:17, 16:17, 22:17),
+// der GitHub-Cron in storys.yml ist nur Reserve, weil er oft ausfällt.
 export function slotFuer(stunde) {
   if (stunde >= 11 && stunde <= 15) return "mittag";
-  if (stunde >= 17 && stunde <= 21) return "abend";
+  if (stunde >= 16 && stunde <= 23) return "abend";
   return null;
 }
 

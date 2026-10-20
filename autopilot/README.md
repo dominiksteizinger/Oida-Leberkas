@@ -64,10 +64,10 @@ Jeden Sonntag sammelt `trends.yml` (`trends.mjs`), was in Österreich und Deutsc
 
 ## Storys (seit 20.10.2026)
 
-`.github/workflows/storys.yml` postet zwei Instagram-Storys am Tag als Standbild (1080x1920), zusätzlich zu den Posts. Gratis, keine Claude-API. Läuft stündlich, `storys.mjs` ordnet die Wiener Uhrzeit dem Slot zu:
+`.github/workflows/storys.yml` postet zwei Instagram-Storys am Tag als Standbild (1080x1920), zusätzlich zu den Posts. Gratis, keine Claude-API. Jeder Autopilot-Lauf stößt am Ende `storys.yml` an (cron-job.org 11:17 = Mittag, 16:17 direkt nach dem Post = Abend, 22:17 Nachholen); der stündliche GitHub-Cron ist nur Reserve, weil er oft ausfällt. `storys.mjs` ordnet die Wiener Uhrzeit dem Slot zu:
 
 - **Mittag (11 bis 15 Uhr):** eine Karte aus `storys.json`. Anlass-Karten (`ab`/`bis`) zuerst, an auffälligen Wettertagen (Nebel, Regen, Schnee, Gewitter, Hitze, Frost; höchstens alle 3 Tage) die Wetter-Story mit echten Werten von Open-Meteo und einer Zeile aus `storys.json` → `wetter`. Ist keine Karte mehr da, springt die Wetter-Story ein.
-- **Abend (17 bis 21 Uhr):** Hinweis auf den Post von 16 Uhr: Setup des Posts (ohne Pointe) im Rahmen, Label „NEUER POST“, darunter eine Zeile aus `hinweise`. Erst wenn der Post gepostet ist.
+- **Abend (16 bis 23 Uhr):** Hinweis auf den Post von 16 Uhr: Setup des Posts (ohne Pointe) im Rahmen, Label „NEUER POST“, darunter eine Zeile aus `hinweise`. Erst wenn der Post gepostet ist.
 
 Aufbau einer Karte in `storys.json` → `karten`: `{ "id", "inhalt", "bild"?, "ab"?, "bis"? }`. `inhalt` ist derselbe wie bei Posts (alle Formate aus `eintrag.mjs`), gerendert wird mit `render.mjs` in der Reel-Anordnung (Foto als Vollbild am Gesicht ausgerichtet, Karte in den sicheren Zonen). Ohne `bild` sucht `storyplan.mjs` eins aus: Hochformat-Szene, passt zur Jahreszeit, keine einmaligen Anlassbilder, nicht in den Posts der letzten 3 Tage und nicht in den Storys der letzten 10 Tage. Jede Karte geht nur einmal raus; `story-log.json` merkt sich, was gepostet wurde.
 

@@ -28,6 +28,8 @@ on:
 permissions:
   contents: write
   issues: write
+  # zum Anstoßen von storys.yml
+  actions: write
 concurrency:
   group: autopilot
   cancel-in-progress: false
@@ -337,3 +339,8 @@ jobs:
           else
             gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body "Wieder fehlgeschlagen (${{ steps.zeit.outputs.id }}): $LINK"
           fi
+      - name: Storys anstoßen
+        # Der GitHub-Cron von storys.yml fällt oft aus; cron-job.org startet diesen Lauf verlässlich (11:17 Mittag, 16:17 Abend, 22:17 Nachholen).
+        # storys.mjs entscheidet selbst, ob gerade ein Story-Slot offen ist.
+        if: ${{ always() && vars.STORYS == 'an' && github.ref == 'refs/heads/main' }}
+        run: gh workflow run storys.yml --repo "$GITHUB_REPOSITORY" --ref main || echo "::warning::storys.yml nicht angestoßen"
