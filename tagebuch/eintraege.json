@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-20-16",
+    "datum": "2026-10-20",
+    "slot": "16",
+    "format": "chat",
+    "bild": null,
+    "text": "Sie: Warum hat das Einkaufen so lang gedauert? / Resi: Ich hab die Selbstbedienungskasse genommen. / Resi: Damit ich mit niemandem reden muss. / Sie: Und? / Resi: Ein Mitarbeiter wurde informiert.",
+    "bilder": [
+      "tagebuch/2026-10-20-16/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-20-07",
     "datum": "2026-10-20",
     "slot": "07",

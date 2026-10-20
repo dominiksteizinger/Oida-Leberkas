@@ -1,0 +1,43 @@
+{
+  "id": "2026-10-20-16",
+  "datum": "2026-10-20",
+  "slot": "16",
+  "inhalt": {
+    "format": "chat",
+    "name": "Lena",
+    "nachrichten": [
+      {
+        "wer": "sie",
+        "text": "Warum hat das Einkaufen so lang gedauert?"
+      },
+      {
+        "wer": "ich",
+        "text": "Ich hab die Selbstbedienungskasse genommen."
+      },
+      {
+        "wer": "ich",
+        "text": "Damit ich mit niemandem reden muss."
+      },
+      {
+        "wer": "sie",
+        "text": "Und?"
+      },
+      {
+        "wer": "ich",
+        "text": "Ein Mitarbeiter wurde informiert."
+      }
+    ]
+  },
+  "caption": "Wir hatten eine Abmachung.",
+  "aufforderung": "Wie oft ruft deine Kasse um Hilfe?",
+  "hashtags": [
+    "#deadpan",
+    "#supermarkt",
+    "#introvert",
+    "#goth",
+    "#same"
+  ],
+  "zielgruppe": "alltag",
+  "region": "dach",
+  "quelle": "#217"
+}
