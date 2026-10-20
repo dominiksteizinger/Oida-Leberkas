@@ -35,7 +35,7 @@
   <h3>Mac (Terminal)</h3>
   <pre id="befehl"></pre>
   <button class="kopieren" data-ziel="befehl" type="button">Befehl kopieren</button>
-  <p>In der Antwort steht <code>refresh_token</code>. Diesen Wert (ohne Anführungszeichen) als GitHub-Secret <code>TIKTOK_REFRESH_TOKEN</code> eintragen.</p>
+  <p>Windows legt den Refresh-Token direkt in die Zwischenablage, am Mac steht er in der Antwort bei <code>refresh_token</code> (beginnt mit <code>rft.</code>, ohne Anführungszeichen). Als GitHub-Secret <code>TIKTOK_REFRESH_TOKEN</code> eintragen.</p>
 </div>
 
 <p id="fehler" hidden></p>
@@ -81,9 +81,10 @@
       document.getElementById("befehl-win").textContent =
         '$s = Read-Host "Client Secret" -AsSecureString; ' +
         "$p = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($s)); " +
-        "Invoke-RestMethod -Method Post -Uri https://open.tiktokapis.com/v2/oauth/token/ -Body @{" +
+        "$r = Invoke-RestMethod -Method Post -Uri https://open.tiktokapis.com/v2/oauth/token/ -Body @{" +
         "client_key=" + ps(key) + "; client_secret=$p; code=" + ps(q.get("code")) +
-        "; grant_type='authorization_code'; redirect_uri=" + ps(RUECK) + "} | Format-List; Remove-Variable p, s";
+        "; grant_type='authorization_code'; redirect_uri=" + ps(RUECK) + "}; " +
+        "if ($r.refresh_token) { $r.refresh_token | Set-Clipboard; 'Refresh-Token liegt in der Zwischenablage (beginnt mit ' + $r.refresh_token.Substring(0,4) + ', gilt ' + [int]($r.refresh_expires_in/86400) + ' Tage).' } else { $r | Format-List }; Remove-Variable p, s, r";
       document.querySelectorAll(".kopieren").forEach((b) => (b.onclick = () =>
         navigator.clipboard.writeText(document.getElementById(b.dataset.ziel).textContent).then(() => (b.textContent = "Kopiert"))));
       history.replaceState(null, "", RUECK);
