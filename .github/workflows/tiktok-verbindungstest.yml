@@ -27,6 +27,10 @@ jobs:
           echo "Alle drei Secrets sind gesetzt."
       - name: Zugang holen
         run: |
+          # Beim Einfügen ins Secret rutscht leicht ein Zeilenumbruch mit
+          CLIENT_KEY=$(printf %s "$CLIENT_KEY" | tr -d '[:space:]')
+          CLIENT_SECRET=$(printf %s "$CLIENT_SECRET" | tr -d '[:space:]')
+          REFRESH_TOKEN=$(printf %s "$REFRESH_TOKEN" | tr -d '[:space:]')
           curl -sS https://open.tiktokapis.com/v2/oauth/token/ \
             --data-urlencode "client_key=$CLIENT_KEY" \
             --data-urlencode "client_secret=$CLIENT_SECRET" \
@@ -38,7 +42,7 @@ jobs:
           fi
           echo "::add-mask::$ACCESS"
           echo "ACCESS=$ACCESS" >> "$GITHUB_ENV"
-          jq '{scope, expires_in, refresh_tage: (.refresh_expires_in / 86400 | floor), refresh_token_gleich: (.refresh_token == env.REFRESH_TOKEN)}' token.json
+          jq --arg alt "$REFRESH_TOKEN" '{scope, expires_in, refresh_tage: (.refresh_expires_in / 86400 | floor), refresh_token_gleich: (.refresh_token == $alt)}' token.json
           rm token.json
       - name: Konto lesbar?
         run: |
