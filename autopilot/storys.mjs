@@ -213,7 +213,9 @@ const heute = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Vienna" }).fo
 const [befehl, ...arg] = process.argv.slice(2);
 if (befehl === "bauen") {
   // Ohne Slot gilt die Wiener Uhrzeit (stündlicher Cron)
-  const slot = arg[1] || slotFuer(Number(new Intl.DateTimeFormat("de-AT", { timeZone: "Europe/Vienna", hour: "2-digit", hourCycle: "h23" }).format(new Date())));
+  // formatToParts, weil de-AT die Stunde als „16 Uhr“ ausgibt (Number() ergab NaN, kein Abend-Slot am 20.10.2026)
+  const stunde = Number(new Intl.DateTimeFormat("de-AT", { timeZone: "Europe/Vienna", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).find((p) => p.type === "hour").value);
+  const slot = arg[1] || slotFuer(stunde);
   if (!slot) { console.log("Kein Story-Slot zu dieser Uhrzeit."); ausgabe("gebaut=false\n"); } else await bauen(arg[0] || heute, slot, arg[2]);
 }
 else if (befehl === "posten") await posten(arg[0]);
