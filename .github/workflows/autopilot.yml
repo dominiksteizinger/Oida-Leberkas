@@ -115,16 +115,16 @@ jobs:
           # Bild-Recycling: BILD_RECYCLING "aus" = nur ungenutzte Bilder; BILD_ABSTAND_TAGE Standard 21
           BILD_RECYCLING: ${{ vars.BILD_RECYCLING }}
           BILD_ABSTAND_TAGE: ${{ vars.BILD_ABSTAND_TAGE }}
-      - name: Humor-Quote verletzt melden
-        # Die Warteschlange hatte nur noch Posts mit derselben Mechanik; der Post geht trotzdem raus, Dominik bekommt die Warnung
+      - name: Humor- oder Zielgruppen-Quote verletzt melden
+        # Die Warteschlange hatte nur noch Posts mit derselben Mechanik oder Zielgruppe; der Post geht trotzdem raus, Dominik bekommt die Warnung
         if: steps.holen.outputs.quote_warnung != '' && env.LIVE == 'true'
         run: |
           gh label create mechanik --repo "$GITHUB_REPOSITORY" --color FBCA04 --description "Zu oft dieselbe Humor-Mechanik" 2>/dev/null || true
-          TEXT="Humor-Quote verletzt bei ${{ steps.zeit.outputs.id }}: ${{ steps.holen.outputs.quote_warnung }}"
+          TEXT="Quote verletzt bei ${{ steps.zeit.outputs.id }}: ${{ steps.holen.outputs.quote_warnung }}"
           NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label mechanik --state open --json number --jq '.[0].number // empty')
           if [ -z "$NR" ]; then
             gh issue create --repo "$GITHUB_REPOSITORY" --label mechanik --assignee "${{ github.repository_owner }}" \
-              --title "Zu oft dieselbe Mechanik in der Warteschlange" --body "$TEXT"$'\n\nRegel (autopilot/humorquote.mjs): höchstens 2 gleiche Mechaniken hintereinander und höchstens 3 von 14 Posts. Posts mit anderer Mechanik in die Warteschlange legen (Feld `mechanik` im Post-JSON). Dieses Issue schließen, wenn wieder Abwechslung drin ist.'
+              --title "Zu oft dieselbe Mechanik in der Warteschlange" --body "$TEXT"$'\n\nRegel (autopilot/humorquote.mjs): höchstens 2 gleiche Mechaniken hintereinander und höchstens 3 von 14 Posts. Zielgruppen-Quote (autopilot/zielgruppe.mjs): höchstens 2 gleiche Zielgruppen hintereinander, Höchstzahl pro 14 Posts je Zielgruppe, höchstens 2 Posts pro Region at/de. Posts mit anderer Mechanik oder Zielgruppe in die Warteschlange legen (Felder `mechanik`, `zielgruppe`, `region` im Post-JSON). Dieses Issue schließen, wenn wieder Abwechslung drin ist.'
           else
             gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body "$TEXT"
           fi

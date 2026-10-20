@@ -11,6 +11,7 @@ import { OHNE_BILD } from "./formate.mjs";
 import { TAGS, passtZuDatum, pruefeTags } from "./bildregeln.mjs";
 import { pruefeWortfilter } from "./wortfilter.mjs";
 import { mechanikLesen } from "./humorquote.mjs";
+import { zielgruppeLesen, pruefeUe40 } from "./zielgruppe.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const bibliothek = pruefeTags(JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")));
@@ -33,6 +34,9 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
   versuch(() => { e = Eintrag.parse(post); });
   versuch(() => pruefeWortfilter(post));
   versuch(() => mechanikLesen(post));
+  // Zielgruppe ist für neue Posts Pflicht; Ü40-Signale nur mit Begründung (zielgruppe.mjs)
+  versuch(() => zielgruppeLesen(post, { pflicht: true }));
+  versuch(() => pruefeUe40(post));
   for (const k of ["ab", "bis"]) if (post[k] !== undefined && !DATUM.test(post[k])) fehler.push(`${k} muss JJJJ-MM-TT sein`);
   if (post.ab && post.bis && post.ab > post.bis) fehler.push("ab liegt nach bis");
   if (post.bis && DATUM.test(post.bis) && heute && post.bis < heute) fehler.push(`bis (${post.bis}) liegt in der Vergangenheit`);
