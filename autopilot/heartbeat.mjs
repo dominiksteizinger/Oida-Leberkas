@@ -32,6 +32,12 @@ export function ueberfaellig(jetzt = new Date()) {
 const gh = (...a) => execFileSync("gh", a, { encoding: "utf8" });
 const ghJson = (...a) => JSON.parse(gh(...a) || "null");
 
+export function ersterLivePost(wurzel) {
+  const dir = path.join(wurzel, "tagebuch");
+  if (!fs.existsSync(dir)) return null;
+  return fs.readdirSync(dir).filter((d) => /^\d{4}-\d{2}-\d{2}-\d{2}$/.test(d) && fs.existsSync(path.join(dir, d, "gepostet.txt"))).sort()[0] || null;
+}
+
 function gepostet(id, wurzel, abgehakt) {
   return fs.existsSync(path.join(wurzel, "tagebuch", id, "gepostet.txt")) || abgehakt.has(id);
 }
@@ -50,13 +56,15 @@ async function main() {
   gh("label", "create", "ausfall", "--repo", repo, "--color", "D73A4A", "--description", "Slot wurde nicht gepostet", "--force");
   const offen = ghJson("issue", "list", "--repo", repo, "--label", "ausfall", "--state", "open", "--json", "number,title");
 
-  // Inzwischen nachgeholt: Meldung schließen
+  // Slots vor dem ersten Live-Post zählen nicht (Probebetrieb hat kein gepostet.txt)
+  const ersterLive = ersterLivePost(wurzel);
+  // Inzwischen nachgeholt (oder vor dem Live-Start): Meldung schließen
   for (const i of offen) {
     const id = i.title.match(/\d{4}-\d{2}-\d{2}-\d{2}/)?.[0];
-    if (id && gepostet(id, wurzel, abgehakt)) gh("issue", "close", String(i.number), "--repo", repo, "--comment", "Inzwischen gepostet.");
+    if (id && (gepostet(id, wurzel, abgehakt) || (ersterLive && id < ersterLive))) gh("issue", "close", String(i.number), "--repo", repo, "--comment", "Inzwischen gepostet oder vor dem Live-Start, kein Ausfall.");
   }
 
-  const fehlt = ueberfaellig(jetzt).filter((s) => !gepostet(s.id, wurzel, abgehakt));
+  const fehlt = ueberfaellig(jetzt).filter((s) => ersterLive && s.id > ersterLive && !gepostet(s.id, wurzel, abgehakt));
   if (!fehlt.length) return console.log("Alle fälligen Slots sind gepostet.");
 
   const laeufe = ghJson("run", "list", "--repo", repo, "--workflow", "autopilot.yml", "--limit", "8", "--json", "createdAt,event,conclusion,status,url") || [];
