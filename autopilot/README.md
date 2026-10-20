@@ -12,6 +12,7 @@ Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die
 4. `video.mjs`: macht daraus ein Reel (1080x1920, Vollbild): erst das Setup, dann erscheint jeder neue Teil (Zeile, Blase, Absatz) einzeln, die Standzeit richtet sich nach der Textlänge. Chat-Blasen und Notiz-Absätze erscheinen von Anfang an nacheinander. Fotos füllen den ganzen Schirm, am Gesicht ausgerichtet (`kopf` in `bibliothek.json`), mit langsamem Zoom; Karten bleiben ruhig darüber, ohne Untertitel (Text im Bild wird gesprochen; `UNTERTITEL=an` schaltet sie wieder ein), in den sicheren Zonen (oben ca. 285 px, unten ca. 285 px frei) und unter dem Gesicht. Querformat-Bilder liegen scharf auf einem unscharfen Vollbild-Hintergrund, Reaktionsbilder und Karten ohne Bild zoomen als Ganzes leicht. Eine Aufforderung im Kartentext („Schick das …“) kommt im Reel nie zuerst, sondern als letzter Schritt.
 5. `posten.mjs`: Instagram als Reel (oder Bild) und, wenn `FACEBOOK_POSTEN=an`, Facebook-Seite.
 6. `youtube.mjs`: das Reel als YouTube Short, wenn `YOUTUBE_POSTEN=an`.
+   `tiktok.mjs`: das Reel zu TikTok, wenn `TIKTOK_POSTEN=an`. Ein Fehler dort bricht den Lauf nicht ab.
 7. Danach wird das Warteschlangen-Issue geschlossen und der Post kommt zur Bewertung in die Sammelliste.
 8. `vorrat.mjs`: Passen heute weniger als 7 Bilder (ungenutzte plus recycelbare nach Abstandsregel, siehe „Bild-Recycling“), öffnet der Lauf ein Issue mit Label `bilder` und weist es Dominik zu. Das ist die Erinnerung, neue Bilder in Gemini zu machen.
 
@@ -101,6 +102,7 @@ Fällt die Stimme beim Posten trotzdem aus (Limit, Schlüssel), geht das Reel st
 - `POSTEN` = `an`: echter Betrieb (nur auf `main`). Ohne diese Variable läuft alles im Probebetrieb auf dem Branch `autopilot-probe` und es wird nichts gepostet.
 - `FACEBOOK_POSTEN` = `an`: zusätzlich auf der Facebook-Seite posten.
 - `YOUTUBE_POSTEN` = `an`: Reel als Short hochladen. `YOUTUBE_SICHTBARKEIT` = `private` oder `unlisted` zum Testen.
+- `TIKTOK_POSTEN` = `an`: Reel zu TikTok. `TIKTOK_MODUS` = `entwurf` (Standard, landet in der TikTok-Inbox, Veröffentlichen per Fingertipp) oder `direkt` (sofort mit Text; bis TikTok die App geprüft hat nur als „Nur ich“). `TIKTOK_SICHTBARKEIT` z. B. `SELF_ONLY` zum Testen. Secrets `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`, `TIKTOK_REFRESH_TOKEN` (365 Tage gültig, neu holen über oidaleberkas.at/tiktok/; der Lauf legt 21 Tage vorher ein Issue an). Test: Actions → TikTok-Verbindungstest.
 - `HANDLE`: Name im Post, Standard `resi.requiem`.
 - `JINGLE` = `an`: Jingle ins Reel mischen. Braucht die Datei `autopilot/assets/jingle.mp3` (3 bis 5 s, höchstens 6 s). Fehlt die Datei, läuft das Reel ohne Jingle wie bisher. Standard ist das Ende: Das letzte Standbild steht, bis der Jingle durch ist. `JINGLE_POS` = `anfang` setzt ihn vor die Stimme.
 
