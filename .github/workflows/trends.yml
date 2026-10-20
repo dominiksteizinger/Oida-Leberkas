@@ -8,7 +8,7 @@ on:
   schedule:
     # Sonntag früh UTC; GitHub startet geplante Läufe manchmal Stunden später, der Schreib-Lauf ist erst am Abend
     - cron: "23 5 * * 0"
-    # Kurzlauf vor den beiden Schnellweg-Läufen (6:50 und 15:20 Wien)
+    # Kurzlauf vor den beiden Schnellweg-Läufen (6:35 und 15:35 Wien)
     - cron: "11 3,12 * * *"
   workflow_dispatch:
     inputs:
