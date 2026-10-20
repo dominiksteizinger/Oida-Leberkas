@@ -20,7 +20,12 @@ const i = e.inhalt;
 const datei = (p) => `file://${p}`;
 const minute = (e.datum.split("-").reduce((a, x) => a + Number(x), 0) * 7) % 50 + 3;
 const zeitstempel = `${new Date(e.datum + "T12:00:00").toLocaleDateString("de-AT", { day: "numeric", month: "long", year: "numeric" })} um ${e.slot}:${String(minute).padStart(2, "0")}`;
+const eintragBild = bibliothek.find((b) => b.datei === e.bild);
 const optionen = {
+  format: i.format,
+  kopf: eintragBild?.kopf,
+  // Herbert-Pop-up: von selbst, sobald Herbert im Text vorkommt; "herbert": true/false im Post erzwingt es
+  herbert: e.herbert ?? /\bHerbert\b/.test(kurzfassung(i)),
   bild: e.bild ? datei(path.join(HIER, "bilder", e.bild)) : "",
   hell: bibliothek.find((b) => b.datei === e.bild)?.art === "figur",
   gesicht: datei(path.join(HIER, "vorlagen", "gesicht.png")),
@@ -42,7 +47,7 @@ const EINZELN = { chat: ".m", notiz: "p" };
 // Alle Elemente mit eigenem Text, ohne Handle und Label
 function blattTexte() {
   return [...document.querySelectorAll(".f *")]
-    .filter((e) => !e.children.length && e.textContent.trim() && !e.closest(".handle, .lab"))
+    .filter((e) => !e.children.length && e.textContent.trim() && !e.closest(".handle, .lab, .pop"))
     .map((e) => e.textContent.trim());
 }
 
@@ -71,7 +76,7 @@ body{position:relative}body::before{content:"";position:absolute;left:0;right:0;
 // Elemente, die oben im Post stehen, rutschen unter das Gesicht (Kinn aus bibliothek.json), ohne andere Karten zu überdecken
 async function ausKopfRaus(kinn) {
   await seite.evaluate(({ kinn, rand }) => {
-    const kinden = [...document.querySelector(".f").children].filter((e) => !e.matches(".handle, img, .fade, .verlauf") && getComputedStyle(e).position === "absolute");
+    const kinden = [...document.querySelector(".f").children].filter((e) => !e.matches(".handle, .pop, img, .fade, .verlauf") && getComputedStyle(e).position === "absolute");
     const frame = document.querySelector(".f").getBoundingClientRect().top;
     const tops = kinden.map((e) => ({ e, r: e.getBoundingClientRect() })).map(({ e, r }) => ({ e, oben: r.top - frame, h: r.height, unten: r.bottom - frame }));
     const grenze = Math.min(kinn * 1920 - rand + 30, 700);
@@ -97,7 +102,7 @@ async function schritte(setup) {
   const aufruf = AUFRUF.source;
   const texte = await seite.evaluate(({ setup, einzeln, aufruf }) => {
     const re = new RegExp(aufruf, "i");
-    const blaetter = [...document.querySelectorAll(".f *")].filter((e) => !e.children.length && e.textContent.trim() && !e.closest(".handle, .lab"));
+    const blaetter = [...document.querySelectorAll(".f *")].filter((e) => !e.children.length && e.textContent.trim() && !e.closest(".handle, .lab, .pop"));
     // Aufforderungen („Schick das …“) erst im letzten Schritt zeigen
     const spaet = blaetter.filter((e) => re.test(e.textContent));
     const rest = [...setup];

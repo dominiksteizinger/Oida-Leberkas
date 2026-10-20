@@ -4,7 +4,10 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 
 const SARG = (voll) => `<svg width="62" height="86" viewBox="0 0 62 86"><path d="M18 2h26l16 22-10 60H12L2 24z" fill="${voll ? "#FF4FA3" : "none"}" stroke="#FF4FA3" stroke-width="4"/><path d="M31 22v34M21 34h20" stroke="#120A10" stroke-width="5"/></svg>`;
 
-function seite(css, inhalt, { schrift, handle, hell }) {
+// Kleines Pop-up, das Herbert vorstellt, damit Neue nicht fragen, wer das ist (Dominik, 20.10.2026)
+const HERBERT = `<div class="pop"><b>🦇 Herbert</b><span>Meine Fledermaus. Wohnt hier, zahlt keine Miete.</span></div>`;
+
+function seite(css, inhalt, { schrift, handle, hell, herbert, format }) {
   const fonts = [["400", "Regular"], ["500", "Medium"], ["600", "SemiBold"], ["700", "Bold"], ["800", "ExtraBold"]]
     .map(([w, n]) => `@font-face{font-family:I;font-weight:${w};src:url(${schrift(`Inter-${n}.otf`)})}`).join("");
   return `<!doctype html><html><head><meta charset="utf-8"><style>${fonts}
@@ -12,7 +15,9 @@ html,body{margin:0}
 .f{width:1080px;height:1350px;box-sizing:border-box;position:relative;overflow:hidden;font-family:I,sans-serif}
 .handle{position:absolute;left:70px;bottom:70px;font:700 30px I;color:${hell ? "#120A10" : "rgba(255,255,255,.75)"}}
 .handle b{color:#FF4FA3}
-${css}</style></head><body><div class="f">${inhalt}<div class="handle">@<b>${esc(handle.split(".")[0])}</b>${esc(handle.slice(handle.split(".")[0].length))}</div></div></body></html>`;
+.pop{position:absolute;z-index:9;right:60px;top:${format === "antwort" ? 330 : 90}px;width:330px;background:#fff;color:#161616;border-radius:22px;padding:18px 24px;box-shadow:0 10px 30px rgba(0,0,0,.45);transform:rotate(2deg)}
+.pop b{display:block;font:800 32px I;margin-bottom:4px}.pop span{font:500 24px/1.3 I;color:#555}
+${css}</style></head><body><div class="f">${inhalt}${herbert ? HERBERT : ""}<div class="handle">@<b>${esc(handle.split(".")[0])}</b>${esc(handle.slice(handle.split(".")[0].length))}</div></div></body></html>`;
 }
 
 function antwort(i, o) {
@@ -67,7 +72,7 @@ function chat(i, o) {
 
 function szene(i, o) {
   const g = o.hell ? "#efe7ec" : "#0d0a0d";
-  const css = `.f{background:${g};color:${o.hell ? "#120A10" : "#fff"}}.bild{position:absolute;top:0;left:0;width:1080px;height:800px;object-fit:cover;object-position:50% ${o.hell ? "25%" : "50%"}}
+  const css = `.f{background:${g};color:${o.hell ? "#120A10" : "#fff"}}.bild{position:absolute;top:0;left:0;width:1080px;height:800px;object-fit:cover;object-position:50% ${o.hell ? "25%" : o.kopf ? `${Math.max(0, Math.round(o.kopf[1] * 100 - 10))}%` : "50%"}}
 .verlauf{position:absolute;top:560px;left:0;right:0;height:240px;background:linear-gradient(transparent,${g})}
 .t{position:absolute;left:80px;right:80px;top:820px}.t p{margin:0 0 30px;font:800 54px/1.22 I}.k{font:600 44px/1.3 I;color:${o.hell ? "#E0337F" : "#FF4FA3"};margin:0 0 10px}`;
   const klammern = o.stufe === "a" ? "" : i.klammern.map((k) => `<div class="k">${esc(k)}</div>`).join("");
