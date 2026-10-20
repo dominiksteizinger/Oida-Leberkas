@@ -1,0 +1,25 @@
+{
+  "id": "2026-10-20-mittag",
+  "datum": "2026-10-20",
+  "slot": "12",
+  "inhalt": {
+    "format": "umfrage",
+    "frage": "Wie geht es dir heute wirklich?",
+    "optionen": [
+      {
+        "text": "Gut",
+        "prozent": 4
+      },
+      {
+        "text": "Es ist Montag",
+        "prozent": 71
+      },
+      {
+        "text": "Frag nicht",
+        "prozent": 25
+      }
+    ],
+    "fuss": "Abgestimmt habe nur ich. Dreimal."
+  },
+  "bild": "ampel-rot-leer.jpg"
+}
