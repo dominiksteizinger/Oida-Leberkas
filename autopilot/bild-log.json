@@ -33,5 +33,30 @@
     "datum": "2026-10-19",
     "datei": "ubahn-sitzt-herbert.png",
     "modell": "gemini-2.5-flash-image"
+  },
+  {
+    "datum": "2026-10-20",
+    "datei": "boden-handy-dunkel.png",
+    "modell": "gemini-2.5-flash-image"
+  },
+  {
+    "datum": "2026-10-20",
+    "datei": "bett-angezogen-handy.png",
+    "modell": "gemini-2.5-flash-image"
+  },
+  {
+    "datum": "2026-10-20",
+    "datei": "schreibtisch-deadline-nacht.png",
+    "modell": "gemini-2.5-flash-image"
+  },
+  {
+    "datum": "2026-10-20",
+    "datei": "bett-bauch-dating-herbert.png",
+    "modell": "gemini-2.5-flash-image"
+  },
+  {
+    "datum": "2026-10-20",
+    "datei": "sofa-partyoutfit-eingeschlafen.png",
+    "modell": "gemini-2.5-flash-image"
   }
 ]
