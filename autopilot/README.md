@@ -12,7 +12,7 @@ Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die
 4. `video.mjs`: macht daraus ein Reel (1080x1920, Vollbild): erst das Setup, dann erscheint jeder neue Teil (Zeile, Blase, Absatz) einzeln, die Standzeit richtet sich nach der Textlänge. Chat-Blasen und Notiz-Absätze erscheinen von Anfang an nacheinander. Fotos füllen den ganzen Schirm, am Gesicht ausgerichtet (`kopf` in `bibliothek.json`), mit langsamem Zoom; Karten bleiben ruhig darüber, ohne Untertitel (Text im Bild wird gesprochen; `UNTERTITEL=an` schaltet sie wieder ein), in den sicheren Zonen (oben ca. 285 px, unten ca. 285 px frei) und unter dem Gesicht. Querformat-Bilder liegen scharf auf einem unscharfen Vollbild-Hintergrund, Reaktionsbilder und Karten ohne Bild zoomen als Ganzes leicht. Eine Aufforderung im Kartentext („Schick das …“) kommt im Reel nie zuerst, sondern als letzter Schritt.
 5. `posten.mjs`: Instagram als Reel (oder Bild) und, wenn `FACEBOOK_POSTEN=an`, Facebook-Seite.
 6. `youtube.mjs`: das Reel als YouTube Short, wenn `YOUTUBE_POSTEN=an`.
-   `tiktok.mjs`: das Reel zu TikTok, wenn `TIKTOK_POSTEN=an`. Ein Fehler dort bricht den Lauf nicht ab.
+   `tiktok.mjs`: das Reel zu TikTok, wenn `TIKTOK_POSTEN=an`. Ein Fehler dort bricht den Lauf nicht ab. Entwürfe kommen ohne Text an; der Text steht als Kommentar im Issue „TikTok-Entwürfe: Texte“ (Label `tiktok`).
 7. Danach wird das Warteschlangen-Issue geschlossen und der Post kommt zur Bewertung in die Sammelliste.
 8. `vorrat.mjs`: Passen heute weniger als 7 Bilder (ungenutzte plus recycelbare nach Abstandsregel, siehe „Bild-Recycling“), öffnet der Lauf ein Issue mit Label `bilder` und weist es Dominik zu. Das ist die Erinnerung, neue Bilder in Gemini zu machen.
 

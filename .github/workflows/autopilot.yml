@@ -250,6 +250,25 @@ jobs:
           TIKTOK_MODUS: ${{ vars.TIKTOK_MODUS }}
           TIKTOK_SICHTBARKEIT: ${{ vars.TIKTOK_SICHTBARKEIT }}
         run: node tiktok.mjs "${{ steps.zeit.outputs.id }}" "../tagebuch/${{ steps.zeit.outputs.id }}/reel.mp4"
+      - name: TikTok-Text zum Kopieren
+        # Entwürfe in der TikTok-Inbox kommen ohne Text (API-Grenze); der Text landet als Kommentar im Issue „TikTok-Entwürfe“
+        if: ${{ !cancelled() && steps.tiktok.outcome == 'success' && vars.TIKTOK_MODUS != 'direkt' }}
+        run: |
+          ID="${{ steps.zeit.outputs.id }}"
+          gh label create tiktok --repo "$GITHUB_REPOSITORY" --color 000000 --description "Texte für TikTok-Entwürfe" 2>/dev/null || true
+          NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label tiktok --state open --json number --jq '.[0].number // empty')
+          if [ -z "$NR" ]; then
+            NR=$(gh issue create --repo "$GITHUB_REPOSITORY" --label tiktok --assignee "${{ github.repository_owner }}" --title "TikTok-Entwürfe: Texte" \
+              --body "Jeder TikTok-Entwurf bekommt hier seinen Text. In der TikTok-App den Entwurf öffnen, Text aus dem Kommentar kopieren, posten." | grep -o '[0-9]*$')
+          fi
+          {
+            echo "**$ID**: Entwurf liegt in der TikTok-App. Text zum Kopieren:"
+            echo ""
+            echo '```'
+            jq -r '[.caption, .aufforderung, (.hashtags | join(" "))] | map(select(. != null and . != "")) | join("\n\n")' "tagebuch/$ID/eintrag.json"
+            echo '```'
+          } > "$RUNNER_TEMP/tiktok.md"
+          gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/tiktok.md"
       - name: TikTok-Token-Ablauf melden
         if: ${{ !cancelled() && steps.tiktok.outputs.tage != '' && fromJSON(steps.tiktok.outputs.tage) < 21 }}
         run: |
