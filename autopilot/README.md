@@ -47,7 +47,8 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
   - `fehlermeldung`: `titel`, `text`, `knopf_links`, `knopf_rechts` (Pointe)
   - `todo`: `titel`, `punkte` (3–5, je `text`, `erledigt`), `fazit`
   - `beleg`: `titel`, `untertitel`, `posten` (3–6, je `name`, `menge`), `summe`, `fuss`
-- `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`.
+- `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`. Bei `szene` richtet sich der Ausschnitt nach `kopf` in `bibliothek.json`, damit das Gesicht im Bild bleibt.
+- `herbert` (optional, `true`/`false`): kleines Pop-up „🦇 Herbert, meine Fledermaus“. Kommt von selbst, sobald „Herbert“ im Text steht; `true` erzwingt es (z. B. bei „– H.“), `false` schaltet es ab.
 - `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
 - `ab`, `bis` (optional, `JJJJ-MM-TT`): Post nur in diesem Zeitraum, für Anlässe (Allerheiligen, 11.11., Freitag der 13.). Vor `ab` wird der Post übersprungen und bleibt in der Warteschlange, nach `bis` bekommt das Issue einen Kommentar und das Label `fehler` („Anlass vorbei“). Posts mit `bis` (Anlass oder Trend) kommen vor allen freien Posts dran, das früheste Ende zuerst (`reihenfolge.mjs`, seit 20.10.2026).
 - `musik` (optional): wird ignoriert, die Reels laufen ohne Ton. Die alten Tracks und `musik_generator.py` liegen in der Git-Historie.

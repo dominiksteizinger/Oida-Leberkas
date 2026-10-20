@@ -80,6 +80,7 @@ export const Eintrag = z.object({
   aufforderung: z.string().max(200).default(""),
   hashtags: z.array(z.string().regex(/^#\S+$/)).max(6).default([]),
   musik: z.string().nullable().optional(),
+  herbert: z.boolean().optional().describe("Pop-up, das Herbert vorstellt; ohne Angabe von selbst, wenn Herbert im Text steht"),
 });
 
 // Text für Caption, YouTube-Beschreibung und die Sammelliste
