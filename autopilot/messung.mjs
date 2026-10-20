@@ -168,6 +168,8 @@ export function bericht({ datum, tage, posts, ig, yt }) {
     gruppen("Nach Aufforderung", (p) => p.art);
     gruppen("Nach Slot", (p) => `${p.e.slot} Uhr`);
     gruppen("Nach Mechanik", (p) => p.e.mechanik || "ohne Tag");
+    gruppen("Nach Zielgruppe", (p) => p.e.zielgruppe || "ohne Tag");
+    gruppen("Nach Region", (p) => p.e.region || "dach");
     if (ig.status === "ok") {
       const rang = posts.map((p) => ({ p, r: igw(p.id).reach, s: igw(p.id).shares })).filter((x) => x.r > 0 && typeof x.s === "number").sort((a, b) => b.s / b.r - a.s / a.r);
       if (rang.length) {

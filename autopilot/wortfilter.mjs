@@ -2,7 +2,7 @@
 // Erlaubt bleibt das Bild (Easter Egg), deshalb wird `bild` nicht geprüft. Gilt für den gesamten Eintrag, auch für Namen wie `von` im Chat.
 export const VERBOTEN = /leberk|lebakas|semmel|🥖/i;
 
-const SKIP = new Set(["bild", "slot", "ab", "bis", "mechanik", "musik", "quelle", "id", "datum", "trend"]);
+const SKIP = new Set(["bild", "slot", "ab", "bis", "mechanik", "zielgruppe", "region", "ue40_ok", "musik", "quelle", "id", "datum", "trend"]);
 
 function texte(wert, pfad, aus) {
   if (typeof wert === "string") aus.push([pfad, wert]);

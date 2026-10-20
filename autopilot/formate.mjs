@@ -55,10 +55,11 @@ function chat(i, o) {
   const css = `.f{background:#0b0b0d;color:#fff}.kopfz{display:flex;align-items:center;gap:22px;padding:70px 60px 34px;border-bottom:1px solid #222}
 .kopfz .av{width:90px;height:90px;border-radius:50%;background:#FFD7E8;display:flex;align-items:center;justify-content:center;font:800 40px I;color:#c2185b}
 .kopfz b{font:700 40px I;display:block}.kopfz span{font:400 26px I;color:#8d8d92}
-.verlauf{padding:50px 60px;display:flex;flex-direction:column;gap:22px}
+.verlauf{position:relative;z-index:1;padding:50px 60px;display:flex;flex-direction:column;gap:22px}
 .m{max-width:720px;font:500 42px/1.3 I;padding:22px 30px;border-radius:34px}
 .sie{align-self:flex-start;background:#26262b;border-bottom-left-radius:10px}.ich{align-self:flex-end;background:#FF4FA3;color:#120A10;border-bottom-right-radius:10px;font-weight:600}
-.zeit{align-self:center;font:500 26px I;color:#6d6d72;margin:10px 0}`;
+.zeit{align-self:center;font:500 26px I;color:#6d6d72;margin:10px 0}
+.st{position:absolute;right:70px;bottom:60px;width:240px;border-radius:50%;transform:rotate(-8deg)}`;
   let n = i.nachrichten;
   if (o.stufe === "a") {
     // Setup: alles bis zu Resis letzter Antwort, die kommt erst nach der Pause
@@ -67,7 +68,7 @@ function chat(i, o) {
     if (ende < n.length) n = n.slice(0, ende);
   }
   const blasen = n.map((m) => (m.wer === "zeit" ? `<div class="zeit">${esc(m.text)}</div>` : `<div class="m ${m.wer}">${esc(m.text)}</div>`)).join("");
-  return seite(css, `<div class="kopfz"><div class="av">${esc(i.name[0])}</div><div><b>${esc(i.name)}</b><span>online</span></div></div><div class="verlauf">${blasen}</div>`, o);
+  return seite(css, `<div class="kopfz"><div class="av">${esc(i.name[0])}</div><div><b>${esc(i.name)}</b><span>online</span></div></div><img class="st" src="${o.gesicht}"><div class="verlauf">${blasen}</div>`, o);
 }
 
 function szene(i, o) {

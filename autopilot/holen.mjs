@@ -11,6 +11,7 @@ import { bildKonfig, pruefeBild, pruefeTags, verbuchen } from "./bildregeln.mjs"
 import { pruefeWortfilter } from "./wortfilter.mjs";
 import { mechanikLesen, pruefeQuote, verlaufLesen } from "./humorquote.mjs";
 import { reihenfolge } from "./reihenfolge.mjs";
+import { zielgruppeLesen, pruefeZielgruppe, zgVerlaufLesen, sortiereKandidaten } from "./zielgruppe.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const WURZEL = path.join(HIER, "..");
@@ -37,7 +38,7 @@ function pruefe(body) {
   if (e.bild && !bekannt.has(e.bild)) throw new Error(`Bild ${e.bild} gibt es nicht in bibliothek.json`);
   // ab/bis (optional, JJJJ-MM-TT): Post nur in diesem Zeitraum, z. B. für Anlässe (Allerheiligen, Martinstag)
   for (const k of ["ab", "bis"]) if (roh[k] !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(roh[k])) throw new Error(`${k} muss JJJJ-MM-TT sein`);
-  return { e, mechanik: mechanikLesen(roh), wunschSlot: roh.slot ? String(roh.slot) : null, ab: roh.ab || null, bis: roh.bis || null };
+  return { e, mechanik: mechanikLesen(roh), ...zielgruppeLesen(roh), wunschSlot: roh.slot ? String(roh.slot) : null, ab: roh.ab || null, bis: roh.bis || null };
 }
 
 // Nur Issues vom Repo-Owner: Die Vorlage „Fertiger Post“ setzt das Label automatisch, auch bei Fremden.
@@ -55,12 +56,14 @@ const ablehnen = (issue, meldung) => {
   gh("issue", "edit", String(issue.number), "--repo", repo, "--remove-label", "warteschlange", "--add-label", "fehler");
 };
 
-// Der erste Post, der zum Slot passt und die Bildregeln erfüllt. Bildregel-Fehler landen wie ungültige Posts im Label „fehler“.
+// Unter den Posts, die zum Slot und zu den Quoten passen, kommt der dran, den sortiereKandidaten vorne sieht und dessen Bild passt. Bildregel-Fehler landen wie ungültige Posts im Label „fehler“.
 let gefunden = null;
-let zurueck = null; // erster Post, den die Humor-Quote zurückstellt; kommt nur dran, wenn nichts anderes passt
-let verbleibend = 0;
-// Mechaniken der zuletzt gepostenden Posts, plus der heute schon gewählte (nur relevant, wenn mehrere Slots in einem Lauf liefen)
+let zurueck = null; // erster Post, den eine Quote zurückstellt; kommt nur dran, wenn nichts anderes passt
+// Mechaniken und Zielgruppen der zuletzt gepostenden Posts
 const verlauf = verlaufLesen(path.join(WURZEL, "tagebuch"), id);
+const zgVerlauf = zgVerlaufLesen(path.join(WURZEL, "tagebuch"), id);
+const kandidaten = [];
+let gelesen = 0;
 for (const issue of offen) {
   let p;
   try {
@@ -73,32 +76,44 @@ for (const issue of offen) {
     ablehnen(issue, `Der Anlass ist vorbei: Post nur bis ${p.bis}, heute ist ${datum}. Bei Bedarf ohne „bis“ neu anlegen.`);
     continue;
   }
-  if ((p.wunschSlot && p.wunschSlot !== slot) || (p.ab && datum < p.ab)) { verbleibend++; continue; }
-  if (gefunden) { verbleibend++; continue; }
-  if (p.e.bild) {
-    const regel = pruefeBild({ bibliothek, nutzung, bild: p.e.bild, datum, konf, id, e: p.e });
+  gelesen++;
+  if ((p.wunschSlot && p.wunschSlot !== slot) || (p.ab && datum < p.ab)) continue;
+  // Humor-Quote: zu oft dieselbe Mechanik hintereinander → zurückstellen. Anlass-Posts (ab/bis) laufen immer, sonst verpassen sie ihren Tag.
+  // Zielgruppen-Quote (zielgruppe.mjs) genauso: zu oft dieselbe Lebenslage oder Region → zurückstellen.
+  const quote = pruefeQuote(verlauf, p.mechanik);
+  const zg = pruefeZielgruppe(zgVerlauf, p);
+  const grund = !quote.ok ? `Humor-Quote: ${quote.grund}` : !zg.ok ? `Zielgruppen-Quote: ${zg.grund}` : null;
+  const k = { issue, p, e: p.e, mechanik: p.mechanik, zielgruppe: p.zielgruppe, region: p.region, rang: kandidaten.length, datiert: !!(p.ab || p.bis) };
+  if (grund && !p.ab && !p.bis) {
+    console.log(`#${issue.number} zurückgestellt, ${grund}.`);
+    zurueck = zurueck || { ...k, warnung: grund };
+    continue;
+  }
+  kandidaten.push(k);
+}
+for (const k of sortiereKandidaten(kandidaten, zgVerlauf)) {
+  if (k.e.bild) {
+    const regel = pruefeBild({ bibliothek, nutzung, bild: k.e.bild, datum, konf, id, e: k.e });
     if (!regel.ok) {
-      ablehnen(issue, `Bild passt nicht: ${regel.grund}. Bitte den Post mit einem anderen Bild oder neuem Text neu anlegen (Bildwahl: node autopilot/bildwahl.mjs ${datum}).`);
+      ablehnen(k.issue, `Bild passt nicht: ${regel.grund}. Bitte den Post mit einem anderen Bild oder neuem Text neu anlegen (Bildwahl: node autopilot/bildwahl.mjs ${datum}).`);
+      gelesen--;
       continue;
     }
   }
-  // Humor-Quote: zu oft dieselbe Mechanik hintereinander → zurückstellen. Anlass-Posts (ab/bis) laufen immer, sonst verpassen sie ihren Tag.
-  const quote = pruefeQuote(verlauf, p.mechanik);
-  if (!quote.ok && !p.ab && !p.bis) {
-    console.log(`Humor-Quote: #${issue.number} zurückgestellt, ${quote.grund}.`);
-    verbleibend++;
-    zurueck = zurueck || { issue, e: p.e, mechanik: p.mechanik, warnung: quote.grund };
-    continue;
-  }
-  gefunden = { issue, e: p.e, mechanik: p.mechanik };
+  gefunden = k;
+  break;
 }
 let quoteWarnung = "";
+if (!gefunden && zurueck?.e.bild && !pruefeBild({ bibliothek, nutzung, bild: zurueck.e.bild, datum, konf, id, e: zurueck.e }).ok) {
+  ablehnen(zurueck.issue, `Bild passt nicht mehr zum heutigen Tag. Bitte den Post mit einem anderen Bild neu anlegen (Bildwahl: node autopilot/bildwahl.mjs ${datum}).`);
+  gelesen--;
+  zurueck = null;
+}
 if (!gefunden && zurueck) {
   // Nichts anderes da: lieber posten als ausfallen, aber Dominik bekommt die Warnung (Schritt im Workflow)
   gefunden = zurueck;
-  verbleibend--;
   quoteWarnung = `#${zurueck.issue.number}: ${zurueck.warnung}`;
-  console.log(`::warning::Humor-Quote verletzt, weil nichts anderes in der Warteschlange passt: ${quoteWarnung}`);
+  console.log(`::warning::Quote verletzt, weil nichts anderes in der Warteschlange passt: ${quoteWarnung}`);
 }
 
 if (!gefunden) {
@@ -108,9 +123,10 @@ if (!gefunden) {
 }
 
 const { issue, e } = gefunden;
+const verbleibend = gelesen - 1;
 const ordner = path.join(WURZEL, "tagebuch", id);
 fs.mkdirSync(ordner, { recursive: true });
-fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id, datum, slot, ...e, ...(gefunden.mechanik ? { mechanik: gefunden.mechanik } : {}), quelle: `#${issue.number}` }, null, 2) + "\n");
+fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id, datum, slot, ...e, ...(gefunden.mechanik ? { mechanik: gefunden.mechanik } : {}), ...(gefunden.zielgruppe ? { zielgruppe: gefunden.zielgruppe } : {}), region: gefunden.region || "dach", quelle: `#${issue.number}` }, null, 2) + "\n");
 if (e.bild) {
   nutzung = verbuchen(nutzung, { id, datum, slot, bild: e.bild, e });
   fs.writeFileSync(nutzungDatei, JSON.stringify(nutzung, null, 2) + "\n");
