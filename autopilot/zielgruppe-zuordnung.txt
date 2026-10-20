@@ -1,0 +1,102 @@
+# Zielgruppen für Warteschlangen-Issues: <issue> <zielgruppe> [region]. Wird bei Push auf main angewendet (zielgruppe-taggen.yml).
+# Issues, die schon eine zielgruppe haben, bleiben unverändert. Stand 20.10.2026, Zuordnung durch Claude nach dem Zielgruppen-Deepdive.
+206 wohnen
+205 dating
+204 studium
+203 alltag
+202 alltag
+201 akku
+200 akku
+199 familie
+198 dating
+197 wohnen
+196 alltag
+195 akku
+194 studium
+193 wohnen
+192 dating
+191 akku
+190 akku
+189 akku
+188 studium
+187 alltag
+186 jobstart
+185 studium
+184 dating
+180 akku
+178 alltag at
+177 wohnen
+176 dating
+175 dating
+174 akku
+173 familie
+172 alltag
+171 alltag
+147 jobstart
+146 studium
+145 wohnen
+144 alltag
+126 wohnen
+125 jobstart
+124 familie
+123 akku
+122 alltag
+121 alltag
+120 wohnen
+119 familie
+118 alltag
+117 akku
+116 alltag at
+115 dating
+114 jobstart
+113 wohnen
+112 dating
+111 akku
+110 alltag at
+109 akku
+108 akku
+107 jobstart
+106 familie
+105 dating
+104 jobstart
+103 jobstart
+102 dating
+101 akku
+100 wohnen
+99 familie
+98 alltag
+97 dating
+96 alltag
+95 dating
+94 akku
+93 alltag
+92 dating
+91 jobstart
+90 jobstart
+89 alltag
+88 alltag
+87 alltag at
+58 jobstart
+57 wohnen
+56 alltag
+55 alltag
+54 alltag
+53 jobstart
+52 alltag
+51 akku
+50 alltag
+49 alltag
+47 szene
+46 alltag at
+45 szene at
+44 jobstart
+43 wohnen at
+42 alltag
+41 wohnen
+39 jobstart
+37 alltag
+36 wohnen
+35 jobstart
+34 alltag
+33 wohnen
+32 jobstart

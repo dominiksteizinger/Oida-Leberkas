@@ -1,0 +1,25 @@
+name: Zielgruppen taggen
+# Trägt die Zielgruppen aus autopilot/zielgruppe-zuordnung.txt in offene Warteschlangen-Issues ein (Zielgruppen-Mechanismus, 20.10.2026).
+# Läuft, wenn die Zuordnung auf main geändert wird, oder per Hand. Issues mit Zielgruppe bleiben unverändert.
+on:
+  push:
+    branches: [main]
+    paths: [autopilot/zielgruppe-zuordnung.txt]
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  taggen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+        working-directory: autopilot
+      - run: node zielgruppe-taggen.mjs
+        working-directory: autopilot
+        env:
+          GH_TOKEN: ${{ github.token }}
