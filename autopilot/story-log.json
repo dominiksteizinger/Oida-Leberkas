@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "2026-10-20-mittag",
+    "datum": "2026-10-20",
+    "slot": "mittag",
+    "art": "karte",
+    "bild": "ampel-rot-leer.jpg",
+    "karte": "umfrage-wie-gehts",
+    "ig": "18124781381480849",
+    "zeit": "2026-10-20T11:22:01.577Z"
+  }
+]
