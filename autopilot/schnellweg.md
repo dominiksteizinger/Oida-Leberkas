@@ -7,7 +7,7 @@ Seit 20.10.2026 (Dominik: Trends mit Meme-Potenzial nicht erst am Sonntag). Erg�
 | Wann (Wien) | Was | Wer |
 |---|---|---|
 | ca. 5 und 14 Uhr | `trends.yml` im Modus `schnell`: Google Trends DE und AT (mit Schlagzeile), Wikipedia de gestern, Reddit Top des Tages (r/de, r/Austria, r/wien, r/FragReddit), YouTube-Trends DE und AT, ORF, Anlässe der nächsten 3 Tage ans Issue mit Label `trends-schnell` | GitHub Action, gratis |
-| 6:50 und 15:20 | Schnellweg-Lauf nach dieser Anleitung, höchstens ein Trend-Post pro Tag | geplante Claude-Aufgabe |
+| 6:35 und 15:35 | Schnellweg-Lauf nach dieser Anleitung, höchstens ein Trend-Post pro Tag | geplante Claude-Aufgabe |
 | 7:17 und 16:17 | Der Post kommt im nächsten Slot dran (`bis` = morgen, `reihenfolge.mjs` zieht ihn vor) | Autopilot |
 
 Der Claude-Container erreicht die Trend-Quellen nicht (Proxy 403), deshalb sammelt nur die Action.
