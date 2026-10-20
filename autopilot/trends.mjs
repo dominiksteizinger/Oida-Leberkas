@@ -4,10 +4,14 @@
 // YouTube-Trends AT (nur mit den vorhandenen YouTube-Secrets), Kommentare unter den eigenen Instagram-Posts, Anlässe der nächsten 21 Tage und harmlose ORF-Schlagzeilen.
 // Der Wortfilter aus anlaesse.mjs wirft Politik, Unglücke und Kriminalität vorab raus. Personen, Marken und Sport
 // filtert er nicht: Die Trends sind nur Anregung für ein Thema aus Resis Alltag, nie Vorlage (siehe autopilot/nachschub.md).
-// Jede Quelle darf scheitern, dann steht „nicht erreichbar“ da. Aufruf: node trends.mjs [JJJJ-MM-TT]
+// Jede Quelle darf scheitern, dann steht „nicht erreichbar“ da. Aufruf: node trends.mjs [JJJJ-MM-TT] [--schnell]
+// --schnell: täglicher Kurzlauf für den Trend-Schnellweg (nur, was gerade jetzt läuft: Google Trends, Wikipedia gestern,
+// Reddit Top des Tages, YouTube-Trends, ORF, Anlässe der nächsten 3 Tage), dauert etwa 2 Minuten.
 import { feste, harmlos, schlagzeilen } from "./anlaesse.mjs";
 
-const datum = (import.meta.url === `file://${process.argv[1]}` && process.argv[2]) || new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Vienna" }).format(new Date());
+const direkt = import.meta.url === `file://${process.argv[1]}`;
+const schnell = direkt && process.argv.includes("--schnell");
+const datum = (direkt && process.argv.slice(2).find((a) => /^\d{4}-\d{2}-\d{2}$/.test(a))) || new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Vienna" }).format(new Date());
 const UA = { "user-agent": "oida-leberkas-trends/1.0 (https://oidaleberkas.at)" };
 const MAX = 15;
 
@@ -30,10 +34,10 @@ export function googleLesen(xml) {
 
 const googleTrends = async (geo = "AT") => googleLesen(await (await holen(`https://trends.google.com/trending/rss?geo=${geo}`)).text());
 
-async function wikipedia(datum) {
-  // Die Tages-Toplisten der letzten 7 Tage zusammenzählen
+async function wikipedia(datum, tage = 7) {
+  // Die Tages-Toplisten der letzten Tage zusammenzählen
   const summe = new Map();
-  for (let i = 1; i <= 7; i++) {
+  for (let i = 1; i <= tage; i++) {
     const d = new Date(Date.parse(datum + "T12:00:00Z") - i * 864e5).toISOString().slice(0, 10).split("-");
     try {
       const j = await (await holen(`https://wikimedia.org/api/rest_v1/metrics/pageviews/top/de.wikipedia/all-access/${d[0]}/${d[1]}/${d[2]}`)).json();
@@ -48,8 +52,8 @@ async function wikipedia(datum) {
 // Atom-Feed: Titel der Einträge, nicht der des Feeds
 export const redditLesen = (xml) => [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map(([, e]) => tag(e, "title")[0]).filter(Boolean);
 // Reddit drosselt Abrufe ohne Login (429): langsam nacheinander, bei 429 einmal nach einer Minute nochmal
-const reddit = async (sub) => {
-  const url = `https://www.reddit.com/r/${sub}/top/.rss?t=week&limit=25`;
+const reddit = async (sub, zeit = "week") => {
+  const url = `https://www.reddit.com/r/${sub}/top/.rss?t=${zeit}&limit=25`;
   await pause(15000);
   const text = await holen(url).catch(async (err) => {
     if (err.message !== "429") throw err;
@@ -99,9 +103,9 @@ async function kommentare() {
   return j.data.flatMap((m) => (m.comments?.data || []).map((c) => `${c.text.replace(/\s+/g, " ").replace(/@\S+/g, "@…").slice(0, 160)} (unter „${(m.caption || "").split("\n")[0].slice(0, 40)}“)`));
 }
 
-export function anlaesse(datum) {
+export function anlaesse(datum, tage = 21) {
   const liste = [];
-  for (let i = 0; i < 21; i++) {
+  for (let i = 0; i < tage; i++) {
     const d = new Date(Date.parse(datum + "T12:00:00Z") + i * 864e5).toISOString().slice(0, 10);
     // Dauer-Hinweise (Christkindlmärkte, Ballsaison) nur am ersten Tag, sonst steht jeder Tag voll
     // „(in 2 Tagen)“-Vorwarnungen fallen weg, der Tag selbst steht ja da
@@ -118,8 +122,23 @@ const REDDIT = [
 ];
 const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export async function trends(datum) {
-const quellen = [
+// Schnellweg: nur deutschsprachige Subreddits mit viel Alltag, Top des Tages
+const REDDIT_SCHNELL = [["de", "Deutschland"], ["Austria", "Österreich"], ["wien", "Wien"], ["FragReddit", "Alltagsfragen"]];
+
+export function schnellQuellen(datum) {
+  return [
+    ["Google Trends Deutschland (gerade jetzt)", () => googleTrends("DE")],
+    ["Google Trends Österreich (gerade jetzt)", () => googleTrends("AT")],
+    ["Wikipedia de, meistgelesen gestern", () => wikipedia(datum, 1)],
+    ...REDDIT_SCHNELL.map(([sub, was]) => [`Reddit r/${sub}, Top des Tages (${was})`, () => reddit(sub, "day")]),
+    ["YouTube-Trends Deutschland", () => youtube("DE")],
+    ["YouTube-Trends Österreich", () => youtube()],
+    ["ORF-Schlagzeilen (Wien, Science, Ö3, FM4)", schlagzeilen],
+  ];
+}
+
+export async function trends(datum, { schnell = false } = {}) {
+const quellen = schnell ? schnellQuellen(datum) : [
   ["Google Trends Deutschland (Suchanfragen der letzten Tage)", () => googleTrends("DE")],
   ["Google Trends Österreich", () => googleTrends("AT")],
   ["Wikipedia de, meistgelesen (letzte 7 Tage)", () => wikipedia(datum)],
@@ -133,8 +152,12 @@ const quellen = [
   ["Kommentare unter unseren Instagram-Posts", kommentare],
 ];
 
-const teile = [`## Trends ${datum}`, "", "Nur Anregung: Thema in Resis Alltag übersetzen, nie Personen, Marken, Politik, Unglücke oder fremde Memes übernehmen (autopilot/nachschub.md).", ""];
-teile.push("**Anlässe der nächsten 21 Tage:**", ...anlaesse(datum).map((a) => `- ${a}`), "");
+const uhr = new Intl.DateTimeFormat("de-AT", { timeZone: "Europe/Vienna", hour: "2-digit", minute: "2-digit" }).format(new Date());
+const teile = schnell
+  ? [`## Schnell-Trends ${datum} ${uhr}`, "", "Für den Trend-Schnellweg (autopilot/schnellweg.md): höchstens ein Post pro Tag, nur harmlose Themen, die viele gerade kennen.", ""]
+  : [`## Trends ${datum}`, "", "Nur Anregung: Thema in Resis Alltag übersetzen, nie Personen, Marken, Politik, Unglücke oder fremde Memes übernehmen (autopilot/nachschub.md).", ""];
+const tage = schnell ? 3 : 21;
+teile.push(`**Anlässe der nächsten ${tage} Tage:**`, ...anlaesse(datum, tage).map((a) => `- ${a}`), "");
 for (const [name, fn] of quellen) {
   let zeilen;
   try {
@@ -151,4 +174,4 @@ for (const [name, fn] of quellen) {
 return teile.join("\n");
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) console.log(await trends(datum));
+if (direkt) console.log(await trends(datum, { schnell }));
