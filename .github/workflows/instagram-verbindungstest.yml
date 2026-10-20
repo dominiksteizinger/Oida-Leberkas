@@ -74,3 +74,12 @@ jobs:
             --data-urlencode "access_token=$TOKEN" > kom.json
           jq '{kommentare: (.data | length?), error: .error.message}' kom.json
           jq -e '.data' ins.json > /dev/null && jq -e '.data' kom.json > /dev/null
+
+      - name: Facebook-Seite (nur Hinweis, bricht nicht ab)
+        env:
+          SEITE: "1415408888319545"
+        run: |
+          jq -e '.data.scopes | index("pages_manage_posts")' dbg.json > /dev/null && echo "pages_manage_posts: vorhanden" || echo "::warning::pages_manage_posts fehlt, Facebook-Posten geht nicht"
+          curl -sS -G "https://graph.facebook.com/$SEITE" --data-urlencode "fields=name,access_token" \
+            --data-urlencode "access_token=$TOKEN" > seite.json
+          jq '{seite: .name, seiten_token: (if .access_token then "ja" else "nein" end), error: .error.message}' seite.json

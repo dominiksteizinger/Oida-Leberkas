@@ -63,7 +63,12 @@ console.log(`Instagram: veröffentlicht als ${mitReel ? "Reel" : "Bild"} (${ig.i
 // nicht gepostet und der nächste Lauf stellte denselben Post noch einmal auf Instagram.
 if (process.env.FACEBOOK_POSTEN === "an") {
   try {
-    const fb = await graph(`${SEITE}/photos`, { url: bild, message: text });
+    // Seitenbeiträge brauchen einen Seiten-Token; den liefert der Nutzer-Token (Recht pages_manage_posts) bei jedem Lauf frisch
+    const seite = await (await fetch(`${GRAPH}/${SEITE}?fields=access_token&access_token=${TOKEN}`)).json();
+    if (!seite.access_token) throw new Error(`kein Seiten-Token: ${seite.error?.message || "Recht pages_manage_posts fehlt?"}`);
+    const res = await fetch(`${GRAPH}/${SEITE}/photos`, { method: "POST", body: new URLSearchParams({ url: bild, message: text, access_token: seite.access_token }) });
+    const fb = await res.json();
+    if (!res.ok || fb.error) throw new Error(fb.error?.message || res.status);
     console.log(`Facebook: veröffentlicht (${fb.post_id || fb.id})`);
   } catch (err) {
     console.log(`::warning::Facebook nicht gepostet: ${err.message}`);
