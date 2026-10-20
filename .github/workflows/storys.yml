@@ -1,12 +1,13 @@
 name: Storys
 # Instagram-Storys von Resi (seit 20.10.2026), Standbilder, keine Claude-API:
 # mittags (11 bis 15 Uhr Wien) eine Karte aus autopilot/storys.json oder an auffälligen Wettertagen die Wetter-Story,
-# abends (17 bis 21 Uhr) ein Hinweis auf den Post von 16 Uhr. Details: autopilot/README.md, Abschnitt „Storys“.
+# abends (16 bis 23 Uhr) ein Hinweis auf den Post von 16 Uhr. Details: autopilot/README.md, Abschnitt „Storys“.
 # Gepostet wird nur mit den Repo-Variablen STORYS = an und POSTEN = an auf main, sonst Probebetrieb (Bild als Artefakt am Lauf).
 on:
   schedule:
-    # GitHub startet geplante Läufe oft spät; stündlich, „storys.mjs bauen“ ordnet die Wiener Uhrzeit dem Slot zu
-    - cron: "52 8-20 * * *"
+    # Hauptauslöser ist der Autopilot-Lauf (Schritt „Storys anstoßen“). Der GitHub-Cron fällt oft aus und ist nur Reserve;
+    # „storys.mjs bauen“ ordnet die Wiener Uhrzeit dem Slot zu
+    - cron: "52 8-21 * * *"
   workflow_dispatch:
     inputs:
       slot:
