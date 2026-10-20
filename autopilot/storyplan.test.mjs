@@ -34,6 +34,19 @@ test("Jede Karte nur einmal, Anlass zuerst, Zeitraum beachtet", () => {
   assert.deepEqual(offeneKarten(karten, [], "2026-11-01").map((k) => k.id), ["a", "b"]);
 });
 
+test("Wochentag: Karte nur an ihren Tagen, Wochentag im Text braucht tage", () => {
+  const karten = [notiz("mo", { tage: ["Montag"] }), notiz("frei")];
+  // 2026-10-19 ist Montag, 2026-10-20 Dienstag
+  assert.deepEqual(offeneKarten(karten, [], "2026-10-19").map((k) => k.id), ["mo", "frei"]);
+  assert.deepEqual(offeneKarten(karten, [], "2026-10-20").map((k) => k.id), ["frei"]);
+  const bib = [];
+  const roh = JSON.parse(fs.readFileSync(`${HIER}storys.json`, "utf8"));
+  const montag = { id: "m", inhalt: { format: "notiz", titel: "Es ist Montag", absaetze: ["a", "b"] } };
+  assert.ok(pruefeVorrat({ ...roh, karten: [montag] }, bib).some((f) => f.includes("Wochentag")));
+  assert.deepEqual(pruefeVorrat({ ...roh, karten: [{ ...montag, tage: ["Montag"] }] }, bib), []);
+  assert.deepEqual(pruefeVorrat({ ...roh, karten: [{ ...montag, tage: "alle" }] }, bib), []);
+});
+
 test("Mittag: Wetter nur an auffälligen Tagen und höchstens alle 3 Tage", () => {
   const v = vorrat([notiz("a")]);
   assert.equal(waehleMittag({ vorrat: v, log: [], datum: "2026-10-20", wetter: { code: 0, max: 15, min: 5 } }).art, "karte");
