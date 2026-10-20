@@ -28,9 +28,11 @@
 
 <div id="zurueck" hidden>
   <h3>2. Token holen</h3>
-  <p>TikTok hat einen Einmal-Code geliefert (gilt nur wenige Minuten). Den passenden Befehl kopieren und ausführen. Unter Windows: Befehl in PowerShell einfügen, Enter, dann wie angezeigt das Client Secret kopieren und Enter drücken. Das Secret wird nicht angezeigt und nicht gespeichert.</p>
+  <p>TikTok hat einen Einmal-Code geliefert (gilt nur wenige Minuten).</p>
   <h3>Windows (PowerShell)</h3>
-  <pre id="befehl-win"></pre>
+  <p><label for="geheim">Client Secret hier einfügen</label> (bleibt in diesem Browser, wird nicht gesendet)<br><input id="geheim" type="password" autocomplete="off"></p>
+  <p>Dann „Befehl kopieren“, PowerShell öffnen, einfügen, Enter. Sonst nichts eintippen.</p>
+  <pre id="befehl-win" hidden></pre>
   <button class="kopieren" data-ziel="befehl-win" type="button">Befehl kopieren</button>
   <h3>Mac (Terminal)</h3>
   <pre id="befehl"></pre>
@@ -78,14 +80,14 @@
         "--data-urlencode grant_type=authorization_code " +
         "--data-urlencode " + sh("redirect_uri=" + RUECK) + " | tr ',' '\\n'; unset TT_SECRET";
       const ps = (v) => "'" + String(v).replace(/'/g, "''") + "'";
-      document.getElementById("befehl-win").textContent =
-        // Verdeckte Eingabe verschluckt beim Einfügen Zeichen, daher kommt das Secret aus der Zwischenablage
-        "$null = Read-Host 'Jetzt das Client Secret kopieren (Strg+C), dann hier Enter'; " +
-        "$p = (Get-Clipboard | Out-String).Trim(); Set-Clipboard -Value ' '; " +
+      const win = (geheim) =>
         "$r = Invoke-RestMethod -Method Post -Uri https://open.tiktokapis.com/v2/oauth/token/ -Body @{" +
-        "client_key=" + ps(key) + "; client_secret=$p; code=" + ps(q.get("code")) +
+        "client_key=" + ps(key) + "; client_secret=" + ps(geheim) + "; code=" + ps(q.get("code")) +
         "; grant_type='authorization_code'; redirect_uri=" + ps(RUECK) + "}; " +
-        "if ($r.refresh_token) { $r.refresh_token | Set-Clipboard; 'Refresh-Token liegt in der Zwischenablage (beginnt mit ' + $r.refresh_token.Substring(0,4) + ', gilt ' + [int]($r.refresh_expires_in/86400) + ' Tage).' } else { $r | Format-List }; Remove-Variable p, r";
+        "if ($r.refresh_token) { $r.refresh_token | Set-Clipboard; 'FERTIG: Refresh-Token liegt in der Zwischenablage, gilt ' + [int]($r.refresh_expires_in/86400) + ' Tage. Jetzt in GitHub einfuegen.' } else { $r | Format-List }; Remove-Variable r";
+      const feld = document.getElementById("geheim");
+      feld.oninput = () => (document.getElementById("befehl-win").textContent = win(feld.value.trim()));
+      feld.oninput();
       document.querySelectorAll(".kopieren").forEach((b) => (b.onclick = () =>
         navigator.clipboard.writeText(document.getElementById(b.dataset.ziel).textContent).then(() => (b.textContent = "Kopiert"))));
       history.replaceState(null, "", RUECK);
