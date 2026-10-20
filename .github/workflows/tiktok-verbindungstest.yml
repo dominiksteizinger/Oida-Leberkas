@@ -1,0 +1,48 @@
+name: TikTok-Verbindungstest
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+      CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+      REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+    steps:
+      - name: Secrets vorhanden?
+        run: |
+          for v in CLIENT_KEY CLIENT_SECRET REFRESH_TOKEN; do
+            if [ -z "${!v}" ]; then echo "::error::TIKTOK_$v ist leer"; exit 1; fi
+          done
+          echo "Alle drei Secrets sind gesetzt."
+      - name: Zugang holen
+        run: |
+          curl -sS https://open.tiktokapis.com/v2/oauth/token/ \
+            --data-urlencode "client_key=$CLIENT_KEY" \
+            --data-urlencode "client_secret=$CLIENT_SECRET" \
+            --data-urlencode "refresh_token=$REFRESH_TOKEN" \
+            --data-urlencode "grant_type=refresh_token" > token.json
+          ACCESS=$(jq -r '.access_token // empty' token.json)
+          if [ -z "$ACCESS" ]; then
+            jq '{error, error_description}' token.json; exit 1
+          fi
+          echo "::add-mask::$ACCESS"
+          echo "ACCESS=$ACCESS" >> "$GITHUB_ENV"
+          jq '{scope, expires_in, refresh_tage: (.refresh_expires_in / 86400 | floor), refresh_token_gleich: (.refresh_token == env.REFRESH_TOKEN)}' token.json
+          rm token.json
+      - name: Konto lesbar?
+        run: |
+          curl -sS -G https://open.tiktokapis.com/v2/user/info/ \
+            -H "Authorization: Bearer $ACCESS" \
+            --data-urlencode "fields=open_id,display_name" > user.json
+          jq '{name: .data.user.display_name, fehler: .error.code}' user.json
+          jq -e '.data.user.display_name' user.json > /dev/null
+      - name: Posten erlaubt?
+        run: |
+          curl -sS -X POST https://open.tiktokapis.com/v2/post/publish/creator_info/query/ \
+            -H "Authorization: Bearer $ACCESS" \
+            -H "Content-Type: application/json; charset=UTF-8" > creator.json
+          # Nur SELF_ONLY in der Liste heißt: App ist noch nicht geprüft, Direktposts wären privat. Entwürfe gehen trotzdem.
+          jq '{fehler: .error.code, sichtbarkeit: .data.privacy_level_options, max_sekunden: .data.max_video_post_duration_sec}' creator.json

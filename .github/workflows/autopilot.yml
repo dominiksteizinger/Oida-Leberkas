@@ -224,6 +224,28 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           YOUTUBE_SICHTBARKEIT: ${{ vars.YOUTUBE_SICHTBARKEIT }}
         run: node youtube.mjs "${{ steps.zeit.outputs.id }}" "../tagebuch/${{ steps.zeit.outputs.id }}/reel.mp4"
+      - name: TikTok
+        id: tiktok
+        # Ein TikTok-Fehler darf den Lauf nicht abbrechen: Instagram und YouTube sind dann schon gepostet
+        continue-on-error: true
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' && vars.TIKTOK_POSTEN == 'an' && hashFiles(format('tagebuch/{0}/reel.mp4', steps.zeit.outputs.id)) != ''
+        working-directory: autopilot
+        env:
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+          TIKTOK_MODUS: ${{ vars.TIKTOK_MODUS }}
+          TIKTOK_SICHTBARKEIT: ${{ vars.TIKTOK_SICHTBARKEIT }}
+        run: node tiktok.mjs "${{ steps.zeit.outputs.id }}" "../tagebuch/${{ steps.zeit.outputs.id }}/reel.mp4"
+      - name: TikTok-Token-Ablauf melden
+        if: ${{ !cancelled() && steps.tiktok.outputs.tage != '' && fromJSON(steps.tiktok.outputs.tage) < 21 }}
+        run: |
+          gh label create token --repo "$GITHUB_REPOSITORY" --color D73A4A --description "Instagram-Token läuft bald ab" 2>/dev/null || true
+          if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label token --state open --search "TikTok in:title" --json number --jq '.[0].number // empty')" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --label token --assignee "${{ github.repository_owner }}" \
+              --title "TikTok-Token läuft in ${{ steps.tiktok.outputs.tage }} Tagen ab" \
+              --body "Neuen Token über https://oidaleberkas.at/tiktok/ holen und als Secret TIKTOK_REFRESH_TOKEN eintragen, dann dieses Issue schließen."
+          fi
       - name: Token prüfen
         id: token
         # Auch wenn das Posten scheitert: ein abgelaufener Token ist dann meist der Grund
@@ -236,7 +258,7 @@ jobs:
         if: ${{ !cancelled() && steps.token.outputs.tage != '' && fromJSON(steps.token.outputs.tage) < 14 }}
         run: |
           gh label create token --repo "$GITHUB_REPOSITORY" --color D73A4A --description "Instagram-Token läuft bald ab" 2>/dev/null || true
-          if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label token --state open --json number --jq '.[0].number // empty')" ]; then
+          if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label token --state open --search "Instagram in:title" --json number --jq '.[0].number // empty')" ]; then
             gh issue create --repo "$GITHUB_REPOSITORY" --label token --assignee "${{ github.repository_owner }}" \
               --title "Instagram-Token läuft in ${{ steps.token.outputs.tage }} Tagen ab" \
               --body "Ohne neuen Token bricht das Posten ab. Neuen Token erzeugen und als Secret INSTAGRAM_ACCESS_TOKEN eintragen, dann dieses Issue schließen."

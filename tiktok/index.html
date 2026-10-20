@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TikTok-Anmeldung · Resi Requiem</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230D090C'/%3E%3Cpath d='M16 26C7 20 5 15 7.5 11S14 8.5 16 12c2-3.5 6-5 8.5-1S25 20 16 26Z' fill='%23FF4FA3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/gruft.css">
+<style>
+  .legal input { width: 100%; max-width: 32rem; padding: .6rem; font: inherit; }
+  .legal pre { white-space: pre-wrap; word-break: break-all; padding: 1rem; background: rgba(255,255,255,.06); border-radius: 8px; }
+  .legal button, .legal .knopf { display: inline-block; margin-top: .8rem; padding: .6rem 1.2rem; font: inherit; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="lace" aria-hidden="true"></div>
+<header class="top"><nav class="wrap" aria-label="Hauptnavigation"><a class="logo" href="../">Resi Requiem</a><div class="menu"><a href="../">Zurück zur Startseite</a></div></nav></header>
+<main><section><div class="wrap legal">
+<h2>TikTok verbinden</h2>
+<p>Diese Seite verbindet den Autopiloten einmalig mit unserem eigenen TikTok-Konto. Sie speichert nichts auf einem Server.</p>
+
+<div id="start">
+  <h3>1. Anmelden</h3>
+  <p><label for="key">Client Key der TikTok-App</label><br><input id="key" autocomplete="off" spellcheck="false"></p>
+  <button id="los" type="button">Bei TikTok anmelden</button>
+</div>
+
+<div id="zurueck" hidden>
+  <h3>2. Token holen</h3>
+  <p>TikTok hat einen Einmal-Code geliefert (gilt nur wenige Minuten). Diesen Befehl ins Terminal kopieren und ausführen. Er fragt nach dem Client Secret, das nicht angezeigt und nicht gespeichert wird.</p>
+  <pre id="befehl"></pre>
+  <button id="kopieren" type="button">Befehl kopieren</button>
+  <p>In der Antwort steht <code>refresh_token</code>. Diesen Wert (ohne Anführungszeichen) als GitHub-Secret <code>TIKTOK_REFRESH_TOKEN</code> eintragen.</p>
+</div>
+
+<p id="fehler" hidden></p>
+</div></section></main>
+<script>
+  const RUECK = "https://oidaleberkas.at/tiktok/";
+  const BEREICHE = "user.info.basic,video.upload,video.publish";
+  const q = new URLSearchParams(location.search);
+  const merke = (k, v) => { try { v === undefined ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch {} };
+  const lies = (k) => { try { return sessionStorage.getItem(k) || ""; } catch { return ""; } };
+  const sh = (s) => "'" + String(s).replace(/'/g, "'\\''") + "'";
+
+  document.getElementById("key").value = lies("tt_key");
+  document.getElementById("los").onclick = () => {
+    const key = document.getElementById("key").value.trim();
+    if (!key) return;
+    const state = crypto.getRandomValues(new Uint32Array(2)).join("");
+    merke("tt_key", key); merke("tt_state", state);
+    location.href = "https://www.tiktok.com/v2/auth/authorize/?" + new URLSearchParams({
+      client_key: key, response_type: "code", scope: BEREICHE, redirect_uri: RUECK, state,
+    });
+  };
+
+  const fehler = (t) => { const p = document.getElementById("fehler"); p.textContent = t; p.hidden = false; };
+  if (q.get("error")) {
+    fehler("TikTok meldet: " + q.get("error") + " " + (q.get("error_description") || ""));
+  } else if (q.get("code")) {
+    const key = lies("tt_key");
+    if (q.get("state") !== lies("tt_state")) fehler("Achtung: Die Anmeldung kam nicht von dieser Seite. Bitte oben neu starten.");
+    else if (!key) fehler("Client Key fehlt (anderer Browser oder Tab?). Bitte oben neu starten.");
+    else {
+      document.getElementById("start").hidden = true;
+      document.getElementById("zurueck").hidden = false;
+      document.getElementById("befehl").textContent =
+        'read -rs -p "Client Secret: " TT_SECRET; echo; ' +
+        "curl -sS https://open.tiktokapis.com/v2/oauth/token/ " +
+        "--data-urlencode " + sh("client_key=" + key) + " " +
+        '--data-urlencode "client_secret=$TT_SECRET" ' +
+        "--data-urlencode " + sh("code=" + q.get("code")) + " " +
+        "--data-urlencode grant_type=authorization_code " +
+        "--data-urlencode " + sh("redirect_uri=" + RUECK) + " | tr ',' '\\n'; unset TT_SECRET";
+      document.getElementById("kopieren").onclick = (ev) =>
+        navigator.clipboard.writeText(document.getElementById("befehl").textContent).then(() => (ev.target.textContent = "Kopiert"));
+      history.replaceState(null, "", RUECK);
+      merke("tt_state");
+    }
+  }
+</script>
+</body>
+</html>
