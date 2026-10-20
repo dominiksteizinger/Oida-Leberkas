@@ -1,0 +1,25 @@
+{
+  "id": "2026-10-20-07",
+  "datum": "2026-10-20",
+  "slot": "07",
+  "inhalt": {
+    "format": "antwort",
+    "von": "wetterdienst.ost",
+    "kommentar": "⚠️ Unwetterwarnung für Wien: Bleiben Sie heute nach Möglichkeit zuhause.",
+    "zeilen": [
+      "Screenshot gemacht.",
+      "Geht an die Chefin."
+    ]
+  },
+  "bild": "winkt-zwinkert.jpg",
+  "caption": "Amtlich.",
+  "aufforderung": "Wer bekommt den Screenshot bei dir?",
+  "hashtags": [
+    "#wien",
+    "#sturm",
+    "#wetter",
+    "#deadpan",
+    "#homeoffice"
+  ],
+  "quelle": "#143"
+}

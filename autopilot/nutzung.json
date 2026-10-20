@@ -14,5 +14,16 @@
     "bild": "nebel-friedhof.jpg",
     "text": "Endlich Nebel. [ich sehe keine Menschen] [keine Menschen sehen mich] [Wellness]",
     "fingerabdruck": null
+  },
+  {
+    "id": "2026-10-20-07",
+    "datum": "2026-10-20",
+    "slot": "07",
+    "bild": "winkt-zwinkert.jpg",
+    "text": "antwort | wetterdienst.ost | ⚠️ Unwetterwarnung für Wien: Bleiben Sie heute nach Möglichkeit zuhause. | Screenshot gemacht. | Geht an die Chefin. | Amtlich. | Wer bekommt den Screenshot bei dir?",
+    "fingerabdruck": {
+      "inhalt": "b3f9b229d5acbe0b45ab0c07f7e3d3c57f2b2c88",
+      "caption": "77cfbca67a51194a336e6d961a7f4da20a9ca5c8"
+    }
   }
 ]

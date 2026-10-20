@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-20-07",
+    "datum": "2026-10-20",
+    "slot": "07",
+    "format": "antwort",
+    "bild": "winkt-zwinkert.jpg",
+    "text": "wetterdienst.ost: „⚠️ Unwetterwarnung für Wien: Bleiben Sie heute nach Möglichkeit zuhause.“ / Resi: „Screenshot gemacht. Geht an die Chefin.“",
+    "bilder": [
+      "tagebuch/2026-10-20-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-19-16",
     "datum": "2026-10-19",
     "slot": "16",
