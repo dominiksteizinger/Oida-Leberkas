@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-21-07",
+    "datum": "2026-10-21",
+    "slot": "07",
+    "format": "todo",
+    "bild": "wg-kueche-muellsack.jpg",
+    "text": "Mülltrennung: ✓ Papier, ✓ Plastik, ✓ Restmüll, ○ Altglas, seit März im Flur. Es ist jetzt Deko.",
+    "bilder": [
+      "tagebuch/2026-10-21-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-20-16",
     "datum": "2026-10-20",
     "slot": "16",

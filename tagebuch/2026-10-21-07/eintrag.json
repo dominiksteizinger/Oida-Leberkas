@@ -1,0 +1,41 @@
+{
+  "id": "2026-10-21-07",
+  "datum": "2026-10-21",
+  "slot": "07",
+  "inhalt": {
+    "format": "todo",
+    "titel": "Mülltrennung",
+    "punkte": [
+      {
+        "text": "Papier",
+        "erledigt": true
+      },
+      {
+        "text": "Plastik",
+        "erledigt": true
+      },
+      {
+        "text": "Restmüll",
+        "erledigt": true
+      },
+      {
+        "text": "Altglas, seit März im Flur",
+        "erledigt": false
+      }
+    ],
+    "fazit": "Es ist jetzt Deko."
+  },
+  "bild": "wg-kueche-muellsack.jpg",
+  "caption": "Haushalt, Stand heute.",
+  "aufforderung": "Wie lange steht dein Altglas schon?",
+  "hashtags": [
+    "#mülltrennung",
+    "#wohnung",
+    "#same",
+    "#deadpan",
+    "#wien"
+  ],
+  "zielgruppe": "wohnen",
+  "region": "dach",
+  "quelle": "#145"
+}
