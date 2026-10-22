@@ -16,21 +16,20 @@ export const STIMME_AN = process.env.STIMME === "an";
 const MODELLE = [process.env.STIMME_MODELL, "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"].filter(Boolean);
 
 // Vorgegebene weibliche Gemini-Stimmen, keine echten Personen. Kore: fest, sachlich. Callirrhoe: locker, müde. Leda: jung. Aoede: luftig.
-// Ein kurzes Präfix als Stilanweisung wurde mitgesprochen (Probe 19.10.). Die Regie steht deshalb abgesetzt vor einem
-// „Transcript:“-Block, so liest das Modell nur den Text darunter. Der Cache-Schlüssel enthält die Regie, alte Sätze ohne Regie bleiben gültig.
-const REGIE = `Read the transcript below aloud in German. Speak only the transcript, never these notes.
-Speaker: a woman in her mid-twenties sending a voice message to her best friend.
+// Regie im Text wird mitgesprochen: als kurzes Präfix (Probe 19.10.) und auch abgesetzt vor einem „Transcript:“-Block (Probe 22.10.,
+// bei kurzen Sätzen las das Modell 20 s Anweisung vor). Getestet wird deshalb nur noch die Regie als systemInstruction.
+// Der Cache-Schlüssel enthält die Regie, alte Sätze ohne Regie bleiben gültig.
+const REGIE = `You voice a woman in her mid-twenties sending a voice message to her best friend, in German.
 Style: natural and conversational, relaxed, dry and deadpan, slightly unimpressed. Never theatrical, not a narrator, not an audiobook.
-Pace: brisk everyday talking speed, short pauses only.
-
-Transcript:
-`;
+Pace: brisk everyday talking speed, short pauses only. Speak exactly the user text and nothing else.`;
 const STIMMLAGEN = {
   trocken: { stimme: "Kore" },
   muede: { stimme: "Callirrhoe" },
-  "muede-regie": { stimme: "Callirrhoe", regie: REGIE },
+  leda: { stimme: "Leda" },
+  aoede: { stimme: "Aoede" },
+  despina: { stimme: "Despina" },
+  laomedeia: { stimme: "Laomedeia" },
   "leda-regie": { stimme: "Leda", regie: REGIE },
-  "aoede-regie": { stimme: "Aoede", regie: REGIE },
 };
 const lage = (stil) => STIMMLAGEN[stil] ?? STIMMLAGEN.trocken;
 const cacheDatei = ({ stimme, regie }, text) =>
@@ -60,12 +59,13 @@ export function dauerVon(datei) {
   return Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", datei]).toString().trim());
 }
 
-async function anfrage(modell, stimme, text, schluessel) {
+async function anfrage(modell, stimme, text, schluessel, regie) {
   for (let versuch = 1; ; versuch++) {
     const antwort = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modell}:generateContent`, {
       method: "POST",
       headers: { "content-type": "application/json", "x-goog-api-key": schluessel },
       body: JSON.stringify({
+        ...(regie ? { systemInstruction: { parts: [{ text: regie }] } } : {}),
         contents: [{ parts: [{ text }] }],
         generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: stimme } } } },
       }),
@@ -103,30 +103,39 @@ export const imCache = (text, stil = "muede") => fs.existsSync(cacheDatei(lage(s
 async function holeVonGemini(text, { stimme, regie = "" }, roh) {
   const schluessel = process.env.GEMINI_API_KEY;
   if (!schluessel) throw new Error("GEMINI_API_KEY fehlt, und der Satz ist nicht im Cache");
-  for (const modell of MODELLE) {
+  modelle: for (const modell of MODELLE) {
     if (erschoepft.has(modell)) continue;
-    const antwort = await anfrage(modell, stimme, regie + text, schluessel);
-    if (antwort.status === 404) continue;
-    // Kontingent des Modells aufgebraucht (nach den Wiederholungen in anfrage): in diesem Lauf nicht mehr versuchen, das nächste Modell hat ein eigenes Kontingent
-    if (antwort.status === 429) { erschoepft.add(modell); console.warn(`Gemini-TTS ${modell}: Kontingent aufgebraucht, nächstes Modell`); continue; }
-    if (!antwort.ok) throw new Error(`Gemini-TTS ${modell}: ${antwort.status} ${(await antwort.text()).slice(0, 300)}`);
-    const daten = await antwort.json();
-    const teil = daten.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
-    if (!teil) throw new Error(`Gemini-TTS ${modell} lieferte kein Audio`);
-    // Gemini liefert je nach Lauf WAV mit Kopf oder rohes PCM. Am Kopf erkennen, sonst als 16-Bit-PCM lesen
-    const daten64 = Buffer.from(teil.inlineData.data, "base64");
-    const rate = /rate=(\d+)/.exec(teil.inlineData.mimeType || "")?.[1] ?? "24000";
-    fs.mkdirSync(CACHE, { recursive: true });
-    const tmp = `${roh}.tmp`;
-    fs.writeFileSync(tmp, daten64);
-    const eingabe = daten64.subarray(0, 4).toString("ascii") === "RIFF"
-      ? ["-i", tmp]
-      : ["-f", "s16le", "-ar", rate, "-ac", "1", "-i", tmp];
-    ff([...eingabe, "-ac", "1", "-c:a", "libopus", "-b:a", "48k", roh]);
-    fs.rmSync(tmp);
-    const dauer = dauerVon(roh);
-    console.log(`Gemini ${modell}: neuer Satz im Cache (${path.basename(roh)}, ${stimme}${regie ? " mit Regie" : ""}, ${dauer.toFixed(1)} s, ${(text.length / dauer).toFixed(1)} Zeichen/s)`);
-    return;
+    for (let versuch = 1; versuch <= 3; versuch++) {
+      const antwort = await anfrage(modell, stimme, text, schluessel, regie);
+      if (antwort.status === 404) continue modelle;
+      // Kontingent des Modells aufgebraucht (nach den Wiederholungen in anfrage): in diesem Lauf nicht mehr versuchen, das nächste Modell hat ein eigenes Kontingent
+      if (antwort.status === 429) { erschoepft.add(modell); console.warn(`Gemini-TTS ${modell}: Kontingent aufgebraucht, nächstes Modell`); continue modelle; }
+      if (!antwort.ok) throw new Error(`Gemini-TTS ${modell}: ${antwort.status} ${(await antwort.text()).slice(0, 300)}`);
+      const daten = await antwort.json();
+      const teil = daten.candidates?.[0]?.content?.parts?.find((p) => p.inlineData);
+      if (!teil) throw new Error(`Gemini-TTS ${modell} lieferte kein Audio`);
+      // Gemini liefert je nach Lauf WAV mit Kopf oder rohes PCM. Am Kopf erkennen, sonst als 16-Bit-PCM lesen
+      const daten64 = Buffer.from(teil.inlineData.data, "base64");
+      const rate = /rate=(\d+)/.exec(teil.inlineData.mimeType || "")?.[1] ?? "24000";
+      fs.mkdirSync(CACHE, { recursive: true });
+      const tmp = `${roh}.tmp`;
+      fs.writeFileSync(tmp, daten64);
+      const eingabe = daten64.subarray(0, 4).toString("ascii") === "RIFF"
+        ? ["-i", tmp]
+        : ["-f", "s16le", "-ar", rate, "-ac", "1", "-i", tmp];
+      ff([...eingabe, "-ac", "1", "-c:a", "libopus", "-b:a", "48k", roh]);
+      fs.rmSync(tmp);
+      // Plausibel sind höchstens 2 s plus 1 s je 6 Zeichen. Länger heißt: das Modell hat mehr gesprochen als den Text (Probe 22.10.)
+      const dauer = dauerVon(roh);
+      if (dauer > 2 + text.length / 6) {
+        fs.rmSync(roh);
+        console.warn(`Gemini ${modell}: ${dauer.toFixed(1)} s für ${text.length} Zeichen verworfen (Versuch ${versuch})`);
+        continue;
+      }
+      console.log(`Gemini ${modell}: neuer Satz im Cache (${path.basename(roh)}, ${stimme}${regie ? " mit Regie" : ""}, ${dauer.toFixed(1)} s, ${(text.length / dauer).toFixed(1)} Zeichen/s)`);
+      return;
+    }
+    throw new Error(`Gemini-TTS ${modell}: Tonspur dreimal zu lang für „${text.slice(0, 40)}“`);
   }
   throw new Error(`Kein TTS-Modell verfügbar oder Tageskontingent aufgebraucht (${MODELLE.join(", ")}), HTTP 429`);
 }
