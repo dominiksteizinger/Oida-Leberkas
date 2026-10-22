@@ -41,12 +41,32 @@ Zeigen den Ton für Resi Requiem. Keine Vorlagen zum Abwandeln: Motive und Point
   Warum: nimmt die Floskel wörtlich, letzte Zeile ist ein ruhiger Superlativ.
   Gemeinsam: Gegenüber = harmloser Standardsatz, Resi kürzer und ruhig, wörtliche Lesart oder knapper Abgang, letzte Zeile höchstens sechs Wörter.
 
+### Selbstironie und Beziehung (Witz-Parameter, 22.10.2026)
+- **chat (Freundin):** „Bist du eigentlich über ihn hinweg?“ / Resi: „Komplett.“ / „Warum kennst du dann den Namen seiner Oma?“ / Resi: „Allgemeinbildung.“
+  Warum: `ertappt`. Die Behauptung wird von der Freundin entlarvt, Resi bleibt bei ihrer Würde. Adressatin sofort klar.
+- **chat (Freundin):** „Er hat seit zwei Tagen nicht geantwortet.“ / Resi: „Dann ist das deine Antwort.“ / „Woher weißt du das immer?“ / Resi: „Ich habe 2022 drei Monate gewartet.“
+  Warum: `gestaendnis`. Die Weise ist die, die es am schlimmsten erwischt hat.
+- **chat (Freundin):** „ER HAT MIR EINEN ANTRAG GEMACHT“ / … / „Und bei dir so?“ / Resi: „Ich habe heute die Bettwäsche gewechselt.“
+  Warum: `kontrast`. Meilenstein gegen Resis Meilenstein, ohne Selbstmitleid.
+- **szene:** „Im Dating-Profil steht: Ich bin gern draußen.“ [Stimmt.] [Zum Müll.] [Zweimal die Woche.]
+  Warum: `woertlich` gegen sich selbst. Der Profilsatz stimmt, nur anders.
+
 ### szene
 - Bild: Herbert klaut ihr das Essen. „Herbert wohnt bei mir.“ [zahlt keine Miete] [klaut] [Familie halt]
   Warum: Zeilen wie Untertitel, eine nach der anderen, Steigerung bis zum warmen Rest.
 - Bild: Büro, Montag. „Montag, 8:01.“ [lebe noch] [leider]
 
 ## Schlecht
+
+### Flach (Dominik, 22.10.2026: „da ist kein Witz dabei“)
+- „Endlich Nebel.“ [ich sehe keine Menschen] [keine Menschen sehen mich] [Wellness]
+  Warum flach: Stimmungsbild ohne Gegenüber, die letzte Zeile bestätigt nur „Resi mag es düster“.
+- To-do Mülltrennung, Altglas offen, „Es ist jetzt Deko.“
+  Warum flach: beschreibt einen Zustand, kein Widerspruch, keine Wende.
+- „Manche 2-Euro-Münzen sind ein Vermögen wert.“ [meine ist auch selten] [es ist die letzte]
+  Warum flach: Pleite-Witz, den jeder nach dem Setup selbst liefert.
+- Sarg-Bewertung eines Orts („Leer, kühl, Neonlicht. Keiner schaut. Fast wie zuhause.“)
+  Warum flach: Ortsbeschreibung, letzte Zeile erratbar. Bewertungen nur noch mit Gegenüber oder Selbstironie.
 
 - **sunny.kollegin:** „Du bist so traurig“ → „Aber Leberkäse macht mich glücklich!“
   Warum abgelehnt: erklärt statt zu kippen, Ausrufezeichen, keine Haltung.

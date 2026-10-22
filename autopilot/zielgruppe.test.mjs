@@ -19,9 +19,10 @@ test("Quote: höchstens 2 gleiche hintereinander", () => {
 });
 
 test("Quote: Höchstzahl pro 14 Posts je Zielgruppe", () => {
-  const verlauf = [v("dating"), v("akku"), v("dating"), v("wohnen"), v("dating"), v("studium")];
-  assert.equal(pruefeZielgruppe(verlauf, v("dating")).ok, false); // 4. dating, erlaubt 3
-  assert.equal(pruefeZielgruppe([v("familie"), v("akku")], v("familie")).ok, false); // familie max 1
+  const verlauf = [v("dating"), v("akku"), v("dating"), v("wohnen"), v("dating"), v("studium"), v("dating"), v("akku"), v("dating"), v("wohnen")];
+  assert.equal(pruefeZielgruppe(verlauf, v("dating")).ok, false); // 6. dating, erlaubt 5
+  assert.equal(pruefeZielgruppe(verlauf.slice(0, 6), v("dating")).ok, true); // 4. dating ok
+  assert.equal(pruefeZielgruppe([v("familie"), v("akku"), v("familie")], v("familie")).ok, false); // familie max 2
   assert.equal(pruefeZielgruppe([v("akku")], v("wohnen")).ok, true);
 });
 
@@ -52,7 +53,7 @@ test("Bericht zählt Zielgruppen, Regionen und Ü40", () => {
     { nr: 2, titel: "B", post: { zielgruppe: "dating", region: "at" } },
     { nr: 3, titel: "C", post: { inhalt: { text: "Wichteln" } } },
   ]);
-  assert.match(md, /Dating und Singles \(dating\) \| 2 \| 67 %/);
+  assert.match(md, /Dating, Beziehung und Ex \(dating\) \| 2 \| 67 %/);
   assert.match(md, /ohne Zielgruppe \| 1/);
   assert.match(md, /- at: 1/);
   assert.match(md, /#3 C: Wichteln/);
@@ -62,7 +63,7 @@ test("Auswahl: Anlass zuerst, dann größter Bedarf, dann Warteschlange", async 
   const { sortiereKandidaten, bedarf } = await import("./zielgruppe.mjs");
   const verlauf = [v("jobstart"), v("jobstart"), v("akku")];
   assert.equal(bedarf(verlauf, "jobstart"), 1);
-  assert.equal(bedarf(verlauf, "dating"), 3);
+  assert.equal(bedarf(verlauf, "dating"), 5);
   assert.equal(bedarf(verlauf, null), 0);
   const k = [
     { name: "alt-job", zielgruppe: "jobstart", rang: 0 },
