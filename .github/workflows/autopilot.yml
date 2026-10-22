@@ -114,7 +114,7 @@ jobs:
           node holen.mjs "${{ steps.zeit.outputs.id }}" "${{ steps.zeit.outputs.datum }}" "${{ steps.zeit.outputs.slot }}"
         env:
           ISSUE: ${{ inputs.issue }}
-          # Bild-Recycling: BILD_RECYCLING "aus" = nur ungenutzte Bilder; BILD_ABSTAND_TAGE Standard 21
+          # Bild-Recycling: BILD_RECYCLING "aus" = nur ungenutzte Bilder; BILD_ABSTAND_TAGE Standard 7
           BILD_RECYCLING: ${{ vars.BILD_RECYCLING }}
           BILD_ABSTAND_TAGE: ${{ vars.BILD_ABSTAND_TAGE }}
       - name: Humor- oder Zielgruppen-Quote verletzt melden
