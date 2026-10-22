@@ -23,12 +23,28 @@ export function musterLesen(roh, { pflicht = false } = {}) {
 }
 
 // Ein Lauf soll verschiedene Bauweisen zeigen: kein Muster in mehr als einem Viertel der Posts (mindestens 2 erlaubt).
+// Seit Dominiks Urteil („erinnert mich an Witze vor 10 Jahren“, 22.10.2026): ab 4 Posts mindestens die Hälfte aus aktuellen
+// Mustern (2024 bis 2026), veraltete klassische Zweizeiler höchstens ein Viertel (mindestens 1 erlaubt).
 export function pruefeMusterMischung(posts) {
+  const fehler = [];
   const zaehl = new Map();
   for (const p of posts) if (MUSTER[p.muster]) zaehl.set(p.muster, (zaehl.get(p.muster) || 0) + 1);
   const max = Math.max(2, Math.ceil(posts.length / 4));
-  return [...zaehl].filter(([, n]) => n > max).map(([id, n]) => `muster „${id}“ ${n}-mal im Lauf (höchstens ${max}); andere Bauweisen aus witz-muster.md nehmen`);
+  for (const [id, n] of zaehl) if (n > max) fehler.push(`muster „${id}“ ${n}-mal im Lauf (höchstens ${max}); andere Bauweisen aus witz-muster.md nehmen`);
+  const mit = posts.filter((p) => MUSTER[p.muster]);
+  if (mit.length >= 4) {
+    const aktuell = mit.filter((p) => MUSTER[p.muster].generation === "aktuell").length;
+    if (aktuell < mit.length / 2) fehler.push(`nur ${aktuell} von ${mit.length} Posts mit aktuellem Muster (mindestens die Hälfte, witz-muster.md „aktuell“)`);
+    const alt = mit.filter((p) => MUSTER[p.muster].veraltet).length;
+    const maxAlt = Math.max(1, Math.floor(mit.length / 4));
+    if (alt > maxAlt) fehler.push(`${alt} Posts mit veraltetem Zweizeiler-Muster (höchstens ${maxAlt})`);
+  }
+  return fehler;
 }
+
+const stand = (m) => (m.generation === "aktuell" ? "aktuell 2024–26" : m.veraltet ? "veraltet (Zweizeiler)" : "klassisch, bewährt");
+const rang = (m) => (m.generation === "aktuell" ? 0 : m.veraltet ? 2 : 1);
+const sortiert = (liste) => [...liste].sort((a, b) => rang(a) - rang(b));
 
 export function markdown(b = BIBLIOTHEK) {
   const z = [
@@ -36,25 +52,25 @@ export function markdown(b = BIBLIOTHEK) {
     "",
     "Erzeugt aus `witz-muster.json` mit `node witzmuster.mjs md > witz-muster.md`, nicht von Hand ändern.",
     "",
-    "Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt sind. Gelernt wird die **Bauweise**, nie Text, Figur oder Bild. Jeder neue Post nennt im Feld `muster` eines der Muster unten (Pflicht, `pruefen.mjs`). Das Muster muss zur `mechanik` passen und ergänzt den Gag-Bauplan in `regeln.md`, es ersetzt ihn nicht. Meme-Regeln gelten unverändert: keine fremden Figuren, Marken oder echten Personen, nichts Sexualisiertes, nie Männer als Gruppe.",
+    "Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt sind. Gelernt wird die **Bauweise**, nie Text, Figur oder Bild. Jeder neue Post nennt im Feld `muster` eines der Muster unten (Pflicht, `pruefen.mjs`). **Aktuelle Muster (2024–26) zuerst**: mindestens die Hälfte jedes Laufs, veraltete Zweizeiler höchstens ein Viertel. Das Muster muss zur `mechanik` passen und ergänzt den Gag-Bauplan in `regeln.md`, es ersetzt ihn nicht. Meme-Regeln gelten unverändert: keine fremden Figuren, Marken oder echten Personen, nichts Sexualisiertes, nie Männer als Gruppe.",
     "",
     "## Was die Zählung zeigt",
     "",
     ...b.kennzahlen.map((k) => `- ${k}`),
     "",
-    "**Für Resi heißt das:** Die Wende sitzt im letzten Wort, das Resi sagt. Gesamt höchstens 25 Wörter im Bild, der Schluss 1 bis 6. Kontrast und Umdeutung sind die verlässlichsten Mechaniken, Selbstironie wirkt am besten als „ich durchschaue mich selbst“ (bedingung-verraet, selbstbetrug-rechnung), nie als Jammern.",
+    "**Für Resi heißt das:** Aktuell zuerst: Blickwinkel, Ton-Bruch, Absurdität und Bild tragen den Witz, nicht ein Punchline-Satz. Bei klassischen Mustern gilt weiter: Die Wende sitzt im letzten Wort, das Resi sagt. Gesamt höchstens 25 Wörter im Bild, der Schluss 1 bis 6. Kontrast und Umdeutung sind die verlässlichsten Mechaniken, Selbstironie wirkt am besten als „ich durchschaue mich selbst“ (bedingung-verraet, selbstbetrug-rechnung), nie als Jammern.",
     "",
     "## Übersicht",
     "",
-    "| muster | Gag-Typ | mechanik | Länge | Wende |",
-    "|---|---|---|---|---|",
-    ...b.muster.map((m) => `| \`${m.id}\` | ${m.name} | ${m.mechanik.join(", ")} | ${m.woerter} | ${m.wende} |`),
+    "| muster | Gag-Typ | Stand | mechanik | Länge | Wende |",
+    "|---|---|---|---|---|---|",
+    ...sortiert(b.muster).map((m) => `| \`${m.id}\` | ${m.name} | ${stand(m)} | ${m.mechanik.join(", ")} | ${m.woerter} | ${m.wende} |`),
     "",
     "## Die Muster",
     "",
   ];
-  for (const m of b.muster) {
-    z.push(`### \`${m.id}\`: ${m.name}`, "",
+  for (const m of sortiert(b.muster)) {
+    z.push(`### \`${m.id}\`: ${m.name} (${stand(m)})`, "",
       `- **Bauweise:** ${m.bauweise}`,
       `- **Länge:** ${m.woerter}. **Wende:** ${m.wende}.`,
       `- **Warum es zündet:** ${m.warum}`,
@@ -69,7 +85,7 @@ export function markdown(b = BIBLIOTHEK) {
     "## Nutzung", "",
     "- **Nachschub** (`nachschub.md`, Schritt 7) und **Schnellweg** (`schnellweg.md`, Schritt 5): vor dem Schreiben diese Datei lesen, für jeden Post zuerst das Muster wählen, dann den Text bauen. Ein Muster höchstens in einem Viertel der Posts eines Laufs (`pruefen.mjs`).",
     "- **Gegenleser** (`gegenleser.md`): Wer durchfällt, wird mit Blick auf die Falle seines Musters umgeschrieben.",
-    "- **Quelle zum Nachladen:** `trends.yml` holt sonntags die neuesten Beziehungs-Sammlungen von Twitterperlen (nur Titel und Anriss, Bauweise lernen, nie Text übernehmen). Neue Bauweisen, die dort öfter auftauchen, kommen als neues Muster in `witz-muster.json`.",
+    "- **Quellen zum Nachladen:** Aktuelle Formate kommen aus den Fanbase-Quellen im Trends-Issue (Instagram-Hashtags, Dating-Shorts) und `trend-formate.md`; neue Formate, die dort öfter auftauchen, kommen als Muster mit `generation: aktuell` in `witz-muster.json`. Twitterperlen (sonntags im Trends-Lauf) ist Text-Humor der Twitter-Ära und zählt niedriger: Bauweisen von dort nur als `klassisch`.",
     "");
   return z.join("\n");
 }

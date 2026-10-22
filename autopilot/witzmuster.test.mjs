@@ -22,8 +22,15 @@ test("muster Pflicht, bekannt und passend zur Mechanik", () => {
 
 test("kein Muster in mehr als einem Viertel des Laufs", () => {
   const p = (muster) => ({ muster });
-  assert.deepEqual(pruefeMusterMischung([p("amtston"), p("amtston"), p("ungefragt")]), []);
-  assert.match(pruefeMusterMischung([p("amtston"), p("amtston"), p("amtston"), p("ungefragt")]).join(), /3-mal/);
+  assert.deepEqual(pruefeMusterMischung([p("pov-rolle"), p("pov-rolle"), p("kommentarspalte")]), []);
+  assert.match(pruefeMusterMischung([p("pov-rolle"), p("pov-rolle"), p("pov-rolle"), p("kommentarspalte")]).join(), /3-mal/);
+});
+
+test("aktuelle Muster mindestens die Hälfte, veraltete höchstens ein Viertel", () => {
+  const p = (muster) => ({ muster });
+  assert.match(pruefeMusterMischung([p("amtston"), p("einwort-kippe"), p("pov-rolle"), p("floskel-woertlich")]).join(), /veraltetem/);
+  assert.match(pruefeMusterMischung([p("amtston"), p("floskel-woertlich"), p("laengen-verhaeltnis"), p("pov-rolle")]).join(), /aktuellem Muster/);
+  assert.deepEqual(pruefeMusterMischung([p("amtston"), p("floskel-woertlich"), p("pov-rolle"), p("absurd-normal")]), []);
 });
 
 test("witz-muster.md ist aus witz-muster.json erzeugt", () => {
