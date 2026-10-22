@@ -1,5 +1,5 @@
 name: Autopilot
-# Zweimal am Tag ein Post von Resi Requiem: um 7:00 und um 16:00 Wiener Zeit.
+# Viermal am Tag ein Post von Resi Requiem: um 7, 11, 16 und 22 Uhr Wiener Zeit (cron-job.org startet jeweils um :17).
 # Der Post kommt fertig geschrieben aus der Warteschlange (Issues mit Label „warteschlange“), hier wird er nur
 # gerendert, als Reel ohne Ton gebaut, ins Tagebuch der Webseite eingetragen und gepostet. Keine Claude-API.
 # Solange die Repo-Variable POSTEN nicht "an" ist, läuft alles im Probebetrieb:
@@ -18,7 +18,7 @@ on:
         required: false
         default: ""
       slot:
-        description: "07 oder 16, leer = nach aktueller Uhrzeit"
+        description: "07, 11, 16 oder 22, leer = nach aktueller Uhrzeit"
         required: false
         default: ""
       issue:
@@ -47,10 +47,10 @@ jobs:
           DATUM="${{ inputs.datum }}"; [ -z "$DATUM" ] && DATUM=$(TZ=Europe/Vienna date +%F)
           SLOT="${{ inputs.slot }}"
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            # Fälliger Slot: 7 bis 13 Uhr holt den Morgenpost nach, ab 16 Uhr den Nachmittagspost
-            case "$STUNDE" in 07|08|09|10|11|12|13) SLOT=07;; 16|17|18|19|20|21|22|23) SLOT=16;; *) echo "In Wien ist es $STUNDE Uhr, kein Slot."; echo "weiter=false" >> "$GITHUB_OUTPUT"; exit 0;; esac
+            # Fälliger Slot: jeder Slot wird bis zum Beginn des nächsten nachgeholt (7-10, 11-15, 16-21, 22-23 Uhr)
+            case "$STUNDE" in 07|08|09|10) SLOT=07;; 11|12|13|14|15) SLOT=11;; 16|17|18|19|20|21) SLOT=16;; 22|23) SLOT=22;; *) echo "In Wien ist es $STUNDE Uhr, kein Slot."; echo "weiter=false" >> "$GITHUB_OUTPUT"; exit 0;; esac
           elif [ -z "$SLOT" ]; then
-            [ "$STUNDE" -lt 12 ] && SLOT=07 || SLOT=16
+            case "$STUNDE" in 11|12|13|14|15) SLOT=11;; 16|17|18|19|20|21) SLOT=16;; 22|23) SLOT=22;; *) SLOT=07;; esac
           fi
           echo "datum=$DATUM" >> "$GITHUB_OUTPUT"
           echo "slot=$SLOT" >> "$GITHUB_OUTPUT"
@@ -340,7 +340,7 @@ jobs:
             gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body "Wieder fehlgeschlagen (${{ steps.zeit.outputs.id }}): $LINK"
           fi
       - name: Storys anstoßen
-        # Der GitHub-Cron von storys.yml fällt oft aus; cron-job.org startet diesen Lauf verlässlich (11:17 Mittag, 16:17 Abend, 22:17 Nachholen).
+        # Der GitHub-Cron von storys.yml fällt oft aus; cron-job.org startet diesen Lauf verlässlich (11:17 Mittag, 16:17 Abend, 22:17 Nachholen; 07:17 ist vor den Story-Slots).
         # storys.mjs entscheidet selbst, ob gerade ein Story-Slot offen ist.
         if: ${{ always() && vars.STORYS == 'an' && github.ref == 'refs/heads/main' }}
         run: gh workflow run storys.yml --repo "$GITHUB_REPOSITORY" --ref main || echo "::warning::storys.yml nicht angestoßen"

@@ -42,7 +42,7 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
   for (const k of ["ab", "bis"]) if (post[k] !== undefined && !DATUM.test(post[k])) fehler.push(`${k} muss JJJJ-MM-TT sein`);
   if (post.ab && post.bis && post.ab > post.bis) fehler.push("ab liegt nach bis");
   if (post.bis && DATUM.test(post.bis) && heute && post.bis < heute) fehler.push(`bis (${post.bis}) liegt in der Vergangenheit`);
-  if (post.slot !== undefined && !["07", "16"].includes(String(post.slot))) fehler.push("slot muss \"07\" oder \"16\" sein");
+  if (post.slot !== undefined && !["07", "11", "16", "22"].includes(String(post.slot))) fehler.push("slot muss \"07\", \"11\", \"16\" oder \"22\" sein");
   const format = post.inhalt?.format;
   if (e && !OHNE_BILD.has(format) && !post.bild) fehler.push(`Format ${format} braucht ein Bild`);
   if (post.bild) {

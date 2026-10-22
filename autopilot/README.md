@@ -1,6 +1,6 @@
 # Autopilot
 
-Postet zweimal am Tag für Resi Requiem: um **7:00** und um **16:00** Wiener Zeit (`.github/workflows/autopilot.yml`). GitHub startet geplante Läufe oft Stunden zu spät oder gar nicht, deshalb läuft der Cron stündlich. Jeder Lauf holt den fälligen Slot nach (7 bis 13 Uhr den Morgenpost, ab 16 Uhr den Nachmittagspost). Nach erfolgreichem Instagram-Post schreibt der Lauf `tagebuch/<id>/gepostet.txt`; gibt es die Datei, tun spätere Läufe nichts. Scheitert das Posten, versucht es der nächste Lauf noch einmal mit demselben Post. Probeläufe per Hand: Actions → Autopilot → Run workflow (Datum und Slot wählbar).
+Postet viermal am Tag für Resi Requiem: um **7:00**, **11:00**, **16:00** und **22:00** Wiener Zeit (`.github/workflows/autopilot.yml`). GitHub startet geplante Läufe oft Stunden zu spät oder gar nicht, deshalb läuft der Cron stündlich. cron-job.org startet den Workflow um 07:17, 11:17, 16:17 und 22:17. Jeder Lauf holt den fälligen Slot nach, bis der nächste beginnt (07: 7 bis 10 Uhr, 11: 11 bis 15 Uhr, 16: 16 bis 21 Uhr, 22: 22 bis 23 Uhr). Ein verpasster Slot wird nicht in den nächsten geschoben, damit nie zwei Posts kurz hintereinander kommen. Nach erfolgreichem Instagram-Post schreibt der Lauf `tagebuch/<id>/gepostet.txt`; gibt es die Datei, tun spätere Läufe nichts. Scheitert das Posten, versucht es der nächste Lauf noch einmal mit demselben Post. Probeläufe per Hand: Actions → Autopilot → Run workflow (Datum und Slot wählbar).
 
 Der Autopilot schreibt keine Texte mehr selbst und braucht keine Claude-API. Die Posts entstehen im Chat mit Claude und landen fertig in der Warteschlange.
 
@@ -49,7 +49,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
   - `beleg`: `titel`, `untertitel`, `posten` (3–6, je `name`, `menge`), `summe`, `fuss`
 - `bild`: Dateiname aus `bibliothek.json`. Nicht nötig bei `notiz` und `chat`. Bei `szene` richtet sich der Ausschnitt nach `kopf` in `bibliothek.json`, damit das Gesicht im Bild bleibt.
 - `herbert` (optional, `true`/`false`): kleines Pop-up „🦇 Herbert, meine Fledermaus“. Kommt von selbst, sobald „Herbert“ im Text steht; `true` erzwingt es (z. B. bei „– H.“), `false` schaltet es ab.
-- `slot` (optional): `"07"` oder `"16"`, wenn der Post nur zu dieser Uhrzeit raus soll.
+- `slot` (optional): `"07"`, `"11"`, `"16"` oder `"22"`, wenn der Post nur zu dieser Uhrzeit raus soll.
 - `ab`, `bis` (optional, `JJJJ-MM-TT`): Post nur in diesem Zeitraum, für Anlässe (Allerheiligen, 11.11., Freitag der 13.). Vor `ab` wird der Post übersprungen und bleibt in der Warteschlange, nach `bis` bekommt das Issue einen Kommentar und das Label `fehler` („Anlass vorbei“). Posts mit `bis` (Anlass oder Trend) kommen vor allen freien Posts dran, das früheste Ende zuerst (`reihenfolge.mjs`, seit 20.10.2026).
 - `musik` (optional): wird ignoriert, die Reels laufen ohne Ton. Die alten Tracks und `musik_generator.py` liegen in der Git-Historie.
 - Nur Issues mit dem Label `warteschlange` zählen, und nur, wenn der Repo-Owner sie angelegt hat. Die Vorlage setzt das Label auch bei Fremden, deshalb filtert `holen.mjs` nach dem Absender.
@@ -87,7 +87,7 @@ Aufbau einer Karte in `storys.json` → `karten`: `{ "id", "inhalt", "bild"?, "a
 
 ## Heartbeat (seit 19.10.2026)
 
-`heartbeat.yml` läuft stündlich über den GitHub-Cron, unabhängig von cron-job.org. Ist der Morgenslot um 12 Uhr oder der Nachmittagsslot um 20 Uhr (Wien) noch nicht gepostet, legt `heartbeat.mjs` ein Issue „Slot … nicht gepostet“ (Label `ausfall`) an, mit dem letzten Autopilot-Lauf und der wahrscheinlichen Ursache (kein Lauf = cron-job.org prüfen). Es schließt sich, sobald der Slot nachgeholt ist. Nur bei `POSTEN` = `an`.
+`heartbeat.yml` läuft stündlich über den GitHub-Cron, unabhängig von cron-job.org. Ist ein Slot bei Beginn des nächsten noch nicht gepostet (07 um 11 Uhr, 11 um 16 Uhr, 16 um 22 Uhr, 22 um 23 Uhr Wien), legt `heartbeat.mjs` ein Issue „Slot … nicht gepostet“ (Label `ausfall`) an, mit dem letzten Autopilot-Lauf und der wahrscheinlichen Ursache (kein Lauf = cron-job.org prüfen). Es schließt sich, sobald der Slot nachgeholt ist. Nur bei `POSTEN` = `an`.
 
 Weil der GitHub-Cron selbst oft spät kommt, kann cron-job.org den Heartbeat zusätzlich anstoßen: zwei weitere Jobs wie die bestehenden (POST auf `.../actions/workflows/heartbeat.yml/dispatches`, Body `{"ref":"main"}`, gleicher Token) um 12:20 und 20:20 Europe/Vienna.
 
