@@ -136,8 +136,8 @@ Hintergrundbilder dürfen mit neuem Text wieder verwendet werden. Regeln in `bil
 
 - `tags`: `neutral`, Jahreszeit (`herbst`, `winter`) oder Anlass (`advent`, `weihnachten`, `silvester`, `halloween`, `allerheiligen`, `zeitumstellung`). Neue Tags mit Zeitraum in `bildregeln.mjs` eintragen.
 - Anlassbilder kommen nur in ihrem Zeitraum und nur einmal. Jahreszeit-Bilder nur in ihrer Jahreszeit, dort recycelbar. Neutrale Bilder immer.
-- Ungenutzte Bilder haben Vorrang. Erst wenn keins mehr passt, kommt ein schon verwendetes, frühestens nach 21 Tagen, das am längsten nicht verwendete zuerst. Nie dasselbe Bild am selben oder am Folgetag.
+- Ungenutzte Bilder haben Vorrang. Erst wenn keins mehr passt, kommt ein schon verwendetes, frühestens nach 7 Tagen, das am längsten nicht verwendete zuerst. Nie dasselbe Bild am selben oder am Folgetag.
 - Bei einer Wiederverwendung muss der Text neu sein: identischer Inhalt oder identische Caption wie bei einer früheren Nutzung des Bildes wird abgelehnt.
 - `nutzung.json` ist der Nutzungsverlauf (Datum, Slot, Bild, Text, Fingerabdruck). `holen.mjs` prüft die Regeln für den gewählten Post und trägt ihn ein; verstößt er dagegen, bekommt das Issue einen Kommentar und das Label `fehler`.
 - Bild wählen beim Schreiben: `node autopilot/bildwahl.mjs [JJJJ-MM-TT]` listet die passenden Bilder in Reihenfolge, `node autopilot/bildwahl.mjs --verlauf <datei>` zeigt die früheren Texte eines Bildes. Nicht zwei Posts mit demselben Bild gleichzeitig in die Warteschlange legen.
-- Variablen: `BILD_RECYCLING` = `aus` schaltet das Recycling ab (nur ungenutzte Bilder, wie früher). `BILD_ABSTAND_TAGE` ändert den Mindestabstand (Standard 21).
+- Variablen: `BILD_RECYCLING` = `aus` schaltet das Recycling ab (nur ungenutzte Bilder, wie früher). `BILD_ABSTAND_TAGE` ändert den Mindestabstand (Standard 7).

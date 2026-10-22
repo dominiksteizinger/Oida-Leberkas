@@ -39,12 +39,12 @@ test("Anlassbild wird nie wiederverwendet", () => {
   assert.match(r.grund, /Anlassbild/);
 });
 
-test("Mindestabstand 21 Tage, Vortag und gleicher Tag gesperrt", () => {
+test("Mindestabstand 7 Tage, Vortag und gleicher Tag gesperrt", () => {
   const n = [{ id: "a", datum: "2026-09-01", slot: "07", bild: "herbstlaub-strasse.jpg" }];
   const p = (d, k = konf) => pruefeBild({ bibliothek, nutzung: n, bild: "herbstlaub-strasse.jpg", datum: d, konf: k });
-  assert.equal(p("2026-09-20").ok, false);
-  assert.equal(p("2026-09-22").ok, true);
-  assert.equal(p("2026-09-22").wiederverwendung, true);
+  assert.equal(p("2026-09-07").ok, false);
+  assert.equal(p("2026-09-08").ok, true);
+  assert.equal(p("2026-09-08").wiederverwendung, true);
   assert.equal(p("2026-09-01").ok, false);
   assert.equal(p("2026-09-02", bildKonfig({ BILD_ABSTAND_TAGE: "0" })).ok, false, "Vortag bleibt gesperrt");
   assert.equal(p("2026-09-05", bildKonfig({ BILD_ABSTAND_TAGE: "0" })).ok, true);
@@ -57,10 +57,10 @@ test("BILD_RECYCLING=aus: nur ungenutzte Bilder", () => {
   assert.equal(pruefeBild({ bibliothek, nutzung: n, bild: "friedhofsbank-herbst.jpg", datum: "2026-10-01", konf: k }).ok, true);
 });
 
-test("Konfiguration: Standard an und 21 Tage, Umgebung wird übernommen", () => {
-  assert.deepEqual(bildKonfig({}), { recycling: true, abstand: 21 });
+test("Konfiguration: Standard an und 7 Tage, Umgebung wird übernommen", () => {
+  assert.deepEqual(bildKonfig({}), { recycling: true, abstand: 7 });
   assert.deepEqual(bildKonfig({ BILD_RECYCLING: "aus", BILD_ABSTAND_TAGE: "30" }), { recycling: false, abstand: 30 });
-  assert.equal(bildKonfig({ BILD_ABSTAND_TAGE: "kaputt" }).abstand, 21);
+  assert.equal(bildKonfig({ BILD_ABSTAND_TAGE: "kaputt" }).abstand, 7);
 });
 
 test("Eigener Eintrag (Neuversuch) zählt nicht als frühere Nutzung", () => {

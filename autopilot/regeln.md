@@ -147,5 +147,5 @@ Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der
 ## Abwechslung
 
 - Kein Motiv und keine Formulierung aus den letzten Posts wiederholen (`tagebuch/eintraege.json`).
-- Bilder: Wahl mit `node autopilot/bildwahl.mjs <datum>` (Regeln in `README.md`, „Bild-Recycling“). Unbenutzte zuerst, ein Bild frühestens nach 21 Tagen wieder, Anlassbilder nur einmal. Kommt ein Bild zum zweiten Mal, wird der Text neu zum Bild geschrieben (`--verlauf` zeigt die alten Texte), nie derselbe Witz.
+- Bilder: Wahl mit `node autopilot/bildwahl.mjs <datum>` (Regeln in `README.md`, „Bild-Recycling“). Unbenutzte zuerst, ein Bild frühestens nach 7 Tagen wieder, Anlassbilder nur einmal. Kommt ein Bild zum zweiten Mal, wird der Text neu zum Bild geschrieben (`--verlauf` zeigt die alten Texte), nie derselbe Witz.
 - Die Beispiele in `beispiele.md` zeigen den Ton, sie sind keine Vorlage zum Abwandeln.
