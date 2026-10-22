@@ -79,7 +79,8 @@ bilder.forEach((b) => { b.text = sprechtext(b.text); });
 
 // Stimme: jeder Teil wird gesprochen, und der Teil bleibt so lang stehen, bis der Satz zu Ende ist
 const VORLAUF = 0.15;
-const NACHLAUF = 0.6;
+// Dominik 22.10.2026: zu langsam. Mit Stimme bestimmt nur der Satz die Standzeit (der Text steht ja gleichzeitig im Bild), kurze Lücke danach
+const NACHLAUF = 0.35;
 let tonDaten = null;
 if (STIMME_AN) {
   try {
@@ -95,7 +96,7 @@ if (tonDaten) {
   bilder.forEach((b, k) => {
     if (!tonDaten[k]) return;
     b.ton = tonDaten[k];
-    b.dauer = Math.max(b.dauer, VORLAUF + b.ton.dauer + NACHLAUF);
+    b.dauer = Math.max(1, VORLAUF + b.ton.dauer + NACHLAUF) + (k === bilder.length - 1 ? 0.5 : 0);
   });
 }
 // Jingle (optional): autopilot/assets/jingle.mp3, nur mit Repo-Variable JINGLE="an". Fehlt die Datei oder ist sie länger als 6 s, läuft das Reel ohne.
