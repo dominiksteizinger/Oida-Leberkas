@@ -13,7 +13,7 @@ const HIER = path.dirname(new URL(import.meta.url).pathname);
 const arg = (n, std) => { const k = process.argv.indexOf(`--${n}`); return k > 0 ? Number(process.argv[k + 1]) : std; };
 const MAX = arg("max", 100);
 const PAUSE = arg("pause", 8) * 1000;
-const STIL = process.env.STIMME_STIL || "muede";
+const STIL = process.env.STIMME_STIL || undefined;
 const repo = process.env.GITHUB_REPOSITORY;
 const owner = process.env.GITHUB_REPOSITORY_OWNER;
 if (!repo || !owner) throw new Error("GITHUB_REPOSITORY und GITHUB_REPOSITORY_OWNER fehlen");

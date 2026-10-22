@@ -1,6 +1,6 @@
 // KI-Stimme für die Reels: Gemini-TTS über GEMINI_API_KEY (Free-Tier, kostet nichts).
 // Schaltbar über die Repo-Variable STIMME ("an" = Stimme an; sonst bleibt das Reel stumm).
-// STIMME_STIL wählt die Stimmlage (siehe STIMMLAGEN), STIMME_TEMPO das Sprechtempo.
+// STIMME_STIL wählt die Stimmlage (siehe STIMMLAGEN, in den Workflows aus der Repo-Variable STIMME_LAGE), STIMME_TEMPO das Sprechtempo.
 // Fällt die Stimme aus (Fehler, Kontingent, kein Schlüssel), läuft das Reel stumm weiter; das Posten hängt nicht daran.
 import fs from "node:fs";
 import path from "node:path";
@@ -15,28 +15,21 @@ export const STIMME_AN = process.env.STIMME === "an";
 // Erstes Modell, das der Schlüssel kennt, gewinnt (404 = Modell unbekannt, dann das nächste)
 const MODELLE = [process.env.STIMME_MODELL, "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"].filter(Boolean);
 
-// Vorgegebene weibliche Gemini-Stimmen, keine echten Personen. Kore: fest, sachlich. Callirrhoe: locker, müde. Leda: jung. Aoede: luftig.
-// Regie im Text wird mitgesprochen: als kurzes Präfix (Probe 19.10.) und auch abgesetzt vor einem „Transcript:“-Block (Probe 22.10.,
-// bei kurzen Sätzen las das Modell 20 s Anweisung vor). Getestet wird deshalb nur noch die Regie als systemInstruction.
-// Der Cache-Schlüssel enthält die Regie, alte Sätze ohne Regie bleiben gültig.
-const REGIE = `You voice a woman in her mid-twenties sending a voice message to her best friend, in German.
-Style: natural and conversational, relaxed, dry and deadpan, slightly unimpressed. Never theatrical, not a narrator, not an audiobook.
-Pace: brisk everyday talking speed, short pauses only. Speak exactly the user text and nothing else.`;
+// Vorgegebene weibliche Gemini-Stimmen, keine echten Personen. Leda: jung, natürlich (Standard seit 22.10.2026, Dominiks Wahl aus der Probe
+// gegen Callirrhoe, Aoede, Despina, Laomedeia). Callirrhoe: müde (bis 22.10.). Kore: fest, sachlich.
+// Stilanweisungen gehen nicht: im Text werden sie mitgesprochen (Proben 19. und 22.10., bis 25 s Anweisung bei kurzen Sätzen),
+// als systemInstruction liefert das TTS-Modell kein Audio. Den Ton bestimmt deshalb allein die Stimme.
 const STIMMLAGEN = {
-  trocken: { stimme: "Kore" },
-  muede: { stimme: "Callirrhoe" },
   leda: { stimme: "Leda" },
-  aoede: { stimme: "Aoede" },
-  despina: { stimme: "Despina" },
-  laomedeia: { stimme: "Laomedeia" },
-  "leda-regie": { stimme: "Leda", regie: REGIE },
+  muede: { stimme: "Callirrhoe" },
+  trocken: { stimme: "Kore" },
 };
-const lage = (stil) => STIMMLAGEN[stil] ?? STIMMLAGEN.trocken;
-const cacheDatei = ({ stimme, regie }, text) =>
-  path.join(CACHE, `${crypto.createHash("sha1").update(regie ? `${stimme}\n${regie}\n${text}` : `${stimme}\n${text}`).digest("hex")}.opus`);
+const STANDARD = "leda";
+const lage = (stil) => STIMMLAGEN[stil] ?? STIMMLAGEN[STANDARD];
+const cacheDatei = ({ stimme }, text) => path.join(CACHE, `${crypto.createHash("sha1").update(`${stimme}\n${text}`).digest("hex")}.opus`);
 
-// Tempo (Dominik 22.10.2026: zu langsam). STIMME_TEMPO streckt die fertige Spur ohne Tonhöhenänderung, 1 = Original.
-const TEMPO = Number(process.env.STIMME_TEMPO || 1);
+// Tempo (Dominik 22.10.2026: zu langsam). STIMME_TEMPO staucht die fertige Spur ohne Tonhöhenänderung, 1 = Original, Standard 1.15.
+const TEMPO = Number(process.env.STIMME_TEMPO || 1.15);
 // Aufbereitung der Rohspur (siehe sprechen): Stille am Anfang und Ende weg, Pausen im Satz auf höchstens 0,3 s kürzen, dann Tempo
 const AUFBEREITUNG = [
   "silenceremove=start_periods=1:start_threshold=-45dB:stop_periods=-1:stop_duration=0.3:stop_threshold=-45dB:stop_silence=0.18",
@@ -59,13 +52,12 @@ export function dauerVon(datei) {
   return Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", datei]).toString().trim());
 }
 
-async function anfrage(modell, stimme, text, schluessel, regie) {
+async function anfrage(modell, stimme, text, schluessel) {
   for (let versuch = 1; ; versuch++) {
     const antwort = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modell}:generateContent`, {
       method: "POST",
       headers: { "content-type": "application/json", "x-goog-api-key": schluessel },
       body: JSON.stringify({
-        ...(regie ? { systemInstruction: { parts: [{ text: regie }] } } : {}),
         contents: [{ parts: [{ text }] }],
         generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: stimme } } } },
       }),
@@ -78,7 +70,7 @@ async function anfrage(modell, stimme, text, schluessel, regie) {
 
 // Einen Text sprechen: holt den Rohton aus dem Cache oder von Gemini, bereitet ihn auf und schreibt <ziel>.wav (44,1 kHz Stereo).
 // Gibt die Dauer in Sekunden zurück.
-export async function sprechen(text, ziel, stil = "trocken") {
+export async function sprechen(text, ziel, stil = STANDARD) {
   const l = lage(stil);
   const roh = cacheDatei(l, text);
   if (!fs.existsSync(roh)) {
@@ -89,7 +81,7 @@ export async function sprechen(text, ziel, stil = "trocken") {
 }
 
 // Satz vorab in den Cache legen, ohne ihn aufzubereiten. Gibt false zurück, wenn er schon drin war.
-export async function vorfuellen(text, stil = "muede") {
+export async function vorfuellen(text, stil = STANDARD) {
   const l = lage(stil);
   const roh = cacheDatei(l, text);
   if (fs.existsSync(roh)) return false;
@@ -97,16 +89,16 @@ export async function vorfuellen(text, stil = "muede") {
   return true;
 }
 
-export const imCache = (text, stil = "muede") => fs.existsSync(cacheDatei(lage(stil), text));
+export const imCache = (text, stil = STANDARD) => fs.existsSync(cacheDatei(lage(stil), text));
 
 // Gemini ruft nur auf, wenn der Satz noch nicht im Cache liegt
-async function holeVonGemini(text, { stimme, regie = "" }, roh) {
+async function holeVonGemini(text, { stimme }, roh) {
   const schluessel = process.env.GEMINI_API_KEY;
   if (!schluessel) throw new Error("GEMINI_API_KEY fehlt, und der Satz ist nicht im Cache");
   modelle: for (const modell of MODELLE) {
     if (erschoepft.has(modell)) continue;
     for (let versuch = 1; versuch <= 3; versuch++) {
-      const antwort = await anfrage(modell, stimme, text, schluessel, regie);
+      const antwort = await anfrage(modell, stimme, text, schluessel);
       if (antwort.status === 404) continue modelle;
       // Kontingent des Modells aufgebraucht (nach den Wiederholungen in anfrage): in diesem Lauf nicht mehr versuchen, das nächste Modell hat ein eigenes Kontingent
       if (antwort.status === 429) { erschoepft.add(modell); console.warn(`Gemini-TTS ${modell}: Kontingent aufgebraucht, nächstes Modell`); continue modelle; }
@@ -132,7 +124,7 @@ async function holeVonGemini(text, { stimme, regie = "" }, roh) {
         console.warn(`Gemini ${modell}: ${dauer.toFixed(1)} s für ${text.length} Zeichen verworfen (Versuch ${versuch})`);
         continue;
       }
-      console.log(`Gemini ${modell}: neuer Satz im Cache (${path.basename(roh)}, ${stimme}${regie ? " mit Regie" : ""}, ${dauer.toFixed(1)} s, ${(text.length / dauer).toFixed(1)} Zeichen/s)`);
+      console.log(`Gemini ${modell}: neuer Satz im Cache (${path.basename(roh)}, ${stimme}, ${dauer.toFixed(1)} s, ${(text.length / dauer).toFixed(1)} Zeichen/s)`);
       return;
     }
     throw new Error(`Gemini-TTS ${modell}: Tonspur dreimal zu lang für „${text.slice(0, 40)}“`);
@@ -142,7 +134,7 @@ async function holeVonGemini(text, { stimme, regie = "" }, roh) {
 
 // Für jeden Bildteil die Sprachspur: { wav, dauer } oder null, wenn der Teil keinen Text hat
 export async function tonspuren(texte, ordner) {
-  const stil = process.env.STIMME_STIL || "muede";
+  const stil = process.env.STIMME_STIL || STANDARD;
   const ergebnis = [];
   for (const [k, text] of texte.entries()) {
     if (!text || !text.trim()) { ergebnis.push(null); continue; }

@@ -153,7 +153,7 @@ jobs:
         env:
           # Stimme nur, wenn die Repo-Variable STIMME "an" ist; sonst stumm wie bisher
           STIMME: ${{ vars.STIMME }}
-          STIMME_STIL: ${{ vars.STIMME_STIL }}
+          STIMME_STIL: ${{ vars.STIMME_LAGE }}  # leer = Leda (Standard seit 22.10.2026), eigene Variable, damit ein altes STIMME_STIL=muede nicht greift
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           # Jingle nur mit JINGLE="an" und vorhandener Datei autopilot/assets/jingle.mp3; JINGLE_POS "ende" (Standard) oder "anfang"
           JINGLE: ${{ vars.JINGLE }}
