@@ -1,5 +1,5 @@
 name: Heartbeat
-# Kontrolle für den Autopilot: Hat ein Slot (07 oder 16) nicht gepostet, bekommt Dominik ein Issue mit Label „ausfall“.
+# Kontrolle für den Autopilot: Hat ein Slot (07, 11, 16 oder 22) nicht gepostet, bekommt Dominik ein Issue mit Label „ausfall“.
 # Läuft über den GitHub-Cron, unabhängig vom Auslöser des Autopiloten (cron-job.org), und kostet nichts.
 # Zusätzlich kann cron-job.org diesen Workflow um 12:20 und 20:20 Wiener Zeit per workflow_dispatch anstoßen (siehe autopilot/README.md).
 on:
