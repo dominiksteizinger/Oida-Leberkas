@@ -1,0 +1,38 @@
+name: Kanal-Analyse (temporär)
+on:
+  push:
+    branches: [claude/project-thread-y8otbn]
+    paths: [.github/workflows/kanal-analyse.yml]
+permissions:
+  contents: read
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      KANAL: UCTB-jflPzVyoMgp_UfQQ9FQ
+    steps:
+      - name: Videos des Kanals auflisten
+        run: |
+          ACCESS=$(curl -sS https://oauth2.googleapis.com/token \
+            --data-urlencode "client_id=$CLIENT_ID" --data-urlencode "client_secret=$CLIENT_SECRET" \
+            --data-urlencode "refresh_token=$REFRESH_TOKEN" --data-urlencode "grant_type=refresh_token" | jq -r .access_token)
+          H="Authorization: Bearer $ACCESS"
+          curl -sS -H "$H" "https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=$KANAL" | jq '.items[0] | {t:.snippet.title,d:.snippet.description,c:.snippet.country,s:.statistics}'
+          UPL="UU${KANAL:2}"
+          IDS=""; TOK=""
+          for i in 1 2; do
+            R=$(curl -sS -H "$H" "https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&maxResults=50&playlistId=$UPL&pageToken=$TOK")
+            IDS="$IDS,$(echo "$R" | jq -r '[.items[].contentDetails.videoId]|join(",")')"
+            TOK=$(echo "$R" | jq -r '.nextPageToken // empty'); [ -z "$TOK" ] && break
+          done
+          IDS=${IDS#,}
+          echo "$IDS" | tr ',' '\n' | head -50 | paste -sd, > a.txt
+          echo "$IDS" | tr ',' '\n' | tail -n +51 | paste -sd, > b.txt
+          for f in a.txt b.txt; do
+            [ -s $f ] || continue
+            curl -sS -H "$H" "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=$(cat $f)" \
+              | jq -r '.items[] | [.snippet.publishedAt[0:10], .contentDetails.duration, (.statistics.viewCount//"0"), (.statistics.likeCount//"0"), (.statistics.commentCount//"0"), .snippet.title, (.snippet.tags//[]|join(" ")), (.snippet.description|gsub("\n";" ")|.[0:250])] | @tsv'
+          done
