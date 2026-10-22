@@ -14,6 +14,10 @@ import { mechanikLesen, pruefeMischung, pruefeBauplan } from "./humorquote.mjs";
 import { zielgruppeLesen, pruefeUe40 } from "./zielgruppe.mjs";
 import { pruefeSchluss } from "./schluss.mjs";
 import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
+import { simuliere, ablaufBericht } from "./ablauf.mjs";
+import { verlaufLesen } from "./humorquote.mjs";
+import { zgVerlaufLesen } from "./zielgruppe.mjs";
+import { bisVon } from "./reihenfolge.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const bibliothek = pruefeTags(JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")));
@@ -106,4 +110,12 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (!ok) { console.log("\nNicht angelegt: erst alle Fehler beheben."); process.exit(1); }
   if (opt("--issues")) fs.writeFileSync(opt("--issues"), JSON.stringify(ergebnis.map((r) => r.issue), null, 2) + "\n");
   console.log(`\n${posts.length} Posts in Ordnung.${opt("--issues") ? ` Issue-Texte in ${opt("--issues")}.` : ""}`);
+  // Mit --warteschlange: Warteschlange plus neue Posts so durchspielen, wie holen.mjs sie postet (ablauf.mjs). Nur Hinweis, kein Abbruch.
+  if (offen.length) {
+    const json = (b) => { const m = String(b).match(/```json\s*([\s\S]*?)```/); try { return m ? JSON.parse(m[1]) : {}; } catch { return {}; } };
+    const alle = [...offen.filter((o) => typeof o === "object").sort((a, b) => (bisVon(a.body) || "9").localeCompare(bisVon(b.body) || "9") || a.number - b.number).map((o) => ({ nr: o.number, post: json(o.body) })),
+      ...posts.map((p, i) => ({ nr: `neu ${i + 1}`, post: p }))];
+    const tagebuch = path.join(HIER, "..", "tagebuch"), id = `${heute}-99`;
+    console.log(`\n${ablaufBericht(simuliere(alle, verlaufLesen(tagebuch, id), zgVerlaufLesen(tagebuch, id))).text}`);
+  }
 }

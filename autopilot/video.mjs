@@ -199,3 +199,6 @@ ff([
 
 const tonText = [sprecher.length && (UNTERTITEL ? "mit Stimme und Untertiteln" : "mit Stimme"), jingle && "mit Jingle"].filter(Boolean);
 console.log(`Reel fertig (${tonText.length ? tonText.join(", ") : "ohne Ton"})`);
+// Für die Auswertung (messung.mjs): Länge, Stimme und Jingle des Reels, das wirklich rausging
+const stil = process.env.STIMME_STIL || "leda";
+fs.writeFileSync(path.join(ordner, "reel.json"), JSON.stringify({ dauer: DAUER, teile: bilder.length, stimme: sprecher.length ? stil : null, tempo: sprecher.length ? Number(process.env.STIMME_TEMPO || 1.15) : null, jingle: jingle ? process.env.JINGLE_POS || "ende" : null, untertitel: UNTERTITEL }) + "\n");

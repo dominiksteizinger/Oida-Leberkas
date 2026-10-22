@@ -44,12 +44,12 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 
 - Formel: vertrauter Rahmen + kleine Verletzung + Entwarnung + Wendung, die der Leser nicht selbst liefern konnte.
 - Düster darf Rahmen oder Pointe sein (seit 22.10.2026, siehe Gag-Bauplan). Die Wendung kommt aus Alltag, Büro, Öffis, Smalltalk, Wetter, Herbert, Sunny oder Franz.
-- Haltung immer Deadpan. Mix bei 14 Posts pro Woche: 10 bis 12 Relatable-Posts, davon seit 22.10.2026 mindestens 5 Beziehung und mindestens 5 Selbstironie (siehe Witz-Parameter), höchstens 2 bis 3 Welt-Posts (Herbert, Franz, Sunny) nach dem Herbert-Maßstab, schwarzer Humor nur als Würze, höchstens 1 Absurd, Meta oder Parodie.
+- Haltung immer Deadpan. Mix je 14 Posts (seit 22.10.2026 dreieinhalb Tage bei vier Posts am Tag): 10 bis 12 Relatable-Posts, davon seit 22.10.2026 mindestens 5 Beziehung und mindestens 5 Selbstironie (siehe Witz-Parameter), höchstens 2 bis 3 Welt-Posts (Herbert, Franz, Sunny) nach dem Herbert-Maßstab, schwarzer Humor nur als Würze, höchstens 1 Absurd, Meta oder Parodie.
 - Kompetent scheitern: Resi ist souverän bei Tod, Verwaltung und Ordnung und patzt nur im Sozialen (Smalltalk, Spontaneität, Überraschungen). Sie verwaltet, sie jammert nicht.
 - Sunny ist nie das Ziel. Die Pointe landet bei Resis Haltung.
 - Wärme nur als Leck: etwa jeder zehnte Post, indirekt und sofort abgewiegelt.
 - **Send-Test (hartes Kriterium):** Der Leser erkennt sich und denkt „das schicke ich meiner Freundin“. Jede Pointe hat einen denkbaren Adressaten (Kollegin, Mitbewohnerin, Mama). Fehlt er, wird der Post verworfen. Aufforderungen situativ, nie mit Zahl oder Quote.
-- **Resi ist Stimme, nicht Thema:** Die Situation gehört dem Leser (Gruppenchat, Geld, Schlaf, Handy, Familie, Wetter, Zu-spät-kommen, Wochenende, Date als Selbstironie). Mindestens 10 von 14 Posts pro Woche sind reine Alltagsposts.
+- **Resi ist Stimme, nicht Thema:** Die Situation gehört dem Leser (Gruppenchat, Geld, Schlaf, Handy, Familie, Wetter, Zu-spät-kommen, Wochenende, Date als Selbstironie). Mindestens 10 von 14 Posts sind Situationen aus dem Leben der Leserin (Dating, Familie, Job, Wohnen, Akku); das ist nicht dasselbe wie die Zielgruppe `alltag` (höchstens 2 von 14).
 - **Ohne Vorwissen in 3 Sekunden verständlich:** keine Pointe, die eine frühere Folge, ein Insiderwort oder eine Rechnung braucht. Maßstab sind die Herbert-Posts 2 und 3: bekannte Situation, eine absurde Variable, Wende in der letzten Zeile. Serienbezug ist nur Bonus.
 - **Abblitz-Muster** (von Dominik am besten bewertet): Das Gegenüber sagt einen Standardsatz, Resi ist kürzer und ruhig, nimmt die Floskel wörtlich oder geht mit einer knappen Absage ab. Letzte Zeile höchstens sechs Wörter. Referenzen in `beispiele.md`.
 - Serien: Der Rahmen bleibt, die Wendung wechselt. Nach drei gleichen Folgen die vierte brechen.

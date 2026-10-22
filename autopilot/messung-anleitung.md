@@ -73,6 +73,27 @@ Fragt Meta nach „Advanced Access“ oder App Review: Als Admin der App im Entw
 
 ---
 
+## Teil C: Facebook-Seite (optional)
+
+Seit 22.10.2026 merkt sich `posten.mjs` die ID jedes Facebook-Beitrags (`tagebuch/<id>/plattformen.json`). Die Messung liest damit Shares, Reaktionen und Kommentare (Recht `pages_read_engagement`) und die Reichweite (`read_insights`) über denselben Token wie Instagram. Fehlt ein Recht, bleibt der Wert leer, der Rest läuft weiter. Wer die Reichweite will: beim nächsten Erneuern des Instagram-Tokens `read_insights` und `pages_read_engagement` mit anhaken.
+
+TikTok wird nicht gemessen: Die Posts sind Entwürfe, die Dominik in der App veröffentlicht, und die Abfrage der Zahlen (`video.list`) braucht eine geprüfte Produktiv-App. Bis dahin Zahlen aus der TikTok-App bei Bedarf von Hand.
+
+## Datenbank: auswertung/posts.json
+
+Jede Messung schreibt pro geposteten Post einen Datensatz; alte Posts behalten ihre letzten Werte. Felder:
+
+| Gruppe | Felder |
+|---|---|
+| Zeit | `id`, `datum`, `slot`, `wochentag`, `alter_h` (Alter bei der Messung) |
+| Witz | `format`, `mechanik`, `zielgruppe`, `region`, `annahme`, `gegenueber` (Lena, Mama, Match …), `schluss`, `schluss_woerter`, `setup_woerter`, `takte` |
+| Anlass | `trend`, `anlass` (hatte ab/bis) |
+| Bild und Ton | `bild`, `bild_erneut` (schon einmal verwendet), `reel_s`, `stimme`, `jingle` |
+| Text drumherum | `aufforderung` (Schick das, Frage, Speichern, andere), `caption_woerter`, `hashtags` |
+| Zahlen | `ig` (views, reichweite, shares, saves, likes, kommentare, wiedergabe_s, share_quote, save_quote), `yt` (views, wiedergabe_s, wiedergabe_pct, likes, shares, kommentare, abos), `facebook` (shares, reaktionen, kommentare, reichweite), `punkte` |
+
+`trend`, `annahme` und `anlass` stehen seit 22.10.2026 im Tagebuch (`holen.mjs`), Reel-Daten in `tagebuch/<id>/reel.json` (`video.mjs`). Aussagekräftig wird der Vergleich ab etwa 20 Posts pro Gruppe; bis dahin gilt alles als Tendenz.
+
 ## Testen
 
 [Actions → Wochenauswertung → Run workflow](https://github.com/dominiksteizinger/oida-leberkas/actions/workflows/messung.yml). Im Issue „Wochenauswertung“ steht danach bei beiden Quellen „ok“. Steht „übersprungen“, nennt der Bericht den Grund.

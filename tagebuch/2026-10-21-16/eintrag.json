@@ -23,5 +23,10 @@
   ],
   "zielgruppe": "alltag",
   "region": "dach",
+  "trend": "Google Trends DE: 2-Euro-Münze (5000+ Suchen)",
+  "anlass": {
+    "ab": null,
+    "bis": "2026-10-22"
+  },
   "quelle": "#221"
 }

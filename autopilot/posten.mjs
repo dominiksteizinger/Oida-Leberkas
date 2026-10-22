@@ -58,6 +58,10 @@ const container = (await graph(`${IG}/media`, felder)).id;
 await fertig(container);
 const ig = await graph(`${IG}/media_publish`, { creation_id: container });
 console.log(`Instagram: veröffentlicht als ${mitReel ? "Reel" : "Bild"} (${ig.id})`);
+// IDs je Plattform für die Auswertung (messung.mjs); der Workflow committet die Datei mit gepostet.txt
+const plattformen = { instagram: ig.id };
+const merken = () => fs.writeFileSync(path.join(ordner, "plattformen.json"), JSON.stringify(plattformen) + "\n");
+merken();
 
 // Facebook-Seite: das Bild mit Text. Ein Fehler hier bricht nicht ab, sonst gälte der Slot als
 // nicht gepostet und der nächste Lauf stellte denselben Post noch einmal auf Instagram.
@@ -70,6 +74,8 @@ if (process.env.FACEBOOK_POSTEN === "an") {
     const fb = await res.json();
     if (!res.ok || fb.error) throw new Error(fb.error?.message || res.status);
     console.log(`Facebook: veröffentlicht (${fb.post_id || fb.id})`);
+    plattformen.facebook = fb.post_id || fb.id;
+    merken();
   } catch (err) {
     console.log(`::warning::Facebook nicht gepostet: ${err.message}`);
   }
