@@ -1,8 +1,9 @@
 name: Probe Mini-Szene (temporär)
+# Holt nur die Stimme für die Sätze in probe-mini-szene/saetze.json in den Cache (ohne apt, ohne Rendern)
 on:
   push:
     branches: [claude/project-thread-y8otbn]
-    paths: [.github/workflows/probe-mini-szene.yml, probe-mini-szene/szenen.json]
+    paths: [.github/workflows/probe-mini-szene.yml, probe-mini-szene/saetze.json]
 permissions:
   contents: write
 concurrency:
@@ -11,7 +12,7 @@ concurrency:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     env:
       STIMME: an
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -20,19 +21,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Abhängigkeiten
+      - name: Stimme holen
         working-directory: autopilot
         run: |
           npm ci --no-audit --no-fund
-          sudo apt-get update -q
-          command -v ffmpeg || sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q ffmpeg
-          fc-list | grep -qi "Noto Color Emoji" || sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q fonts-noto-color-emoji
-      - name: Reel bauen
-        run: ./probe-mini-szene/bauen.sh
-      - name: Ergebnis auf den Branch legen
+          node --input-type=module -e '
+            import fs from "node:fs"; import { vorfuellen } from "./stimme.mjs";
+            for (const t of JSON.parse(fs.readFileSync("../probe-mini-szene/saetze.json", "utf8"))) {
+              console.log((await vorfuellen(t)) ? "neu" : "schon da", t);
+              await new Promise((r) => setTimeout(r, 6000));
+            }'
+      - name: Cache auf den Branch legen
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f probe-mini-szene/reel.mp4
-          git commit -m "Probe-Reel Mini-Szene gerendert"
+          git add autopilot/stimme-cache
+          git commit -m "Probe Mini-Szene: Stimme gerendert"
           git push
