@@ -189,9 +189,21 @@ jobs:
           git add autopilot/nutzung.json
           # Ein neuer Versuch nach gescheitertem Posten kann dieselben Dateien erzeugen
           git diff --cached --quiet || git commit -m "Tagebuch $ID"
+          aufsetzen() {
+            # Rebase auf main; Konflikte im Stimmen-Cache (gleicher Satz parallel vertont) nimmt die Fassung von main
+            git fetch -q origin main
+            git rebase -q origin/main && return 0
+            while git diff --name-only --diff-filter=U | grep -q .; do
+              if git diff --name-only --diff-filter=U | grep -vq '^autopilot/stimme-cache/'; then git rebase --abort; return 1; fi
+              git diff --name-only --diff-filter=U | xargs git checkout --ours --
+              git add autopilot/stimme-cache
+              GIT_EDITOR=true git rebase --continue && return 0
+            done
+            git rebase --abort 2>/dev/null; return 1
+          }
           # Während des Laufs (Reel mit Stimme dauert Minuten) kann main weitergewandert sein: vorher neu aufsetzen
           if [ "$LIVE" = "true" ]; then
-            for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; [ "$i" = 3 ] && exit 1; sleep 5; done
+            for i in 1 2 3; do aufsetzen && git push -q origin HEAD:main && break; [ "$i" = 3 ] && exit 1; sleep 5; done
           else git push origin HEAD:autopilot-probe; fi
           BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
           {
@@ -225,7 +237,19 @@ jobs:
           date -u +%FT%TZ > "tagebuch/$ID/gepostet.txt"
           git add "tagebuch/$ID/gepostet.txt"
           git commit -m "Gepostet $ID"
-          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; [ "$i" = 3 ] && exit 1; sleep 5; done
+          aufsetzen() {
+            # Rebase auf main; Konflikte im Stimmen-Cache (gleicher Satz parallel vertont) nimmt die Fassung von main
+            git fetch -q origin main
+            git rebase -q origin/main && return 0
+            while git diff --name-only --diff-filter=U | grep -q .; do
+              if git diff --name-only --diff-filter=U | grep -vq '^autopilot/stimme-cache/'; then git rebase --abort; return 1; fi
+              git diff --name-only --diff-filter=U | xargs git checkout --ours --
+              git add autopilot/stimme-cache
+              GIT_EDITOR=true git rebase --continue && return 0
+            done
+            git rebase --abort 2>/dev/null; return 1
+          }
+          for i in 1 2 3; do aufsetzen && git push -q origin HEAD:main && break; [ "$i" = 3 ] && exit 1; sleep 5; done
       - name: Warteschlange abhaken
         if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
         run: |
