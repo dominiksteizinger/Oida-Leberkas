@@ -21,5 +21,10 @@
     "#deadpan",
     "#homeoffice"
   ],
+  "trend": "Google Trends AT: jetstream (Sturm über Europa)",
+  "anlass": {
+    "ab": null,
+    "bis": "2026-10-24"
+  },
   "quelle": "#143"
 }

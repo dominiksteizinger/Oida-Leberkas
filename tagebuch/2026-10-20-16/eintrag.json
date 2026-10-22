@@ -39,5 +39,10 @@
   ],
   "zielgruppe": "alltag",
   "region": "dach",
+  "trend": "Google Trends AT: Selbstbedienungskassen (2000+ Suchen)",
+  "anlass": {
+    "ab": null,
+    "bis": "2026-10-21"
+  },
   "quelle": "#217"
 }

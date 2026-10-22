@@ -4,7 +4,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-// Höchstzahl pro 14 Posts (eine Woche bei zwei Posts am Tag). Summe > 14, damit immer etwas passt.
+// Höchstzahl pro 14 Posts (seit 22.10.2026 dreieinhalb Tage bei vier Posts am Tag). Summe > 14, damit immer etwas passt.
+// Ob die Warteschlange damit glatt durchläuft, zeigt ablauf.mjs (pruefen.mjs mit --warteschlange).
 export const ZIELGRUPPEN = {
   // Beziehung hat seit 22.10.2026 das meiste Gewicht (Dominik: Fanbase sind junge Frauen, Abblitzen und Dating-Situationen ziehen am meisten)
   dating: { name: "Dating, Beziehung und Ex", max: 8 },

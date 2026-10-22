@@ -21,7 +21,10 @@ export function postsLesen(wurzel, tage, jetzt = new Date()) {
     .map((d) => {
       const e = JSON.parse(fs.readFileSync(path.join(dir, d, "eintrag.json"), "utf8"));
       const gepostetAm = new Date(fs.readFileSync(path.join(dir, d, "gepostet.txt"), "utf8").trim());
-      return { id: d, e, gepostetAm, art: aufforderungsArt(e.aufforderung) };
+      // IDs je Plattform (posten.mjs, seit 22.10.2026); ältere Posts haben keine
+      let plattformen = {};
+      try { plattformen = JSON.parse(fs.readFileSync(path.join(dir, d, "plattformen.json"), "utf8")); } catch {}
+      return { id: d, e, gepostetAm, art: aufforderungsArt(e.aufforderung), plattformen };
     })
     .filter((p) => !isNaN(p.gepostetAm) && (jetzt - p.gepostetAm) / 86400e3 <= tage)
     .sort((a, b) => a.id.localeCompare(b.id));
@@ -49,7 +52,7 @@ export async function instagram({ token, igId, posts, f = fetch }) {
   const werte = {};
   let rechteGrund = null;
   for (const p of posts) {
-    const m = nachCaption.get(norm(captionText(p.e)));
+    const m = (p.plattformen?.instagram && medien.find((x) => x.id === p.plattformen.instagram)) || nachCaption.get(norm(captionText(p.e)));
     if (!m) { werte[p.id] = { fehlt: "kein passendes Instagram-Medium gefunden" }; continue; }
     const v = { link: m.permalink };
     try {
@@ -77,6 +80,32 @@ async function metriken(f, id, token) {
     }
   }
   return aus;
+}
+
+// ---- Facebook-Seite (seit 22.10.2026; nur Posts mit plattformen.json) ----
+// Shares, Reaktionen, Kommentare brauchen pages_read_engagement, die Reichweite (post_impressions_unique) read_insights.
+// Fehlt ein Recht, bleibt der jeweilige Wert leer; ohne Seiten-Token wird Facebook übersprungen.
+export async function facebook({ token, seite, posts, f = fetch }) {
+  const mitId = posts.filter((p) => p.plattformen?.facebook);
+  if (!mitId.length) return { status: "uebersprungen", grund: "noch kein Post mit gespeicherter Facebook-ID (kommt mit den nächsten Posts)" };
+  if (!token) return { status: "uebersprungen", grund: "Secret INSTAGRAM_ACCESS_TOKEN fehlt" };
+  let seitenToken;
+  try { seitenToken = (await graph(f, seite, { fields: "access_token" }, token)).access_token; } catch (err) { return { status: "uebersprungen", grund: `kein Seiten-Token: ${err.message}` }; }
+  if (!seitenToken) return { status: "uebersprungen", grund: "kein Seiten-Token (Recht pages_show_list oder pages_read_engagement fehlt?)" };
+  const werte = {};
+  for (const p of mitId) {
+    const v = {};
+    try {
+      const j = await graph(f, p.plattformen.facebook, { fields: "shares,reactions.summary(total_count).limit(0),comments.summary(total_count).limit(0),permalink_url" }, seitenToken);
+      Object.assign(v, { shares: j.shares?.count ?? 0, reaktionen: j.reactions?.summary?.total_count ?? null, kommentare: j.comments?.summary?.total_count ?? null, link: j.permalink_url || null });
+    } catch (err) { v.fehlt = err.message; }
+    try {
+      const j = await graph(f, `${p.plattformen.facebook}/insights`, { metric: "post_impressions_unique" }, seitenToken);
+      v.reichweite = j.data?.[0]?.values?.[0]?.value ?? null;
+    } catch {}
+    werte[p.id] = v;
+  }
+  return { status: "ok", werte };
 }
 
 // ---- YouTube ----
@@ -139,6 +168,65 @@ export function youtubeTitel(e) {
   return kurz(`${titelVon(e.inhalt)} #Shorts`.replace(/[<>]/g, ""), 100);
 }
 
+// ---- Viralitäts-Datenbank (Gesamt-Check 22.10.2026) ----
+// Ein Datensatz pro geposteten Post: alle Merkmale, die wir beim Schreiben steuern, und die letzten Zahlen je Plattform.
+// auswertung/posts.json wächst mit jeder Messung (alte Posts behalten ihre letzten Werte), damit nach einigen Wochen genug Fälle
+// für Vergleiche da sind (Mechanik, Format, Slot, Pointenlänge, Trend, Stimme gegen Reichweite, Shares, Saves, Wiedergabe).
+const WOCHENTAGE = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+const woerterVon = (t) => String(t || "").split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
+export const gegenueberVon = (i) => (i.format === "chat" ? i.name : i.format === "antwort" ? i.von || "Kommentar" : (String(i.satz || "").match(/^([\p{L} ]{2,20}):\s*„/u) || [])[1] || null);
+
+export function merkmale(p, { wurzel = null, frueher = [] } = {}) {
+  const e = p.e, i = e.inhalt || {};
+  const ss = setupUndSchluss(i);
+  let reel = null;
+  try { if (wurzel) reel = JSON.parse(fs.readFileSync(path.join(wurzel, "tagebuch", p.id, "reel.json"), "utf8")); } catch {}
+  const datum = p.id.slice(0, 10);
+  return {
+    id: p.id, datum, slot: p.id.slice(11), wochentag: WOCHENTAGE[new Date(`${datum}T12:00:00Z`).getUTCDay()],
+    format: i.format, mechanik: e.mechanik || null, zielgruppe: e.zielgruppe || null, region: e.region || "dach",
+    trend: e.trend || null, annahme: e.annahme || null, anlass: !!e.anlass, gegenueber: gegenueberVon(i),
+    bild: e.bild || null, bild_erneut: !!(e.bild && frueher.some((x) => x.e.bild === e.bild && x.id < p.id)),
+    schluss: ss?.schluss || null, schluss_woerter: ss ? woerterVon(ss.schluss) : null,
+    setup_woerter: ss ? woerterVon(ss.setup.join(" ")) : null, takte: ss ? ss.setup.filter(Boolean).length + 1 : null,
+    aufforderung: p.art, caption_woerter: woerterVon(e.caption), hashtags: (e.hashtags || []).length,
+    reel_s: reel?.dauer ?? null, stimme: reel ? reel.stimme : null, jingle: reel ? reel.jingle : null,
+    quelle: e.quelle || null,
+  };
+}
+
+const quote = (a, b) => (typeof a === "number" && b > 0 ? Number((a / b).toFixed(4)) : null);
+export function zahlen(i = {}, y = {}) {
+  const ig = i.reach === undefined && i.views === undefined ? null : {
+    views: i.views ?? null, reichweite: i.reach ?? null, shares: i.shares ?? null, saves: i.saved ?? null, likes: i.likes ?? null, kommentare: i.comments ?? null,
+    wiedergabe_s: typeof i.ig_reels_avg_watch_time === "number" ? Number((i.ig_reels_avg_watch_time / 1000).toFixed(1)) : null,
+    share_quote: quote(i.shares, i.reach), save_quote: quote(i.saved, i.reach), link: i.link || null,
+  };
+  const yt = y.views === undefined ? null : {
+    views: y.views ?? null, wiedergabe_s: y.averageViewDuration ?? null, wiedergabe_pct: y.averageViewPercentage ?? null, likes: y.likes ?? null,
+    shares: y.shares ?? null, kommentare: y.comments ?? null, abos: y.subscribersGained ?? null, vorlaeufig: !!y.vorlaeufig, link: y.link || null,
+  };
+  return { ig, yt, punkte: punkte(i, y) };
+}
+
+// alt: bisheriger Inhalt von posts.json ({ posts: { id: datensatz } }). Neue Zahlen ersetzen alte nur, wenn sie da sind.
+export function datenbank(alt, { posts, ig, yt, fb = { status: "uebersprungen" }, jetzt = new Date(), wurzel = null }) {
+  const db = { stand: jetzt.toISOString(), felder: "siehe autopilot/messung-anleitung.md, Abschnitt Datenbank", posts: { ...(alt?.posts || {}) } };
+  for (const p of posts) {
+    const z = zahlen(ig.status === "ok" ? ig.werte[p.id] : {}, yt.status === "ok" ? yt.werte[p.id] : {});
+    const vorher = db.posts[p.id] || {};
+    db.posts[p.id] = {
+      ...merkmale(p, { wurzel, frueher: posts }),
+      alter_h: Math.round((jetzt - p.gepostetAm) / 3600e3),
+      ig: z.ig || vorher.ig || null, yt: z.yt || vorher.yt || null,
+      facebook: (fb.status === "ok" && fb.werte[p.id] && !fb.werte[p.id].fehlt ? fb.werte[p.id] : null) || vorher.facebook || null, tiktok: vorher.tiktok || null,
+      punkte: z.punkte ?? vorher.punkte ?? null, urteil: vorher.urteil || null,
+    };
+  }
+  db.posts = Object.fromEntries(Object.entries(db.posts).sort(([a], [b]) => a.localeCompare(b)));
+  return db;
+}
+
 // ---- Bericht ----
 const zahl = (x, nk = 0) => (x === undefined || x === null || Number.isNaN(x) ? "–" : Number(x).toLocaleString("de-AT", { maximumFractionDigits: nk }));
 const sek = (ms) => (ms === undefined || ms === null ? "–" : `${zahl(ms / 1000, 1)} s`);
@@ -186,11 +274,17 @@ export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = []
     return [...m].map(([k, l]) => ({ k, n: l.length, index: index(l) })).sort((a, b) => b.index - a.index);
   };
   const mech = gruppen((e) => e.mechanik), zg = gruppen((e) => e.zielgruppe), trend = gruppen((e) => (e.trend ? "Trend-Post" : "ohne Trend"));
+  const format = gruppen((e) => e.inhalt?.format), slot = gruppenNach((x) => `${x.p.id.slice(11)} Uhr`);
+  function gruppenNach(fn) {
+    const m = new Map();
+    for (const x of reif) { const k = fn(x); (m.get(k) || m.set(k, []).get(k)).push(x); }
+    return [...m].map(([k, l]) => ({ k, n: l.length, index: index(l) })).sort((a, b) => b.index - a.index);
+  }
   const zaehlt = (g) => g.k !== "ohne Tag" && g.n >= KURZ.mindestPosts;
   const auswahl = (l, f) => l.filter((g) => zaehlt(g) && f(g.index)).map((g) => g.k);
   const signal = {
-    mehr: { mechanik: auswahl(mech, (i) => i >= KURZ.mehr), zielgruppe: auswahl(zg, (i) => i >= KURZ.mehr) },
-    weniger: { mechanik: auswahl(mech, (i) => i <= KURZ.weniger), zielgruppe: auswahl(zg, (i) => i <= KURZ.weniger) },
+    mehr: { mechanik: auswahl(mech, (i) => i >= KURZ.mehr), zielgruppe: auswahl(zg, (i) => i >= KURZ.mehr), format: auswahl(format, (i) => i >= KURZ.mehr) },
+    weniger: { mechanik: auswahl(mech, (i) => i <= KURZ.weniger), zielgruppe: auswahl(zg, (i) => i <= KURZ.weniger), format: auswahl(format, (i) => i <= KURZ.weniger) },
   };
   const knapp = (x) => ({ id: x.p.id, titel: titelVon(x.p.e.inhalt), schluss: x.schluss, format: x.p.e.inhalt.format, mechanik: x.p.e.mechanik || null, zielgruppe: x.p.e.zielgruppe || null, trend: x.p.e.trend || null, punkte: x.wert });
   const top = reif.slice(0, 3).map(knapp);
@@ -207,10 +301,10 @@ export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = []
     if (flop.length) z.push("**Flop 3**", "", ...kopf, ...flop.map(zeile), "");
     const pfeil = (g) => (!zaehlt(g) ? "" : g.index >= KURZ.mehr ? " ▲" : g.index <= KURZ.weniger ? " ▼" : "");
     const liste = (l) => l.map((g) => `${g.k} ${g.index}${pfeil(g)} (${g.n})`).join(" · ");
-    z.push(`**Mechanik:** ${liste(mech)}`, "", `**Zielgruppe:** ${liste(zg)}`, "", `**Trend:** ${liste(trend)}`, "");
+    z.push(`**Mechanik:** ${liste(mech)}`, "", `**Zielgruppe:** ${liste(zg)}`, "", `**Trend:** ${liste(trend)}`, "", `**Format:** ${liste(format)}`, "", `**Slot:** ${liste(slot)}`, "");
     z.push(`▲ ab Index ${KURZ.mehr}, ▼ bis ${KURZ.weniger}, erst ab ${KURZ.mindestPosts} Posts. In Klammern die Anzahl. Bei so wenigen Posts ist das Tendenz, kein Beweis.`, "");
   }
-  const was = (o) => [o.mechanik.length && `Mechanik ${o.mechanik.join(", ")}`, o.zielgruppe.length && `Zielgruppe ${o.zielgruppe.join(", ")}`].filter(Boolean).join("; ");
+  const was = (o) => [o.mechanik.length && `Mechanik ${o.mechanik.join(", ")}`, o.zielgruppe.length && `Zielgruppe ${o.zielgruppe.join(", ")}`, o.format?.length && `Format ${o.format.join(", ")}`].filter(Boolean).join("; ");
   z.push("**Für den Nachschub** (steht auch in `auswertung/signal.json`, der Schreib-Lauf liest es):", "",
     `- Mehr davon: ${was(signal.mehr) || "noch kein klares Signal"}`, `- Weniger davon: ${was(signal.weniger) || "noch kein klares Signal"}`, "");
   z.push("**Fehler-Check** (gleiche Prüfung wie vor dem Anlegen: Schluss, Kopf im Bild, Pflichtfelder):", "");
@@ -279,6 +373,7 @@ async function main() {
   const sicher = async (fn, name) => { try { return await fn(); } catch (err) { return { status: "uebersprungen", grund: `${name} unerwartet gescheitert: ${err.message}` }; } };
   const ig = await sicher(() => instagram({ token: process.env.INSTAGRAM_ACCESS_TOKEN, igId: process.env.IG_USER_ID || "17841454284048783", posts }), "Instagram");
   const yt = await sicher(() => youtube({ env: process.env, posts, von, bis: datum }), "YouTube");
+  const fb = await sicher(() => facebook({ token: process.env.INSTAGRAM_ACCESS_TOKEN, seite: process.env.FB_PAGE_ID || "1415408888319545", posts }), "Facebook");
   const hier = path.join(wurzel, "autopilot");
   const bibliothek = JSON.parse(fs.readFileSync(path.join(hier, "bibliothek.json"), "utf8"));
   const kurz = kurzfassung({ posts, ig, yt, jetzt, bibliothek, bilderDir: path.join(hier, "bilder") });
@@ -287,8 +382,14 @@ async function main() {
   fs.mkdirSync(dir, { recursive: true });
   // Rückkopplung für den Schreib-Lauf (nachschub.md, schnellweg.md): was mehr, was weniger, Top und Flop mit Schluss
   fs.writeFileSync(path.join(dir, "signal.json"), JSON.stringify({ datum, ...kurz.signal }, null, 2) + "\n");
+  // Viralitäts-Datenbank: ein Datensatz pro Post, wächst mit jeder Messung
+  const dbDatei = path.join(dir, "posts.json");
+  let alt = null;
+  try { alt = JSON.parse(fs.readFileSync(dbDatei, "utf8")); } catch {}
+  fs.writeFileSync(dbDatei, JSON.stringify(datenbank(alt, { posts, ig, yt, fb, jetzt, wurzel }), null, 1) + "\n");
   const datei = path.join(dir, `${datum}.md`);
-  fs.writeFileSync(datei, text);
+  const fbZeile = fb.status === "ok" ? `\n\n_Facebook: ${Object.keys(fb.werte).length} Posts gemessen, Werte in auswertung/posts.json._\n` : `\n\n_Facebook: übersprungen (${fb.grund})._\n`;
+  fs.writeFileSync(datei, text + fbZeile);
   console.log(text);
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `datei=auswertung/${datum}.md\nubersprungen=${[ig, yt].filter((r) => r.status !== "ok").length}\n`);
 }

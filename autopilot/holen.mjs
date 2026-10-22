@@ -47,7 +47,9 @@ function pruefe(body) {
   }
   // ab/bis (optional, JJJJ-MM-TT): Post nur in diesem Zeitraum, z. B. für Anlässe (Allerheiligen, Martinstag)
   for (const k of ["ab", "bis"]) if (roh[k] !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(roh[k])) throw new Error(`${k} muss JJJJ-MM-TT sein`);
-  return { e, mechanik: mechanikLesen(roh), ...zielgruppeLesen(roh), wunschSlot: roh.slot ? String(roh.slot) : null, ab: roh.ab || null, bis: roh.bis || null };
+  // trend und annahme wandern ins Tagebuch, damit die Auswertung danach gruppieren kann (messung.mjs)
+  const merkmale = Object.fromEntries(["trend", "annahme"].filter((k) => typeof roh[k] === "string" && roh[k].trim()).map((k) => [k, roh[k].trim()]));
+  return { e, merkmale, mechanik: mechanikLesen(roh), ...zielgruppeLesen(roh), wunschSlot: roh.slot ? String(roh.slot) : null, ab: roh.ab || null, bis: roh.bis || null };
 }
 
 // Nur Issues vom Repo-Owner: Die Vorlage „Fertiger Post“ setzt das Label automatisch, auch bei Fremden.
@@ -92,7 +94,7 @@ for (const issue of offen) {
   const quote = pruefeQuote(verlauf, p.mechanik);
   const zg = pruefeZielgruppe(zgVerlauf, p);
   const grund = !quote.ok ? `Humor-Quote: ${quote.grund}` : !zg.ok ? `Zielgruppen-Quote: ${zg.grund}` : null;
-  const k = { issue, p, e: p.e, mechanik: p.mechanik, zielgruppe: p.zielgruppe, region: p.region, rang: kandidaten.length, datiert: !!(p.ab || p.bis) };
+  const k = { issue, p, e: p.e, merkmale: p.merkmale, mechanik: p.mechanik, zielgruppe: p.zielgruppe, region: p.region, rang: kandidaten.length, datiert: !!(p.ab || p.bis) };
   if (grund && !p.ab && !p.bis) {
     console.log(`#${issue.number} zurückgestellt, ${grund}.`);
     zurueck = zurueck || { ...k, warnung: grund };
@@ -135,7 +137,7 @@ const { issue, e } = gefunden;
 const verbleibend = gelesen - 1;
 const ordner = path.join(WURZEL, "tagebuch", id);
 fs.mkdirSync(ordner, { recursive: true });
-fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id, datum, slot, ...e, ...(gefunden.mechanik ? { mechanik: gefunden.mechanik } : {}), ...(gefunden.zielgruppe ? { zielgruppe: gefunden.zielgruppe } : {}), region: gefunden.region || "dach", quelle: `#${issue.number}` }, null, 2) + "\n");
+fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id, datum, slot, ...e, ...(gefunden.mechanik ? { mechanik: gefunden.mechanik } : {}), ...(gefunden.zielgruppe ? { zielgruppe: gefunden.zielgruppe } : {}), region: gefunden.region || "dach", ...gefunden.merkmale, ...(gefunden.p.ab || gefunden.p.bis ? { anlass: { ab: gefunden.p.ab, bis: gefunden.p.bis } } : {}), quelle: `#${issue.number}` }, null, 2) + "\n");
 if (e.bild) {
   nutzung = verbuchen(nutzung, { id, datum, slot, bild: e.bild, e });
   fs.writeFileSync(nutzungDatei, JSON.stringify(nutzung, null, 2) + "\n");
