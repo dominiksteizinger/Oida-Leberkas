@@ -149,6 +149,8 @@ jobs:
       - name: Reel (mit oder ohne Stimme)
         id: reel
         if: steps.holen.outputs.gefunden == 'true'
+        # Notbremse gegen Hänger (22.10.2026: Reel-Schritt lief über 45 Minuten, normal sind wenige Minuten)
+        timeout-minutes: 25
         working-directory: autopilot
         env:
           # Stimme nur, wenn die Repo-Variable STIMME "an" ist; sonst stumm wie bisher
