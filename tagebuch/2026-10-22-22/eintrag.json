@@ -1,0 +1,27 @@
+{
+  "id": "2026-10-22-22",
+  "datum": "2026-10-22",
+  "slot": "22",
+  "inhalt": {
+    "format": "szene",
+    "satz": "Bewerbungsgespräch: „Was ist Ihre größte Schwäche?“",
+    "klammern": [
+      "Sonnenlicht.",
+      "Ab 17 Uhr bin ich belastbar."
+    ]
+  },
+  "bild": "meeting-allein-scharf.jpg",
+  "caption": "Ehrlich währt am längsten.",
+  "aufforderung": "Was sagst du bei der Frage?",
+  "hashtags": [
+    "#bewerbung",
+    "#jobsuche",
+    "#deadpan",
+    "#goth"
+  ],
+  "mechanik": "gestaendnis",
+  "zielgruppe": "jobstart",
+  "region": "dach",
+  "annahme": "Perfektionismus",
+  "quelle": "#225"
+}
