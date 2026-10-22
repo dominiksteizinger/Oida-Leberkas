@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { anlaesse, googleLesen, redditLesen, ferienLesen, schnellQuellen } from "./trends.mjs";
+import { anlaesse, googleLesen, redditLesen, ferienLesen, schnellQuellen, feedLesen } from "./trends.mjs";
 
 test("Google-Trends-RSS: Suchbegriff, Menge und erste Schlagzeile", () => {
   const xml = `<rss><channel><title>Daily Search Trends</title><item><title>Zeitumstellung</title><ht:approx_traffic>20000+</ht:approx_traffic>
@@ -48,4 +48,9 @@ test("Dating-Shorts: nur deutschsprachige Titel", async () => {
   assert.equal(deutsch("Dieses Mädchen zeigte ihrer besten Freundin ihren Gym-Crush"), true);
   assert.equal(deutsch("I Tried to Hide My Farts on Our Date!"), false);
   assert.equal(deutsch("Going on a date with Link"), false);
+});
+
+test("RSS-Feed der Witz-Sammlung: Titel, Anriss ohne HTML, Link", () => {
+  const xml = "<rss><channel><title>Seite</title><item><title>Liebesperle der Woche</title><link>https://x.de/a/</link><description><![CDATA[<p>Kurzer  Anriss</p>]]></description></item><item><title></title></item></channel></rss>";
+  assert.deepEqual(feedLesen(xml), ["Liebesperle der Woche: Kurzer Anriss (https://x.de/a/)"]);
 });

@@ -63,6 +63,16 @@ const reddit = async (sub, zeit = "week") => {
   return redditLesen(await text.text());
 };
 
+// Witz-Sammlungen (seit 22.10.2026, witz-muster.md): neueste Beziehungs-Artikel von Twitterperlen als RSS, Titel und Anriss.
+// Nur, um neue Bauweisen zu entdecken; nie Text übernehmen.
+export const feedLesen = (xml) => [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(([, item]) => {
+  const titel = tag(item, "title")[0];
+  const anriss = (tag(item, "description")[0] || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 140);
+  const link = tag(item, "link")[0];
+  return titel ? `${titel}${anriss ? `: ${anriss}` : ""}${link ? ` (${link})` : ""}` : null;
+}).filter(Boolean);
+const witzFeed = async () => feedLesen(await (await holen("https://www.twitterperlen.de/beziehung/feed/")).text());
+
 // Schulferien der nächsten 60 Tage in AT und DE (OpenHolidays API, frei, ohne Schlüssel). Gleiche Ferien mehrerer Bundesländer
 // werden zu einer Zeile zusammengefasst, sortiert nach Beginn. Publikum (YouTube, 19.10.2026): Deutschland 37 %, Österreich 25 %.
 export const ferienLesen = (liste) => {
@@ -191,6 +201,7 @@ const quellen = schnell ? schnellQuellen(datum) : [
   ["Google Trends Österreich", () => googleTrends("AT")],
   ["Wikipedia de, meistgelesen (letzte 7 Tage)", () => wikipedia(datum)],
   ...REDDIT.map(([sub, was]) => [`Reddit r/${sub}, Top der Woche (${was})`, () => reddit(sub)]),
+  ["Witz-Sammlung: Twitterperlen Beziehung (Bauweise für witz-muster.md, nie Text)", witzFeed],
   ["Schulferien Deutschland und Österreich (nächste 60 Tage)", () => schulferien(datum)],
   ["Kuriose Gedenk- und Aktionstage", kurioseTage],
   ["YouTube-Trends Deutschland", () => youtube("DE")],

@@ -19,6 +19,7 @@ import { fehlerartVon, haeufigste, gruendeLesen, FEHLERARTEN } from "./fehlerart
 import { verlaufLesen } from "./humorquote.mjs";
 import { zgVerlaufLesen } from "./zielgruppe.mjs";
 import { bisVon } from "./reihenfolge.mjs";
+import { musterLesen, pruefeMusterMischung } from "./witzmuster.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const bibliothek = pruefeTags(JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")));
@@ -42,6 +43,8 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
   versuch(() => pruefeWortfilter(post));
   // Mechanik der Wende ist für neue Posts Pflicht (Witz-Parameter, humorquote.mjs)
   versuch(() => mechanikLesen(post, { pflicht: true }));
+  // Bauweise aus der Musterbibliothek (witz-muster.md), Pflicht für neue Posts
+  versuch(() => musterLesen(post, { pflicht: true }));
   fehler.push(...pruefeBauplan(post));
   // Schluss-Check: bekannte Fehler der letzten Zeile (flach, ohne neues Wort, zu lang, Gegenüber hat die Pointe; schluss.mjs)
   if (e) fehler.push(...pruefeSchluss(post));
@@ -109,7 +112,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     if (r.fehler.length) { ok = false; console.log(`✗ ${i + 1}. ${posts[i].titel || "(ohne Titel)"}\n  - ${r.fehler.map((f) => { const a = fehlerartVon(f); return a ? `[${FEHLERARTEN[a].name}] ${f}` : f; }).join("\n  - ")}`); }
     else console.log(`✓ ${i + 1}. ${posts[i].titel}`);
   });
-  const mischung = pruefeMischung(posts);
+  const mischung = [...pruefeMischung(posts), ...pruefeMusterMischung(posts)];
   if (mischung.length) { ok = false; console.log(`✗ Mischung des Laufs\n  - ${mischung.join("\n  - ")}`); }
   if (!ok) { console.log("\nNicht angelegt: erst alle Fehler beheben."); process.exit(1); }
   if (opt("--issues")) fs.writeFileSync(opt("--issues"), JSON.stringify(ergebnis.map((r) => r.issue), null, 2) + "\n");

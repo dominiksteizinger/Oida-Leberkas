@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { pruefeAlle } from "./pruefen.mjs";
 
-const szene = (extra = {}) => ({ titel: "Post 99 (szene): Test", inhalt: { format: "szene", satz: "Montag.", klammern: ["Kalender gelöscht."] }, bild: "buero-montag.jpg", caption: "Montag.", hashtags: ["#wien"], zielgruppe: "jobstart", mechanik: "ertappt", annahme: "Montag ist schlimm", ...extra });
+const szene = (extra = {}) => ({ titel: "Post 99 (szene): Test", inhalt: { format: "szene", satz: "Montag.", klammern: ["Kalender gelöscht."] }, bild: "buero-montag.jpg", caption: "Montag.", hashtags: ["#wien"], zielgruppe: "jobstart", mechanik: "ertappt", muster: "bedingung-verraet", annahme: "Montag ist schlimm", ...extra });
 
 test("gültiger Post ergibt Issue-Text mit JSON-Block, ohne titel und notiz", () => {
   const [r] = pruefeAlle([szene({ notiz: "Trend-Post." })], [], "2026-10-19");
