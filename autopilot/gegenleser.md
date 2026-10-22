@@ -8,6 +8,7 @@ Dominik, 22.10.2026: ja. Gegen flache Pointen, Vorwissen und Ü40-Ton reicht die
 2. Seine Antworten mit dem Post vergleichen:
    - **Verworfen oder umschreiben**, wenn er die Pointe anders versteht als `annahme` und Schluss meinen, wenn er Vorwissen braucht, wenn er niemanden zum Schicken nennt, wenn er die Person auf über 30 schätzt oder wenn die Note unter 3 liegt.
    - **Grund festhalten:** Jeder umgeschriebene oder verworfene Post bekommt genau eine Fehlerart aus `fehlerarten.mjs` (seine Zeile 6, sonst selbst zuordnen) und wird eingetragen: `node fehlerarten.mjs add <datum> gegenleser "<Titel>" <fehlerart> "<ein Satz, woran es lag>" "<Schluss>"`. Die Datei `auswertung/gruende.json` geht mit dem PR des Laufs nach main.
+   - **Umschreiben mit der Musterbibliothek:** Die „Falle“ des Musters (`witz-muster.md`, Feld `muster` im Post) zuerst prüfen; passt die Bauweise nicht, ein anderes Muster nehmen statt nur Wörter zu tauschen.
    - Umgeschriebene Posts laufen erneut durch `pruefen.mjs`, die Vorschau und einen neuen Gegenleser (nicht denselben).
 3. Im Bericht eine Zeile: wie viele Posts geprüft, wie viele umgeschrieben oder verworfen.
 
