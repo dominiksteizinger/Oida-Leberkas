@@ -4,6 +4,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { captionText, titel as titelVon } from "./eintrag.mjs";
+import { setupUndSchluss, pruefeSchluss } from "./schluss.mjs";
+import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
 
 const GRAPH = "https://graph.facebook.com";
 const IG_METRIKEN = ["views", "reach", "saved", "shares", "likes", "comments", "ig_reels_avg_watch_time"];
@@ -142,8 +144,85 @@ const zahl = (x, nk = 0) => (x === undefined || x === null || Number.isNaN(x) ? 
 const sek = (ms) => (ms === undefined || ms === null ? "–" : `${zahl(ms / 1000, 1)} s`);
 const mittel = (liste, f) => { const v = liste.map(f).filter((x) => typeof x === "number"); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
 
-export function bericht({ datum, tage, posts, ig, yt }) {
-  const z = [`# Wochenauswertung ${datum}`, "", `Posts der letzten ${tage} Tage: ${posts.length}. Werte sind Gesamtstände zum Abrufzeitpunkt, junge Posts (unter 24 h) sind noch nicht aussagekräftig.`, ""];
+// ---- Kurzfassung (Dominik 22.10.2026: Auswertung schnell lesbar, Fehler nicht wiederholen) ----
+// Eine Zahl pro Post: Punkte = IG-Reichweite + YT-Views + 10 × (IG-Shares + IG-Saves). Shares und Saves zählen zehnfach,
+// weil ein geteilter Post den Send-Test bestanden hat. Bewertet werden nur Posts der letzten 7 Tage, die älter als 24 h sind.
+export const KURZ = { tage: 7, mindestAlterStunden: 24, gewichtTeilen: 10, mehr: 120, weniger: 80, mindestPosts: 2 };
+
+export function punkte(i = {}, y = {}) {
+  const n = (x) => (typeof x === "number" ? x : 0);
+  if (i.reach === undefined && y.views === undefined) return null;
+  return n(i.reach) + n(y.views) + KURZ.gewichtTeilen * (n(i.shares) + n(i.saved));
+}
+
+// Fehler-Check auf das, was wirklich rausging: dieselben Prüfungen wie pruefen.mjs (Schluss, Kopf im Bild) plus fehlende Pflichtfelder
+export function fehlerCheck(p, bibliothek = [], bilderDir = null) {
+  const f = [...pruefeSchluss(p.e)];
+  if (!p.e.mechanik) f.push("ohne mechanik");
+  if (!p.e.zielgruppe) f.push("ohne zielgruppe");
+  if (p.e.bild) {
+    const b = bibliothek.find((x) => x.datei === p.e.bild);
+    let mass = null;
+    try { if (bilderDir) mass = bildMass(path.join(bilderDir, p.e.bild)); } catch {}
+    f.push(...pruefeAusschnitt(p.e, b, mass));
+  }
+  return f.map((x) => x.replace(/ \(bewusst so:.*\)$/, ""));
+}
+
+export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = [], bilderDir = null }) {
+  const igw = (id) => (ig.status === "ok" ? ig.werte[id] || {} : {});
+  const ytw = (id) => (yt.status === "ok" ? yt.werte[id] || {} : {});
+  const alter = (p) => (jetzt - p.gepostetAm) / 3600e3;
+  const woche = posts.filter((p) => alter(p) <= KURZ.tage * 24);
+  const reif = woche.filter((p) => alter(p) >= KURZ.mindestAlterStunden)
+    .map((p) => ({ p, wert: punkte(igw(p.id), ytw(p.id)), schluss: setupUndSchluss(p.e.inhalt)?.schluss || titelVon(p.e.inhalt) }))
+    .filter((x) => x.wert !== null)
+    .sort((a, b) => b.wert - a.wert);
+  const schnitt = reif.length ? reif.reduce((a, x) => a + x.wert, 0) / reif.length : 0;
+  const index = (l) => (schnitt ? Math.round((l.reduce((a, x) => a + x.wert, 0) / l.length / schnitt) * 100) : 0);
+  const gruppen = (fn) => {
+    const m = new Map();
+    for (const x of reif) { const k = fn(x.p.e) || "ohne Tag"; (m.get(k) || m.set(k, []).get(k)).push(x); }
+    return [...m].map(([k, l]) => ({ k, n: l.length, index: index(l) })).sort((a, b) => b.index - a.index);
+  };
+  const mech = gruppen((e) => e.mechanik), zg = gruppen((e) => e.zielgruppe), trend = gruppen((e) => (e.trend ? "Trend-Post" : "ohne Trend"));
+  const zaehlt = (g) => g.k !== "ohne Tag" && g.n >= KURZ.mindestPosts;
+  const auswahl = (l, f) => l.filter((g) => zaehlt(g) && f(g.index)).map((g) => g.k);
+  const signal = {
+    mehr: { mechanik: auswahl(mech, (i) => i >= KURZ.mehr), zielgruppe: auswahl(zg, (i) => i >= KURZ.mehr) },
+    weniger: { mechanik: auswahl(mech, (i) => i <= KURZ.weniger), zielgruppe: auswahl(zg, (i) => i <= KURZ.weniger) },
+  };
+  const knapp = (x) => ({ id: x.p.id, titel: titelVon(x.p.e.inhalt), schluss: x.schluss, format: x.p.e.inhalt.format, mechanik: x.p.e.mechanik || null, zielgruppe: x.p.e.zielgruppe || null, trend: x.p.e.trend || null, punkte: x.wert });
+  const top = reif.slice(0, 3).map(knapp);
+  const flop = reif.length > 3 ? reif.slice(-Math.min(3, reif.length - 3)).reverse().map(knapp) : [];
+  const fehler = woche.map((p) => ({ id: p.id, schluss: setupUndSchluss(p.e.inhalt)?.schluss || "", f: fehlerCheck(p, bibliothek, bilderDir) })).filter((x) => x.f.length);
+
+  const z = ["## Kurzfassung der Woche", ""];
+  if (!reif.length) z.push(`Noch keine Zahlen: ${woche.length} Posts in den letzten ${KURZ.tage} Tagen, keiner älter als ${KURZ.mindestAlterStunden} h mit Werten von Instagram oder YouTube.`, "");
+  else {
+    z.push(`${woche.length} Posts in ${KURZ.tage} Tagen, ${reif.length} bewertet. Punkte = IG-Reichweite + YT-Views + ${KURZ.gewichtTeilen} × (Shares + Saves). Schnitt: **${zahl(schnitt)} Punkte**, Index 100 = Schnitt.`, "");
+    const zeile = (x) => `| ${x.punkte} | „${x.schluss}“ | ${x.format} | ${x.mechanik || "–"} | ${x.zielgruppe || "–"}${x.trend ? " · Trend" : ""} |`;
+    const kopf = ["| Punkte | Schluss | Format | Mechanik | Zielgruppe |", "|---|---|---|---|---|"];
+    z.push("**Top 3**", "", ...kopf, ...top.map(zeile), "");
+    if (flop.length) z.push("**Flop 3**", "", ...kopf, ...flop.map(zeile), "");
+    const pfeil = (g) => (!zaehlt(g) ? "" : g.index >= KURZ.mehr ? " ▲" : g.index <= KURZ.weniger ? " ▼" : "");
+    const liste = (l) => l.map((g) => `${g.k} ${g.index}${pfeil(g)} (${g.n})`).join(" · ");
+    z.push(`**Mechanik:** ${liste(mech)}`, "", `**Zielgruppe:** ${liste(zg)}`, "", `**Trend:** ${liste(trend)}`, "");
+    z.push(`▲ ab Index ${KURZ.mehr}, ▼ bis ${KURZ.weniger}, erst ab ${KURZ.mindestPosts} Posts. In Klammern die Anzahl. Bei so wenigen Posts ist das Tendenz, kein Beweis.`, "");
+  }
+  const was = (o) => [o.mechanik.length && `Mechanik ${o.mechanik.join(", ")}`, o.zielgruppe.length && `Zielgruppe ${o.zielgruppe.join(", ")}`].filter(Boolean).join("; ");
+  z.push("**Für den Nachschub** (steht auch in `auswertung/signal.json`, der Schreib-Lauf liest es):", "",
+    `- Mehr davon: ${was(signal.mehr) || "noch kein klares Signal"}`, `- Weniger davon: ${was(signal.weniger) || "noch kein klares Signal"}`, "");
+  z.push("**Fehler-Check** (gleiche Prüfung wie vor dem Anlegen: Schluss, Kopf im Bild, Pflichtfelder):", "");
+  if (!fehler.length) z.push("- Keine bekannten Fehler in den Posts der Woche.", "");
+  else z.push(...fehler.map((x) => `- ${x.id} „${x.schluss}“: ${x.f.join("; ")}`), "");
+  return { text: z.join("\n"), signal: { ...signal, top, flop, schnitt: Math.round(schnitt), bewertet: reif.length, fehler: fehler.map((x) => ({ id: x.id, fehler: x.f })) } };
+}
+
+export function bericht({ datum, tage, posts, ig, yt, kurz = null }) {
+  const z = [`# Wochenauswertung ${datum}`, ""];
+  if (kurz) z.push(kurz, `<details><summary>Details: alle Posts und Gruppen der letzten ${tage} Tage</summary>`, "");
+  z.push(`Posts der letzten ${tage} Tage: ${posts.length}. Werte sind Gesamtstände zum Abrufzeitpunkt, junge Posts (unter 24 h) sind noch nicht aussagekräftig.`, "");
   z.push("## Status der Abfragen", "");
   for (const [name, r] of [["Instagram", ig], ["YouTube", yt]]) z.push(r.status === "ok" ? `- ${name}: ok${r.vorlaeufig ? ` (${r.vorlaeufig} Posts nur mit aktuellen Zählern, Analytics kommt mit 1 bis 3 Tagen Verzug; Ø-Wiedergabe fehlt dort noch)` : ""}` : `- ${name}: **übersprungen**: ${r.grund}. Anleitung: autopilot/messung-anleitung.md`);
   z.push("");
@@ -185,6 +264,7 @@ export function bericht({ datum, tage, posts, ig, yt }) {
     z.push("");
   }
   z.push("## Hinweise", "", "- Instagram-Reichweite zählt Konten, Views zählen Wiedergaben. Beide sind Gesamtstände seit dem Posten.", "- „Viewed vs. swiped away“ (Shorts) steht nur in YouTube Studio, nicht in der API.", "- Weniger als 20 Posts pro Gruppe sind Tendenz, kein Beweis.");
+  if (kurz) z.push("", "</details>");
   return z.join("\n") + "\n";
 }
 
@@ -199,9 +279,14 @@ async function main() {
   const sicher = async (fn, name) => { try { return await fn(); } catch (err) { return { status: "uebersprungen", grund: `${name} unerwartet gescheitert: ${err.message}` }; } };
   const ig = await sicher(() => instagram({ token: process.env.INSTAGRAM_ACCESS_TOKEN, igId: process.env.IG_USER_ID || "17841454284048783", posts }), "Instagram");
   const yt = await sicher(() => youtube({ env: process.env, posts, von, bis: datum }), "YouTube");
-  const text = bericht({ datum, tage, posts, ig, yt });
+  const hier = path.join(wurzel, "autopilot");
+  const bibliothek = JSON.parse(fs.readFileSync(path.join(hier, "bibliothek.json"), "utf8"));
+  const kurz = kurzfassung({ posts, ig, yt, jetzt, bibliothek, bilderDir: path.join(hier, "bilder") });
+  const text = bericht({ datum, tage, posts, ig, yt, kurz: kurz.text });
   const dir = path.join(wurzel, "auswertung");
   fs.mkdirSync(dir, { recursive: true });
+  // Rückkopplung für den Schreib-Lauf (nachschub.md, schnellweg.md): was mehr, was weniger, Top und Flop mit Schluss
+  fs.writeFileSync(path.join(dir, "signal.json"), JSON.stringify({ datum, ...kurz.signal }, null, 2) + "\n");
   const datei = path.join(dir, `${datum}.md`);
   fs.writeFileSync(datei, text);
   console.log(text);

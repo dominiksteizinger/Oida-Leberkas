@@ -12,6 +12,8 @@ import { TAGS, passtZuDatum, pruefeTags } from "./bildregeln.mjs";
 import { pruefeWortfilter } from "./wortfilter.mjs";
 import { mechanikLesen, pruefeMischung, pruefeBauplan } from "./humorquote.mjs";
 import { zielgruppeLesen, pruefeUe40 } from "./zielgruppe.mjs";
+import { pruefeSchluss } from "./schluss.mjs";
+import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
 const bibliothek = pruefeTags(JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")));
@@ -36,6 +38,8 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
   // Mechanik der Wende ist für neue Posts Pflicht (Witz-Parameter, humorquote.mjs)
   versuch(() => mechanikLesen(post, { pflicht: true }));
   fehler.push(...pruefeBauplan(post));
+  // Schluss-Check: bekannte Fehler der letzten Zeile (flach, ohne neues Wort, zu lang, Gegenüber hat die Pointe; schluss.mjs)
+  if (e) fehler.push(...pruefeSchluss(post));
   // Zielgruppe ist für neue Posts Pflicht; Ü40-Signale nur mit Begründung (zielgruppe.mjs)
   versuch(() => zielgruppeLesen(post, { pflicht: true }));
   versuch(() => pruefeUe40(post));
@@ -49,6 +53,10 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
     const b = nachDatei.get(post.bild);
     if (!b) fehler.push(`Bild ${post.bild} gibt es nicht in bibliothek.json`);
     else {
+      // Kopf im Bildausschnitt (ausschnitt.mjs)
+      let mass = null;
+      try { mass = bildMass(path.join(HIER, "bilder", b.datei)); } catch {}
+      fehler.push(...pruefeAusschnitt(post, b, mass));
       // Anlassbilder (Allerheiligen, Advent …) nur mit ab/bis in ihrem Zeitraum. Saisonbilder (Herbst, Winter) ohne bis
       // müssen noch bis zum Ende der Warteschlange passen, sonst lehnt holen.mjs den Post später ab.
       const tags = (b.tags || []).join(", ");
