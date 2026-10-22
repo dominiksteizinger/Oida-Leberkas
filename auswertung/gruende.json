@@ -64,6 +64,62 @@
    "schluss": null,
    "art": "bild_passt_nicht",
    "grund": "Kopf im Bild abgeschnitten"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Wohnungen in Paris (ungefragt)",
+   "schluss": "Für mich und Herbert. Mit Ballsaal.",
+   "art": "flach",
+   "grund": "Nur nächtlicher Tagtraum, Format Niemand:/Ich: wirkt alt, Herbert braucht Vorwissen"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Leben neu geordnet (grosses-wort)",
+   "schluss": "Die Apps sind jetzt nach Farbe.",
+   "art": "vorhersehbar",
+   "grund": "Große Ankündigung, banales Ergebnis schon hundertmal gesehen"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Antrag eingegangen (amtston)",
+   "schluss": "Bearbeitungszeit sechs bis acht Jahre.",
+   "art": "vorhersehbar",
+   "grund": "Nach dem ersten Amtswort ahnt man die Bearbeitungszeit, Amtsdeutsch klingt nach Papa"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Herbert über der Zahnbürste (winziger-ausloeser)",
+   "schluss": "Aber er schläft über meiner Zahnbürste.",
+   "art": "kein_adressat",
+   "grund": "Niemand hat eine Fledermaus, keine eigene Situation zum Anknüpfen"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Zettel, nachts saugen (unschuld-etikett)",
+   "schluss": "Um drei.",
+   "art": "logische_folge",
+   "grund": "Zettel sagt nachts laut, Antwort sagt nachts saugen: bestätigt nur"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Absage, Pyjama (verkehrte-freude)",
+   "schluss": "Hatte schon den Pyjama an. Seit 17 Uhr.",
+   "art": "vorhersehbar",
+   "grund": "Erleichterung über Absage ist ausgelutschtes Introvert-Meme"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Gespart, drei Kleider (selbstbetrug-rechnung)",
+   "schluss": "Ich habe drei genommen.",
+   "art": "vorhersehbar",
+   "grund": "Reduziert also gespart ist ein uralter Spruch"
   }
  ]
 }

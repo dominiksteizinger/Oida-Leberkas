@@ -13,6 +13,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - Ohne Wende (reine Feststellung wie „Dating ist ein Albtraum“) sind nur rund 5 von 150, fast immer mit fremdem Bild, das die Pointe trägt. Ohne Bild-Pointe zündet eine Feststellung nicht.
 - Viele Listen-Beiträge leben vom Bild (Reaktionsgesicht, Screenshot). Bei uns übernimmt Resis Gesichtsausdruck diese Rolle, der Text bleibt trotzdem für sich lustig.
 - Benign-Violation-Forschung: Lustig ist eine Verletzung, die harmlos bleibt. Eine angekündigte Pointe kann sogar besser wirken als eine überraschende, wenn klar ist, dass nichts Schlimmes passiert (https://www.npr.org/sections/13.7/2016/04/25/475622815/hey-what-are-you-laughing-at).
+- Erste Probe mit dem blinden Gegenleser (22.10.2026, 11 Entwürfe): bestanden haben bedingung-verraet, selbstbetrug-rechnung (Ordner), indirektes-gestaendnis, wunsch-umgelenkt und einwort-kippe. Durchgefallen sind vor allem Muster, deren Grundidee als Meme schon bekannt ist (Absage = Erleichterung, reduziert = gespart, großes Wort für Kleines): Die Bauweise allein reicht nicht, der Inhalt muss neu sein.
 
 **Für Resi heißt das:** Die Wende sitzt im letzten Wort, das Resi sagt. Gesamt höchstens 25 Wörter im Bild, der Schluss 1 bis 6. Kontrast und Umdeutung sind die verlässlichsten Mechaniken, Selbstironie wirkt am besten als „ich durchschaue mich selbst“ (bedingung-verraet, selbstbetrug-rechnung), nie als Jammern.
 
@@ -55,7 +56,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** 8 bis 20 gesamt, das kleine Ding steht ganz am Ende. **Wende:** letztes Wort oder letzte Wortgruppe.
 - **Warum es zündet:** Die Fallhöhe zwischen Pathos und Banalem ist sofort sichtbar und braucht kein Vorwissen.
 - **Für Resi:** Passt zu Resis Grabesernst: Sie behandelt Banales wie ein Ereignis. Das Banale muss aus dem Alltag der Leserin kommen (Handy, Wäsche, Apps).
-- **Falle:** Nicht Resi ist düster als Pointe. Das Kleine muss überraschen, nicht nur klein sein.
+- **Falle:** Nicht Resi ist düster als Pointe. Das Kleine muss überraschen, nicht nur klein sein. Gegenleser 22.10.: „Große Ankündigung, banales Ergebnis“ allein ist durchgespielt. Das Kleine braucht einen zweiten Dreh, sonst vorhersehbar.
 - **mechanik:** umdeutung, eskalation, gestaendnis
 - **Quellen:** [1](https://knowyourmeme.com/memes/girl-dinner), [2](https://www.buzzfeed.com/jamieko/funny-adulting-tweets-october-2026), [3](https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06)
 
@@ -65,7 +66,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** 1 bis 2 Sätze, 10 bis 20 Wörter. **Wende:** Ergebnis der Rechnung am Ende.
 - **Warum es zündet:** Jede rechnet sich Dinge schön. Der Witz zeigt eine Gewohnheit, die man ertappt wiedererkennt.
 - **Für Resi:** Resi zählt etwas als erledigt, was nur angefangen ist (Lernen, Abstand halten, Sport). Ernst vorgetragen, nie zwinkernd.
-- **Falle:** Nicht über Frauen als Gruppe („Girl Math“ als Wort ist Trendvokabel und bleibt draußen). Nur Resis eigene Rechnung.
+- **Falle:** Nicht über Frauen als Gruppe („Girl Math“ als Wort ist Trendvokabel und bleibt draußen). Nur Resis eigene Rechnung. Gegenleser 22.10.: Bekannte Rechnungen (reduziert = gespart) erkennt jede sofort. Die Rechnung muss neu sein, wie beim Ordner, der einen Namen hat.
 - **mechanik:** ertappt, umdeutung
 - **Quellen:** [1](https://knowyourmeme.com/memes/boy-math-girl-math)
 
@@ -75,7 +76,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** Tat 6 bis 15, Ausrede 2 bis 6. **Wende:** die Ausrede.
 - **Warum es zündet:** Der Abstand zwischen Tat und Ausrede ist die Pointe. Selbstironie mit Haltung: Man weiß, was man getan hat.
 - **Für Resi:** Resi beschreibt ihren Beitrag zum Chaos sachlich und schließt mit einer amtlichen Begründung.
-- **Falle:** Kein Trendsatz als Pointe, keine Gewalt oder Schaden an anderen.
+- **Falle:** Kein Trendsatz als Pointe, keine Gewalt oder Schaden an anderen. Gegenleser 22.10.: Die Ausrede darf nicht nur wiederholen, was der Vorwurf sagt (nachts laut, nachts saugen).
 - **mechanik:** ertappt, gestaendnis
 - **Quellen:** [1](https://knowyourmeme.com/memes/im-just-a-girl)
 
@@ -95,7 +96,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** Setup 6 bis 15, Auslöser 3 bis 8. **Wende:** der Auslöser, ganz am Ende.
 - **Warum es zündet:** Je größer der Rahmen, desto komischer der kleine Grund. Macht sichtbar, wie willkürlich Abneigung ist.
 - **Für Resi:** Lob für jemanden oder etwas, dann ein winziger Makel, der für Resi alles entscheidet. Gut auch mit Herbert.
-- **Falle:** Der Makel darf nichts Körperliches sein und keine Gruppe treffen. Das Wort „Ick“ bleibt im Setup oder draußen.
+- **Falle:** Der Makel darf nichts Körperliches sein und keine Gruppe treffen. Das Wort „Ick“ bleibt im Setup oder draußen. Gegenleser 22.10.: Mit Herbert als Auslöser fehlt der Adressat (niemand hat eine Fledermaus). Auslöser aus dem Leben der Leserin nehmen.
 - **mechanik:** eskalation, gestaendnis, umdeutung
 - **Quellen:** [1](https://knowyourmeme.com/memes/the-ick)
 
@@ -115,7 +116,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** Auftakt 1 bis 3, Verhalten 5 bis 12. **Wende:** das Verhalten, letzte Zeile.
 - **Warum es zündet:** Das Etikett kündigt den Witz an, deshalb reicht eine Zeile. Als Selbstanzeige ist es Selbstironie ohne Selbstmitleid.
 - **Für Resi:** Szene: „Niemand:“ und Resi zu einer bestimmten Uhrzeit mit einer übergenauen Tätigkeit.
-- **Falle:** Ohne konkrete Uhrzeit oder Tätigkeit ist es Stimmung. Nur mit Resi selbst, nie über andere Gruppen.
+- **Falle:** Ohne konkrete Uhrzeit oder Tätigkeit ist es Stimmung. Nur mit Resi selbst, nie über andere Gruppen. Gegenleser 22.10.: Das Format „Niemand:/Ich:“ wirkt auf 22-Jährige alt (2019), nur mit sehr starkem Schluss nehmen.
 - **mechanik:** gestaendnis, eskalation
 - **Quellen:** [1](https://knowyourmeme.com/memes/nobody), [2](https://knowyourmeme.com/memes/literally-no-one), [3](https://knowyourmeme.com/editorials/memescape-enabler-formats)
 
@@ -145,7 +146,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** 10 bis 20. **Wende:** Grund oder Reaktion am Ende.
 - **Warum es zündet:** Häufigster Logik-Dreh in den Adulting-Listen. Junge Erwachsene erkennen den Wechsel bei sich.
 - **Für Resi:** Freundin sagt ab und entschuldigt sich, Resi verrät, dass sie längst vorbereitet war, aufs Daheimbleiben.
-- **Falle:** „Ich bin froh“ allein ist flach. Ein Detail muss die Freude beweisen.
+- **Falle:** „Ich bin froh“ allein ist flach. Ein Detail muss die Freude beweisen. Gegenleser 22.10.: „Freundin sagt ab, insgeheim erleichtert“ ist ausgelutscht. Nur mit Wende, die über Erleichterung hinausgeht.
 - **mechanik:** kontrast, umdeutung
 - **Quellen:** [1](https://www.buzzfeed.com/ajanibazile/adulting-tweets), [2](https://www.buzzfeed.com/jamieko/funny-adulting-tweets-october-2026)
 
@@ -155,7 +156,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** Frage 5 bis 10, Antwort 3 bis 8. **Wende:** die amtliche Zahl oder das Amtswort am Ende.
 - **Warum es zündet:** Registerwechsel ist sofort lesbar. Bürokratie kennt jede, und die Kälte der Sprache ist die Absage.
 - **Für Resi:** Resis Kernkompetenz (souverän bei Verwaltung). Mama oder Freundin fragt, Resi antwortet wie ein Amt.
-- **Falle:** Nicht zu viele Amtswörter, eins reicht. Keine echten Behördennamen, die nur ein Land kennt.
+- **Falle:** Nicht zu viele Amtswörter, eins reicht. Keine echten Behördennamen, die nur ein Land kennt. Gegenleser 22.10.: Verrät die erste Antwort schon das Amt, ist der Rest erratbar. Das Amtswort erst ganz am Ende bringen.
 - **mechanik:** absage, woertlich, umdeutung
 - **Quellen:** [1](https://www.buzzfeed.com/ajanibazile/adulting-tweets)
 
