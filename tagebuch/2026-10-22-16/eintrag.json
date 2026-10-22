@@ -1,0 +1,29 @@
+{
+  "id": "2026-10-22-16",
+  "datum": "2026-10-22",
+  "slot": "16",
+  "inhalt": {
+    "format": "antwort",
+    "von": "kollege.tom",
+    "kommentar": "Hast du morgen Abend schon was vor?",
+    "zeilen": [
+      "Ja.",
+      "Es heißt Couch.",
+      "Und es ist ausgebucht."
+    ]
+  },
+  "bild": "tagebuch-kerze.jpg",
+  "caption": "Termin.",
+  "aufforderung": "Schick das jemandem, der dich schon wieder einladen will.",
+  "hashtags": [
+    "#couch",
+    "#absage",
+    "#deadpan",
+    "#same",
+    "#abend"
+  ],
+  "mechanik": "absage",
+  "zielgruppe": "dating",
+  "region": "dach",
+  "quelle": "#97"
+}
