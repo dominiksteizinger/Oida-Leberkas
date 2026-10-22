@@ -5,10 +5,13 @@ on:
     paths: [.github/workflows/probe-mini-szene.yml, probe-mini-szene/szenen.json]
 permissions:
   contents: write
-concurrency: probe-mini-szene
+concurrency:
+  group: probe-mini-szene
+  cancel-in-progress: true
 jobs:
   probe:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       STIMME: an
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -21,8 +24,9 @@ jobs:
         working-directory: autopilot
         run: |
           npm ci --no-audit --no-fund
-          command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
-          fc-list | grep -qi "Noto Color Emoji" || (sudo apt-get install -y -q fonts-noto-color-emoji)
+          sudo apt-get update -q
+          command -v ffmpeg || sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q ffmpeg
+          fc-list | grep -qi "Noto Color Emoji" || sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -q fonts-noto-color-emoji
       - name: Reel bauen
         run: ./probe-mini-szene/bauen.sh
       - name: Ergebnis auf den Branch legen
