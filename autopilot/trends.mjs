@@ -103,6 +103,42 @@ async function kommentare() {
   return j.data.flatMap((m) => (m.comments?.data || []).map((c) => `${c.text.replace(/\s+/g, " ").replace(/@\S+/g, "@…").slice(0, 160)} (unter „${(m.caption || "").split("\n")[0].slice(0, 40)}“)`));
 }
 
+// Fanbase-Quellen (Gesamt-Check 22.10.2026): Die Fanbase sind junge Frauen 18 bis 28 in DE und AT. Was unter ihren Hashtags und in
+// Dating-Shorts gerade läuft, zeigt Formate und Gefühle, die sie kennen. Nur Thema und Format übernehmen, nie Text, Person oder Sound.
+export const FANBASE_HASHTAGS = ["situationship", "ihatemybf", "singleleben", "datingapp", "beziehungsmemes", "freundinnen", "introvert", "gothgirl"];
+async function igHashtags(tags = FANBASE_HASHTAGS) {
+  // Hashtag-Suche der Graph-API (instagram_basic, höchstens 30 verschiedene Hashtags pro 7 Tage; 8 pro Woche bleiben weit darunter)
+  const token = process.env.INSTAGRAM_ACCESS_TOKEN;
+  if (!token) throw new Error("kein Instagram-Token");
+  const ig = process.env.IG_USER_ID || "17841454284048783";
+  const api = async (pfad, q) => {
+    const j = await (await fetch(`https://graph.facebook.com/${pfad}?${new URLSearchParams({ ...q, access_token: token })}`, { signal: AbortSignal.timeout(10000) })).json();
+    if (j.error) throw new Error(j.error.message);
+    return j;
+  };
+  const aus = [];
+  for (const t of tags) {
+    const id = (await api("ig_hashtag_search", { user_id: ig, q: t })).data?.[0]?.id;
+    if (!id) continue;
+    const top = (await api(`${id}/top_media`, { user_id: ig, fields: "caption,like_count,comments_count", limit: "10" })).data || [];
+    for (const m of top.filter((x) => x.caption).sort((a, b) => (b.like_count || 0) - (a.like_count || 0)).slice(0, 3)) {
+      aus.push(`#${t}: „${m.caption.split("\n")[0].replace(/@\S+/g, "@…").replace(/#\S+/g, "").trim().slice(0, 110)}“ (${m.like_count ?? "?"} Likes, ${m.comments_count ?? "?"} Kommentare)`);
+    }
+  }
+  return aus;
+}
+// Dating- und Beziehungs-Shorts der letzten 7 Tage in Deutschland, nach Views (YouTube-Suche, 100 Einheiten vom Tageskontingent)
+async function youtubeShorts(datum, q = "dating|beziehung|situationship|freundin") {
+  const { YOUTUBE_CLIENT_ID: id, YOUTUBE_CLIENT_SECRET: secret, YOUTUBE_REFRESH_TOKEN: refresh } = process.env;
+  if (!id || !secret || !refresh) throw new Error("keine YouTube-Secrets");
+  const token = await (await fetch("https://oauth2.googleapis.com/token", { method: "POST", body: new URLSearchParams({ client_id: id, client_secret: secret, refresh_token: refresh, grant_type: "refresh_token" }) })).json();
+  if (!token.access_token) throw new Error(token.error || "kein Token");
+  const seit = new Date(Date.parse(datum + "T00:00:00Z") - 7 * 864e5).toISOString();
+  const s = new URLSearchParams({ part: "snippet", type: "video", videoDuration: "short", regionCode: "DE", relevanceLanguage: "de", order: "viewCount", publishedAfter: seit, q, maxResults: "25" });
+  const j = await (await holen(`https://www.googleapis.com/youtube/v3/search?${s}`, { headers: { ...UA, authorization: `Bearer ${token.access_token}` } })).json();
+  return (j.items || []).map((v) => entities(v.snippet.title));
+}
+
 export function anlaesse(datum, tage = 21) {
   const liste = [];
   for (let i = 0; i < tage; i++) {
@@ -119,6 +155,8 @@ export function anlaesse(datum, tage = 21) {
 const REDDIT = [
   ["wien", "Wien"], ["Austria", "Österreich"], ["de", "Deutschland"], ["FragReddit", "Alltagsfragen"],
   ["arbeitsleben", "Job"], ["Studium", "Uni"], ["teenagers", "Teenager, englisch"], ["Showerthoughts", "Alltagsgedanken, englisch"],
+  // Fanbase (seit 22.10.2026): Beziehungsfragen und Alltag junger Frauen, deutschsprachig
+  ["beziehungen", "Beziehungen, Fanbase"], ["Weibsvolk", "junge Frauen, Fanbase"],
 ];
 const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -139,6 +177,9 @@ export function schnellQuellen(datum) {
 
 export async function trends(datum, { schnell = false } = {}) {
 const quellen = schnell ? schnellQuellen(datum) : [
+  // Fanbase zuerst: Was junge Frauen gerade teilen, wiegt mehr als allgemeine Suchtrends (nachschub.md, Gewichtung)
+  ["Fanbase: Top-Posts unter Instagram-Hashtags (Format und Gefühl, nie Text)", () => igHashtags()],
+  ["Fanbase: Dating-Shorts Deutschland, meistgesehen der Woche", () => youtubeShorts(datum)],
   ["Google Trends Deutschland (Suchanfragen der letzten Tage)", () => googleTrends("DE")],
   ["Google Trends Österreich", () => googleTrends("AT")],
   ["Wikipedia de, meistgelesen (letzte 7 Tage)", () => wikipedia(datum)],
