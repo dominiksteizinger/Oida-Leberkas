@@ -189,7 +189,10 @@ jobs:
           git add autopilot/nutzung.json
           # Ein neuer Versuch nach gescheitertem Posten kann dieselben Dateien erzeugen
           git diff --cached --quiet || git commit -m "Tagebuch $ID"
-          if [ "$LIVE" = "true" ]; then git push origin HEAD:main; else git push origin HEAD:autopilot-probe; fi
+          # Während des Laufs (Reel mit Stimme dauert Minuten) kann main weitergewandert sein: vorher neu aufsetzen
+          if [ "$LIVE" = "true" ]; then
+            for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; [ "$i" = 3 ] && exit 1; sleep 5; done
+          else git push origin HEAD:autopilot-probe; fi
           BR=$([ "$LIVE" = "true" ] && echo main || echo autopilot-probe)
           {
             echo "## Eintrag $ID ($([ "$LIVE" = "true" ] && echo live || echo Probe), aus ${{ steps.holen.outputs.issue && format('#{0}', steps.holen.outputs.issue) }})"
@@ -222,7 +225,7 @@ jobs:
           date -u +%FT%TZ > "tagebuch/$ID/gepostet.txt"
           git add "tagebuch/$ID/gepostet.txt"
           git commit -m "Gepostet $ID"
-          git pull --rebase origin main && git push origin HEAD:main
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; [ "$i" = 3 ] && exit 1; sleep 5; done
       - name: Warteschlange abhaken
         if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true'
         run: |
