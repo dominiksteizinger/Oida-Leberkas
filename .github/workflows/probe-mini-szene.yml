@@ -1,0 +1,34 @@
+name: Probe Mini-Szene (temporär)
+on:
+  push:
+    branches: [claude/project-thread-y8otbn]
+    paths: [.github/workflows/probe-mini-szene.yml, probe-mini-szene/szenen.json]
+permissions:
+  contents: write
+concurrency: probe-mini-szene
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    env:
+      STIMME: an
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Abhängigkeiten
+        working-directory: autopilot
+        run: |
+          npm ci --no-audit --no-fund
+          command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+          fc-list | grep -qi "Noto Color Emoji" || (sudo apt-get install -y -q fonts-noto-color-emoji)
+      - name: Reel bauen
+        run: ./probe-mini-szene/bauen.sh
+      - name: Ergebnis auf den Branch legen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f probe-mini-szene/reel.mp4
+          git commit -m "Probe-Reel Mini-Szene gerendert"
+          git push
