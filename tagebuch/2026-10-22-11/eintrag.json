@@ -1,0 +1,28 @@
+{
+  "id": "2026-10-22-11",
+  "datum": "2026-10-22",
+  "slot": "11",
+  "inhalt": {
+    "format": "szene",
+    "satz": "Im Dating-Profil steht: „Ich bin gern draußen.“",
+    "klammern": [
+      "Stimmt.",
+      "Zum Müll.",
+      "Zweimal die Woche."
+    ]
+  },
+  "bild": "staubsauger-stolz.jpg",
+  "caption": "Alles wahr.",
+  "aufforderung": "Welche Zeile in deinem Profil ist geschönt?",
+  "hashtags": [
+    "#datingapp",
+    "#dating",
+    "#deadpan",
+    "#same",
+    "#goth"
+  ],
+  "mechanik": "woertlich",
+  "zielgruppe": "dating",
+  "region": "dach",
+  "quelle": "#34"
+}

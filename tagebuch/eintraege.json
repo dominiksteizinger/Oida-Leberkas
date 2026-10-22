@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-22-11",
+    "datum": "2026-10-22",
+    "slot": "11",
+    "format": "szene",
+    "bild": "staubsauger-stolz.jpg",
+    "text": "Im Dating-Profil steht: „Ich bin gern draußen.“ [Stimmt.] [Zum Müll.] [Zweimal die Woche.]",
+    "bilder": [
+      "tagebuch/2026-10-22-11/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-22-07",
     "datum": "2026-10-22",
     "slot": "07",
