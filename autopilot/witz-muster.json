@@ -1,6 +1,6 @@
 {
  "hinweis": "Musterbibliothek: Bauweise erfolgreicher Witze und Memes (Recherche 22.10.2026). Nur die Bauweise lernen, nie Text, Figur oder Bild übernehmen. witz-muster.md wird daraus erzeugt: node witzmuster.mjs md > witz-muster.md",
- "stand": "2026-10-22",
+ "stand": "2026-10-22, aktualisiert",
  "muster": [
   {
    "id": "glamour-absturz",
@@ -19,7 +19,9 @@
     "https://knowyourmeme.com/memes/bed-rotting",
     "https://knowyourmeme.com/memes/expectation-vs-reality",
     "https://www.buzzfeed.com/ajanibazile/adulting-tweets"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "grosses-wort",
@@ -39,7 +41,9 @@
     "https://knowyourmeme.com/memes/girl-dinner",
     "https://www.buzzfeed.com/jamieko/funny-adulting-tweets-october-2026",
     "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "selbstbetrug-rechnung",
@@ -56,7 +60,9 @@
    "falle": "Nicht über Frauen als Gruppe („Girl Math“ als Wort ist Trendvokabel und bleibt draußen). Nur Resis eigene Rechnung. Gegenleser 22.10.: Bekannte Rechnungen (reduziert = gespart) erkennt jede sofort. Die Rechnung muss neu sein, wie beim Ordner, der einen Namen hat.",
    "quellen": [
     "https://knowyourmeme.com/memes/boy-math-girl-math"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "unschuld-etikett",
@@ -73,7 +79,8 @@
    "falle": "Kein Trendsatz als Pointe, keine Gewalt oder Schaden an anderen. Gegenleser 22.10.: Die Ausrede darf nicht nur wiederholen, was der Vorwurf sagt (nachts laut, nachts saugen).",
    "quellen": [
     "https://knowyourmeme.com/memes/im-just-a-girl"
-   ]
+   ],
+   "generation": "klassisch"
   },
   {
    "id": "bedingung-verraet",
@@ -90,7 +97,9 @@
    "quellen": [
     "https://www.twitterperlen.de/du-wirst-mich-erkennen-die-besten-tweets-ueber-dates/",
     "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "winziger-ausloeser",
@@ -108,7 +117,8 @@
    "falle": "Der Makel darf nichts Körperliches sein und keine Gruppe treffen. Das Wort „Ick“ bleibt im Setup oder draußen. Gegenleser 22.10.: Mit Herbert als Auslöser fehlt der Adressat (niemand hat eine Fledermaus). Auslöser aus dem Leben der Leserin nehmen.",
    "quellen": [
     "https://knowyourmeme.com/memes/the-ick"
-   ]
+   ],
+   "generation": "klassisch"
   },
   {
    "id": "indirektes-gestaendnis",
@@ -125,7 +135,9 @@
    "falle": "Braucht der Schluss zwei Gedankenschritte, versteht ihn keiner in 3 Sekunden.",
    "quellen": [
     "https://knowyourmeme.com/memes/tell-me-without-telling-me"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "ungefragt",
@@ -144,7 +156,9 @@
     "https://knowyourmeme.com/memes/nobody",
     "https://knowyourmeme.com/memes/literally-no-one",
     "https://knowyourmeme.com/editorials/memescape-enabler-formats"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "floskel-woertlich",
@@ -162,7 +176,8 @@
    "quellen": [
     "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06",
     "https://www.buzzfeed.com/ajanibazile/adulting-tweets"
-   ]
+   ],
+   "generation": "klassisch"
   },
   {
    "id": "wunsch-umgelenkt",
@@ -179,7 +194,9 @@
    "quellen": [
     "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06",
     "https://www.buzzfeed.com/angelicaamartinez/relationship-tweets-july-2026"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "verkehrte-freude",
@@ -197,7 +214,9 @@
    "quellen": [
     "https://www.buzzfeed.com/ajanibazile/adulting-tweets",
     "https://www.buzzfeed.com/jamieko/funny-adulting-tweets-october-2026"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "amtston",
@@ -215,7 +234,9 @@
    "falle": "Nicht zu viele Amtswörter, eins reicht. Keine echten Behördennamen, die nur ein Land kennt. Gegenleser 22.10.: Verrät die erste Antwort schon das Amt, ist der Rest erratbar. Das Amtswort erst ganz am Ende bringen.",
    "quellen": [
     "https://www.buzzfeed.com/ajanibazile/adulting-tweets"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "einwort-kippe",
@@ -233,7 +254,9 @@
    "quellen": [
     "https://www.twitterperlen.de/du-wirst-mich-erkennen-die-besten-tweets-ueber-dates/",
     "https://www.buzzfeed.com/angelicaamartinez/relationship-tweets-july-2026"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "spaetes-detail",
@@ -250,7 +273,9 @@
    "falle": "In den Quellen oft zu lang. Mehr als vier Takte, und die Wende geht unter.",
    "quellen": [
     "https://www.twitterperlen.de/lieber-alleine-alt-werden-als-mit-so-jemandem-enden/"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
   },
   {
    "id": "laengen-verhaeltnis",
@@ -268,7 +293,8 @@
    "quellen": [
     "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06",
     "https://www.buzzfeed.com/ajanibazile/adulting-tweets"
-   ]
+   ],
+   "generation": "klassisch"
   },
   {
    "id": "dilemma-frage",
@@ -285,10 +311,184 @@
    "falle": "Eine Frage als letzte Zeile lehnt pruefen.mjs im Post ab, deshalb nur in Storys.",
    "quellen": [
     "https://www.twitterperlen.de/liebesperle-der-woche-die-frage-aller-fragen/"
-   ]
+   ],
+   "generation": "klassisch",
+   "veraltet": true
+  },
+  {
+   "id": "pov-rolle",
+   "name": "POV: Du bist ein Ding in Resis Leben",
+   "mechanik": [
+    "umdeutung",
+    "kontrast"
+   ],
+   "bauweise": "Die Caption setzt die Leserin in eine ungewohnte Rolle (Gegenstand, Nebenfigur, Haustier) und das Bild zeigt Resi aus dieser Sicht. Keine Punchline-Zeile, höchstens eine kurze Zeile, was die Rolle erlebt.",
+   "woerter": "„POV: du bist …“ 4 bis 8, danach höchstens eine Zeile mit 2 bis 6",
+   "wende": "der Rollenwechsel selbst, die Zeile gibt nur das Detail aus der Rolle",
+   "warum": "Der Perspektivwechsel ist sofort klar und lässt sich endlos variieren. Gen Z liest den Blickwinkel als Witz, nicht die Pointe.",
+   "resi": "„POV: du bist Resis Wecker“ zu einem Bild, in dem sie ihn verachtet. Rollen: Wecker, Handy-Akku, Sonnenstrahl, die Pflanze, der Lieferdienst, Herbert.",
+   "falle": "Kein Nacherzählen. Wenn die Zeile erklärt, was man im Bild sieht, ist es tot. Die Rolle muss aus dem Alltag der Leserin kommen.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/pov-memes",
+    "https://knowyourmeme.com/memes/pov-roleplays"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "demure-register",
+   "name": "Feines Etikett für ein unfeines Leben",
+   "mechanik": [
+    "kontrast",
+    "umdeutung"
+   ],
+   "bauweise": "Ein wiederholbarer, geschniegelter Zwei-Wort-Rhythmus („sehr würdevoll, sehr achtsam“) wird über eine peinliche oder chaotische Alltagstat gelegt. Der Rhythmus ist der Witz, nicht eine Wende.",
+   "woerter": "Tat 4 bis 10, Etikett 2 mal 2 Wörter",
+   "wende": "das Etikett nach der Tat",
+   "warum": "Der Ton-Bruch zwischen Benimmratgeber und echtem Leben ist sofort lesbar, und der Rhythmus wird zum Running Gag, den man selbst benutzt.",
+   "resi": "Resis Deadpan passt genau: „Um 3 Uhr kalte Nudeln aus dem Topf. Sehr würdevoll. Sehr friedhofsgerecht.“ Als Serie mit festem Etikett.",
+   "falle": "Das Wort „demure“ selbst ist Trendvokabel, eigene Adjektive nehmen. Die Tat muss konkret und leicht peinlich sein, nicht düster.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/very-demure-very-mindful"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "identitaets-etikett",
+   "name": "Wir können nicht alle … sein",
+   "mechanik": [
+    "kontrast",
+    "gestaendnis"
+   ],
+   "bauweise": "Ein glattes Ideal (Matcha-Girl, That Girl, 5-Uhr-Morgenroutine) wird genannt, dann stolz das eigene, unglamouröse Gegenstück als Etikett: „Manche sind …-Girls“. Mit erhobenem Kopf, nie jammernd.",
+   "woerter": "8 bis 14, Etikett am Ende 1 bis 3",
+   "wende": "das eigene Etikett",
+   "warum": "Spottet über den Wellness-Perfektionismus, indem man das Gegenteil feiert. Jede kann ihr eigenes Etikett ergänzen, deshalb Kommentare.",
+   "resi": "„Wir können nicht alle Matcha-Girls sein. Manche sind Grablicht-und-Instantnudel-Girls.“ Das Etikett ist konkret und ein bisschen Goth.",
+   "falle": "Keine Marke im Etikett. Das Ideal muss jede kennen, das Gegenstück darf nicht nur „faul“ sein, sondern genau.",
+   "quellen": [
+    "https://www.epidemicsound.com/blog/latest-tiktok-trends/",
+    "https://www.centraltimes.org/showcase/2025/12/30/the-top-10-tiktok-trends-of-2025/"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "sehnsucht-reveal",
+   "name": "Dramatisches Sehnen, banales Ziel",
+   "mechanik": [
+    "kontrast",
+    "umdeutung"
+   ],
+   "bauweise": "Das Bild zeigt großes Sehnen (Blick in die Ferne, Regen am Fenster, Vollmond). Erst die Zeile verrät, wonach: etwas Winziges aus dem Alltag. Bild und Ton tragen das Drama, der Text nur das Ziel.",
+   "woerter": "Satz 3 bis 8, Ziel 2 bis 6",
+   "wende": "das Ziel, nachdem das Bild das Drama aufgebaut hat",
+   "warum": "Der aktuelle „Yearning“-Look: Übertriebene Inszenierung macht das Banale komisch. Funktioniert, weil das Bild die Erwartung baut, nicht ein Satz.",
+   "resi": "Melancholisches Bild am Fenster, Satz „Ich, wenn ich daran denke:“ und die Zeile „Dass morgen Feiertag ist.“ oder „Die Pizza von gestern.“",
+   "falle": "Nicht verwechseln mit dem alten großen Wort: Das Drama kommt vom Bild, der Text bleibt minimal. Ohne passendes Sehnsuchtsbild nicht schreiben.",
+   "quellen": [
+    "https://replug.io/blog/tiktok-memes"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "kommentarspalte",
+   "name": "Der Witz steht in den Kommentaren",
+   "mechanik": [
+    "woertlich",
+    "eskalation",
+    "umdeutung"
+   ],
+   "bauweise": "Ein Kommentar unter Resis Post ist das Setup (Frage, Kompliment, Sorge). Resis Antwort ist trocken, übergenau oder nimmt den Kommentar zu ernst, wie man in Kommentarspalten antwortet. Der Kommentar selbst darf schon lustig sein.",
+   "woerter": "Kommentar 4 bis 12, Antwort 1 bis 6",
+   "wende": "Resis Antwort",
+   "warum": "Gen Z liest Kommentare oft vor dem Video; Kommentar-Pingpong ist dort die eigentliche Pointe und lädt zum Mitmachen ein.",
+   "resi": "Format `antwort`: „wie bist du immer so ruhig“ → „Akku auf 4 %. Seit 2019.“ Erfundene, harmlose Absender.",
+   "falle": "Kein echter Nutzername, nichts, was wie ein Angriff auf echte Fans wirkt.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/gen-z-stare",
+    "https://theplantnews.com/2024/10/21/gen-z-humour-meta-irony-absurdism-and-nihilism/"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "ungefiltert-ehrlich",
+   "name": "Ungefiltert und übergenau",
+   "mechanik": [
+    "gestaendnis",
+    "eskalation"
+   ],
+   "bauweise": "Kein Aufbau, keine Pointe: ein brutal ehrlicher, oddly specific Satz über das eigene Leben, im Präsens, oft mit Zahl oder Uhrzeit. Die Genauigkeit ist der Witz. Deutsche Form auch „Nicht ich, die …“.",
+   "woerter": "6 bis 15 in einem Satz",
+   "wende": "die übergenaue Zahl oder das Detail",
+   "warum": "Der Gegentrend zu polierten Feeds (2026: „Reali-tea“, unfiltered). Wirkt wie ein Geständnis unter Freundinnen, nicht wie ein gebauter Witz.",
+   "resi": "„Nicht ich, die seit 40 Minuten einem Fremden beim Teppichwaschen zuschaut.“ Bild: Resi im Bett mit Handy.",
+   "falle": "Ohne konkrete Zahl oder Tätigkeit ist es Stimmung (flach). Kein Jammern, kein Selbstmitleid.",
+   "quellen": [
+    "https://replug.io/blog/tiktok-memes",
+    "https://medium.com/scripting-horizons/gen-z-humour-explained-why-absurd-memes-dominate-online-culture-47f4d7c5821d"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "absurd-normal",
+   "name": "Eine absurde Sache, völlig normal behandelt",
+   "mechanik": [
+    "eskalation",
+    "kontrast"
+   ],
+   "bauweise": "Ein absurdes Element (die Fledermaus hat eine Meinung, ein Gegenstand hat Rechte) wird mit dem ernsten Ton eines Alltagsproblems behandelt, ohne Erklärung. Kein Auflösen.",
+   "woerter": "Satz 5 bis 12, eine Folgezeile 2 bis 8",
+   "wende": "das Ernstnehmen des Absurden, die Folgezeile treibt es weiter",
+   "warum": "Absurdität ist der Kern des aktuellen Gen-Z-Humors (Brainrot, Italian Brainrot, Ohio). Zufall und Ernst nebeneinander sind lustig, gerade weil keiner zwinkert.",
+   "resi": "Herbert als absurdes Element, aber das Problem gehört der Leserin: „Herbert hat mein Spotify übernommen. Ich höre jetzt nur noch Ultraschall.“",
+   "falle": "Keine fremden Brainrot-Figuren oder -Namen. Das Absurde braucht einen Alltagsanker, sonst fehlt der Adressat (siehe Herbert-Zahnbürste).",
+   "quellen": [
+    "https://knowyourmeme.com/editorials/poll/meme-of-the-year-the-top-20-memes-of-2025",
+    "https://fortune.com/2025/09/07/what-is-italian-brain-rot-gen-z-social-media-tiktok",
+    "https://medium.com/scripting-horizons/gen-z-humour-explained-why-absurd-memes-dominate-online-culture-47f4d7c5821d"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "delulu-beweis",
+   "name": "Winziger Beweis, riesige Schlussfolgerung",
+   "mechanik": [
+    "eskalation",
+    "ertappt"
+   ],
+   "bauweise": "Ein winziges Signal (sie hat zurückgelächelt, er hat die Story gesehen) wird mit völliger Sicherheit zu einer großen Folge ausgebaut. Die Sprecherin weiß, dass es Wahn ist, und macht trotzdem weiter.",
+   "woerter": "Signal 4 bis 8, Folge 4 bis 10",
+   "wende": "die übertriebene Folge",
+   "warum": "Selbstironischer Wahn („delulu“) ist das Selbstbild vieler junger Frauen in der Dating-App und darüber hinaus. Man lacht über sich, weil man es selbst macht.",
+   "resi": "Nicht romantisch bedürftig: Freundschaft, Kassiererin, Nachbarin. „Die Kassiererin hat ‚bis bald‘ gesagt. Ich habe ihr einen Zweitschlüssel gemacht.“",
+   "falle": "Das Wort „delulu“ nur im Setup oder gar nicht. Bei Dating nie bedürftig, Resi flirtet nie selbst.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/situationship",
+    "https://theplantnews.com/2024/10/21/gen-z-humour-meta-irony-absurdism-and-nihilism/"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "anti-pointe",
+   "name": "Antihumor: der Witz, der keiner ist",
+   "mechanik": [
+    "woertlich",
+    "umdeutung"
+   ],
+   "bauweise": "Die Form eines klassischen Witzes oder Rätsels („Warum …?“, „Kennst du den?“) wird aufgebaut, die Antwort ist ernst, wörtlich und ehrlich. Der Leser erwartet eine Pointe und bekommt die Wahrheit.",
+   "woerter": "Frage 5 bis 10, Antwort 2 bis 8",
+   "wende": "die ernste Antwort statt Pointe",
+   "warum": "Meta-Ironie: Gen Z lacht über die Form des Witzes selbst. Mit Deadpan-Figur besonders stark, weil Resi nie zwinkert.",
+   "resi": "„Resi, erzähl einen Witz.“ → „Meine Miete.“ Nur, wenn die ernste Antwort trotzdem konkret und neu ist.",
+   "falle": "Kippt schnell in flach. Höchstens einmal pro Lauf, und der Gegenleser muss lachen, sonst raus.",
+   "quellen": [
+    "https://theplantnews.com/2024/10/21/gen-z-humour-meta-irony-absurdism-and-nihilism/"
+   ],
+   "generation": "aktuell"
   }
  ],
  "kennzahlen": [
+  "Zweite Runde (Dominik 22.10.2026: „erinnert mich an Witze vor 10 Jahren“): Die erste Runde stützte sich auf Text-Bestenlisten (Twitter-Ära, 2014 bis 2019). Diese Quellen zählen jetzt niedriger. Aktueller Gen-Z-Humor (2024 bis 2026, Know Your Meme Top 20 2025, TikTok-Trends 2026) baut selten Setup und Punchline: Der Witz sitzt im Blickwinkel (POV), im Ton-Bruch (Demure), in der Absurdität, im übergenauen Geständnis oder in der Kommentarspalte, und das Bild trägt mehr als der Text.",
+  "Gewichtung: Muster mit `generation: aktuell` zählen doppelt. Klassische Zweizeiler (Setup, dann Punchline-Satz) sind als `veraltet` markiert: höchstens ein Viertel eines Laufs, mindestens die Hälfte der Posts aus aktuellen Mustern (`pruefen.mjs`). Bewährte Abblitz-Muster (floskel-woertlich, laengen-verhaeltnis) bleiben ohne Markierung, weil Dominik sie gut fand.",
   "Grundlage: rund 150 erfolgreiche Kurz-Witze und Memes aus Bestenlisten (HuffPost, BuzzFeed, Twitterperlen) und 12 Know-Your-Meme-Einträgen, von Hand nach Mechanik, Länge und Lage der Wende eingeordnet (grobe Zählung).",
   "Lage der Wende: Bei rund 9 von 10 Beiträgen mit lesbarem Text sitzt sie im letzten Wort oder letzten Teilsatz. In der Mitte fast nie.",
   "Länge: Kurz-Posts meist 8 bis 25 Wörter (Mitte um 15 bis 20). Der Wende-Teil hat 1 bis 6 Wörter. Anekdoten mit 40 bis 75 Wörtern gibt es, sie leben aber nur in Text-Threads, nicht im Bild.",
