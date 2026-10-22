@@ -120,6 +120,62 @@
    "schluss": "Ich habe drei genommen.",
    "art": "vorhersehbar",
    "grund": "Reduziert also gespart ist ein uralter Spruch"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "POV Wecker (pov-rolle)",
+   "schluss": "Du hast nur deinen Job gemacht.",
+   "art": "vorhersehbar",
+   "grund": "Morgenmuffel gegen Wecker ist uraltes Motiv, Ende ab dem Wort Wecker erratbar"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Kalte Nudeln, sehr würdevoll (demure-register)",
+   "schluss": "Sehr friedhofsgerecht.",
+   "art": "pointe_falsch",
+   "grund": "Etikett friedhofsgerecht hat keinen Bezug zur Tat, Gothic-Dreh erzwungen"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Matcha-Girls (identitaets-etikett)",
+   "schluss": "Fünfmal-Schlummern-Girls.",
+   "art": "vorhersehbar",
+   "grund": "Satzmuster erzwingt das Gegenteil, Schlummern liegt nahe"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Herbert verwaltet Dating-Profil (absurd-normal)",
+   "schluss": "Einer hatte eine Katze im Profilbild.",
+   "art": "kontext_unklar",
+   "grund": "Katzen-Logik erst beim zweiten Lesen, Haustier sabotiert Liebesleben ist alt"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Mama, erzähl einen Witz (anti-pointe)",
+   "schluss": "Meine Miete.",
+   "art": "vorhersehbar",
+   "grund": "X ist ein Witz ist Standardspruch"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Bin gleich da, Standort (ungefiltert-ehrlich)",
+   "schluss": "Ich schreib: Bin auch gleich da.",
+   "art": "vorhersehbar",
+   "grund": "Bin unterwegs = noch zu Hause ist seit WhatsApp-Zeiten ein Meme"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "gegenleser",
+   "post": "Gute alte Zeiten, Gehalt (sehnsucht-reveal)",
+   "schluss": "Drei Tage her.",
+   "art": "ue40",
+   "grund": "Gehalt am Monatsende ist Facebook-Humor, Bild passt nicht"
   }
  ]
 }

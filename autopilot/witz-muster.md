@@ -8,6 +8,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 
 - Zweite Runde (Dominik 22.10.2026: „erinnert mich an Witze vor 10 Jahren“): Die erste Runde stützte sich auf Text-Bestenlisten (Twitter-Ära, 2014 bis 2019). Diese Quellen zählen jetzt niedriger. Aktueller Gen-Z-Humor (2024 bis 2026, Know Your Meme Top 20 2025, TikTok-Trends 2026) baut selten Setup und Punchline: Der Witz sitzt im Blickwinkel (POV), im Ton-Bruch (Demure), in der Absurdität, im übergenauen Geständnis oder in der Kommentarspalte, und das Bild trägt mehr als der Text.
 - Gewichtung: Muster mit `generation: aktuell` zählen doppelt. Klassische Zweizeiler (Setup, dann Punchline-Satz) sind als `veraltet` markiert: höchstens ein Viertel eines Laufs, mindestens die Hälfte der Posts aus aktuellen Mustern (`pruefen.mjs`). Bewährte Abblitz-Muster (floskel-woertlich, laengen-verhaeltnis) bleiben ohne Markierung, weil Dominik sie gut fand.
+- Probe mit aktuellen Mustern (22.10.2026, 12 Entwürfe in zwei Runden, Frage an den Gegenleser: heute oder alt?): 5 bestanden, alle aus aktuellen Mustern: kommentarspalte (Akku seit 2019, Mama kommentiert öffentlich), delulu-beweis (Story geliked → verlobt → blockiert, bester Schluss; Imbiss-Verkäuferin → Schichten auswendig) und sehnsucht-reveal (Liebe → Lieferfahrer). Lehre: Das Format allein macht nichts aktuell. Durchgefallen sind aktuelle Formate mit altem Motiv (Wecker, Monatsende, Morgenmuffel, Miete ist ein Witz, „bin gleich da“). Was zündet: Online-Leben von heute (Story-Likes, Kommentare, Eltern im Netz, parasoziale Mini-Bindungen) und Selbstironie über den eigenen Kopf-Film.
 - Grundlage: rund 150 erfolgreiche Kurz-Witze und Memes aus Bestenlisten (HuffPost, BuzzFeed, Twitterperlen) und 12 Know-Your-Meme-Einträgen, von Hand nach Mechanik, Länge und Lage der Wende eingeordnet (grobe Zählung).
 - Lage der Wende: Bei rund 9 von 10 Beiträgen mit lesbarem Text sitzt sie im letzten Wort oder letzten Teilsatz. In der Mitte fast nie.
 - Länge: Kurz-Posts meist 8 bis 25 Wörter (Mitte um 15 bis 20). Der Wende-Teil hat 1 bis 6 Wörter. Anekdoten mit 40 bis 75 Wörtern gibt es, sie leben aber nur in Text-Threads, nicht im Bild.
@@ -57,7 +58,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** „POV: du bist …“ 4 bis 8, danach höchstens eine Zeile mit 2 bis 6. **Wende:** der Rollenwechsel selbst, die Zeile gibt nur das Detail aus der Rolle.
 - **Warum es zündet:** Der Perspektivwechsel ist sofort klar und lässt sich endlos variieren. Gen Z liest den Blickwinkel als Witz, nicht die Pointe.
 - **Für Resi:** „POV: du bist Resis Wecker“ zu einem Bild, in dem sie ihn verachtet. Rollen: Wecker, Handy-Akku, Sonnenstrahl, die Pflanze, der Lieferdienst, Herbert.
-- **Falle:** Kein Nacherzählen. Wenn die Zeile erklärt, was man im Bild sieht, ist es tot. Die Rolle muss aus dem Alltag der Leserin kommen.
+- **Falle:** Kein Nacherzählen. Wenn die Zeile erklärt, was man im Bild sieht, ist es tot. Die Rolle muss aus dem Alltag der Leserin kommen. Gegenleser 22.10.: POV mit uraltem Motiv (Wecker, Montag) wirkt wie 2020. Das Motiv muss frisch sein, nicht nur das Format.
 - **mechanik:** umdeutung, kontrast
 - **Quellen:** [1](https://knowyourmeme.com/memes/pov-memes), [2](https://knowyourmeme.com/memes/pov-roleplays)
 
@@ -67,7 +68,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** Tat 4 bis 10, Etikett 2 mal 2 Wörter. **Wende:** das Etikett nach der Tat.
 - **Warum es zündet:** Der Ton-Bruch zwischen Benimmratgeber und echtem Leben ist sofort lesbar, und der Rhythmus wird zum Running Gag, den man selbst benutzt.
 - **Für Resi:** Resis Deadpan passt genau: „Um 3 Uhr kalte Nudeln aus dem Topf. Sehr würdevoll. Sehr friedhofsgerecht.“ Als Serie mit festem Etikett.
-- **Falle:** Das Wort „demure“ selbst ist Trendvokabel, eigene Adjektive nehmen. Die Tat muss konkret und leicht peinlich sein, nicht düster.
+- **Falle:** Das Wort „demure“ selbst ist Trendvokabel, eigene Adjektive nehmen. Die Tat muss konkret und leicht peinlich sein, nicht düster. Gegenleser 22.10.: Das Etikett muss zur Tat passen; ein Goth-Wort ohne Bezug (friedhofsgerecht zu Nudeln) zündet nicht.
 - **mechanik:** kontrast, umdeutung
 - **Quellen:** [1](https://knowyourmeme.com/memes/very-demure-very-mindful)
 
@@ -77,7 +78,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** 8 bis 14, Etikett am Ende 1 bis 3. **Wende:** das eigene Etikett.
 - **Warum es zündet:** Spottet über den Wellness-Perfektionismus, indem man das Gegenteil feiert. Jede kann ihr eigenes Etikett ergänzen, deshalb Kommentare.
 - **Für Resi:** „Wir können nicht alle Matcha-Girls sein. Manche sind Grablicht-und-Instantnudel-Girls.“ Das Etikett ist konkret und ein bisschen Goth.
-- **Falle:** Keine Marke im Etikett. Das Ideal muss jede kennen, das Gegenstück darf nicht nur „faul“ sein, sondern genau.
+- **Falle:** Keine Marke im Etikett. Das Ideal muss jede kennen, das Gegenstück darf nicht nur „faul“ sein, sondern genau. Gegenleser 22.10.: Das Gegenstück darf nicht das naheliegende Gegenteil sein (Schlummern), sonst erzwingt der Satzbau das Ende.
 - **mechanik:** kontrast, gestaendnis
 - **Quellen:** [1](https://www.epidemicsound.com/blog/latest-tiktok-trends/), [2](https://www.centraltimes.org/showcase/2025/12/30/the-top-10-tiktok-trends-of-2025/)
 
@@ -87,7 +88,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** Satz 3 bis 8, Ziel 2 bis 6. **Wende:** das Ziel, nachdem das Bild das Drama aufgebaut hat.
 - **Warum es zündet:** Der aktuelle „Yearning“-Look: Übertriebene Inszenierung macht das Banale komisch. Funktioniert, weil das Bild die Erwartung baut, nicht ein Satz.
 - **Für Resi:** Melancholisches Bild am Fenster, Satz „Ich, wenn ich daran denke:“ und die Zeile „Dass morgen Feiertag ist.“ oder „Die Pizza von gestern.“
-- **Falle:** Nicht verwechseln mit dem alten großen Wort: Das Drama kommt vom Bild, der Text bleibt minimal. Ohne passendes Sehnsuchtsbild nicht schreiben.
+- **Falle:** Nicht verwechseln mit dem alten großen Wort: Das Drama kommt vom Bild, der Text bleibt minimal. Ohne passendes Sehnsuchtsbild nicht schreiben. Gegenleser 22.10.: Funktioniert mit Liebe → Lieferfahrer (Note 4), nicht mit Geld am Monatsende (Ü40). „Ich, wenn …:“ selbst wirkt etwas alt; das Ziel muss aus dem Leben der 20-Jährigen kommen und das Bild muss sehnen.
 - **mechanik:** kontrast, umdeutung
 - **Quellen:** [1](https://replug.io/blog/tiktok-memes)
 
@@ -107,7 +108,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** 6 bis 15 in einem Satz. **Wende:** die übergenaue Zahl oder das Detail.
 - **Warum es zündet:** Der Gegentrend zu polierten Feeds (2026: „Reali-tea“, unfiltered). Wirkt wie ein Geständnis unter Freundinnen, nicht wie ein gebauter Witz.
 - **Für Resi:** „Nicht ich, die seit 40 Minuten einem Fremden beim Teppichwaschen zuschaut.“ Bild: Resi im Bett mit Handy.
-- **Falle:** Ohne konkrete Zahl oder Tätigkeit ist es Stimmung (flach). Kein Jammern, kein Selbstmitleid.
+- **Falle:** Ohne konkrete Zahl oder Tätigkeit ist es Stimmung (flach). Kein Jammern, kein Selbstmitleid. Gegenleser 22.10.: „Bin gleich da = noch zu Hause“ ist ein altes Meme, auch mit Standort.
 - **mechanik:** gestaendnis, eskalation
 - **Quellen:** [1](https://replug.io/blog/tiktok-memes), [2](https://medium.com/scripting-horizons/gen-z-humour-explained-why-absurd-memes-dominate-online-culture-47f4d7c5821d)
 
@@ -117,7 +118,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** Satz 5 bis 12, eine Folgezeile 2 bis 8. **Wende:** das Ernstnehmen des Absurden, die Folgezeile treibt es weiter.
 - **Warum es zündet:** Absurdität ist der Kern des aktuellen Gen-Z-Humors (Brainrot, Italian Brainrot, Ohio). Zufall und Ernst nebeneinander sind lustig, gerade weil keiner zwinkert.
 - **Für Resi:** Herbert als absurdes Element, aber das Problem gehört der Leserin: „Herbert hat mein Spotify übernommen. Ich höre jetzt nur noch Ultraschall.“
-- **Falle:** Keine fremden Brainrot-Figuren oder -Namen. Das Absurde braucht einen Alltagsanker, sonst fehlt der Adressat (siehe Herbert-Zahnbürste).
+- **Falle:** Keine fremden Brainrot-Figuren oder -Namen. Das Absurde braucht einen Alltagsanker, sonst fehlt der Adressat (siehe Herbert-Zahnbürste). Gegenleser 22.10.: Haustier-sabotiert-Dating ist alt; die Logik des Absurden muss beim ersten Lesen sitzen.
 - **mechanik:** eskalation, kontrast
 - **Quellen:** [1](https://knowyourmeme.com/editorials/poll/meme-of-the-year-the-top-20-memes-of-2025), [2](https://fortune.com/2025/09/07/what-is-italian-brain-rot-gen-z-social-media-tiktok), [3](https://medium.com/scripting-horizons/gen-z-humour-explained-why-absurd-memes-dominate-online-culture-47f4d7c5821d)
 
@@ -137,7 +138,7 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Länge:** Frage 5 bis 10, Antwort 2 bis 8. **Wende:** die ernste Antwort statt Pointe.
 - **Warum es zündet:** Meta-Ironie: Gen Z lacht über die Form des Witzes selbst. Mit Deadpan-Figur besonders stark, weil Resi nie zwinkert.
 - **Für Resi:** „Resi, erzähl einen Witz.“ → „Meine Miete.“ Nur, wenn die ernste Antwort trotzdem konkret und neu ist.
-- **Falle:** Kippt schnell in flach. Höchstens einmal pro Lauf, und der Gegenleser muss lachen, sonst raus.
+- **Falle:** Kippt schnell in flach. Höchstens einmal pro Lauf, und der Gegenleser muss lachen, sonst raus. Gegenleser 22.10.: „Mein X ist ein Witz“ ist Papa-Niveau, nicht Antihumor.
 - **mechanik:** woertlich, umdeutung
 - **Quellen:** [1](https://theplantnews.com/2024/10/21/gen-z-humour-meta-irony-absurdism-and-nihilism/)
 
