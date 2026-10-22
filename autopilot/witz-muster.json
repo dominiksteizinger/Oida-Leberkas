@@ -5,194 +5,287 @@
   {
    "id": "glamour-absturz",
    "name": "Glamour-Rahmen, nüchterne Realität",
-   "mechanik": ["kontrast", "gestaendnis"],
+   "mechanik": [
+    "kontrast",
+    "gestaendnis"
+   ],
    "bauweise": "Das Setup verspricht Aufbruch oder Glanz (großer Plan, neues Ich, wildes Wochenende). Der Schluss zeigt, was wirklich passiert, mit einem konkreten Detail.",
    "woerter": "Setup 5 bis 10, Schluss 2 bis 6",
    "wende": "letzter Teilsatz",
    "warum": "Jede kennt den Abstand zwischen Plan und Abend. Man lacht über sich selbst, ohne sich klein zu machen.",
    "resi": "Resi kündigt etwas Großes trocken an. Die letzte Zeile ist ein kleines, sehr genaues Detail aus ihrer Wohnung.",
    "falle": "Ist die Realität erratbar (Couch, Netflix), ist es flach. Das Detail muss genauer sein als erwartet.",
-   "quellen": ["https://knowyourmeme.com/memes/bed-rotting", "https://knowyourmeme.com/memes/expectation-vs-reality", "https://www.buzzfeed.com/ajanibazile/adulting-tweets"]
+   "quellen": [
+    "https://knowyourmeme.com/memes/bed-rotting",
+    "https://knowyourmeme.com/memes/expectation-vs-reality",
+    "https://www.buzzfeed.com/ajanibazile/adulting-tweets"
+   ]
   },
   {
    "id": "grosses-wort",
    "name": "Großes Wort für eine kleine Sache",
-   "mechanik": ["umdeutung", "eskalation", "gestaendnis"],
+   "mechanik": [
+    "umdeutung",
+    "eskalation",
+    "gestaendnis"
+   ],
    "bauweise": "Ein feierliches Etikett (Lebensentscheidung, Neuanfang, Menü) wird auf etwas Winziges geklebt. Erst das letzte Wort verrät, wie klein es ist.",
    "woerter": "8 bis 20 gesamt, das kleine Ding steht ganz am Ende",
    "wende": "letztes Wort oder letzte Wortgruppe",
    "warum": "Die Fallhöhe zwischen Pathos und Banalem ist sofort sichtbar und braucht kein Vorwissen.",
    "resi": "Passt zu Resis Grabesernst: Sie behandelt Banales wie ein Ereignis. Das Banale muss aus dem Alltag der Leserin kommen (Handy, Wäsche, Apps).",
-   "falle": "Nicht Resi ist düster als Pointe. Das Kleine muss überraschen, nicht nur klein sein.",
-   "quellen": ["https://knowyourmeme.com/memes/girl-dinner", "https://www.buzzfeed.com/jamieko/funny-adulting-tweets-october-2026", "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06"]
+   "falle": "Nicht Resi ist düster als Pointe. Das Kleine muss überraschen, nicht nur klein sein. Gegenleser 22.10.: „Große Ankündigung, banales Ergebnis“ allein ist durchgespielt. Das Kleine braucht einen zweiten Dreh, sonst vorhersehbar.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/girl-dinner",
+    "https://www.buzzfeed.com/jamieko/funny-adulting-tweets-october-2026",
+    "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06"
+   ]
   },
   {
    "id": "selbstbetrug-rechnung",
    "name": "Rechnung, die nur für mich aufgeht",
-   "mechanik": ["ertappt", "umdeutung"],
+   "mechanik": [
+    "ertappt",
+    "umdeutung"
+   ],
    "bauweise": "Eine selbstbewusste, fast logische Rechnung macht aus einem Verlust einen Gewinn oder aus Nichtstun eine Leistung. Die Leserin sieht den Fehler, die Sprecherin nicht.",
    "woerter": "1 bis 2 Sätze, 10 bis 20 Wörter",
    "wende": "Ergebnis der Rechnung am Ende",
    "warum": "Jede rechnet sich Dinge schön. Der Witz zeigt eine Gewohnheit, die man ertappt wiedererkennt.",
    "resi": "Resi zählt etwas als erledigt, was nur angefangen ist (Lernen, Abstand halten, Sport). Ernst vorgetragen, nie zwinkernd.",
-   "falle": "Nicht über Frauen als Gruppe („Girl Math“ als Wort ist Trendvokabel und bleibt draußen). Nur Resis eigene Rechnung.",
-   "quellen": ["https://knowyourmeme.com/memes/boy-math-girl-math"]
+   "falle": "Nicht über Frauen als Gruppe („Girl Math“ als Wort ist Trendvokabel und bleibt draußen). Nur Resis eigene Rechnung. Gegenleser 22.10.: Bekannte Rechnungen (reduziert = gespart) erkennt jede sofort. Die Rechnung muss neu sein, wie beim Ordner, der einen Namen hat.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/boy-math-girl-math"
+   ]
   },
   {
    "id": "unschuld-etikett",
    "name": "Tat plus Unschuldsetikett",
-   "mechanik": ["ertappt", "gestaendnis"],
+   "mechanik": [
+    "ertappt",
+    "gestaendnis"
+   ],
    "bauweise": "Erst die Tat (Chaos, kleiner Fehltritt), dann eine ruhige Ausrede, die viel zu klein für die Tat ist.",
    "woerter": "Tat 6 bis 15, Ausrede 2 bis 6",
    "wende": "die Ausrede",
    "warum": "Der Abstand zwischen Tat und Ausrede ist die Pointe. Selbstironie mit Haltung: Man weiß, was man getan hat.",
    "resi": "Resi beschreibt ihren Beitrag zum Chaos sachlich und schließt mit einer amtlichen Begründung.",
-   "falle": "Kein Trendsatz als Pointe, keine Gewalt oder Schaden an anderen.",
-   "quellen": ["https://knowyourmeme.com/memes/im-just-a-girl"]
+   "falle": "Kein Trendsatz als Pointe, keine Gewalt oder Schaden an anderen. Gegenleser 22.10.: Die Ausrede darf nicht nur wiederholen, was der Vorwurf sagt (nachts laut, nachts saugen).",
+   "quellen": [
+    "https://knowyourmeme.com/memes/im-just-a-girl"
+   ]
   },
   {
    "id": "bedingung-verraet",
    "name": "Behauptung, dann „bis …“",
-   "mechanik": ["ertappt"],
+   "mechanik": [
+    "ertappt"
+   ],
    "bauweise": "Ein Satz über die eigene Gelassenheit oder Stärke, dann eine Bedingung, die ihn sofort entlarvt. Die Bedingung ist winzig und konkret.",
    "woerter": "Behauptung 4 bis 8, Bedingung 4 bis 8",
    "wende": "Nebensatz am Ende („bis …“, „außer …“, „nur wenn …“)",
    "warum": "Die Leserin glaubt der Behauptung einen Takt lang und erkennt sich dann in der Ausnahme. Stärkstes Selbstironie-Muster in den Bestenlisten.",
    "resi": "Resi behauptet Ruhe beim Daten, im Job oder bei der Familie. Die Ausnahme ist ein lächerlich kleines Detail.",
    "falle": "Die Ausnahme darf kein Insider sein (Punkt am Ende einer Nachricht, Emoji-Codes). Muss ohne Internet-Vorwissen klar sein.",
-   "quellen": ["https://www.twitterperlen.de/du-wirst-mich-erkennen-die-besten-tweets-ueber-dates/", "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06"]
+   "quellen": [
+    "https://www.twitterperlen.de/du-wirst-mich-erkennen-die-besten-tweets-ueber-dates/",
+    "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06"
+   ]
   },
   {
    "id": "winziger-ausloeser",
    "name": "Großer Ernst, winziger Auslöser",
-   "mechanik": ["eskalation", "gestaendnis", "umdeutung"],
+   "mechanik": [
+    "eskalation",
+    "gestaendnis",
+    "umdeutung"
+   ],
    "bauweise": "Das Setup klingt nach Grundsatzfrage oder Lob mit „aber“. Der Grund ist absurd klein und sehr genau.",
    "woerter": "Setup 6 bis 15, Auslöser 3 bis 8",
    "wende": "der Auslöser, ganz am Ende",
    "warum": "Je größer der Rahmen, desto komischer der kleine Grund. Macht sichtbar, wie willkürlich Abneigung ist.",
    "resi": "Lob für jemanden oder etwas, dann ein winziger Makel, der für Resi alles entscheidet. Gut auch mit Herbert.",
-   "falle": "Der Makel darf nichts Körperliches sein und keine Gruppe treffen. Das Wort „Ick“ bleibt im Setup oder draußen.",
-   "quellen": ["https://knowyourmeme.com/memes/the-ick"]
+   "falle": "Der Makel darf nichts Körperliches sein und keine Gruppe treffen. Das Wort „Ick“ bleibt im Setup oder draußen. Gegenleser 22.10.: Mit Herbert als Auslöser fehlt der Adressat (niemand hat eine Fledermaus). Auslöser aus dem Leben der Leserin nehmen.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/the-ick"
+   ]
   },
   {
    "id": "indirektes-gestaendnis",
    "name": "Ein Detail verrät alles",
-   "mechanik": ["gestaendnis", "umdeutung"],
+   "mechanik": [
+    "gestaendnis",
+    "umdeutung"
+   ],
    "bauweise": "Statt die Eigenschaft zu nennen, nennt die Antwort ein konkretes Detail, aus dem die Leserin selbst schließt. Die Leserin macht den letzten Schritt.",
    "woerter": "Frage 5 bis 10, Antwort 1 bis 6",
    "wende": "die Antwort",
    "warum": "Selbst schließen macht Spaß (ein Gedankenschritt). Das Geständnis wirkt beiläufig und deshalb ehrlich.",
    "resi": "Eine Freundin fragt etwas Harmloses, Resi antwortet mit einem Detail, das sie verrät. Passt zu „In einem Wort“ (trend-formate.md).",
    "falle": "Braucht der Schluss zwei Gedankenschritte, versteht ihn keiner in 3 Sekunden.",
-   "quellen": ["https://knowyourmeme.com/memes/tell-me-without-telling-me"]
+   "quellen": [
+    "https://knowyourmeme.com/memes/tell-me-without-telling-me"
+   ]
   },
   {
    "id": "ungefragt",
    "name": "Niemand fragt, ich mache es trotzdem",
-   "mechanik": ["gestaendnis", "eskalation"],
+   "mechanik": [
+    "gestaendnis",
+    "eskalation"
+   ],
    "bauweise": "Ein leerer Auftakt (niemand hat gefragt), dann das ungefragte Verhalten der Sprecherin selbst, so genau wie möglich.",
    "woerter": "Auftakt 1 bis 3, Verhalten 5 bis 12",
    "wende": "das Verhalten, letzte Zeile",
    "warum": "Das Etikett kündigt den Witz an, deshalb reicht eine Zeile. Als Selbstanzeige ist es Selbstironie ohne Selbstmitleid.",
    "resi": "Szene: „Niemand:“ und Resi zu einer bestimmten Uhrzeit mit einer übergenauen Tätigkeit.",
-   "falle": "Ohne konkrete Uhrzeit oder Tätigkeit ist es Stimmung. Nur mit Resi selbst, nie über andere Gruppen.",
-   "quellen": ["https://knowyourmeme.com/memes/nobody", "https://knowyourmeme.com/memes/literally-no-one", "https://knowyourmeme.com/editorials/memescape-enabler-formats"]
+   "falle": "Ohne konkrete Uhrzeit oder Tätigkeit ist es Stimmung. Nur mit Resi selbst, nie über andere Gruppen. Gegenleser 22.10.: Das Format „Niemand:/Ich:“ wirkt auf 22-Jährige alt (2019), nur mit sehr starkem Schluss nehmen.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/nobody",
+    "https://knowyourmeme.com/memes/literally-no-one",
+    "https://knowyourmeme.com/editorials/memescape-enabler-formats"
+   ]
   },
   {
    "id": "floskel-woertlich",
    "name": "Floskel beim Wort genommen",
-   "mechanik": ["woertlich", "absage"],
+   "mechanik": [
+    "woertlich",
+    "absage"
+   ],
    "bauweise": "Ein Standardsatz oder eine Redensart wird wörtlich beantwortet. Die Antwort ist kürzer als die Frage.",
    "woerter": "Floskel 3 bis 10, Antwort 1 bis 6",
    "wende": "Antwort, letzte Zeile",
    "warum": "Die Floskel ist allen bekannt, die wörtliche Lesart ist logisch und trotzdem falsch. Ideal zum Abblitzen.",
    "resi": "Resis Abblitz-Muster (regeln.md). Das Gegenüber ist eine erfundene Einzelfigur.",
    "falle": "Doppeldeutigkeiten ins Sexuelle (typisch für Anmachsprüche) sind gesperrt.",
-   "quellen": ["https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06", "https://www.buzzfeed.com/ajanibazile/adulting-tweets"]
+   "quellen": [
+    "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06",
+    "https://www.buzzfeed.com/ajanibazile/adulting-tweets"
+   ]
   },
   {
    "id": "wunsch-umgelenkt",
    "name": "Klingt romantisch, zielt woanders hin",
-   "mechanik": ["umdeutung"],
+   "mechanik": [
+    "umdeutung"
+   ],
    "bauweise": "Der Satz beginnt wie ein romantischer Wunsch oder ein Kompliment. Das Ziel am Ende ist ein ganz anderes, nüchternes.",
    "woerter": "12 bis 25, Ziel in den letzten 2 bis 5 Wörtern",
    "wende": "Objekt des Wunsches am Ende",
    "warum": "Die Leserin füllt den Satz romantisch auf, das Ende kippt ihn. Klassische Irreführung mit einem Gedankenschritt.",
    "resi": "Resi wünscht sich etwas, das wie Liebe klingt. Das Ziel ist Ruhe, ein Amt, ein Gegenstand.",
    "falle": "Herbert als Auflösung „Partner“ ist schon verbraucht (#36). Neue Ziele suchen.",
-   "quellen": ["https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06", "https://www.buzzfeed.com/angelicaamartinez/relationship-tweets-july-2026"]
+   "quellen": [
+    "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06",
+    "https://www.buzzfeed.com/angelicaamartinez/relationship-tweets-july-2026"
+   ]
   },
   {
    "id": "verkehrte-freude",
    "name": "Erwachsenen-Logik: Absage als Geschenk",
-   "mechanik": ["kontrast", "umdeutung"],
+   "mechanik": [
+    "kontrast",
+    "umdeutung"
+   ],
    "bauweise": "Etwas, das früher enttäuscht hat (abgesagte Pläne, Regen, kein Besuch), ist jetzt das Beste am Tag. Die Wende zeigt, warum.",
    "woerter": "10 bis 20",
    "wende": "Grund oder Reaktion am Ende",
    "warum": "Häufigster Logik-Dreh in den Adulting-Listen. Junge Erwachsene erkennen den Wechsel bei sich.",
    "resi": "Freundin sagt ab und entschuldigt sich, Resi verrät, dass sie längst vorbereitet war, aufs Daheimbleiben.",
-   "falle": "„Ich bin froh“ allein ist flach. Ein Detail muss die Freude beweisen.",
-   "quellen": ["https://www.buzzfeed.com/ajanibazile/adulting-tweets", "https://www.buzzfeed.com/jamieko/funny-adulting-tweets-october-2026"]
+   "falle": "„Ich bin froh“ allein ist flach. Ein Detail muss die Freude beweisen. Gegenleser 22.10.: „Freundin sagt ab, insgeheim erleichtert“ ist ausgelutscht. Nur mit Wende, die über Erleichterung hinausgeht.",
+   "quellen": [
+    "https://www.buzzfeed.com/ajanibazile/adulting-tweets",
+    "https://www.buzzfeed.com/jamieko/funny-adulting-tweets-october-2026"
+   ]
   },
   {
    "id": "amtston",
    "name": "Soziale Frage, amtliche Antwort",
-   "mechanik": ["absage", "woertlich", "umdeutung"],
+   "mechanik": [
+    "absage",
+    "woertlich",
+    "umdeutung"
+   ],
    "bauweise": "Eine persönliche Frage (Liebe, Pläne, Familie) wird im Ton einer Behörde beantwortet: Antrag, Frist, Bearbeitungszeit, Vorgang.",
    "woerter": "Frage 5 bis 10, Antwort 3 bis 8",
    "wende": "die amtliche Zahl oder das Amtswort am Ende",
    "warum": "Registerwechsel ist sofort lesbar. Bürokratie kennt jede, und die Kälte der Sprache ist die Absage.",
    "resi": "Resis Kernkompetenz (souverän bei Verwaltung). Mama oder Freundin fragt, Resi antwortet wie ein Amt.",
-   "falle": "Nicht zu viele Amtswörter, eins reicht. Keine echten Behördennamen, die nur ein Land kennt.",
-   "quellen": ["https://www.buzzfeed.com/ajanibazile/adulting-tweets"]
+   "falle": "Nicht zu viele Amtswörter, eins reicht. Keine echten Behördennamen, die nur ein Land kennt. Gegenleser 22.10.: Verrät die erste Antwort schon das Amt, ist der Rest erratbar. Das Amtswort erst ganz am Ende bringen.",
+   "quellen": [
+    "https://www.buzzfeed.com/ajanibazile/adulting-tweets"
+   ]
   },
   {
    "id": "einwort-kippe",
    "name": "Ein Wort kippt alles",
-   "mechanik": ["ertappt", "absage"],
+   "mechanik": [
+    "ertappt",
+    "absage"
+   ],
    "bauweise": "Ein Aufbau mit klarer Richtung, dann ein einziges Wort („Nie.“, „Wieder.“, „Dreimal.“), das ihn ins Gegenteil dreht oder als Wiederholung entlarvt.",
    "woerter": "Aufbau 8 bis 15, Schluss 1 Wort",
    "wende": "das letzte Wort allein",
    "warum": "Maximale Kürze, das Wort steht frei und trägt den ganzen Witz. Gut für das Reel, weil es allein auftaucht.",
    "resi": "Resi beantwortet eine lange Frage mit einem Wort, das die Geschichte dahinter verrät.",
    "falle": "Ein Wort, das nur bestätigt („Ja.“, „Leider.“), ist flach. Es muss kippen oder etwas zählen.",
-   "quellen": ["https://www.twitterperlen.de/du-wirst-mich-erkennen-die-besten-tweets-ueber-dates/", "https://www.buzzfeed.com/angelicaamartinez/relationship-tweets-july-2026"]
+   "quellen": [
+    "https://www.twitterperlen.de/du-wirst-mich-erkennen-die-besten-tweets-ueber-dates/",
+    "https://www.buzzfeed.com/angelicaamartinez/relationship-tweets-july-2026"
+   ]
   },
   {
    "id": "spaetes-detail",
    "name": "Beiläufiges Detail am Ende",
-   "mechanik": ["kontrast", "umdeutung"],
+   "mechanik": [
+    "kontrast",
+    "umdeutung"
+   ],
    "bauweise": "Eine kleine Geschichte läuft normal, ein beiläufig nachgeschobenes Detail ändert ihre Bedeutung komplett.",
    "woerter": "in den Quellen 40 bis 75 (Anekdoten), für Resi auf 4 Takte kürzen",
    "wende": "letzter Nebensatz",
    "warum": "Die Leserin muss die Geschichte im Kopf neu ordnen. Funktioniert, weil das Detail nebenbei kommt, nicht als Knall.",
    "resi": "Freundinnen-Chat über ein Wochenende oder ein Date. Das Detail sagt Resi, nicht das Gegenüber.",
    "falle": "In den Quellen oft zu lang. Mehr als vier Takte, und die Wende geht unter.",
-   "quellen": ["https://www.twitterperlen.de/lieber-alleine-alt-werden-als-mit-so-jemandem-enden/"]
+   "quellen": [
+    "https://www.twitterperlen.de/lieber-alleine-alt-werden-als-mit-so-jemandem-enden/"
+   ]
   },
   {
    "id": "laengen-verhaeltnis",
    "name": "Die Form ist die Pointe",
-   "mechanik": ["absage", "eskalation"],
+   "mechanik": [
+    "absage",
+    "eskalation"
+   ],
    "bauweise": "Das Verhältnis ist sichtbar, bevor man liest: lange Nachricht gegen kurze, viele Schritte gegen einen, steigende Liste mit kippendem letztem Punkt.",
    "woerter": "Gegenüber lang, Resi 1 bis 4",
    "wende": "Resis kurzer Teil oder der letzte Listenpunkt",
    "warum": "Wirkt in unter einer Sekunde, auch beim Scrollen. Eskalierende Listen kippen auf dem letzten Punkt.",
    "resi": "Sprachnachricht 4:12 gegen 0:02, To-do-Liste, deren letzter Punkt kippt.",
    "falle": "Der kurze Teil braucht trotzdem ein konkretes Wort, sonst bleibt nur „kurz“.",
-   "quellen": ["https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06", "https://www.buzzfeed.com/ajanibazile/adulting-tweets"]
+   "quellen": [
+    "https://www.huffingtonpost.ca/https%3A%2F%2Fwww.huffingtonpost.ca%2Fentry%2Fthe-20-funniest-tweets-from-women-this-week-mar-9-15_n_5c881a32e4b0fbd7661eae06",
+    "https://www.buzzfeed.com/ajanibazile/adulting-tweets"
+   ]
   },
   {
    "id": "dilemma-frage",
    "name": "Frage ohne richtige Antwort",
-   "mechanik": ["eskalation", "umdeutung"],
+   "mechanik": [
+    "eskalation",
+    "umdeutung"
+   ],
    "bauweise": "Eine Alltagslage, in der jede Entscheidung falsch ist, als Frage an die Leute. Die Zahl im Setup verrät das Problem.",
    "woerter": "20 bis 35",
    "wende": "die Zahl oder der Zeitabstand im Setup, dann die Frage",
    "warum": "Lädt zum Kommentieren ein, weil jede eine Antwort hat. Gut für Story-Umfragen.",
    "resi": "Für Story-Karten (umfrage, storyfrage). Als Post nur, wenn Resi am Ende ein konkretes Wort hat.",
    "falle": "Eine Frage als letzte Zeile lehnt pruefen.mjs im Post ab, deshalb nur in Storys.",
-   "quellen": ["https://www.twitterperlen.de/liebesperle-der-woche-die-frage-aller-fragen/"]
+   "quellen": [
+    "https://www.twitterperlen.de/liebesperle-der-woche-die-frage-aller-fragen/"
+   ]
   }
  ],
  "kennzahlen": [
@@ -202,19 +295,64 @@
   "Mechaniken nach Häufigkeit: Kontrast (etwa 30 %), Irreführung und Umdeutung (etwa 20 %), Eskalation (etwa 15 %), absurder Vergleich (etwa 10 %), Geständnis (etwa 10 %), Logik-Dreh (etwa 10 %), wörtlich nehmen (etwa 8 %).",
   "Ohne Wende (reine Feststellung wie „Dating ist ein Albtraum“) sind nur rund 5 von 150, fast immer mit fremdem Bild, das die Pointe trägt. Ohne Bild-Pointe zündet eine Feststellung nicht.",
   "Viele Listen-Beiträge leben vom Bild (Reaktionsgesicht, Screenshot). Bei uns übernimmt Resis Gesichtsausdruck diese Rolle, der Text bleibt trotzdem für sich lustig.",
-  "Benign-Violation-Forschung: Lustig ist eine Verletzung, die harmlos bleibt. Eine angekündigte Pointe kann sogar besser wirken als eine überraschende, wenn klar ist, dass nichts Schlimmes passiert (https://www.npr.org/sections/13.7/2016/04/25/475622815/hey-what-are-you-laughing-at)."
+  "Benign-Violation-Forschung: Lustig ist eine Verletzung, die harmlos bleibt. Eine angekündigte Pointe kann sogar besser wirken als eine überraschende, wenn klar ist, dass nichts Schlimmes passiert (https://www.npr.org/sections/13.7/2016/04/25/475622815/hey-what-are-you-laughing-at).",
+  "Erste Probe mit dem blinden Gegenleser (22.10.2026, 11 Entwürfe): bestanden haben bedingung-verraet, selbstbetrug-rechnung (Ordner), indirektes-gestaendnis, wunsch-umgelenkt und einwort-kippe. Durchgefallen sind vor allem Muster, deren Grundidee als Meme schon bekannt ist (Absage = Erleichterung, reduziert = gespart, großes Wort für Kleines): Die Bauweise allein reicht nicht, der Inhalt muss neu sein."
  ],
  "gegenbeispiele": [
-  { "muster": "Anmachspruch mit Doppeldeutigkeit", "warum": "Pointe lebt von sexueller Zweitbedeutung. Bei uns gesperrt (Grenze in regeln.md).", "quelle": "https://www.twitterperlen.de/schlechte-anmachsprueche/" },
-  { "muster": "Erfahrung wird zu „alle Männer“", "warum": "Eskalation zur Gruppe. Bei uns gesperrt, Pointe nur bei Resi oder der Floskel.", "quelle": "https://www.twitterperlen.de/warum-frauen-vom-dating-so-muede-sind/" },
-  { "muster": "Promi- oder Marken-Witz", "warum": "Braucht Vorwissen über reale Personen, verboten und nach einer Woche alt.", "quelle": "https://www.aol.com/funniest-posts-women-week-aug-221548975.html" },
-  { "muster": "Fremdes Bild trägt die Pointe (Enabler-Format)", "warum": "Nur fremde Vorlagen, bei uns gesperrt. Unser Bild ist immer Resi.", "quelle": "https://knowyourmeme.com/editorials/memescape-enabler-formats" },
-  { "muster": "Feststellung ohne Wende", "warum": "Bestätigt nur, was jede denkt. Fehlerart flach.", "quelle": "https://www.buzzfeed.com/hannahdobro/funniest-posts-from-women-feb-3" },
-  { "muster": "Nebel/Wellness, Schluss „Wellness.“", "warum": "PR #264, Dominik: bestätigt nur die Beobachtung (flach).", "quelle": "auswertung/gruende.json" },
-  { "muster": "Altglas, Schluss „Es ist jetzt Deko.“", "warum": "PR #264, Dominik: Zustand statt Pointe (flach).", "quelle": "auswertung/gruende.json" },
-  { "muster": "2-Euro-Münze, Schluss „Die letzte.“", "warum": "PR #264, Dominik: nach dem Setup erratbar (vorhersehbar). Gegenmittel: grosses-wort mit unerwartetem Ding.", "quelle": "auswertung/gruende.json" },
-  { "muster": "Karrieremesse, Schluss „Kugelschreiber.“", "warum": "PR #264, Dominik: erwartbar (vorhersehbar). Das kleine Ding muss überraschen.", "quelle": "auswertung/gruende.json" },
-  { "muster": "Chat „ok.“ mit Punkt", "warum": "PR #264, Dominik: Internet-Vorwissen nötig. Gilt auch für bedingung-verraet.", "quelle": "auswertung/gruende.json" },
-  { "muster": "Büro-Sammlung, Kantine", "warum": "PR #264, Dominik: Ü40-Alltag. Büro nur aus Sicht der Neuen.", "quelle": "auswertung/gruende.json" }
+  {
+   "muster": "Anmachspruch mit Doppeldeutigkeit",
+   "warum": "Pointe lebt von sexueller Zweitbedeutung. Bei uns gesperrt (Grenze in regeln.md).",
+   "quelle": "https://www.twitterperlen.de/schlechte-anmachsprueche/"
+  },
+  {
+   "muster": "Erfahrung wird zu „alle Männer“",
+   "warum": "Eskalation zur Gruppe. Bei uns gesperrt, Pointe nur bei Resi oder der Floskel.",
+   "quelle": "https://www.twitterperlen.de/warum-frauen-vom-dating-so-muede-sind/"
+  },
+  {
+   "muster": "Promi- oder Marken-Witz",
+   "warum": "Braucht Vorwissen über reale Personen, verboten und nach einer Woche alt.",
+   "quelle": "https://www.aol.com/funniest-posts-women-week-aug-221548975.html"
+  },
+  {
+   "muster": "Fremdes Bild trägt die Pointe (Enabler-Format)",
+   "warum": "Nur fremde Vorlagen, bei uns gesperrt. Unser Bild ist immer Resi.",
+   "quelle": "https://knowyourmeme.com/editorials/memescape-enabler-formats"
+  },
+  {
+   "muster": "Feststellung ohne Wende",
+   "warum": "Bestätigt nur, was jede denkt. Fehlerart flach.",
+   "quelle": "https://www.buzzfeed.com/hannahdobro/funniest-posts-from-women-feb-3"
+  },
+  {
+   "muster": "Nebel/Wellness, Schluss „Wellness.“",
+   "warum": "PR #264, Dominik: bestätigt nur die Beobachtung (flach).",
+   "quelle": "auswertung/gruende.json"
+  },
+  {
+   "muster": "Altglas, Schluss „Es ist jetzt Deko.“",
+   "warum": "PR #264, Dominik: Zustand statt Pointe (flach).",
+   "quelle": "auswertung/gruende.json"
+  },
+  {
+   "muster": "2-Euro-Münze, Schluss „Die letzte.“",
+   "warum": "PR #264, Dominik: nach dem Setup erratbar (vorhersehbar). Gegenmittel: grosses-wort mit unerwartetem Ding.",
+   "quelle": "auswertung/gruende.json"
+  },
+  {
+   "muster": "Karrieremesse, Schluss „Kugelschreiber.“",
+   "warum": "PR #264, Dominik: erwartbar (vorhersehbar). Das kleine Ding muss überraschen.",
+   "quelle": "auswertung/gruende.json"
+  },
+  {
+   "muster": "Chat „ok.“ mit Punkt",
+   "warum": "PR #264, Dominik: Internet-Vorwissen nötig. Gilt auch für bedingung-verraet.",
+   "quelle": "auswertung/gruende.json"
+  },
+  {
+   "muster": "Büro-Sammlung, Kantine",
+   "warum": "PR #264, Dominik: Ü40-Alltag. Büro nur aus Sicht der Neuen.",
+   "quelle": "auswertung/gruende.json"
+  }
  ]
 }
