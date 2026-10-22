@@ -44,7 +44,7 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 
 - Formel: vertrauter Rahmen + kleine Verletzung + Entwarnung + Wendung, die der Leser nicht selbst liefern konnte.
 - Düster ist der Rahmen, nicht die Pointe. Tod, Särge und Nachrufe stehen im Setup oder als Kulisse. Die Wendung kommt aus Alltag, Büro, Öffis, Smalltalk, Wetter, Herbert, Sunny oder Franz.
-- Haltung immer Deadpan. Mix bei 14 Posts pro Woche: 10 bis 12 reine Alltags-/Relatable-Posts (Understatement und Selbstironie sind Mittel darin), höchstens 2 bis 3 Welt-Posts (Herbert, Franz, Sunny) nach dem Herbert-Maßstab, schwarzer Humor nur als Würze, höchstens 1 Absurd, Meta oder Parodie.
+- Haltung immer Deadpan. Mix bei 14 Posts pro Woche: 10 bis 12 Relatable-Posts, davon seit 22.10.2026 mindestens 5 Beziehung und mindestens 5 Selbstironie (siehe Witz-Parameter), höchstens 2 bis 3 Welt-Posts (Herbert, Franz, Sunny) nach dem Herbert-Maßstab, schwarzer Humor nur als Würze, höchstens 1 Absurd, Meta oder Parodie.
 - Kompetent scheitern: Resi ist souverän bei Tod, Verwaltung und Ordnung und patzt nur im Sozialen (Smalltalk, Spontaneität, Überraschungen). Sie verwaltet, sie jammert nicht.
 - Sunny ist nie das Ziel. Die Pointe landet bei Resis Haltung.
 - Wärme nur als Leck: etwa jeder zehnte Post, indirekt und sofort abgewiegelt.
@@ -53,6 +53,29 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 - **Ohne Vorwissen in 3 Sekunden verständlich:** keine Pointe, die eine frühere Folge, ein Insiderwort oder eine Rechnung braucht. Maßstab sind die Herbert-Posts 2 und 3: bekannte Situation, eine absurde Variable, Wende in der letzten Zeile. Serienbezug ist nur Bonus.
 - **Abblitz-Muster** (von Dominik am besten bewertet): Das Gegenüber sagt einen Standardsatz, Resi ist kürzer und ruhig, nimmt die Floskel wörtlich oder geht mit einer knappen Absage ab. Letzte Zeile höchstens sechs Wörter. Referenzen in `beispiele.md`.
 - Serien: Der Rahmen bleibt, die Wendung wechselt. Nach drei gleichen Folgen die vierte brechen.
+
+## Witz-Parameter (Dominik, 22.10.2026)
+
+Anlass: „Die letzten Posts waren einfach nur flach, da ist kein Witz dabei.“ Typisch flach waren Posts, die eine Beobachtung nur bestätigen (Nebel = Wellness, Altglas = Deko, 2-Euro-Münze = die letzte, Karrieremesse = Kugelschreiber). Ab jetzt gilt:
+
+1. **Schwerpunkt Beziehung:** Mindestens 4 von 10 neuen Posts drehen sich um Dating, Ex, Situationship, Freundinnen-Talk über Männer und Dates, Familie fragt nach dem Freund (`zielgruppe` `dating` oder `familie`). Quote pro 14 Posts: dating bis 5, familie bis 2, alltag nur noch 2.
+2. **Schwerpunkt Selbstironie:** Mindestens 4 von 10 neuen Posts treffen Resi selbst. Sie ist nicht nur die Coole, die andere abblitzen lässt, sondern wird bei sich selbst ertappt: Ratschläge, die sie selbst nie befolgt hat, „Ich bin komplett drüber“ und kennt den Namen seiner Oma, „Ich bin gern draußen“ heißt Müll rausbringen. Sie trägt es mit Würde und Deadpan, nie mit Selbstmitleid.
+3. **Jede Pointe nennt ihre Mechanik** (`mechanik`, Pflicht für neue Posts, `humorquote.mjs`):
+
+| mechanik | Was passiert | max. pro 14 |
+|---|---|---|
+| `absage` | Abblitzen: Standardsatz, Resi kürzer und ruhig | 4 |
+| `ertappt` | Resi behauptet etwas über sich, die letzte Zeile entlarvt sie | 4 |
+| `gestaendnis` | Resi gibt ruhig etwas Peinliches zu | 3 |
+| `kontrast` | Leben der anderen (Antrag, Umzug, Beförderung) gegen Resis Realität | 3 |
+| `woertlich` | Floskel oder Profilsatz wird beim Wort genommen | 3 |
+| `umdeutung` | Die Erwartung wird in der letzten Zeile umgedeutet | 3 |
+| `eskalation` | Kleiner Anlass, absurd große Reaktion, Kippe am Ende | 3 |
+
+   `ertappt`, `gestaendnis` und `kontrast` zählen als Selbstironie. `pruefen.mjs` lehnt einen Schreib-Lauf ab 6 Posts ab, wenn Selbstironie oder Beziehung unter 40 % liegen.
+4. **Flach-Test (hartes Kriterium):** Die letzte Zeile muss etwas verändern: einen Widerspruch aufdecken, eine Erwartung umdrehen oder Resi verraten. Bestätigt sie nur das Setup oder beschreibt sie einen Zustand („leider“, „ich auch“, „endlich“, „fast wie zuhause“, „es ist jetzt Deko“), ist der Post flach und wird umgeschrieben. Prüffrage: Kann man die letzte Zeile nach dem Setup erraten? Dann ist sie keine Pointe.
+5. **Spannung statt Stimmung:** Jeder Post hat ein Gegenüber oder einen Widerspruch (Freundin, Match, Mama, Mitbewohnerin oder Resis eigene Behauptung). Reine Stimmungsbilder (Wetter, Nebel, Montag, Ort bewerten) nur noch als Anlass mit Gegenüber, nie allein.
+6. **Gen-Z-Wortschatz der Situation, nicht der Pointe:** Situationship, gelesen ohne Antwort, Story anschauen, Match, Profiltext, Gruppenchat-Krisensitzung, Screenshot an die Freundin. Trendwörter dürfen das Setup bauen, die Pointe bleibt ein normaler Satz.
 
 ## Pointen-Check (vor jedem Post)
 
@@ -66,13 +89,14 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 8. Wer wird getroffen? Nur Resi oder der Alltag, nie eine reale Gruppe, Person oder Marke.
 9. Grenze geprüft (siehe unten).
 10. Punkteskala aus dem Deepdive (Abschnitt 7.2): zehn Kriterien mit 0 bis 2 Punkten, Schwelle 14 von 20. Darunter umschreiben.
+11. **Flach-Test** (siehe Witz-Parameter): Verändert die letzte Zeile etwas, oder bestätigt sie nur das Setup? Und: Welche `mechanik` hat die Wende? Passt keine, gibt es keine Wende.
 
 Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der Caption, Sunny, die verliert oder gemein ist, denselben Gag unverändert zum dritten Mal, Trendvokabeln als Pointe, zwei Pointen in einem Post.
 
 ## Die Grenze (nie verhandelbar)
 
 - Niemand wird objektifiziert oder sexualisiert. Kein Körperfokus, keine Anspielungen, keine Verführung, auch nicht angedeutet.
-- Flirt- und Beziehungsszenen sind erlaubt, solange Resi die Kontrolle hat (Dominik, 19.10.2026): Sie lehnt ab, kontert, lässt abblitzen, nimmt Dating als Selbstironie. Das Gegenüber ist eine erfundene, austauschbare Einzelfigur mit harmlosem Standardsatz (Drink, Nummer, „nicht wie die anderen“). Die Pointe liegt bei Resis Haltung oder der Floskel, nie bei einer Gruppe: keine Verallgemeinerung oder Abwertung von Männern, kein Mobbing, keine realen Personen. Resi flirtet nie selbst, geht nie darauf ein und sagt keine Beziehungsformulierungen über sich und ein Gegenüber.
+- Flirt- und Beziehungsszenen sind erlaubt, solange Resi die Kontrolle hat (Dominik, 19.10.2026): Sie lehnt ab, kontert, lässt abblitzen, nimmt Dating als Selbstironie. Das Gegenüber ist eine erfundene, austauschbare Einzelfigur mit harmlosem Standardsatz (Drink, Nummer, „nicht wie die anderen“). Die Pointe liegt bei Resis Haltung oder der Floskel, nie bei einer Gruppe: keine Verallgemeinerung oder Abwertung von Männern, kein Mobbing, keine realen Personen. Resi flirtet nie selbst und geht nie auf eine Anmache ein. Selbstironie über ihr eigenes Liebesleben ist erwünscht (Dominik, 22.10.2026): Ex-Profil, Overthinking, Ratschläge, die sie selbst nie befolgt, peinliche Dates von früher. Dabei bleibt sie würdevoll und nie bedürftig, keine aktuelle Beziehung, keine Sehnsucht nach Zuschauern, kein Körperfokus.
 - Keine Verfügbarkeits- oder Besitzbotschaften an Zuschauer („Schatzi“, „schreib mir“, „ich gehör dir“, „Traumfreundin“).
 - Die Figur ist immer klar erwachsen und wird nie kindlich dargestellt.
 - Keine Witze über reale Gruppen (auch nicht über Männer als Gruppe), Herkunft, Religion, Krankheit, Aussehen. Die Pointe liegt bei Resi, beim Alltag oder bei einer Floskel.
@@ -86,8 +110,8 @@ Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der
 - 1 bis 2 kurze Sätze in ihrer Stimme, verrät die Pointe nicht. Gern die Serie nennen („Nachruf der Woche.“, „Kollegin vs. ich, Folge 4.“).
 - `aufforderung`: ein Satz zum Mitmachen, abwechselnd Frage („Was soll ich als Nächstes beerdigen?“), Speichern, Teilen („Schick das der Sunny in deinem Büro.“). Nie privat schreiben, nie Verfügbarkeit, keine Gewinnspiele, nichts kaufen.
   Höchstens ein Drittel der Posts beginnt mit „Schick das …“ (Gesamt-Check 19.10.2026: 50 von 65 taten es, das wird zum Ritual). Andere Formen: Frage zur Situation („Wie oft drückst du Schlummern?“), Zuordnung („Welche Kollegin ist das?“), „Speichern für Montag.“, „Wer ist bei euch die Sunny?“.
-- `mechanik` (optional): Tag für die Humor-Quote, z. B. `absage` für „Resi weist ab / sagt knapp Nein“. Höchstens 3 von 14 Posts mit derselben Mechanik, nie mehr als 2 hintereinander (`humorquote.mjs`). Jeder Post mit Abblitz- oder Rückzugspointe bekommt `"mechanik": "absage"`.
-- `zielgruppe` (Pflicht für neue Posts): Lebenslage, für die der Post geschrieben ist, eine von `dating`, `jobstart`, `akku`, `wohnen`, `studium`, `familie`, `ausbildung`, `szene`, `alltag` (`zielgruppe.mjs`, Grundlage Deepdive Zielgruppen DACH, 20.10.2026). Höchstzahl pro 14 Posts: dating 3, jobstart 3, akku 2, wohnen 2, studium 2, alltag 3, familie/ausbildung/szene je 1; nie mehr als 2 gleiche hintereinander. Beim Posten kommt die Zielgruppe mit dem meisten Bedarf zuerst dran.
+- `mechanik` (Pflicht für neue Posts seit 22.10.2026): Mechanik der Wende, eine von `absage`, `ertappt`, `gestaendnis`, `kontrast`, `woertlich`, `umdeutung`, `eskalation` (Tabelle unter Witz-Parameter). Höchstzahl je Mechanik pro 14 Posts laut Tabelle, nie mehr als 2 gleiche hintereinander (`humorquote.mjs`). Jeder Post mit Abblitz- oder Rückzugspointe bekommt `"mechanik": "absage"`.
+- `zielgruppe` (Pflicht für neue Posts): Lebenslage, für die der Post geschrieben ist, eine von `dating`, `jobstart`, `akku`, `wohnen`, `studium`, `familie`, `ausbildung`, `szene`, `alltag` (`zielgruppe.mjs`, Grundlage Deepdive Zielgruppen DACH, 20.10.2026). Höchstzahl pro 14 Posts (seit 22.10.2026): dating 5, jobstart 3, akku 2, wohnen 2, studium 2, familie 2, alltag 2, ausbildung/szene je 1; nie mehr als 2 gleiche hintereinander. Beim Posten kommt die Zielgruppe mit dem meisten Bedarf zuerst dran.
 - `region` (optional, Standard `dach`): `at` oder `de`, wenn die Pointe ein Wort oder einen Anlass braucht, den nur ein Land kennt (Bim, Matura, Deutschlandticket). Höchstens 2 pro Region in 14 Posts.
 - Ü40-Warnliste (`zielgruppe.mjs`): Mailverteiler, Wichteln, Kaffeekasse, Büro-Sammlung, Kantine, Betriebsausflug, Weihnachtsfeier, Fax, Festnetz und Ähnliches klingen nach 45-Jährigen. `pruefen.mjs` lässt solche Posts nur mit `"ue40_ok": "<ein Satz, warum es für 18- bis 28-Jährige funktioniert>"` durch. Büro immer aus Sicht der Neuen schreiben: Onboarding, Probezeit, Teams-Call, erstes Gehalt.
 - 3 bis 6 Hashtags, deutsch und englisch gemischt, z. B. #deadpan #goth #wien #büroalltag #gothgirl.

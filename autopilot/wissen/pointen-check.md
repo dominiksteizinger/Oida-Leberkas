@@ -98,3 +98,12 @@ Dominik (19.10.2026): Nr. 1, 2, 3, 5, 9, 10 „wirklich gut, ich hab sogar gelac
 
 ---
 
+
+### 7.7 Witz-Parameter und Flach-Test (Dominik, 22.10.2026)
+
+Dominik: „Es braucht neue Parameter zum Thema Witz. Mehr Beziehungsthemen und Selbstironie, die letzten Posts waren einfach nur flach.“
+
+- **Harter Zusatz zu 7.1, Kriterium 9 (Flach-Test):** Die letzte Zeile verändert etwas (Widerspruch, umgedrehte Erwartung, Resi verrät sich). Bestätigt sie nur das Setup oder beschreibt einen Zustand, fällt der Post durch.
+- **Mechanik:** Jeder Post nennt seine Mechanik (`absage`, `ertappt`, `gestaendnis`, `kontrast`, `woertlich`, `umdeutung`, `eskalation`). Wer keine findet, hat keine Wende.
+- **Gewichtung:** mindestens 40 % Beziehung (`dating`, `familie`) und 40 % Selbstironie (`ertappt`, `gestaendnis`, `kontrast`) pro Schreib-Lauf; `pruefen.mjs` prüft das ab 6 Posts.
+- **Kriterium 6 (Benigne Verletzung) neu gelesen:** Die beste Verletzung trifft Resi selbst. Sie verliert ein bisschen und behält die Haltung. Das macht sie sympathisch und den Post sendbar („das bin ich“).

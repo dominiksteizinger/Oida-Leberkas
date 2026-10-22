@@ -6,16 +6,17 @@ import path from "node:path";
 
 // Höchstzahl pro 14 Posts (eine Woche bei zwei Posts am Tag). Summe > 14, damit immer etwas passt.
 export const ZIELGRUPPEN = {
-  dating: { name: "Dating und Singles", max: 3 },
+  // Beziehung hat seit 22.10.2026 das meiste Gewicht (Dominik: mehr Beziehungsthemen)
+  dating: { name: "Dating, Beziehung und Ex", max: 5 },
   jobstart: { name: "Berufseinstieg", max: 3 },
   akku: { name: "Sozialer Akku", max: 2 },
   wohnen: { name: "WG und erste Wohnung", max: 2 },
   studium: { name: "Studium", max: 2 },
-  familie: { name: "Familie aus Sicht der Jungen", max: 1 },
+  familie: { name: "Familie aus Sicht der Jungen", max: 2 },
   ausbildung: { name: "Ausbildung und Lehre", max: 1 },
   szene: { name: "Goth- und Alt-Szene", max: 1 },
   // Für alle gleich (Montag, Wetter, Handy, Zeitumstellung): erlaubt, aber begrenzt, sonst rutscht alles hierher
-  alltag: { name: "Alltag allgemein", max: 3 },
+  alltag: { name: "Alltag allgemein", max: 2 },
 };
 export const REGIONEN = { dach: "überall verständlich", at: "österreichische Anspielung", de: "deutsche Anspielung" };
 export const QUOTE_ZG = { hintereinander: 2, fenster: 14, regionMax: 2 };
