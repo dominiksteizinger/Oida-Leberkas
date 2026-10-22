@@ -112,31 +112,38 @@ async function igHashtags(tags = FANBASE_HASHTAGS) {
   if (!token) throw new Error("kein Instagram-Token");
   const ig = process.env.IG_USER_ID || "17841454284048783";
   const api = async (pfad, q) => {
-    const j = await (await fetch(`https://graph.facebook.com/${pfad}?${new URLSearchParams({ ...q, access_token: token })}`, { signal: AbortSignal.timeout(10000) })).json();
+    const j = await (await fetch(`https://graph.facebook.com/${pfad}?${new URLSearchParams({ ...q, access_token: token })}`, { signal: AbortSignal.timeout(30000) })).json();
     if (j.error) throw new Error(j.error.message);
     return j;
   };
-  const aus = [];
+  // Die Hashtag-Suche ist langsam (Lauf 22.10.: Abbruch nach 10 s); jeder Hashtag darf einzeln scheitern
+  const aus = [], fehler = [];
   for (const t of tags) {
-    const id = (await api("ig_hashtag_search", { user_id: ig, q: t })).data?.[0]?.id;
-    if (!id) continue;
-    const top = (await api(`${id}/top_media`, { user_id: ig, fields: "caption,like_count,comments_count", limit: "10" })).data || [];
+    let top;
+    try {
+      const id = (await api("ig_hashtag_search", { user_id: ig, q: t })).data?.[0]?.id;
+      if (!id) continue;
+      top = (await api(`${id}/top_media`, { user_id: ig, fields: "caption,like_count,comments_count", limit: "10" })).data || [];
+    } catch (err) { fehler.push(`#${t}: ${err.message}`); continue; }
     for (const m of top.filter((x) => x.caption).sort((a, b) => (b.like_count || 0) - (a.like_count || 0)).slice(0, 3)) {
       aus.push(`#${t}: „${m.caption.split("\n")[0].replace(/@\S+/g, "@…").replace(/#\S+/g, "").trim().slice(0, 110)}“ (${m.like_count ?? "?"} Likes, ${m.comments_count ?? "?"} Kommentare)`);
     }
   }
+  if (!aus.length && fehler.length) throw new Error(fehler[0]);
   return aus;
 }
 // Dating- und Beziehungs-Shorts der letzten 7 Tage in Deutschland, nach Views (YouTube-Suche, 100 Einheiten vom Tageskontingent)
-async function youtubeShorts(datum, q = "dating|beziehung|situationship|freundin") {
+// Nur deutschsprachige Titel: relevanceLanguage filtert nicht hart (Lauf 22.10.: zwei Drittel englisch oder indisch)
+export const deutsch = (t) => /[äöüß]|\b(ich|du|mein|meine|wenn|nicht|und|der|die|das|mit|wer|freund|freundin|beziehung|ex)\b/i.test(t);
+async function youtubeShorts(datum, q = "beziehung|freundin|freund|situationship|ex|date deutsch") {
   const { YOUTUBE_CLIENT_ID: id, YOUTUBE_CLIENT_SECRET: secret, YOUTUBE_REFRESH_TOKEN: refresh } = process.env;
   if (!id || !secret || !refresh) throw new Error("keine YouTube-Secrets");
   const token = await (await fetch("https://oauth2.googleapis.com/token", { method: "POST", body: new URLSearchParams({ client_id: id, client_secret: secret, refresh_token: refresh, grant_type: "refresh_token" }) })).json();
   if (!token.access_token) throw new Error(token.error || "kein Token");
   const seit = new Date(Date.parse(datum + "T00:00:00Z") - 7 * 864e5).toISOString();
-  const s = new URLSearchParams({ part: "snippet", type: "video", videoDuration: "short", regionCode: "DE", relevanceLanguage: "de", order: "viewCount", publishedAfter: seit, q, maxResults: "25" });
+  const s = new URLSearchParams({ part: "snippet", type: "video", videoDuration: "short", regionCode: "DE", relevanceLanguage: "de", order: "viewCount", publishedAfter: seit, q, maxResults: "50" });
   const j = await (await holen(`https://www.googleapis.com/youtube/v3/search?${s}`, { headers: { ...UA, authorization: `Bearer ${token.access_token}` } })).json();
-  return (j.items || []).map((v) => entities(v.snippet.title));
+  return (j.items || []).map((v) => entities(v.snippet.title)).filter(deutsch);
 }
 
 export function anlaesse(datum, tage = 21) {

@@ -41,3 +41,11 @@ test("Schnellweg: Kurzlauf ohne langsame Wochenquellen, Anlässe nur 3 Tage", ()
   assert.ok(anlaesse("2026-10-30", 3).some((z) => z.startsWith("2026-11-01")));
   assert.ok(!anlaesse("2026-10-30", 3).some((z) => z.startsWith("2026-11-02")));
 });
+
+test("Dating-Shorts: nur deutschsprachige Titel", async () => {
+  const { deutsch } = await import("./trends.mjs");
+  assert.equal(deutsch("Wer ist eure Beifahrer Princess? #beziehung"), true);
+  assert.equal(deutsch("Dieses Mädchen zeigte ihrer besten Freundin ihren Gym-Crush"), true);
+  assert.equal(deutsch("I Tried to Hide My Farts on Our Date!"), false);
+  assert.equal(deutsch("Going on a date with Link"), false);
+});
