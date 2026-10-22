@@ -68,3 +68,20 @@ test("YouTube: ohne Analytics-Zeile vorläufige Zähler aus der Data API", async
   assert.equal(yt.werte[e.id].views, 42);
   assert.equal(yt.vorlaeufig, 1);
 });
+
+test("Kurzfassung: Top/Flop nach Punkten, Signal erst ab 2 Posts, Fehler-Check auf gepostete Posts", async () => {
+  const { kurzfassung, punkte } = await import("./messung.mjs");
+  const jetzt = new Date("2026-10-23T12:00:00Z");
+  const post = (id, mechanik, schluss, stunden) => ({ id, gepostetAm: new Date(jetzt - stunden * 3600e3), e: { inhalt: { format: "szene", satz: "Mama fragt nach jemandem.", klammern: [schluss] }, mechanik, zielgruppe: "dating" } });
+  const ps = [post("a", "absage", "Herbert. Fledermaus.", 30), post("b", "absage", "Zum Müll.", 50), post("c", "kontrast", "Stromrechnung.", 60), post("d", "kontrast", "Ich nicht.", 70), post("e", "absage", "Kalender.", 3)];
+  const ig = { status: "ok", werte: { a: { reach: 300, shares: 5, saved: 0 }, b: { reach: 200 }, c: { reach: 50 }, d: { reach: 40 }, e: { reach: 999 } } };
+  const yt = { status: "uebersprungen" };
+  assert.equal(punkte(ig.werte.a, {}), 350);
+  const k = kurzfassung({ posts: ps, ig, yt, jetzt });
+  assert.equal(k.signal.bewertet, 4); // e ist jünger als 24 h
+  assert.equal(k.signal.top[0].id, "a");
+  assert.deepEqual(k.signal.mehr.mechanik, ["absage"]);
+  assert.deepEqual(k.signal.weniger.mechanik, ["kontrast"]);
+  assert.ok(k.signal.fehler.some((f) => f.id === "d" && /kein neues konkretes Wort/.test(f.fehler[0])));
+  assert.match(k.text, /Top 3[\s\S]*Herbert\. Fledermaus\./);
+});

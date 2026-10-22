@@ -58,7 +58,7 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 
 Jeden Sonntag sammelt `trends.yml` (`trends.mjs`), was in Österreich und Deutschland gerade Thema ist (Google Trends, Wikipedia, YouTube, acht Subreddits von r/wien bis r/teenagers, Schulferien Wien, kuriose Aktionstage, ORF, Kommentare unter unseren Posts), ins Issue mit Label `trends`. Am Sonntagabend schreibt ein geplanter Claude-Lauf daraus und aus den Anlässen neue Posts, bis die Warteschlange wieder drei Wochen reicht. Ablauf: `nachschub.md`. Werkzeuge dafür:
 
-- `node pruefen.mjs neu.json --warteschlange offen.json --issues issues.json`: prüft neue Posts mit denselben Regeln wie `holen.mjs` (Schema, Wortfilter, Bild, ab/bis, Saisonbilder, doppelt belegte Bilder) und baut die Issue-Texte.
+- `node pruefen.mjs neu.json --warteschlange offen.json --issues issues.json`: prüft neue Posts mit denselben Regeln wie `holen.mjs` (Schema, Wortfilter, Bild, ab/bis, Saisonbilder, doppelt belegte Bilder) und baut die Issue-Texte. Dazu der Schluss-Check (`schluss.mjs`: letzte Zeile nicht flach, mit neuem konkretem Wort, kurz, keine Frage, kein Trendwort, Pointe bei Resi; Ausnahme nur mit `schluss_ok`) und der Kopf-Check (`ausschnitt.mjs`: kein Sticker im szene-Format, Kopf im sichtbaren Streifen; prüft auch `holen.mjs`).
 - `node vorschau.mjs neu.json <ordner>`: rendert die Posts als fertige Bilder, ohne Tagebuch und Webseite zu ändern.
 - Optionales Feld `trend` im Post-JSON: Herkunft eines Trend-Posts (nur zur Nachverfolgung, wird nicht gepostet).
 
@@ -93,7 +93,7 @@ Weil der GitHub-Cron selbst oft spät kommt, kann cron-job.org den Heartbeat zus
 
 ## Wochenauswertung (seit 19.10.2026)
 
-`messung.yml` läuft jeden Montag um 5:30 UTC (per Hand: Actions → Wochenauswertung → Run workflow). `messung.mjs` holt für die geposteten Posts der letzten 28 Tage die Instagram-Insights (Views, Reichweite, Shares, Saves, Likes, Kommentare, Ø Wiedergabezeit) und YouTube Analytics (Views, Ø Wiedergabedauer und -anteil, Likes, Shares) und schreibt `auswertung/<datum>.md`, gruppiert nach Format, Aufforderung, Slot und Mechanik. Der Bericht hängt auch als Kommentar am Issue „Wochenauswertung“ (Label `auswertung`). Zuordnung: Instagram über die Caption, YouTube über den Titel. Fehlen Token oder Rechte, steht „übersprungen“ mit Grund im Bericht. Welche Rechte nötig sind: `messung-anleitung.md`.
+`messung.yml` läuft sonntags und mittwochs um 5:30 UTC, vor den Schreib-Läufen (per Hand: Actions → Wochenauswertung → Run workflow). `messung.mjs` holt für die geposteten Posts der letzten 28 Tage die Instagram-Insights (Views, Reichweite, Shares, Saves, Likes, Kommentare, Ø Wiedergabezeit) und YouTube Analytics (Views, Ø Wiedergabedauer und -anteil, Likes, Shares) und schreibt `auswertung/<datum>.md`, gruppiert nach Format, Aufforderung, Slot und Mechanik. Oben steht die Kurzfassung der letzten 7 Tage: Top 3 und Flop 3 nach Punkten (IG-Reichweite + YT-Views + 10 × Shares und Saves), Index je Mechanik, Zielgruppe und Trend, „mehr davon / weniger davon“ und ein Fehler-Check der geposteten Posts. Das Signal steht zusätzlich in `auswertung/signal.json` und fließt in den Nachschub (`nachschub.md`, Schritt 3). Der Bericht hängt auch als Kommentar am Issue „Wochenauswertung“ (Label `auswertung`). Zuordnung: Instagram über die Caption, YouTube über den Titel. Fehlen Token oder Rechte, steht „übersprungen“ mit Grund im Bericht. Welche Rechte nötig sind: `messung-anleitung.md`.
 
 ## Stimmen-Cache
 

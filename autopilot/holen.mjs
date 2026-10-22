@@ -11,6 +11,7 @@ import { bildKonfig, pruefeBild, pruefeTags, verbuchen } from "./bildregeln.mjs"
 import { pruefeWortfilter } from "./wortfilter.mjs";
 import { mechanikLesen, pruefeQuote, verlaufLesen } from "./humorquote.mjs";
 import { reihenfolge } from "./reihenfolge.mjs";
+import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
 import { zielgruppeLesen, pruefeZielgruppe, zgVerlaufLesen, sortiereKandidaten } from "./zielgruppe.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
@@ -36,6 +37,14 @@ function pruefe(body) {
   pruefeWortfilter(e);
   if (!OHNE_BILD.has(e.inhalt.format) && !e.bild) throw new Error(`Format ${e.inhalt.format} braucht ein Bild`);
   if (e.bild && !bekannt.has(e.bild)) throw new Error(`Bild ${e.bild} gibt es nicht in bibliothek.json`);
+  // Kopf muss im Bild bleiben (Sticker im szene-Format schneiden ihn ab, ausschnitt.mjs)
+  if (e.bild) {
+    const b = bibliothek.find((x) => x.datei === e.bild);
+    let mass = null;
+    try { mass = bildMass(path.join(HIER, "bilder", e.bild)); } catch {}
+    const ausschnitt = pruefeAusschnitt(e, b, mass);
+    if (ausschnitt.length) throw new Error(ausschnitt.join("; "));
+  }
   // ab/bis (optional, JJJJ-MM-TT): Post nur in diesem Zeitraum, z. B. für Anlässe (Allerheiligen, Martinstag)
   for (const k of ["ab", "bis"]) if (roh[k] !== undefined && !/^\d{4}-\d{2}-\d{2}$/.test(roh[k])) throw new Error(`${k} muss JJJJ-MM-TT sein`);
   return { e, mechanik: mechanikLesen(roh), ...zielgruppeLesen(roh), wunschSlot: roh.slot ? String(roh.slot) : null, ab: roh.ab || null, bis: roh.bis || null };

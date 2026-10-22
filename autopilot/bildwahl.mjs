@@ -25,6 +25,8 @@ const liste = kandidaten({ bibliothek, nutzung, datum, konf });
 console.log(`Bilder für ${datum} (Recycling ${konf.recycling ? `an, Abstand ${konf.abstand} Tage` : "aus"}):`);
 for (const k of liste) {
   const stand = k.wiederverwendung ? `zuletzt ${k.letzte}, vor ${tageZwischen(k.letzte, datum)} Tagen` : "ungenutzt";
-  console.log(`- ${k.datei} (${stand}${k.gesicht === "ja" ? "" : ", Gesicht nicht gut sichtbar"}): ${k.beschreibung}`);
+  // Sticker schneiden im szene-Format den Kopf ab (ausschnitt.mjs)
+  const sticker = bibliothek.find((b) => b.datei === k.datei)?.art === "figur" ? ", Sticker: nur für antwort" : "";
+  console.log(`- ${k.datei} (${stand}${k.gesicht === "ja" ? "" : ", Gesicht nicht gut sichtbar"}${sticker}): ${k.beschreibung}`);
 }
 if (!liste.length) console.log("Kein Bild passt. Neue Bilder nötig.");

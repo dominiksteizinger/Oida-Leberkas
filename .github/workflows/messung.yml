@@ -1,10 +1,10 @@
 name: Wochenauswertung
-# Jeden Montag: Instagram-Insights und YouTube Analytics abfragen, den Bericht als Datei auswertung/<datum>.md ablegen
+# Sonntags und mittwochs früh (vor den Schreib-Läufen um 18:58 Wien): Instagram-Insights und YouTube Analytics abfragen, den Bericht als Datei auswertung/<datum>.md ablegen
 # und als Kommentar an das Issue „Wochenauswertung“ hängen. Fehlen Token oder Rechte, überspringt der Lauf den Teil und sagt es im Bericht.
 # Anleitung für die nötigen Rechte: autopilot/messung-anleitung.md
 on:
   schedule:
-    - cron: "30 5 * * 1"
+    - cron: "30 5 * * 0,3"
   workflow_dispatch:
     inputs:
       tage:
@@ -54,6 +54,6 @@ jobs:
           NR=$(gh issue list --repo "$GITHUB_REPOSITORY" --label auswertung --state open --json number --jq '.[0].number // empty')
           if [ -z "$NR" ]; then
             NR=$(gh issue create --repo "$GITHUB_REPOSITORY" --label auswertung --assignee "${{ github.repository_owner }}" --title "Wochenauswertung" \
-              --body "Jeden Montag hängt hier der Bericht an (Instagram-Insights, YouTube Analytics). Die Dateien liegen auch unter auswertung/. Fehlende Rechte stehen im Bericht, Anleitung: autopilot/messung-anleitung.md." | grep -o '[0-9]*$')
+              --body "Sonntags und mittwochs hängt hier der Bericht an (Instagram-Insights, YouTube Analytics). Die Dateien liegen auch unter auswertung/. Fehlende Rechte stehen im Bericht, Anleitung: autopilot/messung-anleitung.md." | grep -o '[0-9]*$')
           fi
           gh issue comment "$NR" --repo "$GITHUB_REPOSITORY" --body-file "${{ steps.messung.outputs.datei }}"

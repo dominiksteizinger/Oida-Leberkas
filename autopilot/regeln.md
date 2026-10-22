@@ -98,6 +98,20 @@ Anlass: „Die letzten Posts waren einfach nur flach, da ist kein Witz dabei.“
 5. **Spannung statt Stimmung:** Jeder Post hat ein Gegenüber oder einen Widerspruch (Freundin, Match, Mama, Mitbewohnerin oder Resis eigene Behauptung). Reine Stimmungsbilder (Wetter, Nebel, Montag, Ort bewerten) nur noch als Anlass mit Gegenüber, nie allein.
 6. **Gen-Z-Wortschatz der Situation, nicht der Pointe:** Situationship, gelesen ohne Antwort, Story anschauen, Match, Profiltext, Gruppenchat-Krisensitzung, Screenshot an die Freundin. Trendwörter dürfen das Setup bauen, die Pointe bleibt ein normaler Satz.
 
+## Automatische Prüfungen gegen bekannte Fehler (seit 22.10.2026)
+
+`pruefen.mjs` lehnt neue Posts ab, die einen schon gemachten Fehler wiederholen. Die Wochenauswertung prüft die geposteten Posts mit denselben Regeln (Abschnitt „Fehler-Check“).
+
+| Fehler, der passiert ist | Prüfung |
+|---|---|
+| Flacher Schluss, nur Zustand („Es ist jetzt Deko.“) | `schluss.mjs`: Liste flacher Schlüsse (leider, ich auch, Endlich …, es ist jetzt, wie immer, same, mood) |
+| Schluss als bloße Reaktion oder logische Folge („Ich nicht.“, „Er ist noch blockiert.“) | `schluss.mjs`: Die letzte Zeile braucht ein neues konkretes Wort, das im Setup nicht stand |
+| Pointe zu lang, als Frage, mit Trendwort, beim Gegenüber | `schluss.mjs`: höchstens 8 Wörter (absage 6), kein „?“ oder „!“, kein Trendwort (Ick, Red Flag, Delulu …), in der Szene keine wörtliche Rede des Gegenübers am Ende |
+| Kopf im Bild abgeschnitten (Sticker im szene-Format) | `ausschnitt.mjs`: Sticker (`art: figur`) nur für `antwort`; Hochformat-Szenen brauchen `kopf`, der Kopf muss im sichtbaren Streifen liegen. Gilt auch beim Posten (`holen.mjs`) |
+| Ohne Pointe, Pointe mit Vorwissen, Zielgruppe verfehlt, Ü40 | bestehende Pflichtfelder `annahme`, `mechanik`, `zielgruppe`, Ü40-Warnliste |
+
+Die Schluss-Prüfung ist eine Heuristik. Ist ein Schluss bewusst anders und kippt trotzdem, geht er mit `"schluss_ok": "<ein Satz, warum>"` durch. Das ist die Ausnahme, nicht der Weg um die Prüfung herum.
+
 ## Pointen-Check (vor jedem Post)
 
 1. Die Pointe dreht das Setup um. Eine Bestätigung des Setups ist kein Witz.
