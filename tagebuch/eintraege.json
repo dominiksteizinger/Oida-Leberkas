@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-22-07",
+    "datum": "2026-10-22",
+    "slot": "07",
+    "format": "umfrage",
+    "bild": "bibliothek-buecherstapel.jpg",
+    "text": "Karrieremesse. Was nehme ich mit? Kontakte 4 % / Perspektive 2 % / Kugelschreiber 94 %",
+    "bilder": [
+      "tagebuch/2026-10-22-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-21-16",
     "datum": "2026-10-21",
     "slot": "16",

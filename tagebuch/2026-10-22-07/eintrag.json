@@ -1,0 +1,37 @@
+{
+  "id": "2026-10-22-07",
+  "datum": "2026-10-22",
+  "slot": "07",
+  "inhalt": {
+    "format": "umfrage",
+    "frage": "Karrieremesse. Was nehme ich mit?",
+    "optionen": [
+      {
+        "text": "Kontakte",
+        "prozent": 4
+      },
+      {
+        "text": "Perspektive",
+        "prozent": 2
+      },
+      {
+        "text": "Kugelschreiber",
+        "prozent": 94
+      }
+    ],
+    "fuss": "Vier Stück. Alle blau."
+  },
+  "bild": "bibliothek-buecherstapel.jpg",
+  "caption": "Berufliche Zukunft.",
+  "aufforderung": "Was hast du von der letzten Messe mitgenommen?",
+  "hashtags": [
+    "#karriere",
+    "#jobsuche",
+    "#messe",
+    "#deadpan",
+    "#same"
+  ],
+  "zielgruppe": "studium",
+  "region": "dach",
+  "quelle": "#146"
+}
