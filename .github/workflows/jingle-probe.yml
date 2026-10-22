@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       STIMME: an
-      STIMME_STIL: ${{ vars.STIMME_STIL }}
+      STIMME_STIL: ${{ vars.STIMME_LAGE }}  # leer = Leda (Standard seit 22.10.2026), eigene Variable, damit ein altes STIMME_STIL=muede nicht greift
       JINGLE: an
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       ID: ${{ inputs.id }}

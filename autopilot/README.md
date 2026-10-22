@@ -99,6 +99,8 @@ Weil der GitHub-Cron selbst oft spät kommt, kann cron-job.org den Heartbeat zus
 
 Jeder gesprochene Satz liegt als Opus-Datei in `stimme-cache/` (Schlüssel: Stimme plus Text). Der Workflow „Stimmen vorab“ (`stimme-vorab.mjs`, 08:30 und 20:30 UTC, nur mit `STIMME` = `an`) rendert alle Posts der Warteschlange, sammelt die Sätze und füllt den Cache vor, höchstens 100 neue Sätze pro Lauf mit 8 s Abstand, damit das Free-Tier-Limit von Gemini-TTS hält. Bei einem 429 hört der Lauf auf und macht am nächsten Termin weiter. Per Hand: Actions → Stimmen vorab → Run workflow. Datum und Uhrzeit der Notizen-Oberfläche werden nicht gesprochen (`sprechtext` in `stimme.mjs`), sonst träfe der Cache nie.
 
+Stimme ist seit 22.10.2026 Leda (Gemini-TTS), 15 % schneller abgespielt, Pausen auf höchstens 0,3 s gekürzt (`STIMME_TEMPO`, Standard 1.15). Andere Stimmlage per Repo-Variable `STIMME_LAGE` (`leda`, `muede`, `trocken`). Stilanweisungen an Gemini werden mitgesprochen und sind deshalb raus; eine Längenprüfung verwirft Tonspuren, die viel länger sind als der Text. Hörproben: Actions → Stimme-Probe (Issues und `stimmlage:tempo` als Eingabe).
+
 Fällt die Stimme beim Posten trotzdem aus (Limit, Schlüssel), geht das Reel stumm raus, und der Lauf legt das Issue „Reel ohne Stimme gepostet“ (Label `stimme`) für Dominik an.
 
 ## Einstellungen (Settings → Secrets and variables → Actions → Variables)
