@@ -84,6 +84,11 @@ test("Kurzfassung: Top/Flop nach Punkten, Signal erst ab 2 Posts, Fehler-Check a
   assert.deepEqual(k.signal.weniger.mechanik, ["kontrast"]);
   assert.ok(k.signal.fehler.some((f) => f.id === "d" && /kein neues konkretes Wort/.test(f.fehler[0])));
   assert.match(k.text, /Top 3[\s\S]*Herbert\. Fledermaus\./);
+  // Flop „Ich nicht.“ bekommt seine Fehlerart aus der automatischen Prüfung, Gründe fließen ins Signal
+  assert.equal(k.signal.flop.find((x) => x.id === "d").woran, "logische_folge");
+  assert.match(k.text, /Woran es lag[\s\S]*Schluss nur logische Folge/);
+  const k2 = kurzfassung({ posts: ps, ig, yt, jetzt, gruende: [{ datum: "2026-10-22", quelle: "dominik", post: "#9", art: "vorwissen", schluss: "ok." }] });
+  assert.deepEqual(k2.signal.gruende.map((g) => g.art).sort(), ["logische_folge", "vorwissen"]);
 });
 
 test("Datenbank: Merkmale und Zahlen pro Post, alte Werte bleiben, Facebook über gespeicherte ID", async () => {

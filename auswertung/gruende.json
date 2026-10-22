@@ -1,0 +1,69 @@
+{
+ "hinweis": "Gründe, warum Posts nicht witzig waren (fehlerarten.mjs). Pflege: node autopilot/fehlerarten.mjs add …",
+ "gruende": [
+  {
+   "datum": "2026-10-22",
+   "quelle": "dominik",
+   "post": "Nebel/Wellness",
+   "schluss": "Wellness.",
+   "art": "flach",
+   "grund": "Bestätigt nur die Beobachtung, keine Wende"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "dominik",
+   "post": "Altglas",
+   "schluss": "Es ist jetzt Deko.",
+   "art": "flach",
+   "grund": "Zustand statt Pointe"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "dominik",
+   "post": "2-Euro-Münze",
+   "schluss": "Die letzte.",
+   "art": "vorhersehbar",
+   "grund": "Schluss nach dem Setup erratbar"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "dominik",
+   "post": "Karrieremesse",
+   "schluss": "Kugelschreiber.",
+   "art": "vorhersehbar",
+   "grund": "Kugelschreiber-Pointe erwartbar"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "dominik",
+   "post": "Chat ok. mit Punkt",
+   "schluss": "ok.",
+   "art": "vorwissen",
+   "grund": "Wer nicht weiß, dass ok. kühl wirkt, versteht nichts"
+  },
+  {
+   "datum": "2026-10-20",
+   "quelle": "dominik",
+   "post": "#39 Büro-Sammlung",
+   "schluss": null,
+   "art": "ue40",
+   "grund": "Büroalltag von 45-Jährigen"
+  },
+  {
+   "datum": "2026-10-20",
+   "quelle": "dominik",
+   "post": "#32 Kantine",
+   "schluss": null,
+   "art": "ue40",
+   "grund": "Kantine ist kein Thema der 18- bis 28-Jährigen"
+  },
+  {
+   "datum": "2026-10-22",
+   "quelle": "dominik",
+   "post": "Sticker im szene-Format",
+   "schluss": null,
+   "art": "bild_passt_nicht",
+   "grund": "Kopf im Bild abgeschnitten"
+  }
+ ]
+}

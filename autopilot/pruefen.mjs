@@ -15,6 +15,7 @@ import { zielgruppeLesen, pruefeUe40 } from "./zielgruppe.mjs";
 import { pruefeSchluss } from "./schluss.mjs";
 import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
 import { simuliere, ablaufBericht, anlassLuecken } from "./ablauf.mjs";
+import { fehlerartVon, haeufigste, gruendeLesen, FEHLERARTEN } from "./fehlerarten.mjs";
 import { verlaufLesen } from "./humorquote.mjs";
 import { zgVerlaufLesen } from "./zielgruppe.mjs";
 import { bisVon } from "./reihenfolge.mjs";
@@ -99,10 +100,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const posts = JSON.parse(fs.readFileSync(datei, "utf8"));
   const offen = opt("--warteschlange") ? JSON.parse(fs.readFileSync(opt("--warteschlange"), "utf8")) : [];
   const heute = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Vienna" }).format(new Date());
+  // Erinnerung: woran Posts zuletzt gescheitert sind (auswertung/gruende.json, Gegenleser, Flops, Dominik)
+  const top = haeufigste(gruendeLesen(path.join(HIER, "..", "auswertung", "gruende.json")), { heute });
+  if (top.length) console.log(`Zuletzt am häufigsten nicht witzig: ${top.map((g) => `${g.name} (${g.gewicht})`).join(", ")}. Prüffragen: ${top.map((g) => FEHLERARTEN[g.art].frage).join(" ")}\n`);
   const ergebnis = pruefeAlle(posts, offen, heute);
   let ok = true;
   ergebnis.forEach((r, i) => {
-    if (r.fehler.length) { ok = false; console.log(`✗ ${i + 1}. ${posts[i].titel || "(ohne Titel)"}\n  - ${r.fehler.join("\n  - ")}`); }
+    if (r.fehler.length) { ok = false; console.log(`✗ ${i + 1}. ${posts[i].titel || "(ohne Titel)"}\n  - ${r.fehler.map((f) => { const a = fehlerartVon(f); return a ? `[${FEHLERARTEN[a].name}] ${f}` : f; }).join("\n  - ")}`); }
     else console.log(`✓ ${i + 1}. ${posts[i].titel}`);
   });
   const mischung = pruefeMischung(posts);
