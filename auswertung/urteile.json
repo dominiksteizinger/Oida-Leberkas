@@ -1,0 +1,5 @@
+{
+  "_hinweis": "Dominiks Urteil je Warteschlangen-Issue (gut, geht so, schlecht), aus dem Projekt-Chat. Der Schreib-Lauf trägt neue Urteile ein; messung.mjs übernimmt sie nach auswertung/posts.json.",
+  "#254": "gut",
+  "#255": "gut"
+}

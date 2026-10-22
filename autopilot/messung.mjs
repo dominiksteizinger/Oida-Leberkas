@@ -210,7 +210,9 @@ export function zahlen(i = {}, y = {}) {
 }
 
 // alt: bisheriger Inhalt von posts.json ({ posts: { id: datensatz } }). Neue Zahlen ersetzen alte nur, wenn sie da sind.
-export function datenbank(alt, { posts, ig, yt, fb = { status: "uebersprungen" }, jetzt = new Date(), wurzel = null }) {
+// urteile: Dominiks Urteil je Warteschlangen-Issue aus auswertung/urteile.json ({ "#254": "gut" }), gepflegt vom Schreib-Lauf,
+// wenn Dominik im Chat einen Post oder eine Vorschau bewertet. Die Daumen in der Sammelliste nutzt er nicht.
+export function datenbank(alt, { posts, ig, yt, fb = { status: "uebersprungen" }, urteile = {}, jetzt = new Date(), wurzel = null }) {
   const db = { stand: jetzt.toISOString(), felder: "siehe autopilot/messung-anleitung.md, Abschnitt Datenbank", posts: { ...(alt?.posts || {}) } };
   for (const p of posts) {
     const z = zahlen(ig.status === "ok" ? ig.werte[p.id] : {}, yt.status === "ok" ? yt.werte[p.id] : {});
@@ -220,7 +222,7 @@ export function datenbank(alt, { posts, ig, yt, fb = { status: "uebersprungen" }
       alter_h: Math.round((jetzt - p.gepostetAm) / 3600e3),
       ig: z.ig || vorher.ig || null, yt: z.yt || vorher.yt || null,
       facebook: (fb.status === "ok" && fb.werte[p.id] && !fb.werte[p.id].fehlt ? fb.werte[p.id] : null) || vorher.facebook || null, tiktok: vorher.tiktok || null,
-      punkte: z.punkte ?? vorher.punkte ?? null, urteil: vorher.urteil || null,
+      punkte: z.punkte ?? vorher.punkte ?? null, urteil: urteile[p.e.quelle] || vorher.urteil || null,
     };
   }
   db.posts = Object.fromEntries(Object.entries(db.posts).sort(([a], [b]) => a.localeCompare(b)));
@@ -384,9 +386,10 @@ async function main() {
   fs.writeFileSync(path.join(dir, "signal.json"), JSON.stringify({ datum, ...kurz.signal }, null, 2) + "\n");
   // Viralitäts-Datenbank: ein Datensatz pro Post, wächst mit jeder Messung
   const dbDatei = path.join(dir, "posts.json");
-  let alt = null;
+  let alt = null, urteile = {};
   try { alt = JSON.parse(fs.readFileSync(dbDatei, "utf8")); } catch {}
-  fs.writeFileSync(dbDatei, JSON.stringify(datenbank(alt, { posts, ig, yt, fb, jetzt, wurzel }), null, 1) + "\n");
+  try { urteile = JSON.parse(fs.readFileSync(path.join(dir, "urteile.json"), "utf8")); } catch {}
+  fs.writeFileSync(dbDatei, JSON.stringify(datenbank(alt, { posts, ig, yt, fb, urteile, jetzt, wurzel }), null, 1) + "\n");
   const datei = path.join(dir, `${datum}.md`);
   const fbZeile = fb.status === "ok" ? `\n\n_Facebook: ${Object.keys(fb.werte).length} Posts gemessen, Werte in auswertung/posts.json._\n` : `\n\n_Facebook: übersprungen (${fb.grund})._\n`;
   fs.writeFileSync(datei, text + fbZeile);
