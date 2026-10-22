@@ -61,6 +61,8 @@ async function anfrage(modell, stimme, text, schluessel) {
         contents: [{ parts: [{ text }] }],
         generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: stimme } } } },
       }),
+      // Ohne Zeitlimit hing der 16-Uhr-Lauf am 22.10.2026 über 45 Minuten; nach Ablauf fliegt ein Fehler, das Reel geht dann stumm raus
+      signal: AbortSignal.timeout(Number(process.env.STIMME_TIMEOUT_MS || 90000)),
     });
     // Free-Tier-Limit: kurz warten und noch zweimal versuchen
     if (antwort.status === 429 && versuch < 3) { await sleep(20000 * versuch); continue; }
