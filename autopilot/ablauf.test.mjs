@@ -26,3 +26,12 @@ test("Ablauf: Anlass-Posts laufen trotz Quote ohne Warnung", () => {
   assert.equal(s[0].nr, 3);
   assert.equal(s.filter((x) => x.warnung).length, 0);
 });
+
+test("Anlass-Lücken: Anlassbild frei und kein Post geplant → Hinweis, mit Post oder benutzt → keiner", async () => {
+  const { anlassLuecken } = await import("./ablauf.mjs");
+  const bibliothek = [{ datei: "kuerbis.jpg", tags: ["halloween"] }, { datei: "uhr.jpg", tags: ["zeitumstellung"] }, { datei: "advent.jpg", tags: ["advent"] }];
+  const l = anlassLuecken({ bibliothek, nutzung: [{ bild: "uhr.jpg" }], bilder: [], heute: "2026-10-22" });
+  assert.equal(l.length, 1);
+  assert.match(l[0], /halloween.*kuerbis\.jpg/);
+  assert.deepEqual(anlassLuecken({ bibliothek, bilder: ["kuerbis.jpg", "uhr.jpg"], heute: "2026-10-22" }), []);
+});

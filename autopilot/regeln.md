@@ -114,6 +114,9 @@ Die Schluss-Prüfung ist eine Heuristik. Ist ein Schluss bewusst anders und kipp
 
 ## Pointen-Check (vor jedem Post)
 
+Nach der Vorschau prüft zusätzlich ein blinder Gegenleser jedes Bild (`gegenleser.md`, seit 22.10.2026).
+
+
 1. Die Pointe dreht das Setup um. Eine Bestätigung des Setups ist kein Witz.
 2. Vorhersage-Test: Würde mehr als die Hälfte der Leser nach dem Setup den Schluss erraten? Dann umschreiben. „Resi ist düster“ ist keine Wendung.
 3. Kalt-Test: Versteht jemand, der Resi nicht kennt, die Pointe? Callbacks nur als Bonus.

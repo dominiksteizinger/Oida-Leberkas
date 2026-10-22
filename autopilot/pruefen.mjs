@@ -14,7 +14,7 @@ import { mechanikLesen, pruefeMischung, pruefeBauplan } from "./humorquote.mjs";
 import { zielgruppeLesen, pruefeUe40 } from "./zielgruppe.mjs";
 import { pruefeSchluss } from "./schluss.mjs";
 import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
-import { simuliere, ablaufBericht } from "./ablauf.mjs";
+import { simuliere, ablaufBericht, anlassLuecken } from "./ablauf.mjs";
 import { verlaufLesen } from "./humorquote.mjs";
 import { zgVerlaufLesen } from "./zielgruppe.mjs";
 import { bisVon } from "./reihenfolge.mjs";
@@ -117,5 +117,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       ...posts.map((p, i) => ({ nr: `neu ${i + 1}`, post: p }))];
     const tagebuch = path.join(HIER, "..", "tagebuch"), id = `${heute}-99`;
     console.log(`\n${ablaufBericht(simuliere(alle, verlaufLesen(tagebuch, id), zgVerlaufLesen(tagebuch, id))).text}`);
+    const nutzung = JSON.parse(fs.readFileSync(path.join(HIER, "nutzung.json"), "utf8"));
+    const luecken = anlassLuecken({ bibliothek, nutzung, bilder: alle.map((x) => x.post.bild), heute });
+    console.log(luecken.length ? `⚠ Anlässe ohne Post:\n${luecken.map((l) => `  - ${l}`).join("\n")}` : "Anlässe der nächsten 10 Tage: alle mit Post in der Warteschlange.");
   }
 }
