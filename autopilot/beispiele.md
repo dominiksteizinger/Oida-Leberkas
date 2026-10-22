@@ -41,7 +41,16 @@ Zeigen den Ton für Resi Requiem. Keine Vorlagen zum Abwandeln: Motive und Point
   Warum: nimmt die Floskel wörtlich, letzte Zeile ist ein ruhiger Superlativ.
   Gemeinsam: Gegenüber = harmloser Standardsatz, Resi kürzer und ruhig, wörtliche Lesart oder knapper Abgang, letzte Zeile höchstens sechs Wörter.
 
-### Selbstironie und Beziehung (Witz-Parameter, 22.10.2026)
+### Neuer Stil (von Dominik als „wesentlich besser“ bewertet, 22.10.2026)
+- **szene:** Im Dating-Profil steht: „Ich bin gern draußen.“ [Stimmt.] [Zum Müll.] [Zweimal die Woche.] (Annahme: Natur)
+- **chat (Mama):** „Gibt es jemanden in deinem Leben?“ / „Ja. Er wohnt sogar schon bei mir.“ / „RESI!! Seit wann??“ / „Wie heißt er?“ / „Herbert. Er ist eine Fledermaus.“ (Annahme: Freund)
+- **chat (Match, 02:14):** „bist du noch wach? 😏“ / „Ja.“ / „was machst du so?“ / „Dich blockieren.“ (Annahme: Flirt)
+- **chat (Ex):** „Gib mir noch eine Chance.“ / „Hab ich. 2023. Dreimal.“ (Annahme: Sie überlegt)
+- **chat (Felix):** „Ich will grad nichts Festes.“ / „Ich auch nicht.“ / „Echt? Perfekt 😍“ / „Auch nichts Lockeres.“ (Annahme: Sie will was Lockeres)
+- **szene:** Ärztin: „Bewegen Sie sich genug?“ [Ich jogge jeden Morgen.] [„Wo denn?“] [Friedhof. Da überholt mich keiner.] (Annahme: Park)
+- **chat (Mama):** „Hast du heute was Schönes gegessen?“ / „Ja. Bei Kerzenlicht.“ / „Ein Date?? 😍“ / „Nein. Stromrechnung.“ (Annahme: Date)
+
+### Selbstironie und Beziehung (Witz-Parameter, 22.10.2026, erster Versuch: von Dominik bis auf die ersten beiden oben als unverständlich bewertet)
 - **chat (Freundin):** „Bist du eigentlich über ihn hinweg?“ / Resi: „Komplett.“ / „Warum kennst du dann den Namen seiner Oma?“ / Resi: „Allgemeinbildung.“
   Warum: `ertappt`. Die Behauptung wird von der Freundin entlarvt, Resi bleibt bei ihrer Würde. Adressatin sofort klar.
 - **chat (Freundin):** „Er hat seit zwei Tagen nicht geantwortet.“ / Resi: „Dann ist das deine Antwort.“ / „Woher weißt du das immer?“ / Resi: „Ich habe 2022 drei Monate gewartet.“

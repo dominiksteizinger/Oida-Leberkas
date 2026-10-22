@@ -6,8 +6,8 @@ import path from "node:path";
 
 // Höchstzahl pro 14 Posts (eine Woche bei zwei Posts am Tag). Summe > 14, damit immer etwas passt.
 export const ZIELGRUPPEN = {
-  // Beziehung hat seit 22.10.2026 das meiste Gewicht (Dominik: mehr Beziehungsthemen)
-  dating: { name: "Dating, Beziehung und Ex", max: 5 },
+  // Beziehung hat seit 22.10.2026 das meiste Gewicht (Dominik: Fanbase sind junge Frauen, Abblitzen und Dating-Situationen ziehen am meisten)
+  dating: { name: "Dating, Beziehung und Ex", max: 8 },
   jobstart: { name: "Berufseinstieg", max: 3 },
   akku: { name: "Sozialer Akku", max: 2 },
   wohnen: { name: "WG und erste Wohnung", max: 2 },
@@ -41,7 +41,7 @@ export const UE40 = [
   [/\brente\b|pension(ierung|ist)/i, "Rente"],
 ];
 
-const OHNE = new Set(["bild", "slot", "ab", "bis", "mechanik", "zielgruppe", "region", "ue40_ok", "musik", "quelle", "id", "datum", "trend"]);
+const OHNE = new Set(["bild", "slot", "ab", "bis", "mechanik", "zielgruppe", "region", "ue40_ok", "annahme", "musik", "quelle", "id", "datum", "trend"]);
 function texte(wert, aus = []) {
   if (typeof wert === "string") aus.push(wert);
   else if (Array.isArray(wert)) wert.forEach((w) => texte(w, aus));

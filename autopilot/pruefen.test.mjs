@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { pruefeAlle } from "./pruefen.mjs";
 
-const szene = (extra = {}) => ({ titel: "Post 99 (szene): Test", inhalt: { format: "szene", satz: "Montag.", klammern: ["Schon wieder."] }, bild: "kaffee-muede.jpg", caption: "Montag.", hashtags: ["#wien"], zielgruppe: "jobstart", mechanik: "ertappt", ...extra });
+const szene = (extra = {}) => ({ titel: "Post 99 (szene): Test", inhalt: { format: "szene", satz: "Montag.", klammern: ["Schon wieder."] }, bild: "kaffee-muede.jpg", caption: "Montag.", hashtags: ["#wien"], zielgruppe: "jobstart", mechanik: "ertappt", annahme: "Montag ist schlimm", ...extra });
 
 test("gültiger Post ergibt Issue-Text mit JSON-Block, ohne titel und notiz", () => {
   const [r] = pruefeAlle([szene({ notiz: "Trend-Post." })], [], "2026-10-19");
@@ -41,6 +41,10 @@ test("Format ohne Bild nur bei notiz und chat; bis in der Vergangenheit", () => 
 test("Zielgruppe ist Pflicht, Ü40 nur mit Begründung", () => {
   assert.match(pruefeAlle([szene({ zielgruppe: undefined })], [], "2026-10-19")[0].fehler.join(), /zielgruppe fehlt/);
   assert.match(pruefeAlle([szene({ mechanik: undefined })], [], "2026-10-19")[0].fehler.join(), /mechanik fehlt/);
+  assert.match(pruefeAlle([szene({ annahme: undefined })], [], "2026-10-19")[0].fehler.join(), /annahme fehlt/);
+  assert.match(pruefeAlle([szene({ inhalt: { format: "bewertung", nr: 1, ort: "Bim", saerge: 2, text: "Eng." } })], [], "2026-10-19")[0].fehler.join(), /Ortsbewertungen/);
+  const chat = { format: "chat", name: "Lea", nachrichten: [{ wer: "ich", text: "Ja." }, { wer: "sie", text: "Und?" }, { wer: "sie", text: "Hallo?" }] };
+  assert.match(pruefeAlle([szene({ bild: undefined, inhalt: chat })], [], "2026-10-19")[0].fehler.join(), /letzte Wort/);
   assert.match(pruefeAlle([szene({ caption: "Wichteln." })], [], "2026-10-19")[0].fehler.join(), /Ü40/);
   assert.deepEqual(pruefeAlle([szene({ caption: "Wichteln.", ue40_ok: "Resi wichtelt zum ersten Mal mit der WG." })], [], "2026-10-19")[0].fehler, []);
 });

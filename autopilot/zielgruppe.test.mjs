@@ -19,8 +19,8 @@ test("Quote: höchstens 2 gleiche hintereinander", () => {
 });
 
 test("Quote: Höchstzahl pro 14 Posts je Zielgruppe", () => {
-  const verlauf = [v("dating"), v("akku"), v("dating"), v("wohnen"), v("dating"), v("studium"), v("dating"), v("akku"), v("dating"), v("wohnen")];
-  assert.equal(pruefeZielgruppe(verlauf, v("dating")).ok, false); // 6. dating, erlaubt 5
+  const verlauf = [v("dating"), v("akku"), v("dating"), v("wohnen"), v("dating"), v("studium"), v("dating"), v("akku"), v("dating"), v("wohnen"), v("dating"), v("akku"), v("dating"), v("dating")];
+  assert.equal(pruefeZielgruppe(verlauf, v("dating")).ok, false); // 9. dating, erlaubt 8
   assert.equal(pruefeZielgruppe(verlauf.slice(0, 6), v("dating")).ok, true); // 4. dating ok
   assert.equal(pruefeZielgruppe([v("familie"), v("akku"), v("familie")], v("familie")).ok, false); // familie max 2
   assert.equal(pruefeZielgruppe([v("akku")], v("wohnen")).ok, true);
@@ -63,7 +63,7 @@ test("Auswahl: Anlass zuerst, dann größter Bedarf, dann Warteschlange", async 
   const { sortiereKandidaten, bedarf } = await import("./zielgruppe.mjs");
   const verlauf = [v("jobstart"), v("jobstart"), v("akku")];
   assert.equal(bedarf(verlauf, "jobstart"), 1);
-  assert.equal(bedarf(verlauf, "dating"), 5);
+  assert.equal(bedarf(verlauf, "dating"), 8);
   assert.equal(bedarf(verlauf, null), 0);
   const k = [
     { name: "alt-job", zielgruppe: "jobstart", rang: 0 },

@@ -10,7 +10,7 @@ import { Eintrag } from "./eintrag.mjs";
 import { OHNE_BILD } from "./formate.mjs";
 import { TAGS, passtZuDatum, pruefeTags } from "./bildregeln.mjs";
 import { pruefeWortfilter } from "./wortfilter.mjs";
-import { mechanikLesen, pruefeMischung } from "./humorquote.mjs";
+import { mechanikLesen, pruefeMischung, pruefeBauplan } from "./humorquote.mjs";
 import { zielgruppeLesen, pruefeUe40 } from "./zielgruppe.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
@@ -35,6 +35,7 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
   versuch(() => pruefeWortfilter(post));
   // Mechanik der Wende ist für neue Posts Pflicht (Witz-Parameter, humorquote.mjs)
   versuch(() => mechanikLesen(post, { pflicht: true }));
+  fehler.push(...pruefeBauplan(post));
   // Zielgruppe ist für neue Posts Pflicht; Ü40-Signale nur mit Begründung (zielgruppe.mjs)
   versuch(() => zielgruppeLesen(post, { pflicht: true }));
   versuch(() => pruefeUe40(post));

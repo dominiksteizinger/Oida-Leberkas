@@ -43,7 +43,7 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 ## Humor-Mechanik (Grundlage: humor/humor-deepdive-resi.md)
 
 - Formel: vertrauter Rahmen + kleine Verletzung + Entwarnung + Wendung, die der Leser nicht selbst liefern konnte.
-- Düster ist der Rahmen, nicht die Pointe. Tod, Särge und Nachrufe stehen im Setup oder als Kulisse. Die Wendung kommt aus Alltag, Büro, Öffis, Smalltalk, Wetter, Herbert, Sunny oder Franz.
+- Düster darf Rahmen oder Pointe sein (seit 22.10.2026, siehe Gag-Bauplan). Die Wendung kommt aus Alltag, Büro, Öffis, Smalltalk, Wetter, Herbert, Sunny oder Franz.
 - Haltung immer Deadpan. Mix bei 14 Posts pro Woche: 10 bis 12 Relatable-Posts, davon seit 22.10.2026 mindestens 5 Beziehung und mindestens 5 Selbstironie (siehe Witz-Parameter), höchstens 2 bis 3 Welt-Posts (Herbert, Franz, Sunny) nach dem Herbert-Maßstab, schwarzer Humor nur als Würze, höchstens 1 Absurd, Meta oder Parodie.
 - Kompetent scheitern: Resi ist souverän bei Tod, Verwaltung und Ordnung und patzt nur im Sozialen (Smalltalk, Spontaneität, Überraschungen). Sie verwaltet, sie jammert nicht.
 - Sunny ist nie das Ziel. Die Pointe landet bei Resis Haltung.
@@ -54,17 +54,38 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 - **Abblitz-Muster** (von Dominik am besten bewertet): Das Gegenüber sagt einen Standardsatz, Resi ist kürzer und ruhig, nimmt die Floskel wörtlich oder geht mit einer knappen Absage ab. Letzte Zeile höchstens sechs Wörter. Referenzen in `beispiele.md`.
 - Serien: Der Rahmen bleibt, die Wendung wechselt. Nach drei gleichen Folgen die vierte brechen.
 
+## Gag-Bauplan und Verbote (Dominik, 22.10.2026)
+
+Grundlage: Deep Research `/mnt/project-files/humor/reports/Humor Gen Z Gag Aufbau.md`. Dominik: „Verhindert einfach, dass Posts wie davor ohne Witz und ohne Sinn gepostet werden.“ Die Fanbase sind junge Frauen; am meisten relaten sie damit, einen Idioten abzuweisen oder selbst in so einer Situation zu stecken.
+
+**Bauplan (jeder Post):**
+1. Ein Drehbuch, das jede kennt: Match-Chat, Mama fragt, Ex meldet sich, Freundin braucht Rat, Dating-Profil, Ärztin, Bewerbungsgespräch.
+2. Das Setup lässt den **Leser** etwas Falsches annehmen („draußen“ = Natur, „jemand in deinem Leben“ = Freund). Die Annahme steht als Feld `annahme` im Post (Pflicht, `pruefen.mjs`).
+3. Ein einziger Gedankenschritt löst sie auf, ohne Internet-Vorwissen.
+4. Die Pointe sagt **Resi**, und sie endet auf einem konkreten Wort („Zum Müll.“, „Fledermaus.“, „Dich blockieren.“, „Stromrechnung.“).
+5. Höchstens vier Takte. Alles, was nach der Pointe kommt, muss sie steigern („Zweimal die Woche.“), sonst weg.
+
+**Was nicht mehr gepostet wird:**
+- Stimmungsposts ohne Gegenüber (Nebel, Wetter, Montag, Herbst).
+- Ortsbewertungen (`bewertung`, `pruefen.mjs` lehnt ab).
+- Pointen, die Internet-Vorwissen brauchen („ok.“ mit Punkt ist kühl).
+- Pointen, bei denen sich eine Figur im Post irrt statt der Leser, oder bei denen das Gegenüber die Pointe hat (im Chat hat Resi das letzte Wort, `pruefen.mjs`).
+- Pointen, die nur zeigen, dass Resi düster ist oder einen Zustand beschreiben („Es ist jetzt Deko.“).
+- Büro-Themen aus Sicht von 40-Jährigen.
+
+**Gelockert:** Der Tod darf selbst die Pointe sein („Friedhof. Da überholt mich keiner.“), solange keine echten Toten, Unglücke oder Suizid. Herbert darf öfter vorkommen. Abblitzen ist die stärkste Mechanik (`absage` bis 6 von 14), Dating bis 8 von 14.
+
 ## Witz-Parameter (Dominik, 22.10.2026)
 
 Anlass: „Die letzten Posts waren einfach nur flach, da ist kein Witz dabei.“ Typisch flach waren Posts, die eine Beobachtung nur bestätigen (Nebel = Wellness, Altglas = Deko, 2-Euro-Münze = die letzte, Karrieremesse = Kugelschreiber). Ab jetzt gilt:
 
-1. **Schwerpunkt Beziehung:** Mindestens 4 von 10 neuen Posts drehen sich um Dating, Ex, Situationship, Freundinnen-Talk über Männer und Dates, Familie fragt nach dem Freund (`zielgruppe` `dating` oder `familie`). Quote pro 14 Posts: dating bis 5, familie bis 2, alltag nur noch 2.
+1. **Schwerpunkt Beziehung:** Mindestens 4 von 10 neuen Posts drehen sich um Dating, Ex, Situationship, Freundinnen-Talk über Männer und Dates, Familie fragt nach dem Freund (`zielgruppe` `dating` oder `familie`). Quote pro 14 Posts: dating bis 8, familie bis 2, alltag nur noch 2.
 2. **Schwerpunkt Selbstironie:** Mindestens 4 von 10 neuen Posts treffen Resi selbst. Sie ist nicht nur die Coole, die andere abblitzen lässt, sondern wird bei sich selbst ertappt: Ratschläge, die sie selbst nie befolgt hat, „Ich bin komplett drüber“ und kennt den Namen seiner Oma, „Ich bin gern draußen“ heißt Müll rausbringen. Sie trägt es mit Würde und Deadpan, nie mit Selbstmitleid.
 3. **Jede Pointe nennt ihre Mechanik** (`mechanik`, Pflicht für neue Posts, `humorquote.mjs`):
 
 | mechanik | Was passiert | max. pro 14 |
 |---|---|---|
-| `absage` | Abblitzen: Standardsatz, Resi kürzer und ruhig | 4 |
+| `absage` | Abblitzen: Standardsatz, Resi kürzer und ruhig | 6 |
 | `ertappt` | Resi behauptet etwas über sich, die letzte Zeile entlarvt sie | 4 |
 | `gestaendnis` | Resi gibt ruhig etwas Peinliches zu | 3 |
 | `kontrast` | Leben der anderen (Antrag, Umzug, Beförderung) gegen Resis Realität | 3 |
@@ -111,7 +132,7 @@ Nicht schreiben: Pointe „Resi ist düster“, Gedicht-Metaphern, Pointe in der
 - `aufforderung`: ein Satz zum Mitmachen, abwechselnd Frage („Was soll ich als Nächstes beerdigen?“), Speichern, Teilen („Schick das der Sunny in deinem Büro.“). Nie privat schreiben, nie Verfügbarkeit, keine Gewinnspiele, nichts kaufen.
   Höchstens ein Drittel der Posts beginnt mit „Schick das …“ (Gesamt-Check 19.10.2026: 50 von 65 taten es, das wird zum Ritual). Andere Formen: Frage zur Situation („Wie oft drückst du Schlummern?“), Zuordnung („Welche Kollegin ist das?“), „Speichern für Montag.“, „Wer ist bei euch die Sunny?“.
 - `mechanik` (Pflicht für neue Posts seit 22.10.2026): Mechanik der Wende, eine von `absage`, `ertappt`, `gestaendnis`, `kontrast`, `woertlich`, `umdeutung`, `eskalation` (Tabelle unter Witz-Parameter). Höchstzahl je Mechanik pro 14 Posts laut Tabelle, nie mehr als 2 gleiche hintereinander (`humorquote.mjs`). Jeder Post mit Abblitz- oder Rückzugspointe bekommt `"mechanik": "absage"`.
-- `zielgruppe` (Pflicht für neue Posts): Lebenslage, für die der Post geschrieben ist, eine von `dating`, `jobstart`, `akku`, `wohnen`, `studium`, `familie`, `ausbildung`, `szene`, `alltag` (`zielgruppe.mjs`, Grundlage Deepdive Zielgruppen DACH, 20.10.2026). Höchstzahl pro 14 Posts (seit 22.10.2026): dating 5, jobstart 3, akku 2, wohnen 2, studium 2, familie 2, alltag 2, ausbildung/szene je 1; nie mehr als 2 gleiche hintereinander. Beim Posten kommt die Zielgruppe mit dem meisten Bedarf zuerst dran.
+- `zielgruppe` (Pflicht für neue Posts): Lebenslage, für die der Post geschrieben ist, eine von `dating`, `jobstart`, `akku`, `wohnen`, `studium`, `familie`, `ausbildung`, `szene`, `alltag` (`zielgruppe.mjs`, Grundlage Deepdive Zielgruppen DACH, 20.10.2026). Höchstzahl pro 14 Posts (seit 22.10.2026): dating 8, jobstart 3, akku 2, wohnen 2, studium 2, familie 2, alltag 2, ausbildung/szene je 1; nie mehr als 2 gleiche hintereinander. Beim Posten kommt die Zielgruppe mit dem meisten Bedarf zuerst dran.
 - `region` (optional, Standard `dach`): `at` oder `de`, wenn die Pointe ein Wort oder einen Anlass braucht, den nur ein Land kennt (Bim, Matura, Deutschlandticket). Höchstens 2 pro Region in 14 Posts.
 - Ü40-Warnliste (`zielgruppe.mjs`): Mailverteiler, Wichteln, Kaffeekasse, Büro-Sammlung, Kantine, Betriebsausflug, Weihnachtsfeier, Fax, Festnetz und Ähnliches klingen nach 45-Jährigen. `pruefen.mjs` lässt solche Posts nur mit `"ue40_ok": "<ein Satz, warum es für 18- bis 28-Jährige funktioniert>"` durch. Büro immer aus Sicht der Neuen schreiben: Onboarding, Probezeit, Teams-Call, erstes Gehalt.
 - 3 bis 6 Hashtags, deutsch und englisch gemischt, z. B. #deadpan #goth #wien #büroalltag #gothgirl.
