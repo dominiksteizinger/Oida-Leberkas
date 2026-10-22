@@ -20,7 +20,7 @@ test("Quote: höchstens 2 hintereinander", () => {
   assert.equal(pruefeQuote(["absage", "absage"], "serie").ok, true);
 });
 test("Quote: Höchstzahl in 14 je Mechanik", () => {
-  const v = ["absage", null, "absage", null, "absage", null, "absage", null, null, null, null, null, null];
+  const v = ["absage", null, "absage", null, "absage", null, "absage", null, "absage", null, "absage", null, null];
   assert.equal(pruefeQuote(v, "absage").ok, false);
   assert.equal(pruefeQuote(["absage", ...v.slice(1)], "absage").ok, false);
   assert.equal(pruefeQuote([null, null, null, ...v.slice(3)], "absage").ok, true);

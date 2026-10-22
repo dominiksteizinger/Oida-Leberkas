@@ -8,7 +8,7 @@ export const QUOTE = { hintereinander: 2, fenster: 14, imFenster: 3 };
 // Witz-Parameter (Dominik 22.10.2026: „mehr Beziehungsthemen und Selbstironie, die letzten Posts waren flach“).
 // Jeder neue Post nennt die Mechanik seiner Wende. Höchstzahl pro 14 Posts je Mechanik; Gruppe „selbstironie“ = Resi ist selbst das Ziel.
 export const MECHANIKEN = {
-  absage: { name: "Abblitzen: Standardsatz, Resi kürzer und ruhig", max: 4 },
+  absage: { name: "Abblitzen: Standardsatz, Resi kürzer und ruhig", max: 6 },
   ertappt: { name: "Resi behauptet etwas über sich, die letzte Zeile entlarvt sie", max: 4, gruppe: "selbstironie" },
   gestaendnis: { name: "Resi gibt ruhig etwas Peinliches zu", max: 3, gruppe: "selbstironie" },
   kontrast: { name: "Leben der anderen gegen Resis Realität", max: 3, gruppe: "selbstironie" },
@@ -42,6 +42,18 @@ export function mechanikLesen(roh, { pflicht = false } = {}) {
   if (typeof roh.mechanik !== "string" || !/^[a-zäöüß-]{2,24}$/.test(roh.mechanik)) throw new Error("mechanik muss ein kleingeschriebenes Wort sein (z. B. absage)");
   if (pflicht && !MECHANIKEN[roh.mechanik]) throw new Error(`mechanik „${roh.mechanik}“ unbekannt (erlaubt: ${erlaubt})`);
   return roh.mechanik;
+}
+
+// Gag-Bauplan (Dominik 22.10.2026, Deep Research humor/reports/Humor Gen Z Gag Aufbau.md): Jeder neue Post nennt die falsche
+// Annahme, die der Leser nach dem Setup trifft („draußen = Natur“). Ohne Annahme gibt es keine Wende. Ortsbewertungen sind raus,
+// im Chat hat Resi das letzte Wort.
+export function pruefeBauplan(roh) {
+  const fehler = [];
+  if (typeof roh.annahme !== "string" || roh.annahme.trim().length < 3 || roh.annahme.length > 60) fehler.push("annahme fehlt: Was nimmt der Leser nach dem Setup falsch an? (3 bis 60 Zeichen, z. B. „draußen heißt Natur“)");
+  const i = roh.inhalt || {};
+  if (i.format === "bewertung") fehler.push("Ortsbewertungen werden nicht mehr gepostet (flach, Dominik 22.10.2026)");
+  if (i.format === "chat" && Array.isArray(i.nachrichten) && i.nachrichten.at(-1)?.wer !== "ich") fehler.push("im Chat hat Resi das letzte Wort (letzte Nachricht wer: ich)");
+  return fehler;
 }
 
 // Mischung eines Schreib-Laufs: genug Selbstironie und Beziehungsthemen. posts: Post-JSONs. Gibt Fehlertexte zurück (leer = ok).
