@@ -41,5 +41,16 @@
     "video": true,
     "ig": "18036550127661806",
     "zeit": "2026-10-21T14:31:43.786Z"
+  },
+  {
+    "id": "2026-10-22-mittag",
+    "datum": "2026-10-22",
+    "slot": "mittag",
+    "art": "karte",
+    "bild": "bank-stadt-semmel.jpg",
+    "video": true,
+    "karte": "termin-abgesagt",
+    "ig": "17974087002158167",
+    "zeit": "2026-10-22T09:31:47.813Z"
   }
 ]
