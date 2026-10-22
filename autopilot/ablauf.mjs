@@ -4,6 +4,7 @@
 // Bilder und Slot-Wünsche spielen hier keine Rolle, es geht nur um die Mischung.
 import { pruefeQuote } from "./humorquote.mjs";
 import { pruefeZielgruppe, sortiereKandidaten, ZIELGRUPPEN } from "./zielgruppe.mjs";
+import { TAGS, passtZuDatum } from "./bildregeln.mjs";
 
 // posts: [{ nr, post }] in Warteschlangen-Reihenfolge. verlauf/zgVerlauf wie in holen.mjs (zuletzt gepostet, ältester zuerst).
 export function simuliere(posts, verlauf = [], zgVerlauf = []) {
@@ -43,4 +44,24 @@ export function ablaufBericht(schritte) {
       unter.length ? `  - Fehlt fürs Mischen: ${unter.join(", ")}. Neue Posts zuerst dort schreiben.` : null,
       ...warn.slice(0, 3).map((s) => `  - #${s.nr}: ${s.warnung}`)].filter(Boolean).join("\n"),
   };
+}
+
+// Anlass-Lücken (Gesamt-Check 22.10.2026: Zeitumstellung, Halloween und Allerheiligen hatten Bilder, aber keinen Post):
+// Für jeden Anlass-Tag, der in den nächsten `tage` Tagen gilt und noch ein ungenutztes Bild hat, muss ein Post mit so einem Bild
+// in der Warteschlange (oder unter den neuen Posts) liegen. bilder: Dateinamen der wartenden und neuen Posts. Gibt Hinweise zurück.
+export function anlassLuecken({ bibliothek, nutzung = [], bilder = [], heute, tage = 10 }) {
+  const benutzt = new Set(nutzung.map((n) => n.bild));
+  const geplant = new Set(bilder.filter(Boolean));
+  const tagListe = Array.from({ length: tage }, (_, i) => new Date(Date.parse(heute + "T12:00:00Z") + i * 864e5).toISOString().slice(0, 10));
+  const aus = [];
+  for (const [tag, def] of Object.entries(TAGS)) {
+    if (def.wiederverwendbar !== false) continue;
+    const mitTag = bibliothek.filter((b) => (b.tags || []).includes(tag));
+    const ab = tagListe.find((d) => mitTag.some((b) => passtZuDatum(b, d)));
+    if (!ab) continue;
+    if (mitTag.some((b) => geplant.has(b.datei))) continue;
+    const frei = mitTag.filter((b) => !benutzt.has(b.datei));
+    if (frei.length) aus.push(`Anlass „${tag}“ gilt ab ${ab}, kein Post in der Warteschlange. Freies Bild: ${frei.map((b) => b.datei).join(", ")} (Post mit ab/bis anlegen)`);
+  }
+  return aus;
 }

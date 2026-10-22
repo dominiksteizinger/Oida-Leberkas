@@ -239,6 +239,10 @@ const mittel = (liste, f) => { const v = liste.map(f).filter((x) => typeof x ===
 // weil ein geteilter Post den Send-Test bestanden hat. Bewertet werden nur Posts der letzten 7 Tage, die älter als 24 h sind.
 export const KURZ = { tage: 7, mindestAlterStunden: 24, gewichtTeilen: 10, mehr: 120, weniger: 80, mindestPosts: 2 };
 
+// Shares und Saves je 1.000 erreichte Konten auf Instagram: unabhängig davon, wie viele den Post im Slot überhaupt gesehen haben.
+// Hauptmaß, sobald genug Posts gemessen sind (Gesamt-Check 22.10.2026); bis dahin steht es neben den Punkten.
+export const teilquote = (i = {}) => (typeof i.reach === "number" && i.reach > 0 ? Math.round((1000 * ((i.shares || 0) + (i.saved || 0))) / i.reach) : null);
+
 export function punkte(i = {}, y = {}) {
   const n = (x) => (typeof x === "number" ? x : 0);
   if (i.reach === undefined && y.views === undefined) return null;
@@ -288,7 +292,7 @@ export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = []
     mehr: { mechanik: auswahl(mech, (i) => i >= KURZ.mehr), zielgruppe: auswahl(zg, (i) => i >= KURZ.mehr), format: auswahl(format, (i) => i >= KURZ.mehr) },
     weniger: { mechanik: auswahl(mech, (i) => i <= KURZ.weniger), zielgruppe: auswahl(zg, (i) => i <= KURZ.weniger), format: auswahl(format, (i) => i <= KURZ.weniger) },
   };
-  const knapp = (x) => ({ id: x.p.id, titel: titelVon(x.p.e.inhalt), schluss: x.schluss, format: x.p.e.inhalt.format, mechanik: x.p.e.mechanik || null, zielgruppe: x.p.e.zielgruppe || null, trend: x.p.e.trend || null, punkte: x.wert });
+  const knapp = (x) => ({ id: x.p.id, titel: titelVon(x.p.e.inhalt), schluss: x.schluss, format: x.p.e.inhalt.format, mechanik: x.p.e.mechanik || null, zielgruppe: x.p.e.zielgruppe || null, trend: x.p.e.trend || null, punkte: x.wert, teilquote: teilquote(igw(x.p.id)) });
   const top = reif.slice(0, 3).map(knapp);
   const flop = reif.length > 3 ? reif.slice(-Math.min(3, reif.length - 3)).reverse().map(knapp) : [];
   const fehler = woche.map((p) => ({ id: p.id, schluss: setupUndSchluss(p.e.inhalt)?.schluss || "", f: fehlerCheck(p, bibliothek, bilderDir) })).filter((x) => x.f.length);
@@ -296,9 +300,9 @@ export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = []
   const z = ["## Kurzfassung der Woche", ""];
   if (!reif.length) z.push(`Noch keine Zahlen: ${woche.length} Posts in den letzten ${KURZ.tage} Tagen, keiner älter als ${KURZ.mindestAlterStunden} h mit Werten von Instagram oder YouTube.`, "");
   else {
-    z.push(`${woche.length} Posts in ${KURZ.tage} Tagen, ${reif.length} bewertet. Punkte = IG-Reichweite + YT-Views + ${KURZ.gewichtTeilen} × (Shares + Saves). Schnitt: **${zahl(schnitt)} Punkte**, Index 100 = Schnitt.`, "");
-    const zeile = (x) => `| ${x.punkte} | „${x.schluss}“ | ${x.format} | ${x.mechanik || "–"} | ${x.zielgruppe || "–"}${x.trend ? " · Trend" : ""} |`;
-    const kopf = ["| Punkte | Schluss | Format | Mechanik | Zielgruppe |", "|---|---|---|---|---|"];
+    z.push(`${woche.length} Posts in ${KURZ.tage} Tagen, ${reif.length} bewertet. Punkte = IG-Reichweite + YT-Views + ${KURZ.gewichtTeilen} × (Shares + Saves). Schnitt: **${zahl(schnitt)} Punkte**, Index 100 = Schnitt. Teilen ‰ = Instagram-Shares und -Saves je 1.000 erreichte Konten.`, "");
+    const zeile = (x) => `| ${x.punkte} | ${x.teilquote ?? "–"} | „${x.schluss}“ | ${x.format} | ${x.mechanik || "–"} | ${x.zielgruppe || "–"}${x.trend ? " · Trend" : ""} |`;
+    const kopf = ["| Punkte | Teilen ‰ | Schluss | Format | Mechanik | Zielgruppe |", "|---|---|---|---|---|---|"];
     z.push("**Top 3**", "", ...kopf, ...top.map(zeile), "");
     if (flop.length) z.push("**Flop 3**", "", ...kopf, ...flop.map(zeile), "");
     const pfeil = (g) => (!zaehlt(g) ? "" : g.index >= KURZ.mehr ? " ▲" : g.index <= KURZ.weniger ? " ▼" : "");

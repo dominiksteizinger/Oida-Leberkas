@@ -112,3 +112,9 @@ test("Datenbank: Merkmale und Zahlen pro Post, alte Werte bleiben, Facebook übe
   const db2 = datenbank(db1, { posts: [p], ig: { status: "uebersprungen" }, yt: { status: "uebersprungen" }, jetzt });
   assert.equal(db2.posts[p.id].ig.reichweite, 200);
 });
+
+test("Teilquote: Shares und Saves je 1.000 erreichte Konten", async () => {
+  const { teilquote } = await import("./messung.mjs");
+  assert.equal(teilquote({ reach: 400, shares: 3, saved: 1 }), 10);
+  assert.equal(teilquote({}), null);
+});
