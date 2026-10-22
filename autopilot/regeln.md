@@ -116,6 +116,8 @@ Die Schluss-Prüfung ist eine Heuristik. Ist ein Schluss bewusst anders und kipp
 
 Nach der Vorschau prüft zusätzlich ein blinder Gegenleser jedes Bild (`gegenleser.md`, seit 22.10.2026).
 
+**Woran es lag (Fehlerarten, `fehlerarten.mjs`):** Jede Ablehnung bekommt genau einen Grund aus einem festen Satz: Vorwissen nötig, Schluss nur logische Folge, Pointe vorhersehbar, flach, Kontext unklar, niemand zum Schicken, Ü40, Pointe falsch gebaut, zu lang, Bild passt nicht. Die automatische Prüfung, der Gegenleser, die Flop-3 der Auswertung und Dominiks Urteile benutzen dieselben Gründe; gesammelt in `auswertung/gruende.json`, die häufigsten stehen in der Kurzfassung und in `signal.json` und gehen in jeden Schreib-Lauf.
+
 
 1. Die Pointe dreht das Setup um. Eine Bestätigung des Setups ist kein Witz.
 2. Vorhersage-Test: Würde mehr als die Hälfte der Leser nach dem Setup den Schluss erraten? Dann umschreiben. „Resi ist düster“ ist keine Wendung.

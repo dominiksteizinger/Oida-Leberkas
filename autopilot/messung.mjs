@@ -6,6 +6,7 @@ import path from "node:path";
 import { captionText, titel as titelVon } from "./eintrag.mjs";
 import { setupUndSchluss, pruefeSchluss } from "./schluss.mjs";
 import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
+import { fehlerartVon, haeufigste, FEHLERARTEN } from "./fehlerarten.mjs";
 
 const GRAPH = "https://graph.facebook.com";
 const IG_METRIKEN = ["views", "reach", "saved", "shares", "likes", "comments", "ig_reels_avg_watch_time"];
@@ -263,7 +264,7 @@ export function fehlerCheck(p, bibliothek = [], bilderDir = null) {
   return f.map((x) => x.replace(/ \(bewusst so:.*\)$/, ""));
 }
 
-export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = [], bilderDir = null }) {
+export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = [], bilderDir = null, gruende = [] }) {
   const igw = (id) => (ig.status === "ok" ? ig.werte[id] || {} : {});
   const ytw = (id) => (yt.status === "ok" ? yt.werte[id] || {} : {});
   const alter = (p) => (jetzt - p.gepostetAm) / 3600e3;
@@ -292,7 +293,9 @@ export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = []
     mehr: { mechanik: auswahl(mech, (i) => i >= KURZ.mehr), zielgruppe: auswahl(zg, (i) => i >= KURZ.mehr), format: auswahl(format, (i) => i >= KURZ.mehr) },
     weniger: { mechanik: auswahl(mech, (i) => i <= KURZ.weniger), zielgruppe: auswahl(zg, (i) => i <= KURZ.weniger), format: auswahl(format, (i) => i <= KURZ.weniger) },
   };
-  const knapp = (x) => ({ id: x.p.id, titel: titelVon(x.p.e.inhalt), schluss: x.schluss, format: x.p.e.inhalt.format, mechanik: x.p.e.mechanik || null, zielgruppe: x.p.e.zielgruppe || null, trend: x.p.e.trend || null, punkte: x.wert, teilquote: teilquote(igw(x.p.id)) });
+  const knapp = (x) => ({ id: x.p.id, titel: titelVon(x.p.e.inhalt), schluss: x.schluss, format: x.p.e.inhalt.format, mechanik: x.p.e.mechanik || null, zielgruppe: x.p.e.zielgruppe || null, trend: x.p.e.trend || null, punkte: x.wert, teilquote: teilquote(igw(x.p.id)),
+    // Woran es lag: automatische Prüfung, sonst ein schon eingetragener Grund (gruende.json), sonst offen für den Nachschub
+    woran: fehlerCheck(x.p, bibliothek, bilderDir).map(fehlerartVon).find(Boolean) || gruende.find((g) => g.post === x.p.id || g.post === x.p.e.quelle)?.art || null });
   const top = reif.slice(0, 3).map(knapp);
   const flop = reif.length > 3 ? reif.slice(-Math.min(3, reif.length - 3)).reverse().map(knapp) : [];
   const fehler = woche.map((p) => ({ id: p.id, schluss: setupUndSchluss(p.e.inhalt)?.schluss || "", f: fehlerCheck(p, bibliothek, bilderDir) })).filter((x) => x.f.length);
@@ -304,7 +307,9 @@ export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = []
     const zeile = (x) => `| ${x.punkte} | ${x.teilquote ?? "–"} | „${x.schluss}“ | ${x.format} | ${x.mechanik || "–"} | ${x.zielgruppe || "–"}${x.trend ? " · Trend" : ""} |`;
     const kopf = ["| Punkte | Teilen ‰ | Schluss | Format | Mechanik | Zielgruppe |", "|---|---|---|---|---|---|"];
     z.push("**Top 3**", "", ...kopf, ...top.map(zeile), "");
-    if (flop.length) z.push("**Flop 3**", "", ...kopf, ...flop.map(zeile), "");
+    const woran = (x) => (x.woran ? FEHLERARTEN[x.woran].name : "offen: im Nachschub einordnen");
+    if (flop.length) z.push("**Flop 3**", "", "| Punkte | Teilen ‰ | Schluss | Format | Mechanik | Zielgruppe | Woran es lag |", "|---|---|---|---|---|---|---|",
+      ...flop.map((x) => `${zeile(x)} ${woran(x)} |`), "");
     const pfeil = (g) => (!zaehlt(g) ? "" : g.index >= KURZ.mehr ? " ▲" : g.index <= KURZ.weniger ? " ▼" : "");
     const liste = (l) => l.map((g) => `${g.k} ${g.index}${pfeil(g)} (${g.n})`).join(" · ");
     z.push(`**Mechanik:** ${liste(mech)}`, "", `**Zielgruppe:** ${liste(zg)}`, "", `**Trend:** ${liste(trend)}`, "", `**Format:** ${liste(format)}`, "", `**Slot:** ${liste(slot)}`, "");
@@ -316,7 +321,13 @@ export function kurzfassung({ posts, ig, yt, jetzt = new Date(), bibliothek = []
   z.push("**Fehler-Check** (gleiche Prüfung wie vor dem Anlegen: Schluss, Kopf im Bild, Pflichtfelder):", "");
   if (!fehler.length) z.push("- Keine bekannten Fehler in den Posts der Woche.", "");
   else z.push(...fehler.map((x) => `- ${x.id} „${x.schluss}“: ${x.f.join("; ")}`), "");
-  return { text: z.join("\n"), signal: { ...signal, top, flop, schnitt: Math.round(schnitt), bewertet: reif.length, fehler: fehler.map((x) => ({ id: x.id, fehler: x.f })) } };
+  // Häufigste Gründe der letzten 30 Tage: eingetragene (Gegenleser, Dominik, Flops) plus die automatisch erkannten Flops dieser Woche
+  const heute = jetzt.toISOString().slice(0, 10);
+  const alleGruende = [...gruende, ...flop.filter((x) => x.woran && !gruende.some((g) => g.post === x.id)).map((x) => ({ datum: heute, quelle: "flop", post: x.id, schluss: x.schluss, art: x.woran }))];
+  const haeufig = haeufigste(alleGruende, { heute });
+  z.push("**Woran Posts zuletzt gescheitert sind** (30 Tage, `auswertung/gruende.json`, Flops und Dominik doppelt gewichtet):", "",
+    ...(haeufig.length ? haeufig.map((g) => `- ${g.name} (${g.gewicht})${g.beispiele.length ? `: „${g.beispiele.join("“, „")}“` : ""}. ${FEHLERARTEN[g.art].frage}`) : ["- noch keine Gründe eingetragen"]), "");
+  return { text: z.join("\n"), signal: { ...signal, top, flop, gruende: haeufig.map((g) => ({ art: g.art, name: g.name, gewicht: g.gewicht, frage: FEHLERARTEN[g.art].frage })), schnitt: Math.round(schnitt), bewertet: reif.length, fehler: fehler.map((x) => ({ id: x.id, fehler: x.f })) } };
 }
 
 export function bericht({ datum, tage, posts, ig, yt, kurz = null }) {
@@ -382,7 +393,8 @@ async function main() {
   const fb = await sicher(() => facebook({ token: process.env.INSTAGRAM_ACCESS_TOKEN, seite: process.env.FB_PAGE_ID || "1415408888319545", posts }), "Facebook");
   const hier = path.join(wurzel, "autopilot");
   const bibliothek = JSON.parse(fs.readFileSync(path.join(hier, "bibliothek.json"), "utf8"));
-  const kurz = kurzfassung({ posts, ig, yt, jetzt, bibliothek, bilderDir: path.join(hier, "bilder") });
+  const gruende = (() => { try { return JSON.parse(fs.readFileSync(path.join(wurzel, "auswertung", "gruende.json"), "utf8")).gruende || []; } catch { return []; } })();
+  const kurz = kurzfassung({ posts, ig, yt, jetzt, bibliothek, bilderDir: path.join(hier, "bilder"), gruende });
   const text = bericht({ datum, tage, posts, ig, yt, kurz: kurz.text });
   const dir = path.join(wurzel, "auswertung");
   fs.mkdirSync(dir, { recursive: true });
