@@ -110,7 +110,7 @@ Fällt die Stimme beim Posten trotzdem aus (Limit, Schlüssel), geht das Reel st
 - `YOUTUBE_POSTEN` = `an`: Reel als Short hochladen. `YOUTUBE_SICHTBARKEIT` = `private` oder `unlisted` zum Testen.
 - `TIKTOK_POSTEN` = `an`: Reel zu TikTok. `TIKTOK_MODUS` = `entwurf` (Standard, landet in der TikTok-Inbox, Veröffentlichen per Fingertipp) oder `direkt` (sofort mit Text; bis TikTok die App geprüft hat nur als „Nur ich“). `TIKTOK_SICHTBARKEIT` z. B. `SELF_ONLY` zum Testen. Secrets `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`, `TIKTOK_REFRESH_TOKEN` (365 Tage gültig, neu holen über oidaleberkas.at/tiktok/; der Lauf legt 21 Tage vorher ein Issue an). Test: Actions → TikTok-Verbindungstest.
 - `HANDLE`: Name im Post, Standard `resi.requiem`.
-- `JINGLE` = `an`: Jingle ins Reel mischen. Braucht die Datei `autopilot/assets/jingle.mp3` (3 bis 5 s, höchstens 6 s). Fehlt die Datei, läuft das Reel ohne Jingle wie bisher. Standard ist das Ende: Das letzte Standbild steht, bis der Jingle durch ist. `JINGLE_POS` = `anfang` setzt ihn vor die Stimme.
+- `JINGLE` = `an`: Jingle ins Reel mischen. Braucht die Datei `autopilot/assets/jingle.mp3` (3 bis 5 s, höchstens 6 s; seit 22.10.2026 der selbst erzeugte Lo-Fi-Jingle „Nachtcafé“ aus `assets/jingle-quelle/synth.py`, ohne fremde Lizenz). Fehlt die Datei, läuft das Reel ohne Jingle wie bisher. Standard ist das Ende: Das letzte Standbild steht, bis der Jingle durch ist. `JINGLE_POS` = `anfang` setzt ihn vor die Stimme.
 
 ## Kommentare (seit 20.10.2026)
 
