@@ -63,5 +63,16 @@
     "video": true,
     "ig": "18097495949429260",
     "zeit": "2026-10-22T15:46:46.677Z"
+  },
+  {
+    "id": "2026-10-23-mittag",
+    "datum": "2026-10-23",
+    "slot": "mittag",
+    "art": "karte",
+    "bild": "bett-angezogen-handy.jpg",
+    "video": true,
+    "karte": "horoskop-wecker",
+    "ig": "18028023020700358",
+    "zeit": "2026-10-23T09:23:57.795Z"
   }
 ]
