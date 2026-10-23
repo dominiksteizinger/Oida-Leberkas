@@ -1,6 +1,6 @@
 {
  "hinweis": "Musterbibliothek: Bauweise erfolgreicher Witze und Memes (Recherche 22.10.2026). Nur die Bauweise lernen, nie Text, Figur oder Bild übernehmen. witz-muster.md wird daraus erzeugt: node witzmuster.mjs md > witz-muster.md",
- "stand": "2026-10-22, aktualisiert",
+ "stand": "2026-10-23, Nischen-Ausreißer ergänzt",
  "muster": [
   {
    "id": "glamour-absturz",
@@ -482,6 +482,121 @@
    "falle": "Kippt schnell in flach. Höchstens einmal pro Lauf, und der Gegenleser muss lachen, sonst raus. Gegenleser 22.10.: „Mein X ist ein Witz“ ist Papa-Niveau, nicht Antihumor.",
    "quellen": [
     "https://theplantnews.com/2024/10/21/gen-z-humour-meta-irony-absurdism-and-nihilism/"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "diese-eine",
+   "name": "Diese eine Freundin (Typ-Porträt zum Markieren)",
+   "mechanik": [
+    "gestaendnis",
+    "kontrast"
+   ],
+   "bauweise": "Die Caption benennt einen Freundinnen-Typ, den jede im Freundeskreis hat („Diese eine Freundin, die …“), das Bild zeigt Resi als genau diesen Typ. Es gibt keine Punchline, der Witz ist das Wiedererkennen. Die Caption fordert zum Markieren auf.",
+   "woerter": "„Diese eine Freundin, die …“ 8 bis 16, eine Zusatzzeile mit 2 bis 6 Wörtern ist möglich",
+   "wende": "das sehr konkrete Verhalten am Ende der Typ-Zeile",
+   "warum": "Nischen-Ausreißer im Oktober 2026 (bis 917-fach über dem Median kleiner Konten): Man markiert die Freundin, das bringt Shares und Kommentare ohne Follower-Basis.",
+   "resi": "Resi ist die Freundin, über die man das sagt: „Diese eine Freundin, die beim Spieleabend nur wegen der Snacks da ist.“ Caption: „Markier sie. Du weißt, wer.“",
+   "falle": "Der Typ muss ein Verhalten sein, nie Aussehen oder Körper. Er muss nett-peinlich bleiben und darf nicht abwerten. Ist das Verhalten erratbar („immer zu spät“), fällt der Post flach.",
+   "quellen": [
+    "https://www.tiktok.com/@selisbalance/video/7671364500855000353",
+    "https://www.tiktok.com/@ellendieerdbeere/video/7679473862991416609",
+    "https://www.instagram.com/reel/DcjjF2gtTVL/"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "dialog-ueber-taetigkeit",
+   "name": "Dialog als Text, das Bild ist die Antwort",
+   "mechanik": [
+    "kontrast",
+    "umdeutung"
+   ],
+   "bauweise": "Oben steht ein kurzer Dialog („Sie: …“, „Therapeutin: …“, „Mama: …“). Das Bild zeigt Resi bei einer banalen Tätigkeit, die dem Gesagten widerspricht oder es entlarvt. Resis Antwort ist ein Wort oder gar keins, dann antwortet das Bild.",
+   "woerter": "Gegenüber 6 bis 14, Resi 0 bis 4",
+   "wende": "das Bild oder Resis kurzes Wort nach dem Dialog",
+   "warum": "Das stärkste textbasierte Format in der Nische (bis 67-fach): Es braucht kein Gesicht vor der Kamera, nur einen Text über einer Tätigkeit. Das ist genau unser Format aus Bild und Stimme.",
+   "resi": "„Therapeutin: Extreme Unabhängigkeit kann eine Traumareaktion sein.“ Bild: Resi trägt allein den Umzugskarton (44-umzug-karton-herbert). Resi: „Okay.“",
+   "falle": "Das Bild muss die Pointe tragen. Erklärt der Text, was man sieht, ist der Post tot. Kein ernstes Therapie-Thema auswalzen, der Dialog ist nur das Setup.",
+   "quellen": [
+    "https://www.instagram.com/reel/DcyzIfKRSQA/",
+    "https://www.instagram.com/reel/Dcx3Y4ixcmZ/"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "heilige-mission",
+   "name": "Banales Online-Verhalten als feierliche Pflicht",
+   "mechanik": [
+    "eskalation",
+    "gestaendnis"
+   ],
+   "bauweise": "„Ich, wie ich …“: Eine kleine Online-Gewohnheit (Reels an Freundinnen schicken, Storys checken, Sprachnachrichten in 2-fach) wird als ernste nächtliche Mission inszeniert. Das Bild zeigt Resi in feierlicher Pose, die Caption erklärt die Mission mit vollem Ernst.",
+   "woerter": "„Ich, wie ich …“ 10 bis 20 in einem Satz",
+   "wende": "die banale Mission am Satzende nach dem feierlichen Anfang",
+   "warum": "2 Mio. Aufrufe, 27-fach über dem Median: Der Post erfüllt den Send-Test selbst, weil man ihn genau der Freundin schickt, für die man die Reels sammelt. Resi ist nachtaktiv, das passt zur Figur.",
+   "resi": "„Ich, wie ich um 3 Uhr gewissenhaft dafür sorge, dass meine Freundinnen morgens die richtigen Reels im Postfach haben.“ Bild: Resi bei Kerzenlicht (tagebuch-kerze).",
+   "falle": "Die Mission muss heutiges Online-Verhalten sein, nicht Büro oder Haushalt. Nur ein Satz, keine zweite Pointe.",
+   "quellen": [
+    "https://www.instagram.com/reel/Dc8kgtsqRh0/"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "er-zitat",
+   "name": "Er sagt etwas, Resi bleibt ungerührt",
+   "mechanik": [
+    "absage",
+    "kontrast"
+   ],
+   "bauweise": "Oben steht ein wörtliches Zitat aus einem Date oder Chat („Er: …“, „Auf dem Date fragt er: …“). Darunter kommt Resis Reaktion: ein Gesichtsausdruck, eine Tätigkeit oder ein sehr kurzer Satz. Der Abstand zwischen seinem Aufwand und ihrer Ruhe ist der Witz.",
+   "woerter": "Zitat 5 bis 18, Resi 0 bis 5",
+   "wende": "Resis Reaktion als letzte Zeile oder im Bild",
+   "warum": "Dating-Ausreißer der Nische (18- bis 262-fach, „Der Grund, warum ich lieber single bleibe“ mit 2,6 Mio.): Junge Frauen teilen das Abblitzen, weil sie selbst so reagieren möchten.",
+   "resi": "„Auf dem Date fragt er: Warum bist du eigentlich noch Single?“ Resi: „Weil ich heute hier sitze.“ Bild: Heuriger allein mit Semmel (49-heuriger-allein-semmel).",
+   "falle": "Er ist ein einzelner Typ, nie die Männer als Gruppe. Resi flirtet nicht zurück und wird nicht verletzt. Ein Zitat, das sexuell gemeint ist, ist gesperrt.",
+   "quellen": [
+    "https://www.instagram.com/reel/DebkkhdtY22/",
+    "https://www.instagram.com/reel/Db4DAwIKydE/",
+    "https://www.instagram.com/reel/DcHSk8aMeFA/",
+    "https://www.tiktok.com/@discoaysi/video/7696042385658187040"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "maedels-tipp",
+   "name": "Absurder Dating-Tipp mit sachlicher Begründung",
+   "mechanik": [
+    "umdeutung",
+    "woertlich"
+   ],
+   "bauweise": "„Mädels, sucht euch einen …“: Resi empfiehlt einen unerwarteten Typ Partner und begründet das ganz sachlich mit einem einzigen Vorteil, der eigentlich ein Nachteil ist oder nichts mit Liebe zu tun hat.",
+   "woerter": "Tipp 4 bis 8, Begründung 5 bis 12",
+   "wende": "die Begründung am Ende",
+   "warum": "914.000 Aufrufe bei einer großen Creatorin („Mädels, sucht euch einen Angler“). Das Format ist ein Ratgeber-Ton mit absurder Logik, den man unter Freundinnen weiterschickt.",
+   "resi": "„Mädels, sucht euch einen Nachtwächter. Er ist nie da, wenn ihr schlafen wollt.“",
+   "falle": "Kein Beruf und keine Gruppe abwerten, der Vorteil muss für Resi sprechen. Die Begründung darf nicht erratbar sein. Bei Herbert ist Resi Single, Herbert ist nicht der Partner.",
+   "quellen": [
+    "https://www.instagram.com/reel/DblXmBKhGFS/"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "wie-es-sich-anfuehlt",
+   "name": "Wie es sich anfühlt: Gefühl als absurdes Bild",
+   "mechanik": [
+    "umdeutung",
+    "eskalation"
+   ],
+   "bauweise": "„Wie es sich anfühlt, wenn …“ beschreibt eine alltägliche soziale Situation. Das Bild zeigt sie wörtlich und übertrieben (Resi redet mit einer Wand, einem Grabstein, Herbert). Es folgt keine weitere Pointe.",
+   "woerter": "„Wie es sich anfühlt, …“ 8 bis 16",
+   "wende": "das Bild, das die Situation wörtlich nimmt",
+   "warum": "Ausreißer quer durch die Nische („mit Mama reden, wenn sie am Handy ist“, 562.000 Aufrufe). Das Bild trägt den Witz, das passt zu unserer Bibliothek.",
+   "resi": "„Wie es sich anfühlt, im Gruppenchat einen Termin vorzuschlagen.“ Bild: Resi allein auf der Friedhofsbank (friedhofsbank-herbst).",
+   "falle": "Die Situation muss aus dem Leben der Jungen kommen (Gruppenchat, WG, Uni, Date), nicht aus dem Büro. Das Bild muss eindeutig passen, sonst versteht man es nicht in 3 Sekunden.",
+   "quellen": [
+    "https://www.tiktok.com/@n0_el77/video/7689753602629324064",
+    "https://www.instagram.com/reel/DeAZmWNon9Z/"
    ],
    "generation": "aktuell"
   }
