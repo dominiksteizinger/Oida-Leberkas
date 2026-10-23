@@ -22,10 +22,16 @@ test("Zustand, Frage, Trendwort, Länge, Gegenüber", () => {
   assert.match(pruefeSchluss(todo)[0], /Zustand/);
   assert.ok(pruefeSchluss(szene("Er schreibt nicht zurück.", ["Kommt er wieder?"])).some((f) => /Frage/.test(f)));
   assert.ok(pruefeSchluss(szene("Er kaut laut.", ["Das ist mein Ick."])).some((f) => /Trendwort/.test(f)));
-  assert.ok(pruefeSchluss(szene("Er fragt nach meiner Nummer.", ["Ich gebe ihm die Nummer vom Bestatter meines Vertrauens."]), { mechanik: "absage" }).some((f) => /Wörter/.test(f)));
+  assert.ok(pruefeSchluss(szene("Er fragt nach meiner Nummer.", ["Ich gebe ihm gern die Nummer vom Bestatter meines Vertrauens, der hat nachts auch Zeit."]), { mechanik: "absage" }).some((f) => /Wörter/.test(f)));
   assert.ok(pruefeSchluss(szene("Friseurin: „Was machen wir heute?“", ["Wie immer.", "„Also schwarz?“"])).some((f) => /Gegenüber/.test(f)));
   assert.ok(pruefeSchluss(szene("Date.", ["Er: „Ich zahl.“"])).some((f) => /Gegenüber/.test(f)));
   assert.deepEqual(pruefeSchluss(szene("Date.", ["Ich: „Nicht interessiert. 1,65.“"])), []);
+});
+
+test("Wiedererkennen-Muster brauchen keine Kippe (Lockerung 23.10.2026)", () => {
+  const z = szene("Diese eine Freundin, die immer Snacks mitbringt", ["Ich auch."]);
+  assert.ok(pruefeSchluss(z).length);
+  assert.deepEqual(pruefeSchluss({ ...z, muster: "diese-eine" }), []);
 });
 
 test("schluss_ok mit Begründung lässt durch, Formate ohne klare letzte Zeile werden nicht geprüft", () => {

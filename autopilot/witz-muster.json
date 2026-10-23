@@ -1,6 +1,6 @@
 {
  "hinweis": "Musterbibliothek: Bauweise erfolgreicher Witze und Memes (Recherche 22.10.2026). Nur die Bauweise lernen, nie Text, Figur oder Bild übernehmen. witz-muster.md wird daraus erzeugt: node witzmuster.mjs md > witz-muster.md",
- "stand": "2026-10-23, Nischen-Ausreißer ergänzt",
+ "stand": "2026-10-23, Handwerksregeln gelockert",
  "muster": [
   {
    "id": "glamour-absturz",
@@ -332,7 +332,8 @@
     "https://knowyourmeme.com/memes/pov-memes",
     "https://knowyourmeme.com/memes/pov-roleplays"
    ],
-   "generation": "aktuell"
+   "generation": "aktuell",
+   "wiedererkennen": true
   },
   {
    "id": "demure-register",
@@ -369,7 +370,8 @@
     "https://www.epidemicsound.com/blog/latest-tiktok-trends/",
     "https://www.centraltimes.org/showcase/2025/12/30/the-top-10-tiktok-trends-of-2025/"
    ],
-   "generation": "aktuell"
+   "generation": "aktuell",
+   "wiedererkennen": true
   },
   {
    "id": "sehnsucht-reveal",
@@ -426,7 +428,8 @@
     "https://replug.io/blog/tiktok-memes",
     "https://medium.com/scripting-horizons/gen-z-humour-explained-why-absurd-memes-dominate-online-culture-47f4d7c5821d"
    ],
-   "generation": "aktuell"
+   "generation": "aktuell",
+   "wiedererkennen": true
   },
   {
    "id": "absurd-normal",
@@ -503,7 +506,8 @@
     "https://www.tiktok.com/@ellendieerdbeere/video/7679473862991416609",
     "https://www.instagram.com/reel/DcjjF2gtTVL/"
    ],
-   "generation": "aktuell"
+   "generation": "aktuell",
+   "wiedererkennen": true
   },
   {
    "id": "dialog-ueber-taetigkeit",
@@ -522,7 +526,8 @@
     "https://www.instagram.com/reel/DcyzIfKRSQA/",
     "https://www.instagram.com/reel/Dcx3Y4ixcmZ/"
    ],
-   "generation": "aktuell"
+   "generation": "aktuell",
+   "wiedererkennen": true
   },
   {
    "id": "heilige-mission",
@@ -540,7 +545,8 @@
    "quellen": [
     "https://www.instagram.com/reel/Dc8kgtsqRh0/"
    ],
-   "generation": "aktuell"
+   "generation": "aktuell",
+   "wiedererkennen": true
   },
   {
    "id": "er-zitat",
@@ -598,7 +604,8 @@
     "https://www.tiktok.com/@n0_el77/video/7689753602629324064",
     "https://www.instagram.com/reel/DeAZmWNon9Z/"
    ],
-   "generation": "aktuell"
+   "generation": "aktuell",
+   "wiedererkennen": true
   }
  ],
  "kennzahlen": [

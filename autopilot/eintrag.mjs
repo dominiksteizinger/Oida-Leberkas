@@ -27,7 +27,7 @@ const Chat = z.object({
 });
 const Szene = z.object({
   format: z.literal("szene"),
-  satz: z.string().min(1).max(90),
+  satz: z.string().min(1).max(130),
   klammern: z.array(z.string().min(1).max(40)).min(1).max(3),
 });
 

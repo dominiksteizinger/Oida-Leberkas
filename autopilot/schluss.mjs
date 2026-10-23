@@ -3,7 +3,10 @@
 // neues konkretes Wort, zu lang, als Frage, mit Trendvokabel oder beim Gegenüber statt bei Resi.
 // Grundlage: regeln.md „Gag-Bauplan und Verbote“ und „Witz-Parameter“ (Flach-Test). Die Prüfung ist eine Heuristik:
 // Ein bewusst anderer Schluss geht mit `"schluss_ok": "<ein Satz, warum der Schluss trotzdem kippt>"` durch.
+// Lockerung (Dominik 23.10.2026: „Filter und was Content bringt stehen sich im Weg“): Muster mit `wiedererkennen: true`
+// (witz-muster.json) leben vom „das bin ich“, nicht von einer Kippe. Für sie entfallen Flach-Test und Pflicht zum neuen Wort.
 import { setupPointe } from "./eintrag.mjs";
+import { MUSTER } from "./witzmuster.mjs";
 
 // Setup (alles vor der Pointe) und Schluss (die letzte Zeile, die der Leser sieht) je Format. null = Format ohne klare letzte Zeile.
 export function setupUndSchluss(i) {
@@ -52,7 +55,7 @@ const inhaltsWoerter = (s) => woerter(s).filter((w) => !FUELL.has(w));
 const FLACH = /(^endlich\b|\b(leider|ich auch|fast wie (zu ?hause|daheim)|es ist jetzt|wie immer|wie jedes jahr|typisch|klassiker|same|mood)\b)/i;
 // Trendwörter bauen das Setup, die Pointe bleibt ein normaler Satz (Witz-Parameter Punkt 6)
 const TREND = /\b(red ?flag|green ?flag|ick|slay|delulu|situationship|ghost(ing|en)?|cringe|lol|lmao|rizz|vibe|era|pov)\b/i;
-export const SCHLUSS = { maxWoerter: 8, maxAbsage: 6 };
+export const SCHLUSS = { maxWoerter: 12, maxAbsage: 8 };
 
 export function pruefeSchluss(post) {
   if (typeof post.schluss_ok === "string" && post.schluss_ok.trim().length >= 10) return [];
@@ -62,7 +65,8 @@ export function pruefeSchluss(post) {
   const fehler = [];
   const hinweis = " (bewusst so: \"schluss_ok\": \"<warum es trotzdem kippt>\")";
   const n = woerter(s).length;
-  if (FLACH.test(s)) fehler.push(`Schluss „${s}“ beschreibt nur einen Zustand oder bestätigt das Setup (Flach-Test)${hinweis}`);
+  const wiedererkennen = MUSTER[post.muster]?.wiedererkennen === true;
+  if (FLACH.test(s) && !wiedererkennen) fehler.push(`Schluss „${s}“ beschreibt nur einen Zustand oder bestätigt das Setup (Flach-Test)${hinweis}`);
   if (/\?\s*[“"]?$/.test(s)) fehler.push(`Schluss „${s}“ ist eine Frage; die Pointe ist eine Aussage von Resi${hinweis}`);
   if (/!/.test(s)) fehler.push(`Schluss „${s}“ hat ein Ausrufezeichen; Resi bleibt deadpan`);
   const max = post.mechanik === "absage" ? SCHLUSS.maxAbsage : SCHLUSS.maxWoerter;
@@ -74,6 +78,6 @@ export function pruefeSchluss(post) {
   const vorher = new Set(t.setup.flatMap(woerter));
   const neu = inhaltsWoerter(s).filter((w) => !vorher.has(w));
   const einWortAbsage = post.mechanik === "absage" && n === 1;
-  if (!neu.length && !einWortAbsage) fehler.push(`Schluss „${s}“ bringt kein neues konkretes Wort (nur Reaktion oder Wiederholung des Setups); die Pointe endet auf einem Wort, das kippt (Bauplan Punkt 4)${hinweis}`);
+  if (!neu.length && !einWortAbsage && !wiedererkennen) fehler.push(`Schluss „${s}“ bringt kein neues konkretes Wort (nur Reaktion oder Wiederholung des Setups); die Pointe endet auf einem Wort, das kippt (Bauplan Punkt 4)${hinweis}`);
   return fehler;
 }
