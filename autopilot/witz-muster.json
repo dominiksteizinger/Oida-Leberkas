@@ -1,6 +1,6 @@
 {
  "hinweis": "Musterbibliothek: Bauweise erfolgreicher Witze und Memes (Recherche 22.10.2026). Nur die Bauweise lernen, nie Text, Figur oder Bild übernehmen. witz-muster.md wird daraus erzeugt: node witzmuster.mjs md > witz-muster.md",
- "stand": "2026-10-23, Handwerksregeln gelockert",
+ "stand": "2026-10-23, Polarisieren ergänzt",
  "muster": [
   {
    "id": "glamour-absturz",
@@ -606,6 +606,42 @@
    ],
    "generation": "aktuell",
    "wiedererkennen": true
+  },
+  {
+   "id": "hot-take",
+   "name": "Unpopular Opinion: Meinung, über die man streitet",
+   "mechanik": [
+    "umdeutung",
+    "kontrast"
+   ],
+   "bauweise": "„Unpopular Opinion:“ und dann eine klare, leicht freche Meinung zu Dating, Freundinnen oder Erwachsensein, die die eine Hälfte sofort teilt und die andere Hälfte widerspricht. Der Schluss formuliert die Meinung zugespitzt mit einem konkreten Bild.",
+   "woerter": "Meinung 8 bis 20, Zuspitzung am Ende 3 bis 8",
+   "wende": "die Zuspitzung am Ende",
+   "warum": "Polarisierung bringt Kommentare. Wer widerspricht, kommentiert, wer zustimmt, teilt. Dominik (23.10.2026): Die Posts wirkten zu brav, „wie für 13-Jährige“.",
+   "resi": "„Unpopular Opinion: Wer beim ersten Date getrennt zahlen will, darf auch getrennt alt werden.“",
+   "falle": "Die Meinung trifft ein Verhalten, nie eine Gruppe (Männer, Frauen, Herkunft, Körper). Es gibt keine Politik und keine echten Personen. Ist die Meinung so mild, dass niemand widerspricht, ist sie keine.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/unpopular-opinion"
+   ],
+   "generation": "aktuell"
+  },
+  {
+   "id": "petty",
+   "name": "Kleinliche Rache, ruhig erzählt",
+   "mechanik": [
+    "eskalation",
+    "gestaendnis"
+   ],
+   "bauweise": "Jemand hat Resi etwas Kleines angetan (geghostet, Pullover nicht zurückgegeben, ihre Story ignoriert). Resi behauptet, darüber zu stehen, und verrät in der letzten Zeile eine sehr genaue, kleinliche Rache.",
+   "woerter": "Anlass 5 bis 12, Behauptung 2 bis 5, Rache 5 bis 12",
+   "wende": "die kleinliche Rache am Ende",
+   "warum": "„Petty“ ist ein Gen-Z-Lieblingston: Man ist nicht nett, man ist ehrlich kleinlich. Das polarisiert („toxisch“ gegen „Queen“) und bringt Kommentare.",
+   "resi": "„Er hat mich nach dem dritten Date geghostet.“ / „Ich hab nichts gemacht.“ / „Ich like nur jeden Montag ein Foto von 2019.“",
+   "falle": "Kleinlich heißt nicht kriminell: kein Stalking mit echten Folgen, nichts Gefährliches, keine Bloßstellung. Die Rache muss harmlos und lächerlich genau sein.",
+   "quellen": [
+    "https://knowyourmeme.com/memes/petty"
+   ],
+   "generation": "aktuell"
   }
  ],
  "kennzahlen": [
