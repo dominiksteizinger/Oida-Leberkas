@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-23-07",
+    "datum": "2026-10-23",
+    "slot": "07",
+    "format": "szene",
+    "bild": "sofa-decke-handy.jpg",
+    "text": "Mädelsabend. Alle hassen ihren Freund. [Ich hab keinen.] [Ich hasse trotzdem mit.] [Am meisten den von Lena.]",
+    "bilder": [
+      "tagebuch/2026-10-23-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-22-22",
     "datum": "2026-10-22",
     "slot": "22",
