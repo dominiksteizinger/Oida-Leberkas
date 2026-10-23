@@ -17,7 +17,7 @@ export const MECHANIKEN = {
   eskalation: { name: "Kleiner Anlass, absurd große Reaktion, Kippe am Ende", max: 3 },
 };
 // Mindestanteile in einem Schreib-Lauf (pruefen.mjs, ab MISCHUNG.ab neuen Posts)
-export const MISCHUNG = { ab: 6, selbstironie: 0.4, beziehung: 0.4, beziehungsGruppen: ["dating", "familie"] };
+export const MISCHUNG = { ab: 6, selbstironie: 0.4, beziehung: 0.4, beziehungsGruppen: ["dating", "familie", "freundinnen"] };
 
 // verlauf: Tags der zuletzt gepostenden Posts, ältester zuerst (null = ohne Tag). tag: Mechanik des Kandidaten.
 export function pruefeQuote(verlauf, tag, q = QUOTE) {

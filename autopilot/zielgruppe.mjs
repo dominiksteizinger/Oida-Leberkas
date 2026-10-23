@@ -9,6 +9,8 @@ import path from "node:path";
 export const ZIELGRUPPEN = {
   // Beziehung hat seit 22.10.2026 das meiste Gewicht (Dominik: Fanbase sind junge Frauen, Abblitzen und Dating-Situationen ziehen am meisten)
   dating: { name: "Dating, Beziehung und Ex", max: 8 },
+  // Freundinnen-Themen (Dominik 23.10.2026, Nischen-Top-20: 15 von 20 viralen Reels handeln von der besten Freundin)
+  freundinnen: { name: "Beste Freundin und Mädelsrunde", max: 6 },
   jobstart: { name: "Berufseinstieg", max: 3 },
   akku: { name: "Sozialer Akku", max: 2 },
   wohnen: { name: "WG und erste Wohnung", max: 2 },

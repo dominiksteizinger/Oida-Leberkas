@@ -116,7 +116,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     else console.log(`✓ ${i + 1}. ${posts[i].titel}`);
   });
   const mischung = [...pruefeMischung(posts), ...pruefeMusterMischung(posts)];
-  if (mischung.length) { ok = false; console.log(`✗ Mischung des Laufs\n  - ${mischung.join("\n  - ")}`); }
+  // Seit 23.10.2026 nur Hinweis, keine Sperre (Dominik: Handwerksregeln lockern, damit zieht, was gerade zieht)
+  if (mischung.length) console.log(`! Hinweis zur Mischung des Laufs (kein Abbruch)\n  - ${mischung.join("\n  - ")}`);
   if (!ok) { console.log("\nNicht angelegt: erst alle Fehler beheben."); process.exit(1); }
   if (opt("--issues")) fs.writeFileSync(opt("--issues"), JSON.stringify(ergebnis.map((r) => r.issue), null, 2) + "\n");
   console.log(`\n${posts.length} Posts in Ordnung.${opt("--issues") ? ` Issue-Texte in ${opt("--issues")}.` : ""}`);

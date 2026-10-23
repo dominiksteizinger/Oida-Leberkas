@@ -1,8 +1,8 @@
-# Witz-Muster: Bauweise erfolgreicher Witze und Memes (Stand 2026-10-23, Nischen-Ausreißer ergänzt)
+# Witz-Muster: Bauweise erfolgreicher Witze und Memes (Stand 2026-10-23, Handwerksregeln gelockert)
 
 Erzeugt aus `witz-muster.json` mit `node witzmuster.mjs md > witz-muster.md`, nicht von Hand ändern.
 
-Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt sind. Gelernt wird die **Bauweise**, nie Text, Figur oder Bild. Jeder neue Post nennt im Feld `muster` eines der Muster unten (Pflicht, `pruefen.mjs`). **Aktuelle Muster (2024–26) zuerst**: mindestens die Hälfte jedes Laufs, veraltete Zweizeiler höchstens ein Viertel. Das Muster muss zur `mechanik` passen und ergänzt den Gag-Bauplan in `regeln.md`, es ersetzt ihn nicht. Meme-Regeln gelten unverändert: keine fremden Figuren, Marken oder echten Personen, nichts Sexualisiertes, nie Männer als Gruppe.
+Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt sind. Gelernt wird die **Bauweise**, nie Text, Figur oder Bild. Jeder neue Post nennt im Feld `muster` eines der Muster unten (Pflicht, `pruefen.mjs`). **Aktuelle Muster (2024–26) zuerst**: mindestens die Hälfte jedes Laufs, veraltete Zweizeiler höchstens ein Viertel. Das Muster muss zur `mechanik` passen und ergänzt den Gag-Bauplan in `regeln.md`, es ersetzt ihn nicht. Meme-Regeln gelten unverändert: keine fremden Figuren, Marken oder echten Personen, nichts Sexualisiertes, nie Männer als Gruppe. **Gelockert seit 23.10.2026** (Dominik: Filter und Wirkung standen sich im Weg): Muster mit Wiedererkennen (`pov-rolle`, `identitaets-etikett`, `ungefiltert-ehrlich`, `diese-eine`, `dialog-ueber-taetigkeit`, `heilige-mission`, `wie-es-sich-anfuehlt`) brauchen keine Kippe in der letzten Zeile, der Witz ist das „das bin ich“. Die Mischungsquoten eines Laufs sind nur noch ein Hinweis.
 
 ## Was die Zählung zeigt
 
