@@ -25,6 +25,15 @@ jobs:
         working-directory: autopilot
         run: |
           npm ci --no-audit --no-fund
+          # apt hing am 22.10. auf dem Runner, daher statisches ffmpeg aus npm
+          if ! command -v ffmpeg; then
+            mkdir -p "$RUNNER_TEMP/ff" && (cd "$RUNNER_TEMP/ff" && npm i --no-audit --no-fund ffmpeg-static@5.2.0 ffprobe-static@3.1.0)
+            mkdir -p "$RUNNER_TEMP/bin"
+            ln -sf "$RUNNER_TEMP/ff/node_modules/ffmpeg-static/ffmpeg" "$RUNNER_TEMP/bin/ffmpeg"
+            ln -sf "$(find "$RUNNER_TEMP/ff/node_modules/ffprobe-static/bin/linux/x64" -name ffprobe)" "$RUNNER_TEMP/bin/ffprobe"
+            export PATH="$RUNNER_TEMP/bin:$PATH"
+          fi
+          ffmpeg -version | head -1
           node --input-type=module -e '
             import fs from "node:fs"; import { vorfuellen } from "./stimme.mjs";
             for (const t of JSON.parse(fs.readFileSync("../probe-mini-szene/saetze.json", "utf8"))) {
