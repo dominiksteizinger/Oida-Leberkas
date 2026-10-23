@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-23-16",
+    "datum": "2026-10-23",
+    "slot": "16",
+    "format": "szene",
+    "bild": "bett-angezogen-handy.jpg",
+    "text": "Diese eine Freundin, die bei jedem Date ihrer Freundinnen per Live-Standort mitfährt. [Ich hab Snacks und eine Exit-Strategie.]",
+    "bilder": [
+      "tagebuch/2026-10-23-16/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-23-07",
     "datum": "2026-10-23",
     "slot": "07",
