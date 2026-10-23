@@ -1,4 +1,4 @@
-# Witz-Muster: Bauweise erfolgreicher Witze und Memes (Stand 2026-10-23, Handwerksregeln gelockert)
+# Witz-Muster: Bauweise erfolgreicher Witze und Memes (Stand 2026-10-23, Polarisieren ergänzt)
 
 Erzeugt aus `witz-muster.json` mit `node witzmuster.mjs md > witz-muster.md`, nicht von Hand ändern.
 
@@ -39,6 +39,8 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 | `er-zitat` | Er sagt etwas, Resi bleibt ungerührt | aktuell 2024–26 | absage, kontrast | Zitat 5 bis 18, Resi 0 bis 5 | Resis Reaktion als letzte Zeile oder im Bild |
 | `maedels-tipp` | Absurder Dating-Tipp mit sachlicher Begründung | aktuell 2024–26 | umdeutung, woertlich | Tipp 4 bis 8, Begründung 5 bis 12 | die Begründung am Ende |
 | `wie-es-sich-anfuehlt` | Wie es sich anfühlt: Gefühl als absurdes Bild | aktuell 2024–26 | umdeutung, eskalation | „Wie es sich anfühlt, …“ 8 bis 16 | das Bild, das die Situation wörtlich nimmt |
+| `hot-take` | Unpopular Opinion: Meinung, über die man streitet | aktuell 2024–26 | umdeutung, kontrast | Meinung 8 bis 20, Zuspitzung am Ende 3 bis 8 | die Zuspitzung am Ende |
+| `petty` | Kleinliche Rache, ruhig erzählt | aktuell 2024–26 | eskalation, gestaendnis | Anlass 5 bis 12, Behauptung 2 bis 5, Rache 5 bis 12 | die kleinliche Rache am Ende |
 | `unschuld-etikett` | Tat plus Unschuldsetikett | klassisch, bewährt | ertappt, gestaendnis | Tat 6 bis 15, Ausrede 2 bis 6 | die Ausrede |
 | `winziger-ausloeser` | Großer Ernst, winziger Auslöser | klassisch, bewährt | eskalation, gestaendnis, umdeutung | Setup 6 bis 15, Auslöser 3 bis 8 | der Auslöser, ganz am Ende |
 | `floskel-woertlich` | Floskel beim Wort genommen | klassisch, bewährt | woertlich, absage | Floskel 3 bis 10, Antwort 1 bis 6 | Antwort, letzte Zeile |
@@ -207,6 +209,26 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Falle:** Die Situation muss aus dem Leben der Jungen kommen (Gruppenchat, WG, Uni, Date), nicht aus dem Büro. Das Bild muss eindeutig passen, sonst versteht man es nicht in 3 Sekunden.
 - **mechanik:** umdeutung, eskalation
 - **Quellen:** [1](https://www.tiktok.com/@n0_el77/video/7689753602629324064), [2](https://www.instagram.com/reel/DeAZmWNon9Z/)
+
+### `hot-take`: Unpopular Opinion: Meinung, über die man streitet (aktuell 2024–26)
+
+- **Bauweise:** „Unpopular Opinion:“ und dann eine klare, leicht freche Meinung zu Dating, Freundinnen oder Erwachsensein, die die eine Hälfte sofort teilt und die andere Hälfte widerspricht. Der Schluss formuliert die Meinung zugespitzt mit einem konkreten Bild.
+- **Länge:** Meinung 8 bis 20, Zuspitzung am Ende 3 bis 8. **Wende:** die Zuspitzung am Ende.
+- **Warum es zündet:** Polarisierung bringt Kommentare. Wer widerspricht, kommentiert, wer zustimmt, teilt. Dominik (23.10.2026): Die Posts wirkten zu brav, „wie für 13-Jährige“.
+- **Für Resi:** „Unpopular Opinion: Wer beim ersten Date getrennt zahlen will, darf auch getrennt alt werden.“
+- **Falle:** Die Meinung trifft ein Verhalten, nie eine Gruppe (Männer, Frauen, Herkunft, Körper). Es gibt keine Politik und keine echten Personen. Ist die Meinung so mild, dass niemand widerspricht, ist sie keine.
+- **mechanik:** umdeutung, kontrast
+- **Quellen:** [1](https://knowyourmeme.com/memes/unpopular-opinion)
+
+### `petty`: Kleinliche Rache, ruhig erzählt (aktuell 2024–26)
+
+- **Bauweise:** Jemand hat Resi etwas Kleines angetan (geghostet, Pullover nicht zurückgegeben, ihre Story ignoriert). Resi behauptet, darüber zu stehen, und verrät in der letzten Zeile eine sehr genaue, kleinliche Rache.
+- **Länge:** Anlass 5 bis 12, Behauptung 2 bis 5, Rache 5 bis 12. **Wende:** die kleinliche Rache am Ende.
+- **Warum es zündet:** „Petty“ ist ein Gen-Z-Lieblingston: Man ist nicht nett, man ist ehrlich kleinlich. Das polarisiert („toxisch“ gegen „Queen“) und bringt Kommentare.
+- **Für Resi:** „Er hat mich nach dem dritten Date geghostet.“ / „Ich hab nichts gemacht.“ / „Ich like nur jeden Montag ein Foto von 2019.“
+- **Falle:** Kleinlich heißt nicht kriminell: kein Stalking mit echten Folgen, nichts Gefährliches, keine Bloßstellung. Die Rache muss harmlos und lächerlich genau sein.
+- **mechanik:** eskalation, gestaendnis
+- **Quellen:** [1](https://knowyourmeme.com/memes/petty)
 
 ### `unschuld-etikett`: Tat plus Unschuldsetikett (klassisch, bewährt)
 

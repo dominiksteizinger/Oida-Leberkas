@@ -28,7 +28,7 @@ const Chat = z.object({
 const Szene = z.object({
   format: z.literal("szene"),
   satz: z.string().min(1).max(130),
-  klammern: z.array(z.string().min(1).max(40)).min(1).max(3),
+  klammern: z.array(z.string().min(1).max(60)).min(1).max(3),
 });
 
 // Handy-Oberflächen über einem Bild (seit 19.10.2026)
