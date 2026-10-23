@@ -32,6 +32,8 @@ const optionen = {
   schrift: (f) => datei(path.join(WURZEL, "assets", "fonts", f)),
   handle: process.env.HANDLE || "resi.requiem",
   zeitstempel,
+  // geschichte: Bild und Gesichtsmitte jeder Szene
+  szenen: i.format === "geschichte" ? i.szenen.map((s) => ({ bild: datei(path.join(HIER, "bilder", s.bild)), kopf: bibliothek.find((b) => b.datei === s.bild)?.kopf })) : undefined,
 };
 if (!OHNE_BILD.has(i.format) && !e.bild) throw new Error(`Format ${i.format} braucht ein Bild`);
 
@@ -137,6 +139,33 @@ async function schritte(setup) {
   }
   fs.writeFileSync(path.join(ordner, "schritte.json"), JSON.stringify({ modus, schritte: liste }, null, 2) + "\n");
 }
+// geschichte: jede Szene als eigenes Vollbild-Reelbild (szene-Vorlage), erst der Satz, dann jede Zeile darunter einzeln.
+// Jeder Schritt merkt sich sein Hintergrundbild, video.mjs schneidet von Szene zu Szene. Das Herbert-Pop-up erscheint ab der ersten Szene, die ihn nennt.
+async function schritteGeschichte() {
+  await seite.setViewportSize({ width: 1080, height: 1920 });
+  const nennt = (s) => /\bHerbert\b/.test([s.satz, ...(s.klammern || [])].join(" "));
+  const liste = [];
+  for (const [k, s] of i.szenen.entries()) {
+    const kopf = bibliothek.find((b) => b.datei === s.bild)?.kopf;
+    const herbert = e.herbert ?? i.szenen.slice(0, k + 1).some(nennt);
+    const tmp = path.join(ordner, `szene-${k}.html`);
+    fs.writeFileSync(tmp, FORMATE.szene({ format: "szene", satz: s.satz, klammern: s.klammern || [] }, { ...optionen, format: "szene", stufe: "b", bild: datei(path.join(HIER, "bilder", s.bild)), kopf, hell: false, herbert }));
+    await seite.goto(`file://${tmp}`);
+    await seite.evaluate(() => document.fonts.ready);
+    await seite.waitForFunction(() => [...document.images].every((b) => b.complete && b.naturalWidth > 0));
+    await seite.addStyleTag({ content: reelCss("foto") });
+    if (kopf) await ausKopfRaus(kopf[1]);
+    const teile = await seite.evaluate(() => [...document.querySelectorAll(".t p, .t .k")].map((x, n) => { if (n) x.style.visibility = "hidden"; return x.textContent.replace(/\s+/g, " ").trim(); }));
+    for (let m = 0; m < teile.length; m++) {
+      if (m) await seite.evaluate((m) => { document.querySelectorAll(".t p, .t .k")[m].style.visibility = "visible"; }, m);
+      const name = `schritt-${String(liste.length).padStart(2, "0")}.png`;
+      await seite.screenshot({ path: path.join(ordner, name), type: "png", omitBackground: true });
+      liste.push({ datei: name, text: teile[m], hintergrund: s.bild });
+    }
+    fs.unlinkSync(tmp);
+  }
+  fs.writeFileSync(path.join(ordner, "schritte.json"), JSON.stringify({ modus: "geschichte", schritte: liste }, null, 2) + "\n");
+}
 for (const [stufe, name] of [["a", "post-a"], ["b", "post"]]) {
   const tmp = path.join(ordner, `${name}.html`);
   fs.writeFileSync(tmp, FORMATE[i.format](i, { ...optionen, stufe }));
@@ -145,6 +174,7 @@ for (const [stufe, name] of [["a", "post-a"], ["b", "post"]]) {
   await seite.waitForFunction(() => [...document.images].every((b) => b.complete && b.naturalWidth > 0));
   await seite.screenshot({ path: path.join(ordner, `${name}.jpg`), type: "jpeg", quality: 90 });
   if (stufe === "a") setupTexte = await seite.evaluate(blattTexte);
+  else if (i.format === "geschichte") await schritteGeschichte();
   else await schritte(setupTexte);
   fs.unlinkSync(tmp);
 }

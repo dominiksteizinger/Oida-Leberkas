@@ -65,6 +65,10 @@ Zeigen den Ton für Resi Requiem. Keine Vorlagen zum Abwandeln: Motive und Point
   Warum: Zeilen wie Untertitel, eine nach der anderen, Steigerung bis zum warmen Rest.
 - Bild: Büro, Montag. „Montag, 8:01.“ [lebe noch] [leider]
 
+### geschichte
+- „Er meldet sich“: [sofa-decke-handy] „Tag 1: Er hat gesagt, er meldet sich.“ [Handy auf laut.] / [vollmond-fenster] „Tag 4: Nichts.“ [Ich sitze nur zufällig am Fenster.] / [boden-handy-dunkel] „Tag 9: Er schreibt. ‚hey du‘“ [Neun Tage für zwei Wörter.] / [herbert-vorhang] „Herbert meldet sich jeden Tag.“ [Um vier Uhr früh.] [Kopfüber.]
+  Warum: Zeitsprung baut Erwartung (Liebeskummer), die letzte Szene dreht sie zu Herbert, Schluss mit konkretem neuem Wort. Von Dominik freigegeben (23.10.2026).
+
 ## Schlecht
 
 ### Flach (Dominik, 22.10.2026: „da ist kein Witz dabei“)

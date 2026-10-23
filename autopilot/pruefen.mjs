@@ -13,7 +13,7 @@ import { pruefeWortfilter } from "./wortfilter.mjs";
 import { mechanikLesen, pruefeMischung, pruefeBauplan } from "./humorquote.mjs";
 import { zielgruppeLesen, pruefeUe40 } from "./zielgruppe.mjs";
 import { pruefeSchluss } from "./schluss.mjs";
-import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
+import { bildMass, pruefeAusschnitt, pruefeGeschichte } from "./ausschnitt.mjs";
 import { simuliere, ablaufBericht, anlassLuecken } from "./ablauf.mjs";
 import { fehlerartVon, haeufigste, gruendeLesen, FEHLERARTEN } from "./fehlerarten.mjs";
 import { verlaufLesen } from "./humorquote.mjs";
@@ -28,9 +28,11 @@ const DATUM = /^\d{4}-\d{2}-\d{2}$/;
 // So weit reicht die Warteschlange höchstens (Tage); bis dahin muss ein Saisonbild ohne „bis“ noch passen
 const HORIZONT = 35;
 
+// Alle Bilder eines Posts (geschichte: jedes Szenenbild)
+const bilderAus = (post) => [...new Set([...(post?.inhalt?.format === "geschichte" && Array.isArray(post.inhalt.szenen) ? post.inhalt.szenen.map((x) => x?.bild) : []), post?.bild].filter(Boolean))];
 const bildAus = (body) => {
   const m = String(body).match(/```json\s*([\s\S]*?)```/);
-  try { return m ? JSON.parse(m[1]).bild || null : null; } catch { return null; }
+  try { return m ? bilderAus(JSON.parse(m[1])) : []; } catch { return []; }
 };
 
 export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
@@ -56,10 +58,12 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
   if (post.bis && DATUM.test(post.bis) && heute && post.bis < heute) fehler.push(`bis (${post.bis}) liegt in der Vergangenheit`);
   if (post.slot !== undefined && !["07", "11", "16", "22"].includes(String(post.slot))) fehler.push("slot muss \"07\", \"11\", \"16\" oder \"22\" sein");
   const format = post.inhalt?.format;
-  if (e && !OHNE_BILD.has(format) && !post.bild) fehler.push(`Format ${format} braucht ein Bild`);
-  if (post.bild) {
-    const b = nachDatei.get(post.bild);
-    if (!b) fehler.push(`Bild ${post.bild} gibt es nicht in bibliothek.json`);
+  const bilder = bilderAus(post);
+  if (e && !OHNE_BILD.has(format) && !bilder.length) fehler.push(`Format ${format} braucht ein Bild`);
+  fehler.push(...pruefeGeschichte(post, bibliothek, (d) => bildMass(path.join(HIER, "bilder", d))));
+  for (const datei of bilder) {
+    const b = nachDatei.get(datei);
+    if (!b) { if (format !== "geschichte") fehler.push(`Bild ${datei} gibt es nicht in bibliothek.json`); }
     else {
       // Kopf im Bildausschnitt (ausschnitt.mjs)
       let mass = null;
@@ -69,14 +73,14 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
       // müssen noch bis zum Ende der Warteschlange passen, sonst lehnt holen.mjs den Post später ab.
       const tags = (b.tags || []).join(", ");
       const anlass = (b.tags || []).some((t) => TAGS[t]?.wiederverwendbar === false);
-      if (anlass && (!post.ab || !post.bis)) fehler.push(`Bild ${post.bild} ist ein Anlassbild (${tags}), der Post braucht ab und bis`);
-      for (const k of ["ab", "bis"]) if (post[k] && !passtZuDatum(b, post[k])) fehler.push(`Bild ${post.bild} passt nicht zum ${k}-Datum ${post[k]} (Tags: ${tags})`);
+      if (anlass && (!post.ab || !post.bis)) fehler.push(`Bild ${datei} ist ein Anlassbild (${tags}), der Post braucht ab und bis`);
+      for (const k of ["ab", "bis"]) if (post[k] && !passtZuDatum(b, post[k])) fehler.push(`Bild ${datei} passt nicht zum ${k}-Datum ${post[k]} (Tags: ${tags})`);
       if (!post.bis && heute) {
         const ende = new Date(Date.parse(heute + "T12:00:00Z") + HORIZONT * 864e5).toISOString().slice(0, 10);
-        for (const d of [post.ab || heute, ende]) if (!passtZuDatum(b, d)) { fehler.push(`Bild ${post.bild} (${tags}) passt am ${d} nicht mehr; Post bekommt ein bis oder ein anderes Bild`); break; }
+        for (const d of [post.ab || heute, ende]) if (!passtZuDatum(b, d)) { fehler.push(`Bild ${datei} (${tags}) passt am ${d} nicht mehr; Post bekommt ein bis oder ein anderes Bild`); break; }
       }
     }
-    if (belegt.has(post.bild)) fehler.push(`Bild ${post.bild} steckt schon in ${belegt.get(post.bild)}`);
+    if (belegt.has(datei)) fehler.push(`Bild ${datei} steckt schon in ${belegt.get(datei)}`);
   }
   const body = `${notiz ? `${notiz}\n\n` : ""}\`\`\`json\n${JSON.stringify(post)}\n\`\`\``;
   return { fehler, issue: { title: titel, body } };
@@ -85,12 +89,11 @@ export function pruefePost(roh, { belegt = new Map(), heute } = {}) {
 export function pruefeAlle(posts, offen = [], heute) {
   const belegt = new Map();
   offen.forEach((o, i) => {
-    const bild = bildAus(typeof o === "string" ? o : o.body);
-    if (bild) belegt.set(bild, typeof o === "object" && o.number ? `#${o.number}` : `wartendem Post ${i + 1}`);
+    for (const bild of bildAus(typeof o === "string" ? o : o.body)) belegt.set(bild, typeof o === "object" && o.number ? `#${o.number}` : `wartendem Post ${i + 1}`);
   });
   return posts.map((p, i) => {
     const r = pruefePost(p, { belegt, heute });
-    if (p.bild && !belegt.has(p.bild)) belegt.set(p.bild, `neuem Post ${i + 1} („${p.titel}“)`);
+    for (const bild of bilderAus(p)) if (!belegt.has(bild)) belegt.set(bild, `neuem Post ${i + 1} („${p.titel}“)`);
     return r;
   });
 }
@@ -125,7 +128,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const tagebuch = path.join(HIER, "..", "tagebuch"), id = `${heute}-99`;
     console.log(`\n${ablaufBericht(simuliere(alle, verlaufLesen(tagebuch, id), zgVerlaufLesen(tagebuch, id))).text}`);
     const nutzung = JSON.parse(fs.readFileSync(path.join(HIER, "nutzung.json"), "utf8"));
-    const luecken = anlassLuecken({ bibliothek, nutzung, bilder: alle.map((x) => x.post.bild), heute });
+    const luecken = anlassLuecken({ bibliothek, nutzung, bilder: alle.flatMap((x) => bilderAus(x.post)), heute });
     console.log(luecken.length ? `⚠ Anlässe ohne Post:\n${luecken.map((l) => `  - ${l}`).join("\n")}` : "Anlässe der nächsten 10 Tage: alle mit Post in der Warteschlange.");
   }
 }

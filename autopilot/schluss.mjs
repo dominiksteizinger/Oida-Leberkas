@@ -16,6 +16,10 @@ export function setupUndSchluss(i) {
       return { setup: [i.name, ...ohne(n).map((x) => x.text)], schluss: n.at(-1).text };
     }
     case "szene": return { setup: [i.satz, ...ohne(i.klammern)], schluss: i.klammern.at(-1) };
+    case "geschichte": {
+      const t = i.szenen.flatMap((s) => [s.satz, ...(s.klammern || [])]);
+      return { setup: ohne(t), schluss: t.at(-1) };
+    }
     case "mitteilungen": {
       const m = i.mitteilungen;
       return { setup: [...ohne(m).flatMap((x) => [x.app, x.titel, x.text]), m.at(-1).app, m.at(-1).titel], schluss: m.at(-1).text };

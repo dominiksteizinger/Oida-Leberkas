@@ -80,6 +80,25 @@ function szene(i, o) {
   return seite(css, `<img class="bild" src="${o.bild}"><div class="verlauf"></div><div class="t"><p>${esc(i.satz)}</p>${klammern}</div>`, o);
 }
 
+// Mini-Szene aus 3–4 Bildern (Dominik 23.10.2026): im Feed als Comic-Raster (4 Szenen 2x2, 3 Szenen untereinander), jedes Feld am Gesicht ausgeschnitten.
+// Stufe "a" lässt den Text der letzten Szene weg. Das Reel zeigt die Szenen nacheinander als Vollbild (render.mjs, szene-Vorlage je Szene).
+// o.szenen: [{ bild: file-URL, kopf: [x, Kinn y] }] in Szenen-Reihenfolge.
+function geschichte(i, o) {
+  const n = i.szenen.length, raster = n === 4, L = 8;
+  const w = raster ? (1080 - L) / 2 : 1080, h = raster ? (1350 - L) / 2 : (1350 - 2 * L) / 3;
+  const css = `.f{background:#0d0a0d;color:#fff}.pn{position:absolute;overflow:hidden;width:${w}px;height:${h}px}.pn img{width:100%;height:100%;object-fit:cover}
+.pn .t{position:absolute;left:22px;right:22px;bottom:22px}.pn p,.pn .k{display:table;background:rgba(13,10,13,.84);border-radius:12px;padding:6px 14px;margin:6px 0 0}
+.pn p{font:800 ${raster ? 34 : 38}px/1.2 I}.pn .k{font:600 ${raster ? 29 : 32}px/1.25 I;color:#FF4FA3}.handle{bottom:auto!important;top:20px;left:24px!important;font-size:24px!important;text-shadow:0 2px 8px rgba(0,0,0,.8)}`;
+  const felder = i.szenen.map((s, k) => {
+    const x = raster ? (k % 2) * (w + L) : 0, y = raster ? Math.floor(k / 2) * (h + L) : k * (h + L);
+    const kopf = o.szenen?.[k]?.kopf;
+    const pos = kopf ? `${Math.round(kopf[0] * 100)}% ${Math.max(0, Math.round(kopf[1] * 100 - 18))}%` : "50% 30%";
+    const text = o.stufe === "a" && k === n - 1 ? "" : `<div class="t"><p>${esc(s.satz)}</p>${(s.klammern || []).map((z) => `<div class="k">${esc(z)}</div>`).join("")}</div>`;
+    return `<div class="pn" style="left:${x}px;top:${y}px"><img src="${o.szenen?.[k]?.bild || ""}" style="object-position:${pos}">${text}</div>`;
+  }).join("");
+  return seite(css, felder, { ...o, herbert: false });
+}
+
 // Handy-Oberflächen über dem Bild (Dominik 19.10.2026). Das Bild bleibt hell und sichtbar,
 // die Karte sitzt unten oder seitlich und verdeckt nie das Gesicht.
 const UI = `.f{background:#120A10;color:#fff}.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -305,7 +324,7 @@ function captcha(i, o) {
   return karte(o, "CAPTCHA", "cap", `<div class="k"><div style="font:400 22px I">Wähle alle Bilder mit</div><div style="font:800 36px I">${esc(i.aufgabe)}</div></div><div class="raster">${i.symbole.map((s) => `<div>${esc(s)}</div>`).join("")}</div>${fuss}`, css);
 }
 
-export const FORMATE = { antwort, notiz, bewertung, chat, szene, mitteilungen, termin, wetter, umfrage, wiedergabe, sprachnachricht, suchverlauf, fehlermeldung, todo, beleg,
+export const FORMATE = { antwort, notiz, bewertung, chat, szene, geschichte, mitteilungen, termin, wetter, umfrage, wiedergabe, sprachnachricht, suchverlauf, fehlermeldung, todo, beleg,
   storyfrage, aktivitaet, akku, abwesenheit, sendung, horoskop, uebersetzer, ladebalken, navigation, passwort,
   notfallkontakt, fokus, gruppe, speicher, timer, konto, einladung, update, serie, captcha };
 // Formate ohne Bild aus der Bibliothek

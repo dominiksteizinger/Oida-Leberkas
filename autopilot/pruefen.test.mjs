@@ -48,3 +48,32 @@ test("Zielgruppe ist Pflicht, Ü40 nur mit Begründung", () => {
   assert.match(pruefeAlle([szene({ caption: "Wichteln." })], [], "2026-10-19")[0].fehler.join(), /Ü40/);
   assert.deepEqual(pruefeAlle([szene({ caption: "Wichteln.", ue40_ok: "Resi wichtelt zum ersten Mal mit der WG." })], [], "2026-10-19")[0].fehler, []);
 });
+
+const geschichte = (szenen, extra = {}) => ({ titel: "Post 98 (geschichte): Test", inhalt: { format: "geschichte", szenen }, caption: "Er meldet sich.", hashtags: ["#dating"], zielgruppe: "dating", mechanik: "ertappt", muster: "bedingung-verraet", annahme: "Er meldet sich", ...extra });
+const vier = [
+  { bild: "sofa-decke-handy.jpg", satz: "Tag 1: Er meldet sich, sagt er.", klammern: ["Handy auf laut."] },
+  { bild: "vollmond-fenster.jpg", satz: "Tag 4: Nichts.", klammern: ["Ich sitze nur zufällig am Fenster."] },
+  { bild: "boden-handy-dunkel.jpg", satz: "Tag 9: Er schreibt. „hey du“", klammern: ["Neun Tage für zwei Wörter."] },
+  { bild: "herbert-vorhang.jpg", satz: "Herbert meldet sich jeden Tag.", klammern: ["Um vier Uhr früh.", "Kopfüber."] },
+];
+
+test("geschichte: gültig ohne bild, Szenenbilder zählen als belegt", () => {
+  const [r] = pruefeAlle([geschichte(vier)], [], "2026-10-23");
+  assert.deepEqual(r.fehler, []);
+  const offen = [{ number: 60, body: "x\n```json\n{\"bild\":\"vollmond-fenster.jpg\"}\n```" }];
+  assert.match(pruefeAlle([geschichte(vier)], offen, "2026-10-23")[0].fehler.join(), /vollmond-fenster\.jpg steckt schon in #60/);
+  // umgekehrt: eine wartende geschichte belegt alle ihre Szenenbilder
+  const wartend = [{ number: 61, body: `x\n\`\`\`json\n${JSON.stringify(geschichte(vier))}\n\`\`\`` }];
+  assert.match(pruefeAlle([{ ...geschichte(vier), titel: "b" }], wartend, "2026-10-23")[0].fehler.join(), /sofa-decke-handy\.jpg steckt schon in #61/);
+});
+
+test("geschichte: Querformat, Sticker, doppeltes Bild, falsches bild, zu wenige Szenen", () => {
+  const quer = vier.map((s, k) => (k === 1 ? { ...s, bild: "regenfenster-nacht.jpg" } : s));
+  assert.match(pruefeAlle([geschichte(quer)], [], "2026-10-23")[0].fehler.join(), /kopf-Feld|Querformat/);
+  const sticker = vier.map((s, k) => (k === 0 ? { ...s, bild: "verliebt-semmel.jpg" } : s));
+  assert.match(pruefeAlle([geschichte(sticker)], [], "2026-10-23")[0].fehler.join(), /kein Sticker/);
+  const doppelt = vier.map((s, k) => (k === 2 ? { ...s, bild: vier[0].bild } : s));
+  assert.match(pruefeAlle([geschichte(doppelt)], [], "2026-10-23")[0].fehler.join(), /nur einmal/);
+  assert.match(pruefeAlle([geschichte(vier, { bild: "sofa-decke-handy.jpg" })], [], "2026-10-23")[0].fehler.join(), /letzten Szene/);
+  assert.notDeepEqual(pruefeAlle([geschichte(vier.slice(0, 2))], [], "2026-10-23")[0].fehler, []);
+});

@@ -35,6 +35,9 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 | `bewertung` | „Sarg-Bewertung“ eines Alltagsorts, 0–5 Särge | Ort und Bild | Särge und Text |
 | `chat` | „Kollegin vs. ich“ als Chatverlauf | Sunnys Nachrichten | Resis letzte Antwort(en) |
 | `szene` | ein Satz über ein Bild, dazu kurze Zeilen wie Untertitel | Satz | Zeilen, eine nach der anderen |
+| `geschichte` | Mini-Szene aus 3–4 Bildern (seit 23.10.2026, Vorbild @shi_illustrator): ein Moment über mehrere Tage oder Schritte, jede Szene ein eigenes Bild mit Satz und bis zu 2 Zeilen | alle Szenen außer der letzten | letzte Szene, ihre letzte Zeile |
+
+- `geschichte`: höchstens 1 pro Woche (braucht 3–4 Bilder, die danach 7 Tage gesperrt sind). Nur Hochformat-Szenen mit `kopf`, jedes Bild einmal. Szenen kurz halten (Satz bis 60, Zeile bis 40 Zeichen), sonst wird das Reel zu lang; Ziel 15–25 s. Die Wende kommt in der letzten Szene, am besten mit Herbert oder einem Bildwechsel, der die Erwartung umdreht. Feld `bild` weglassen (es ist automatisch das Bild der letzten Szene).
 
 - Nicht zweimal hintereinander dasselbe Format. Pro Woche mindestens drei verschiedene.
 - Bilder: `antwort` braucht ein Bild mit `art: figur` (weißer Hintergrund), `bewertung` und `szene` ein Bild mit Hintergrund. `notiz` und `chat` kommen ohne Bild aus.

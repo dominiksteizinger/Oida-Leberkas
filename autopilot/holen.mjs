@@ -5,13 +5,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import { Eintrag } from "./eintrag.mjs";
+import { Eintrag, bilderVon } from "./eintrag.mjs";
 import { OHNE_BILD } from "./formate.mjs";
 import { bildKonfig, pruefeBild, pruefeTags, verbuchen } from "./bildregeln.mjs";
 import { pruefeWortfilter } from "./wortfilter.mjs";
 import { mechanikLesen, pruefeQuote, verlaufLesen } from "./humorquote.mjs";
 import { reihenfolge } from "./reihenfolge.mjs";
-import { bildMass, pruefeAusschnitt } from "./ausschnitt.mjs";
+import { bildMass, pruefeAusschnitt, pruefeGeschichte } from "./ausschnitt.mjs";
 import { zielgruppeLesen, pruefeZielgruppe, zgVerlaufLesen, sortiereKandidaten } from "./zielgruppe.mjs";
 
 const HIER = path.dirname(new URL(import.meta.url).pathname);
@@ -36,7 +36,10 @@ function pruefe(body) {
   // Wortfilter: Leberkäse/Semmel nie in Text, Caption oder Hashtags (nur im Bild erlaubt)
   pruefeWortfilter(e);
   if (!OHNE_BILD.has(e.inhalt.format) && !e.bild) throw new Error(`Format ${e.inhalt.format} braucht ein Bild`);
-  if (e.bild && !bekannt.has(e.bild)) throw new Error(`Bild ${e.bild} gibt es nicht in bibliothek.json`);
+  for (const b of bilderVon(e)) if (!bekannt.has(b)) throw new Error(`Bild ${b} gibt es nicht in bibliothek.json`);
+  // geschichte: nur Hochformat-Szenen mit kopf, jedes Bild einmal (ausschnitt.mjs)
+  const geschichte = pruefeGeschichte(roh, bibliothek, (d) => bildMass(path.join(HIER, "bilder", d)));
+  if (geschichte.length) throw new Error(geschichte.join("; "));
   // Kopf muss im Bild bleiben (Sticker im szene-Format schneiden ihn ab, ausschnitt.mjs)
   if (e.bild) {
     const b = bibliothek.find((x) => x.datei === e.bild);
@@ -104,7 +107,7 @@ for (const issue of offen) {
 }
 for (const k of sortiereKandidaten(kandidaten, zgVerlauf)) {
   if (k.e.bild) {
-    const regel = pruefeBild({ bibliothek, nutzung, bild: k.e.bild, datum, konf, id, e: k.e });
+    const regel = bilderVon(k.e).map((bild) => pruefeBild({ bibliothek, nutzung, bild, datum, konf, id, e: k.e })).find((r) => !r.ok) || { ok: true };
     if (!regel.ok) {
       ablehnen(k.issue, `Bild passt nicht: ${regel.grund}. Bitte den Post mit einem anderen Bild oder neuem Text neu anlegen (Bildwahl: node autopilot/bildwahl.mjs ${datum}).`);
       gelesen--;
@@ -115,7 +118,7 @@ for (const k of sortiereKandidaten(kandidaten, zgVerlauf)) {
   break;
 }
 let quoteWarnung = "";
-if (!gefunden && zurueck?.e.bild && !pruefeBild({ bibliothek, nutzung, bild: zurueck.e.bild, datum, konf, id, e: zurueck.e }).ok) {
+if (!gefunden && zurueck?.e.bild && bilderVon(zurueck.e).some((bild) => !pruefeBild({ bibliothek, nutzung, bild, datum, konf, id, e: zurueck.e }).ok)) {
   ablehnen(zurueck.issue, `Bild passt nicht mehr zum heutigen Tag. Bitte den Post mit einem anderen Bild neu anlegen (Bildwahl: node autopilot/bildwahl.mjs ${datum}).`);
   gelesen--;
   zurueck = null;
@@ -139,7 +142,7 @@ const ordner = path.join(WURZEL, "tagebuch", id);
 fs.mkdirSync(ordner, { recursive: true });
 fs.writeFileSync(path.join(ordner, "eintrag.json"), JSON.stringify({ id, datum, slot, ...e, ...(gefunden.mechanik ? { mechanik: gefunden.mechanik } : {}), ...(gefunden.zielgruppe ? { zielgruppe: gefunden.zielgruppe } : {}), region: gefunden.region || "dach", ...gefunden.merkmale, ...(gefunden.p.ab || gefunden.p.bis ? { anlass: { ab: gefunden.p.ab, bis: gefunden.p.bis } } : {}), quelle: `#${issue.number}` }, null, 2) + "\n");
 if (e.bild) {
-  nutzung = verbuchen(nutzung, { id, datum, slot, bild: e.bild, e });
+  nutzung = verbuchen(nutzung, { id, datum, slot, bild: bilderVon(e), e });
   fs.writeFileSync(nutzungDatei, JSON.stringify(nutzung, null, 2) + "\n");
 }
 console.log(`Post aus #${issue.number} (${e.inhalt.format}), noch ${verbleibend} in der Warteschlange.`);
