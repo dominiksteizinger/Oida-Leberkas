@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Probe-Reel "Er meldet sich": vier Szenen-Posts nacheinander, Jingle nur am Ende. Ergebnis: probe-mini-szene/reel.mp4
 set -euo pipefail
+export STIMME=an
 HIER=$(cd "$(dirname "$0")" && pwd); AP="$HIER/../autopilot"; TB="$HIER/../tagebuch"
 n=$(jq length "$HIER/szenen.json"); : > "$HIER/liste.txt"
 cp "$TB/eintraege.json" "$HIER/eintraege.bak"

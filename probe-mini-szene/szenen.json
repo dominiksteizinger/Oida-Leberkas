@@ -1,6 +1,6 @@
 [
   { "bild": "sofa-decke-handy.jpg", "inhalt": { "format": "szene", "satz": "Tag 1: Er hat gesagt, er meldet sich.", "klammern": ["Handy auf laut."] } },
-  { "bild": "vollmond-fenster.jpg", "inhalt": { "format": "szene", "satz": "Tag 4: Nichts.", "klammern": ["Ich warte nicht.", "Ich sitze nur zufällig am Fenster."] } },
+  { "bild": "vollmond-fenster.jpg", "inhalt": { "format": "szene", "satz": "Tag 4: Nichts.", "klammern": ["Ich sitze nur zufällig am Fenster."] } },
   { "bild": "boden-handy-dunkel.jpg", "inhalt": { "format": "szene", "satz": "Tag 9: Er schreibt. „hey du“", "klammern": ["Neun Tage für zwei Wörter."] } },
   { "bild": "herbert-vorhang.jpg", "inhalt": { "format": "szene", "satz": "Herbert meldet sich jeden Tag.", "klammern": ["Um vier Uhr früh.", "Kopfüber."] } }
 ]
