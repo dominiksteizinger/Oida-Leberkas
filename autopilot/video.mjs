@@ -65,8 +65,10 @@ if (fs.existsSync(schritteDatei)) {
     datei: x.datei,
     // schritte.json: Teil 0 ist das Setup, jeder weitere Teil ist der neue Text
     text: x.text,
+    // geschichte: Szenenbild hinter diesem Teil
+    hintergrund: x.hintergrund,
     // Chat startet leer und füllt sich Blase für Blase, sonst steht das Setup lang genug zum Lesen. Ohne Setup-Text (Aufforderung ans Ende verschoben): kurz nur das Bild
-    dauer: n === 0 ? (["chat", "notiz"].includes(i.format) || !x.text ? 1.2 : lesezeit(x.text, 2, 5)) : lesezeit(x.text, 1.3, 3.5) + (n === s.length - 1 ? 0.8 : 0),
+    dauer: modus === "geschichte" ? lesezeit(x.text, 1.5, 4) + (n === s.length - 1 ? 0.8 : 0) : n === 0 ? (["chat", "notiz"].includes(i.format) || !x.text ? 1.2 : lesezeit(x.text, 2, 5)) : lesezeit(x.text, 1.3, 3.5) + (n === s.length - 1 ? 0.8 : 0),
   }));
 } else {
   bilder = [
@@ -114,10 +116,10 @@ if (process.env.JINGLE === "an" && fs.existsSync(JINGLE_DATEI)) {
 }
 if (jingle) {
   if (process.env.JINGLE_POS === "anfang") {
-    bilder.unshift({ datei: bilder[0].datei, dauer: jingle.dauer });
+    bilder.unshift({ datei: bilder[0].datei, hintergrund: bilder[0].hintergrund, dauer: jingle.dauer });
   } else {
     jingle.start = bilder.reduce((a, b) => a + b.dauer, 0);
-    bilder.push({ datei: bilder.at(-1).datei, dauer: jingle.dauer });
+    bilder.push({ datei: bilder.at(-1).datei, hintergrund: bilder.at(-1).hintergrund, dauer: jingle.dauer });
   }
 }
 bilder.forEach((b) => { b.dauer = Number(b.dauer.toFixed(1)); });
@@ -144,20 +146,40 @@ if (UNTERTITEL) {
 // Bildspur. Zoom über das ganze Reel (nicht pro Teil), damit nichts springt; zoompan arbeitet auf doppelter Auflösung, damit nichts ruckelt.
 const n = bilder.length;
 const FRAMES = Math.round(DAUER * 30);
-const zoom = (stark, ax, ay) => `scale=2160:3840,setsar=1,zoompan=z='1+${stark}*on/${FRAMES}':x='(iw-iw/zoom)*${ax}':y='(ih-ih/zoom)*${ay}':d=1:s=1080x1920:fps=30`;
+const zoom = (stark, ax, ay, frames = FRAMES) => `scale=2160:3840,setsar=1,zoompan=z='1+${stark}*on/${frames}':x='(iw-iw/zoom)*${ax}':y='(ih-ih/zoom)*${ay}':d=1:s=1080x1920:fps=30`;
 const bild = eintrag.bild && path.join(HIER, "bilder", eintrag.bild);
 const bildInfo = bild ? JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8")).find((b) => b.datei === eintrag.bild) || {} : {};
 const kopf = bildInfo.kopf;
 const mitFoto = ["foto", "breit"].includes(modus) && bild;
-const versatz = mitFoto ? 1 : 0;
+// geschichte: aufeinanderfolgende Teile mit demselben Szenenbild bilden eine Gruppe; jede Gruppe hat ihr eigenes Vollbild mit eigenem Zoom
+const gruppen = [];
+if (modus === "geschichte") {
+  for (const [k, b] of bilder.entries()) {
+    const g = gruppen.at(-1);
+    if (g && g.bild === b.hintergrund) { g.teile.push(k); g.dauer += b.dauer; } else gruppen.push({ bild: b.hintergrund, teile: [k], dauer: b.dauer });
+  }
+}
+const versatz = modus === "geschichte" ? gruppen.length : mitFoto ? 1 : 0;
 const bildEingaben = [
+  ...(modus === "geschichte" ? gruppen.flatMap((g) => ["-loop", "1", "-framerate", "30", "-t", g.dauer.toFixed(2), "-i", path.join(HIER, "bilder", g.bild)]) : []),
   ...(mitFoto ? ["-loop", "1", "-framerate", "30", "-t", String(DAUER), "-i", bild] : []),
   ...bilder.flatMap((b) => ["-loop", "1", "-framerate", "30", "-t", String(b.dauer), "-i", path.join(ordner, b.datei)]),
 ];
 const teile = bilder.map((_, k) => `[${k + versatz}:v]${modus === "alt" ? "scale=1080:-2,pad=1080:1920:0:285:color=0x0D090C," : ""}fps=30,format=rgba,setsar=1[v${k}]`).join(";");
 const kette = `${teile};${bilder.map((_, k) => `[v${k}]`).join("")}concat=n=${n}:v=1:a=0`;
+// 9:16-Ausschnitt um die Gesichtsmitte, so mittig wie möglich (Herbert bleibt drin), das Gesicht mit Abstand zum Rand
+const ausschnitt = (info) => {
+  const kx = info.kopf ? info.kopf[0] : 0.5;
+  const mitte = Math.min(Math.max(info.mitte ?? 0.5, kx - 0.22), kx + 0.22);
+  return `crop=w='trunc(ih*9/32)*2':h=ih:x='min(max(${mitte.toFixed(3)}*iw-ih*9/32,0),iw-ih*9/16)':y=0`;
+};
 let bildFilter;
-if (modus === "foto" && bild) {
+if (modus === "geschichte") {
+  const bib = JSON.parse(fs.readFileSync(path.join(HIER, "bibliothek.json"), "utf8"));
+  const szenen = gruppen.map((g, j) => `[${j}:v]${ausschnitt(bib.find((b) => b.datei === g.bild) || {})},${zoom(0.035, 0.5, 0.15, Math.round(g.dauer * 30))}[hg${j}];`
+    + `${g.teile.map((k) => `[v${k}]`).join("")}concat=n=${g.teile.length}:v=1:a=0[ov${j}];[hg${j}][ov${j}]overlay=0:0:format=auto,format=yuv420p,setsar=1[s${j}]`).join(";");
+  bildFilter = `${teile};${szenen};${gruppen.map((_, j) => `[s${j}]`).join("")}concat=n=${gruppen.length}:v=1:a=0[v]`;
+} else if (modus === "foto" && bild) {
   // 9:16-Ausschnitt um die Gesichtsmitte, volle Höhe; Zoom Richtung Kopf (oben), das Gesicht bleibt immer im Bild
   // Ausschnitt so mittig wie möglich (Herbert und andere Bildteile am Rand bleiben drin), das Gesicht aber mit Abstand zum Rand
   const kx = kopf ? kopf[0] : 0.5;

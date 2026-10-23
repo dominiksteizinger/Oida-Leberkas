@@ -110,3 +110,11 @@ test("Reel-Bildwahl: Bilder mit sichtbarem Gesicht kommen zuerst", () => {
   assert.ok(erstesOhne > 0);
   assert.ok(liste.slice(erstesOhne).every((k) => k.gesicht !== "ja"));
 });
+
+test("verbuchen: geschichte legt je Szenenbild einen Eintrag an, Dateinamen zählen nicht als Text", async () => {
+  const { verbuchen, eintragTexte } = await import("./bildregeln.mjs");
+  const e = { inhalt: { format: "geschichte", szenen: [{ bild: "a.jpg", satz: "Eins", klammern: [] }, { bild: "b.jpg", satz: "Zwei", klammern: ["Drei"] }] }, caption: "c" };
+  const n = verbuchen([{ id: "x", bild: "a.jpg" }], { id: "x", datum: "2026-10-23", slot: "16", bild: ["a.jpg", "b.jpg"], e });
+  assert.deepEqual(n.map((x) => x.bild), ["a.jpg", "b.jpg"]);
+  assert.deepEqual(eintragTexte(e), ["geschichte", "Eins", "Zwei", "Drei", "c"]);
+});

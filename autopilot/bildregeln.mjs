@@ -72,7 +72,8 @@ export function eintragTexte(e) {
   const sammle = (x) => {
     if (typeof x === "string" || typeof x === "number") teile.push(String(x));
     else if (Array.isArray(x)) x.forEach(sammle);
-    else if (x && typeof x === "object") Object.values(x).forEach(sammle);
+    // Dateinamen der Szenenbilder (geschichte) sind kein Text
+    else if (x && typeof x === "object") Object.entries(x).forEach(([k, w]) => k !== "bild" && sammle(w));
   };
   sammle(e.inhalt);
   if (e.caption) teile.push(e.caption);
@@ -127,8 +128,9 @@ export function kandidaten({ bibliothek, nutzung, datum, konf, id }) {
   return liste.sort((a, b) => (a.gesicht === "ja" ? 0 : 1) - (b.gesicht === "ja" ? 0 : 1) || rang(a) - rang(b) || (a.letzte < b.letzte ? -1 : a.letzte > b.letzte ? 1 : 0));
 }
 
+// bild: ein Dateiname oder eine Liste (geschichte: alle Szenenbilder, je ein Eintrag)
 export function verbuchen(nutzung, { id, datum, slot, bild, e }) {
   const ohne = nutzung.filter((n) => n.id !== id);
   const text = eintragTexte(e).join(" | ").slice(0, 400);
-  return [...ohne, { id, datum, slot, bild, text, fingerabdruck: fingerabdruck(e) }];
+  return [...ohne, ...[bild].flat().map((b) => ({ id, datum, slot, bild: b, text, fingerabdruck: fingerabdruck(e) }))];
 }

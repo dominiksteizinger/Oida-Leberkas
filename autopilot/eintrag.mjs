@@ -67,11 +67,17 @@ const Konto = z.object({ format: z.literal("konto"), stand: t(12), umsaetze: z.a
 const Einladung = z.object({ format: z.literal("einladung"), von: t(20), titel: t(26), details: t(45), grund: t(30) });
 const Update = z.object({ format: z.literal("update"), titel: t(28), zeilen: z.array(z.object({ name: t(20), wert: t(24) })).min(2).max(4), knopf_links: t(18), knopf_rechts: t(16) });
 const Serie = z.object({ format: z.literal("serie"), zahl: t(12), text: t(32), fuss: t(45) });
+// Mini-Szene aus 3 bis 4 Bildern (Dominik 23.10.2026, Vorbild @shi_illustrator): jede Szene hat ein eigenes Bild aus der Bibliothek,
+// einen Satz und bis zu zwei Zeilen darunter. Die letzte Zeile der letzten Szene ist die Pointe.
+const Geschichte = z.object({
+  format: z.literal("geschichte"),
+  szenen: z.array(z.object({ bild: t(80), satz: t(60), klammern: z.array(t(40)).max(2).default([]) })).min(3).max(4).describe("nur Hochformat-Szenen mit kopf, jedes Bild nur einmal"),
+});
 const Captcha = z.object({ format: z.literal("captcha"), aufgabe: t(20), symbole: z.array(t(4)).length(9), fuss: t(20), knopf: t(14) });
 
 export const Inhalt = z.discriminatedUnion("format", [Antwort, Notiz, Bewertung, Chat, Szene, Mitteilungen, Termin, Wetter, Umfrage, Wiedergabe, Sprachnachricht, Suchverlauf, Fehlermeldung, Todo, Beleg,
   Storyfrage, Aktivitaet, Akku, Abwesenheit, Sendung, Horoskop, Uebersetzer, Ladebalken, Navigation, Passwort,
-  Notfallkontakt, Fokus, Gruppe, Speicher, Timer, Konto, Einladung, Update, Serie, Captcha]);
+  Notfallkontakt, Fokus, Gruppe, Speicher, Timer, Konto, Einladung, Update, Serie, Captcha, Geschichte]);
 
 export const Eintrag = z.object({
   inhalt: Inhalt,
@@ -81,7 +87,12 @@ export const Eintrag = z.object({
   hashtags: z.array(z.string().regex(/^#\S+$/)).max(6).default([]),
   musik: z.string().nullable().optional(),
   herbert: z.boolean().optional().describe("Pop-up, das Herbert vorstellt; ohne Angabe von selbst, wenn Herbert im Text steht"),
-});
+}).transform((e) => (e.inhalt.format === "geschichte" && !e.bild ? { ...e, bild: e.inhalt.szenen.at(-1).bild } : e));
+
+// Alle Bilder eines Eintrags: bei geschichte jedes Szenenbild (bild ist dort das Bild der letzten Szene), sonst bild
+export const bilderVon = (e) => [...new Set([...(e.inhalt?.format === "geschichte" ? (e.inhalt.szenen || []).map((s) => s.bild) : []), ...(e.bild ? [e.bild] : [])].filter(Boolean))];
+// Texte einer Szene in Lesereihenfolge
+const szenenTexte = (s) => [s.satz, ...(s.klammern || [])];
 
 // Text für Caption, YouTube-Beschreibung und die Sammelliste
 export const captionText = (e) => [e.caption, e.aufforderung, (e.hashtags || []).join(" ")].filter(Boolean).join("\n\n");
@@ -110,6 +121,7 @@ export function setupPointe(i) {
     case "update": return [`${i.titel}: ${i.zeilen.map((z) => `${z.name}: ${z.wert}`).join(", ")}`, `${i.knopf_links} / ${i.knopf_rechts}`];
     case "serie": return [`${i.zahl} ${i.text}`, i.fuss];
     case "captcha": return [`Wähle alle Bilder mit ${i.aufgabe}`, `${i.fuss}. ${i.knopf}`];
+    case "geschichte": return [i.szenen.slice(0, -1).flatMap(szenenTexte).join(" "), szenenTexte(i.szenen.at(-1)).join(" ")];
   }
 }
 
@@ -142,6 +154,7 @@ export function titel(i) {
     case "bewertung": return `Sarg-Bewertung #${i.nr}: ${i.ort}`;
     case "chat": return `Chat mit ${i.name}`;
     case "szene": return i.satz;
+    case "geschichte": return i.szenen[0].satz;
     case "mitteilungen": return i.mitteilungen.at(-1).text;
     case "termin": return `Termin: ${i.titel}`;
     case "wetter": return `Wetter: gefühlt ${i.gefuehlt}`;

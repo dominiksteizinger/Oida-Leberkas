@@ -31,12 +31,13 @@ Neues Issue → Vorlage „Fertiger Post“, oder Claude legt es im Chat an. Im 
 }
 ```
 
-- `inhalt.format` ist eines von `antwort`, `notiz`, `bewertung`, `chat`, `szene` oder einer der Handy-Oberflächen (seit 19.10.2026) `mitteilungen`, `termin`, `wetter`, `umfrage`, `wiedergabe`, `sprachnachricht`, `suchverlauf`, `fehlermeldung`, `todo`, `beleg`, `storyfrage`, `aktivitaet`, `akku`, `abwesenheit`, `sendung`, `horoskop`, `uebersetzer`, `ladebalken`, `navigation`, `passwort`, `notfallkontakt`, `fokus`, `gruppe`, `speicher`, `timer`, `konto`, `einladung`, `update`, `serie`, `captcha`. Die Felder der Formate ab `storyfrage` stehen nur in `eintrag.mjs`. Felder und Längen stehen in `eintrag.mjs`, Ton und Grenzen in `regeln.md`, Beispiele in `beispiele.md`.
+- `inhalt.format` ist eines von `antwort`, `notiz`, `bewertung`, `chat`, `szene`, `geschichte` oder einer der Handy-Oberflächen (seit 19.10.2026) `mitteilungen`, `termin`, `wetter`, `umfrage`, `wiedergabe`, `sprachnachricht`, `suchverlauf`, `fehlermeldung`, `todo`, `beleg`, `storyfrage`, `aktivitaet`, `akku`, `abwesenheit`, `sendung`, `horoskop`, `uebersetzer`, `ladebalken`, `navigation`, `passwort`, `notfallkontakt`, `fokus`, `gruppe`, `speicher`, `timer`, `konto`, `einladung`, `update`, `serie`, `captcha`. Die Felder der Formate ab `storyfrage` stehen nur in `eintrag.mjs`. Felder und Längen stehen in `eintrag.mjs`, Ton und Grenzen in `regeln.md`, Beispiele in `beispiele.md`.
   - `antwort`: `von`, `kommentar`, `zeilen` (1–3)
   - `notiz`: `titel`, `absaetze` (2–5, der letzte ist die Pointe)
   - `bewertung`: `nr`, `ort`, `saerge` (0–5), `text`
   - `chat`: `name`, `nachrichten` (`wer`: `sie`, `ich` oder `zeit`)
   - `szene`: `satz`, `klammern` (1–3 kurze Zeilen unter dem Satz, ohne Klammern dargestellt, erscheinen im Reel nacheinander)
+  - `geschichte` (seit 23.10.2026): `szenen` (3–4, je `bild`, `satz`, `klammern` 0–2). Im Feed ein Comic-Raster (4 Szenen 2x2, 3 untereinander), im Reel jede Szene als Vollbild am Gesicht, Satz und Zeilen nacheinander, harter Schnitt zur nächsten Szene. Nur Hochformat-Szenen mit `kopf`, jedes Bild einmal; `bild` weglassen (= Bild der letzten Szene). Alle Szenenbilder zählen für die Bildregeln (Abstand, nicht am Vortag) und landen in `nutzung.json`.
   - `mitteilungen`: `mitteilungen` (2–4, je `app`, `zeit`, `titel`, `text`; die letzte ist die Pointe)
   - `termin`: `datum`, `titel`, `zeit`, `zeilen` (1–3, Pointe)
   - `wetter`: `ort`, `temperatur`, `lage`, `gefuehlt` (Pointe), `zusatz`

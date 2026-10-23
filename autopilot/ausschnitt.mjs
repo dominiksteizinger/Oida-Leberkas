@@ -44,3 +44,22 @@ export function pruefeAusschnitt(post, b, mass) {
   if (scheitel < oben - 0.01 || kinn > unten) return [`Bild ${b.datei}: im szene-Format ist der Kopf nicht ganz zu sehen (sichtbar ${Math.round(oben * 100)} bis ${Math.round(unten * 100)} % der Höhe, Kopf ${Math.round(Math.max(0, scheitel) * 100)} bis ${Math.round(kinn * 100)} %)`];
   return [];
 }
+
+// geschichte (Mini-Szene aus 3–4 Bildern): Jedes Szenenbild läuft im Reel als Vollbild am Gesicht, deshalb nur Hochformat-Szenen mit `kopf`,
+// jedes Bild nur einmal. `bild` ist das Bild der letzten Szene (Titelbild, Bildregeln). bibliothek: Liste aus bibliothek.json, mass: Datei -> { breite, hoehe }.
+export function pruefeGeschichte(post, bibliothek, mass) {
+  if (post.inhalt?.format !== "geschichte" || !Array.isArray(post.inhalt.szenen)) return [];
+  const fehler = [];
+  const dateien = post.inhalt.szenen.map((s) => s?.bild).filter(Boolean);
+  if (new Set(dateien).size !== dateien.length) fehler.push("geschichte: jedes Szenenbild nur einmal verwenden");
+  if (post.bild && post.bild !== dateien.at(-1)) fehler.push(`geschichte: bild weglassen oder gleich dem Bild der letzten Szene (${dateien.at(-1)})`);
+  for (const d of dateien) {
+    const b = bibliothek.find((x) => x.datei === d);
+    if (!b) { fehler.push(`Bild ${d} gibt es nicht in bibliothek.json`); continue; }
+    if (b.art !== "szene" || !b.kopf) { fehler.push(`Bild ${d}: geschichte braucht Szenen mit kopf-Feld (kein Sticker)`); continue; }
+    let m = null;
+    try { m = mass(d); } catch {}
+    if (m && m.hoehe <= m.breite) fehler.push(`Bild ${d} ist Querformat; geschichte braucht Hochformat-Szenen (Vollbild im Reel)`);
+  }
+  return fehler;
+}
