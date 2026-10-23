@@ -47,7 +47,7 @@ Jeder Post ist ein Bild im Look einer echten App-Oberfläche (kein Spruchbild). 
 
 - Formel: vertrauter Rahmen + kleine Verletzung + Entwarnung + Wendung, die der Leser nicht selbst liefern konnte.
 - Düster darf Rahmen oder Pointe sein (seit 22.10.2026, siehe Gag-Bauplan). Die Wendung kommt aus Alltag, Büro, Öffis, Smalltalk, Wetter, Herbert, Sunny oder Franz.
-- Haltung immer Deadpan. Mix je 14 Posts (seit 22.10.2026 dreieinhalb Tage bei vier Posts am Tag): 10 bis 12 Relatable-Posts, davon seit 22.10.2026 mindestens 5 Beziehung und mindestens 5 Selbstironie (siehe Witz-Parameter), höchstens 2 bis 3 Welt-Posts (Herbert, Franz, Sunny) nach dem Herbert-Maßstab, schwarzer Humor nur als Würze, höchstens 1 Absurd, Meta oder Parodie.
+- Haltung immer Deadpan. Mix je 14 Posts (eine Woche bei zwei Posts am Tag): 10 bis 12 Relatable-Posts, davon seit 22.10.2026 mindestens 5 Beziehung und mindestens 5 Selbstironie (siehe Witz-Parameter), höchstens 2 bis 3 Welt-Posts (Herbert, Franz, Sunny) nach dem Herbert-Maßstab, schwarzer Humor nur als Würze, höchstens 1 Absurd, Meta oder Parodie.
 - Kompetent scheitern: Resi ist souverän bei Tod, Verwaltung und Ordnung und patzt nur im Sozialen (Smalltalk, Spontaneität, Überraschungen). Sie verwaltet, sie jammert nicht.
 - Sunny ist nie das Ziel. Die Pointe landet bei Resis Haltung.
 - Wärme nur als Leck: etwa jeder zehnte Post, indirekt und sofort abgewiegelt.

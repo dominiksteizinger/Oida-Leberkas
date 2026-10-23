@@ -1,5 +1,5 @@
 name: Autopilot
-# Viermal am Tag ein Post von Resi Requiem: um 7, 11, 16 und 22 Uhr Wiener Zeit (cron-job.org startet jeweils um :17).
+# Zweimal am Tag ein Post von Resi Requiem: um 7:00 und um 16:00 Wiener Zeit (cron-job.org 07:17 und 16:17, dazu 11:17 und 22:17 zum Nachholen).
 # Der Post kommt fertig geschrieben aus der Warteschlange (Issues mit Label „warteschlange“), hier wird er nur
 # gerendert, als Reel ohne Ton gebaut, ins Tagebuch der Webseite eingetragen und gepostet. Keine Claude-API.
 # Solange die Repo-Variable POSTEN nicht "an" ist, läuft alles im Probebetrieb:
@@ -18,7 +18,7 @@ on:
         required: false
         default: ""
       slot:
-        description: "07, 11, 16 oder 22, leer = nach aktueller Uhrzeit"
+        description: "07 oder 16, leer = nach aktueller Uhrzeit"
         required: false
         default: ""
       issue:
@@ -47,10 +47,10 @@ jobs:
           DATUM="${{ inputs.datum }}"; [ -z "$DATUM" ] && DATUM=$(TZ=Europe/Vienna date +%F)
           SLOT="${{ inputs.slot }}"
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            # Fälliger Slot: jeder Slot wird bis zum Beginn des nächsten nachgeholt (7-10, 11-15, 16-21, 22-23 Uhr)
-            case "$STUNDE" in 07|08|09|10) SLOT=07;; 11|12|13|14|15) SLOT=11;; 16|17|18|19|20|21) SLOT=16;; 22|23) SLOT=22;; *) echo "In Wien ist es $STUNDE Uhr, kein Slot."; echo "weiter=false" >> "$GITHUB_OUTPUT"; exit 0;; esac
+            # Fälliger Slot: 7 bis 13 Uhr holt den Morgenpost nach, ab 16 Uhr den Nachmittagspost
+            case "$STUNDE" in 07|08|09|10|11|12|13) SLOT=07;; 16|17|18|19|20|21|22|23) SLOT=16;; *) echo "In Wien ist es $STUNDE Uhr, kein Slot."; echo "weiter=false" >> "$GITHUB_OUTPUT"; exit 0;; esac
           elif [ -z "$SLOT" ]; then
-            case "$STUNDE" in 11|12|13|14|15) SLOT=11;; 16|17|18|19|20|21) SLOT=16;; 22|23) SLOT=22;; *) SLOT=07;; esac
+            [ "$STUNDE" -lt 12 ] && SLOT=07 || SLOT=16
           fi
           echo "datum=$DATUM" >> "$GITHUB_OUTPUT"
           echo "slot=$SLOT" >> "$GITHUB_OUTPUT"
@@ -346,14 +346,14 @@ jobs:
               --body "Von ${{ steps.vorrat.outputs.gesamt }} Bildern passen heute nur noch ${{ steps.vorrat.outputs.frei }} (${{ steps.vorrat.outputs.unbenutzt }} ungenutzt, der Rest recycelt nach Abstandsregel). Zeit für eine neue Runde in Gemini; die Bilder im Projekt-Chat hochladen, dann kommen sie in die Bibliothek. Dieses Issue schließen, wenn sie drin sind."
           fi
       - name: Warteschlange wird knapp
-        # Weniger als 12 Posts übrig = weniger als 3 Tage Vorrat bei vier Posts am Tag: Erinnerung an Dominik
-        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' && fromJSON(steps.holen.outputs.rest || '99') < 12
+        # Weniger als 8 Posts übrig = weniger als 4 Tage Vorrat: Erinnerung an Dominik
+        if: steps.holen.outputs.gefunden == 'true' && env.LIVE == 'true' && fromJSON(steps.holen.outputs.rest || '99') < 8
         run: |
           gh label create knapp --repo "$GITHUB_REPOSITORY" --color FBCA04 --description "Warteschlange fast leer" 2>/dev/null || true
           if [ -z "$(gh issue list --repo "$GITHUB_REPOSITORY" --label knapp --state open --json number --jq '.[0].number // empty')" ]; then
             gh issue create --repo "$GITHUB_REPOSITORY" --label knapp --assignee "${{ github.repository_owner }}" \
               --title "Warteschlange knapp: nur noch ${{ steps.holen.outputs.rest }} Posts" \
-              --body "Noch ${{ steps.holen.outputs.rest }} Posts, bei vier Posts am Tag weniger als drei Tage. Der Schreib-Lauf (So und Mi) füllt nach; sonst im Projekt-Chat Posts schreiben lassen. Dieses Issue schließen, wenn wieder genug in der Warteschlange liegen."
+              --body "Noch ${{ steps.holen.outputs.rest }} Posts, bei zwei Posts am Tag weniger als vier Tage. Der Schreib-Lauf (sonntags) füllt nach; sonst im Projekt-Chat Posts schreiben lassen. Dieses Issue schließen, wenn wieder genug in der Warteschlange liegen."
           fi
       - name: Lauf fehlgeschlagen melden
         # Scheitert ein Live-Lauf (Instagram, YouTube, Rendern), bekommt Dominik ein Issue. Der nächste Lauf versucht den Slot erneut.
