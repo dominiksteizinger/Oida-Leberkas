@@ -1,4 +1,4 @@
-# Witz-Muster: Bauweise erfolgreicher Witze und Memes (Stand 2026-10-22, aktualisiert)
+# Witz-Muster: Bauweise erfolgreicher Witze und Memes (Stand 2026-10-23, Nischen-Ausreißer ergänzt)
 
 Erzeugt aus `witz-muster.json` mit `node witzmuster.mjs md > witz-muster.md`, nicht von Hand ändern.
 
@@ -33,6 +33,12 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 | `absurd-normal` | Eine absurde Sache, völlig normal behandelt | aktuell 2024–26 | eskalation, kontrast | Satz 5 bis 12, eine Folgezeile 2 bis 8 | das Ernstnehmen des Absurden, die Folgezeile treibt es weiter |
 | `delulu-beweis` | Winziger Beweis, riesige Schlussfolgerung | aktuell 2024–26 | eskalation, ertappt | Signal 4 bis 8, Folge 4 bis 10 | die übertriebene Folge |
 | `anti-pointe` | Antihumor: der Witz, der keiner ist | aktuell 2024–26 | woertlich, umdeutung | Frage 5 bis 10, Antwort 2 bis 8 | die ernste Antwort statt Pointe |
+| `diese-eine` | Diese eine Freundin (Typ-Porträt zum Markieren) | aktuell 2024–26 | gestaendnis, kontrast | „Diese eine Freundin, die …“ 8 bis 16, eine Zusatzzeile mit 2 bis 6 Wörtern ist möglich | das sehr konkrete Verhalten am Ende der Typ-Zeile |
+| `dialog-ueber-taetigkeit` | Dialog als Text, das Bild ist die Antwort | aktuell 2024–26 | kontrast, umdeutung | Gegenüber 6 bis 14, Resi 0 bis 4 | das Bild oder Resis kurzes Wort nach dem Dialog |
+| `heilige-mission` | Banales Online-Verhalten als feierliche Pflicht | aktuell 2024–26 | eskalation, gestaendnis | „Ich, wie ich …“ 10 bis 20 in einem Satz | die banale Mission am Satzende nach dem feierlichen Anfang |
+| `er-zitat` | Er sagt etwas, Resi bleibt ungerührt | aktuell 2024–26 | absage, kontrast | Zitat 5 bis 18, Resi 0 bis 5 | Resis Reaktion als letzte Zeile oder im Bild |
+| `maedels-tipp` | Absurder Dating-Tipp mit sachlicher Begründung | aktuell 2024–26 | umdeutung, woertlich | Tipp 4 bis 8, Begründung 5 bis 12 | die Begründung am Ende |
+| `wie-es-sich-anfuehlt` | Wie es sich anfühlt: Gefühl als absurdes Bild | aktuell 2024–26 | umdeutung, eskalation | „Wie es sich anfühlt, …“ 8 bis 16 | das Bild, das die Situation wörtlich nimmt |
 | `unschuld-etikett` | Tat plus Unschuldsetikett | klassisch, bewährt | ertappt, gestaendnis | Tat 6 bis 15, Ausrede 2 bis 6 | die Ausrede |
 | `winziger-ausloeser` | Großer Ernst, winziger Auslöser | klassisch, bewährt | eskalation, gestaendnis, umdeutung | Setup 6 bis 15, Auslöser 3 bis 8 | der Auslöser, ganz am Ende |
 | `floskel-woertlich` | Floskel beim Wort genommen | klassisch, bewährt | woertlich, absage | Floskel 3 bis 10, Antwort 1 bis 6 | Antwort, letzte Zeile |
@@ -141,6 +147,66 @@ Dominik, 22.10.2026: von Seiten lernen, die nur mit Witzen und Memes bespielt si
 - **Falle:** Kippt schnell in flach. Höchstens einmal pro Lauf, und der Gegenleser muss lachen, sonst raus. Gegenleser 22.10.: „Mein X ist ein Witz“ ist Papa-Niveau, nicht Antihumor.
 - **mechanik:** woertlich, umdeutung
 - **Quellen:** [1](https://theplantnews.com/2024/10/21/gen-z-humour-meta-irony-absurdism-and-nihilism/)
+
+### `diese-eine`: Diese eine Freundin (Typ-Porträt zum Markieren) (aktuell 2024–26)
+
+- **Bauweise:** Die Caption benennt einen Freundinnen-Typ, den jede im Freundeskreis hat („Diese eine Freundin, die …“), das Bild zeigt Resi als genau diesen Typ. Es gibt keine Punchline, der Witz ist das Wiedererkennen. Die Caption fordert zum Markieren auf.
+- **Länge:** „Diese eine Freundin, die …“ 8 bis 16, eine Zusatzzeile mit 2 bis 6 Wörtern ist möglich. **Wende:** das sehr konkrete Verhalten am Ende der Typ-Zeile.
+- **Warum es zündet:** Nischen-Ausreißer im Oktober 2026 (bis 917-fach über dem Median kleiner Konten): Man markiert die Freundin, das bringt Shares und Kommentare ohne Follower-Basis.
+- **Für Resi:** Resi ist die Freundin, über die man das sagt: „Diese eine Freundin, die beim Spieleabend nur wegen der Snacks da ist.“ Caption: „Markier sie. Du weißt, wer.“
+- **Falle:** Der Typ muss ein Verhalten sein, nie Aussehen oder Körper. Er muss nett-peinlich bleiben und darf nicht abwerten. Ist das Verhalten erratbar („immer zu spät“), fällt der Post flach.
+- **mechanik:** gestaendnis, kontrast
+- **Quellen:** [1](https://www.tiktok.com/@selisbalance/video/7671364500855000353), [2](https://www.tiktok.com/@ellendieerdbeere/video/7679473862991416609), [3](https://www.instagram.com/reel/DcjjF2gtTVL/)
+
+### `dialog-ueber-taetigkeit`: Dialog als Text, das Bild ist die Antwort (aktuell 2024–26)
+
+- **Bauweise:** Oben steht ein kurzer Dialog („Sie: …“, „Therapeutin: …“, „Mama: …“). Das Bild zeigt Resi bei einer banalen Tätigkeit, die dem Gesagten widerspricht oder es entlarvt. Resis Antwort ist ein Wort oder gar keins, dann antwortet das Bild.
+- **Länge:** Gegenüber 6 bis 14, Resi 0 bis 4. **Wende:** das Bild oder Resis kurzes Wort nach dem Dialog.
+- **Warum es zündet:** Das stärkste textbasierte Format in der Nische (bis 67-fach): Es braucht kein Gesicht vor der Kamera, nur einen Text über einer Tätigkeit. Das ist genau unser Format aus Bild und Stimme.
+- **Für Resi:** „Therapeutin: Extreme Unabhängigkeit kann eine Traumareaktion sein.“ Bild: Resi trägt allein den Umzugskarton (44-umzug-karton-herbert). Resi: „Okay.“
+- **Falle:** Das Bild muss die Pointe tragen. Erklärt der Text, was man sieht, ist der Post tot. Kein ernstes Therapie-Thema auswalzen, der Dialog ist nur das Setup.
+- **mechanik:** kontrast, umdeutung
+- **Quellen:** [1](https://www.instagram.com/reel/DcyzIfKRSQA/), [2](https://www.instagram.com/reel/Dcx3Y4ixcmZ/)
+
+### `heilige-mission`: Banales Online-Verhalten als feierliche Pflicht (aktuell 2024–26)
+
+- **Bauweise:** „Ich, wie ich …“: Eine kleine Online-Gewohnheit (Reels an Freundinnen schicken, Storys checken, Sprachnachrichten in 2-fach) wird als ernste nächtliche Mission inszeniert. Das Bild zeigt Resi in feierlicher Pose, die Caption erklärt die Mission mit vollem Ernst.
+- **Länge:** „Ich, wie ich …“ 10 bis 20 in einem Satz. **Wende:** die banale Mission am Satzende nach dem feierlichen Anfang.
+- **Warum es zündet:** 2 Mio. Aufrufe, 27-fach über dem Median: Der Post erfüllt den Send-Test selbst, weil man ihn genau der Freundin schickt, für die man die Reels sammelt. Resi ist nachtaktiv, das passt zur Figur.
+- **Für Resi:** „Ich, wie ich um 3 Uhr gewissenhaft dafür sorge, dass meine Freundinnen morgens die richtigen Reels im Postfach haben.“ Bild: Resi bei Kerzenlicht (tagebuch-kerze).
+- **Falle:** Die Mission muss heutiges Online-Verhalten sein, nicht Büro oder Haushalt. Nur ein Satz, keine zweite Pointe.
+- **mechanik:** eskalation, gestaendnis
+- **Quellen:** [1](https://www.instagram.com/reel/Dc8kgtsqRh0/)
+
+### `er-zitat`: Er sagt etwas, Resi bleibt ungerührt (aktuell 2024–26)
+
+- **Bauweise:** Oben steht ein wörtliches Zitat aus einem Date oder Chat („Er: …“, „Auf dem Date fragt er: …“). Darunter kommt Resis Reaktion: ein Gesichtsausdruck, eine Tätigkeit oder ein sehr kurzer Satz. Der Abstand zwischen seinem Aufwand und ihrer Ruhe ist der Witz.
+- **Länge:** Zitat 5 bis 18, Resi 0 bis 5. **Wende:** Resis Reaktion als letzte Zeile oder im Bild.
+- **Warum es zündet:** Dating-Ausreißer der Nische (18- bis 262-fach, „Der Grund, warum ich lieber single bleibe“ mit 2,6 Mio.): Junge Frauen teilen das Abblitzen, weil sie selbst so reagieren möchten.
+- **Für Resi:** „Auf dem Date fragt er: Warum bist du eigentlich noch Single?“ Resi: „Weil ich heute hier sitze.“ Bild: Heuriger allein mit Semmel (49-heuriger-allein-semmel).
+- **Falle:** Er ist ein einzelner Typ, nie die Männer als Gruppe. Resi flirtet nicht zurück und wird nicht verletzt. Ein Zitat, das sexuell gemeint ist, ist gesperrt.
+- **mechanik:** absage, kontrast
+- **Quellen:** [1](https://www.instagram.com/reel/DebkkhdtY22/), [2](https://www.instagram.com/reel/Db4DAwIKydE/), [3](https://www.instagram.com/reel/DcHSk8aMeFA/), [4](https://www.tiktok.com/@discoaysi/video/7696042385658187040)
+
+### `maedels-tipp`: Absurder Dating-Tipp mit sachlicher Begründung (aktuell 2024–26)
+
+- **Bauweise:** „Mädels, sucht euch einen …“: Resi empfiehlt einen unerwarteten Typ Partner und begründet das ganz sachlich mit einem einzigen Vorteil, der eigentlich ein Nachteil ist oder nichts mit Liebe zu tun hat.
+- **Länge:** Tipp 4 bis 8, Begründung 5 bis 12. **Wende:** die Begründung am Ende.
+- **Warum es zündet:** 914.000 Aufrufe bei einer großen Creatorin („Mädels, sucht euch einen Angler“). Das Format ist ein Ratgeber-Ton mit absurder Logik, den man unter Freundinnen weiterschickt.
+- **Für Resi:** „Mädels, sucht euch einen Nachtwächter. Er ist nie da, wenn ihr schlafen wollt.“
+- **Falle:** Kein Beruf und keine Gruppe abwerten, der Vorteil muss für Resi sprechen. Die Begründung darf nicht erratbar sein. Bei Herbert ist Resi Single, Herbert ist nicht der Partner.
+- **mechanik:** umdeutung, woertlich
+- **Quellen:** [1](https://www.instagram.com/reel/DblXmBKhGFS/)
+
+### `wie-es-sich-anfuehlt`: Wie es sich anfühlt: Gefühl als absurdes Bild (aktuell 2024–26)
+
+- **Bauweise:** „Wie es sich anfühlt, wenn …“ beschreibt eine alltägliche soziale Situation. Das Bild zeigt sie wörtlich und übertrieben (Resi redet mit einer Wand, einem Grabstein, Herbert). Es folgt keine weitere Pointe.
+- **Länge:** „Wie es sich anfühlt, …“ 8 bis 16. **Wende:** das Bild, das die Situation wörtlich nimmt.
+- **Warum es zündet:** Ausreißer quer durch die Nische („mit Mama reden, wenn sie am Handy ist“, 562.000 Aufrufe). Das Bild trägt den Witz, das passt zu unserer Bibliothek.
+- **Für Resi:** „Wie es sich anfühlt, im Gruppenchat einen Termin vorzuschlagen.“ Bild: Resi allein auf der Friedhofsbank (friedhofsbank-herbst).
+- **Falle:** Die Situation muss aus dem Leben der Jungen kommen (Gruppenchat, WG, Uni, Date), nicht aus dem Büro. Das Bild muss eindeutig passen, sonst versteht man es nicht in 3 Sekunden.
+- **mechanik:** umdeutung, eskalation
+- **Quellen:** [1](https://www.tiktok.com/@n0_el77/video/7689753602629324064), [2](https://www.instagram.com/reel/DeAZmWNon9Z/)
 
 ### `unschuld-etikett`: Tat plus Unschuldsetikett (klassisch, bewährt)
 
