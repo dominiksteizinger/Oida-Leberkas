@@ -1,15 +1,12 @@
-// Heartbeat: meldet, wenn ein Slot (07, 11, 16 oder 22) nicht gepostet wurde, etwa weil cron-job.org ausgefallen ist.
+// Heartbeat: meldet, wenn ein Slot (07 oder 16) nicht gepostet wurde, etwa weil cron-job.org ausgefallen ist.
 // Läuft stündlich über den GitHub-Cron (.github/workflows/heartbeat.yml), unabhängig vom Autopilot-Lauf, ohne Zusatzkosten.
 // Ein Slot gilt als gepostet, wenn tagebuch/<id>/gepostet.txt existiert oder ein Warteschlangen-Issue den Kommentar „Gepostet als <id>.“ trägt.
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 
-// Ab dieser Uhrzeit (Wien) gilt ein Slot als überfällig. Der Autopilot versucht jeden Slot stündlich bis zum Beginn des nächsten (07: 7-10, 11: 11-15, 16: 16-21, 22: 22-23 Uhr).
-export const FAELLIG = { "07": 11, 11: 16, 16: 22, 22: 23 };
-// Die Slots 11 und 22 gibt es erst seit dem Umstieg auf vier Posts am Tag; frühere zählen nicht als Ausfall
-export const VIER_SLOTS_AB = "2026-10-22-16";
-const NEUE_SLOTS = new Set(["11", "22"]);
+// Ab dieser Uhrzeit (Wien) gilt ein Slot als überfällig. Der Autopilot versucht Slot 07 von 7 bis 13 Uhr, Slot 16 von 16 bis 23 Uhr stündlich.
+export const FAELLIG = { "07": 12, 16: 20 };
 const FENSTER_STUNDEN = 36; // weiter zurück wird nicht gesucht, sonst meldet der Heartbeat Alt-Slots vor dem Start
 
 const wien = (d) => {
@@ -25,7 +22,6 @@ export function ueberfaellig(jetzt = new Date()) {
     const { datum, stunde } = wien(new Date(jetzt.getTime() - h * 3600e3));
     for (const [slot, ab] of Object.entries(FAELLIG)) {
       const id = `${datum}-${slot}`;
-      if (NEUE_SLOTS.has(slot) && id < VIER_SLOTS_AB) continue;
       if (stunde === ab && !aus.some((x) => x.id === id)) aus.push({ id, datum, slot });
     }
   }

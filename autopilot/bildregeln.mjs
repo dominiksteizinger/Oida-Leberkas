@@ -2,7 +2,7 @@
 //
 // Tags in bibliothek.json (Feld „tags“). Tags mit Zeitraum machen das Bild saisonal: es passt nur in
 // seinem Zeitraum. „wiederverwendbar: false“ heißt: wird nie ein zweites Mal verwendet (Anlassbilder).
-// Alle anderen Bilder dürfen nach dem Mindestabstand (Standard 7 Tage, Dominik 22.10.2026: bei vier Posts am Tag alte Bilder öfter nutzen) erneut erscheinen, aber nur,
+// Alle anderen Bilder dürfen nach dem Mindestabstand (Standard 7 Tage, Dominik 22.10.2026: alte Bilder öfter nutzen, nur nicht hintereinander) erneut erscheinen, aber nur,
 // wenn kein ungenutztes Bild mehr passt. Nie dasselbe Bild an zwei aufeinanderfolgenden Tagen.
 // Bei einer Wiederverwendung darf der Text nicht identisch zu einem früheren Text des Bildes sein.
 import { createHash } from "node:crypto";
