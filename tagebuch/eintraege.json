@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-24-07",
+    "datum": "2026-10-24",
+    "slot": "07",
+    "format": "szene",
+    "bild": "schreibtisch-deadline-nacht.jpg",
+    "text": "Mädelsabend. Jede erzählt, was ihr Freund falsch macht. [Ich hab keinen.] [Ich schreib mit.] [Für später.]",
+    "bilder": [
+      "tagebuch/2026-10-24-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-23-16",
     "datum": "2026-10-23",
     "slot": "16",
