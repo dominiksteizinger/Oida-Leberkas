@@ -1,0 +1,26 @@
+{
+  "id": "2026-10-24-16",
+  "datum": "2026-10-24",
+  "slot": "16",
+  "inhalt": {
+    "format": "szene",
+    "satz": "Wie es sich anfühlt, die einzige Single-Freundin beim Pärchenabend zu sein:",
+    "klammern": [
+      "Ich bin hier für die Stimmung zuständig."
+    ]
+  },
+  "bild": "club-tanzt-allein.jpg",
+  "caption": "Alle zu zweit. Ich zu eins.",
+  "aufforderung": "Markier die Single-Freundin in eurer Runde.",
+  "hashtags": [
+    "#single",
+    "#freundinnen",
+    "#paerchenabend",
+    "#deadpan"
+  ],
+  "mechanik": "umdeutung",
+  "zielgruppe": "freundinnen",
+  "region": "dach",
+  "annahme": "Sie hat Spaß",
+  "quelle": "#281"
+}
