@@ -176,6 +176,102 @@
    "schluss": "Drei Tage her.",
    "art": "ue40",
    "grund": "Gehalt am Monatsende ist Facebook-Humor, Bild passt nicht"
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "flop",
+   "post": "2026-10-22-16",
+   "schluss": "Und es ist ausgebucht.",
+   "art": "vorhersehbar",
+   "grund": "Couch ausgebucht ist die erwartbare Ausrede, kein Gedankenschritt."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "flop",
+   "post": "2026-10-22-22",
+   "schluss": "Ab 17 Uhr bin ich belastbar.",
+   "art": "logische_folge",
+   "grund": "Belastbar ab Feierabend folgt direkt aus dem Setup, keine falsche Annahme."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Heimspiel",
+   "schluss": "Heimspiel.",
+   "art": "kein_adressat",
+   "grund": "Nur ein Goth-Witz, Allerheiligen am Friedhof wirkt regional, niemand zum Schicken."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Wunsch um 11:11",
+   "schluss": "Dass ich ihn nicht blockieren muss.",
+   "art": "kontext_unklar",
+   "grund": "Wen sie blockieren müsste, blieb offen."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "In einem Wort",
+   "schluss": "Ausgedacht.",
+   "art": "flach",
+   "grund": "Traummann ausgedacht ist eine traurige Feststellung, keine Pointe."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Zeit für mich",
+   "schluss": "Die gehört jetzt Herbert.",
+   "art": "vorwissen",
+   "grund": "Ohne Herbert zu kennen liest man die Pointe als neuen Freund, Kerzen-Szene unklar."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Fun Fact",
+   "schluss": "Mein Grab ist schon bezahlt.",
+   "art": "kein_adressat",
+   "grund": "Handelt nur von der Figur, keiner findet sich wieder."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Besichtigung",
+   "schluss": "Er zahlt die Hälfte. In Motten.",
+   "art": "kein_adressat",
+   "grund": "Herbert-Insider, Pop-up widerspricht der Pointe."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Nein gesagt",
+   "schluss": "Es war mein Geburtstag.",
+   "art": "kontext_unklar",
+   "grund": "Wer welches Treffen geplant hat, blieb offen, wirkt traurig."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Dresscode Schwarz",
+   "schluss": "Sonst find ich mich auf den Fotos nicht.",
+   "art": "kein_adressat",
+   "grund": "Witz über ihr eigenes Goth-Aussehen, betrifft die Leserin nicht."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Mädels-Tipp",
+   "schluss": "Und er weiß, wann Schluss ist.",
+   "art": "ue40",
+   "grund": "Mädels-sucht-euch-Wortspiel klingt nach Sprüchebild."
+  },
+  {
+   "datum": "2026-10-25",
+   "quelle": "gegenleser",
+   "post": "Saisonbeginn",
+   "schluss": "Herbert und ich nennen das Saisonbeginn.",
+   "art": "vorhersehbar",
+   "grund": "Goth mag Dunkelheit ist erratbar, Herbert braucht Erklärung."
   }
  ]
 }
