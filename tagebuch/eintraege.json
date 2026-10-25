@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-25-07",
+    "datum": "2026-10-25",
+    "slot": "07",
+    "format": "szene",
+    "bild": "vollmond-fenster.jpg",
+    "text": "Mädels, sucht euch einen mit Nachtschicht. [Ihr seht euch nie.] [Und er bringt Frühstück mit.]",
+    "bilder": [
+      "tagebuch/2026-10-25-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-24-16",
     "datum": "2026-10-24",
     "slot": "16",
