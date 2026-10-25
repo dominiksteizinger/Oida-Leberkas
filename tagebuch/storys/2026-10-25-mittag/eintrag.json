@@ -1,0 +1,14 @@
+{
+  "id": "2026-10-25-mittag",
+  "datum": "2026-10-25",
+  "slot": "12",
+  "inhalt": {
+    "format": "wetter",
+    "ort": "Wien",
+    "temperatur": "13°",
+    "lage": "Regen",
+    "gefuehlt": "Endlich ehrlich",
+    "zusatz": "Der Schirm mit Spitze ist bereit."
+  },
+  "bild": "bibliothek-buecherstapel.jpg"
+}
