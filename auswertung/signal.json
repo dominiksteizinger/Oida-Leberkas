@@ -1,0 +1,163 @@
+{
+  "datum": "2026-10-25",
+  "mehr": {
+    "mechanik": [],
+    "zielgruppe": [
+      "alltag"
+    ],
+    "format": []
+  },
+  "weniger": {
+    "mechanik": [],
+    "zielgruppe": [],
+    "format": [
+      "antwort"
+    ]
+  },
+  "top": [
+    {
+      "id": "2026-10-20-16",
+      "titel": "Chat mit Lena",
+      "schluss": "Ein Mitarbeiter wurde informiert.",
+      "format": "chat",
+      "mechanik": null,
+      "zielgruppe": "alltag",
+      "trend": "Google Trends AT: Selbstbedienungskassen (2000+ Suchen)",
+      "punkte": 345,
+      "teilquote": 0,
+      "woran": "vorhersehbar"
+    },
+    {
+      "id": "2026-10-23-07",
+      "titel": "Mädelsabend. Alle hassen ihren Freund.",
+      "schluss": "Am meisten den von Lena.",
+      "format": "szene",
+      "mechanik": "kontrast",
+      "zielgruppe": "dating",
+      "trend": "TikTok: #ihatemybf",
+      "punkte": 332,
+      "teilquote": 9,
+      "woran": null
+    },
+    {
+      "id": "2026-10-19-07",
+      "titel": "Schick das der Person, die du auf deinem Begräbnis haben willst.",
+      "schluss": "bringt Semmeln mit",
+      "format": "szene",
+      "mechanik": null,
+      "zielgruppe": null,
+      "trend": null,
+      "punkte": 321,
+      "teilquote": 7,
+      "woran": "vorhersehbar"
+    }
+  ],
+  "flop": [
+    {
+      "id": "2026-10-19-16",
+      "titel": "Endlich Nebel.",
+      "schluss": "Wellness",
+      "format": "szene",
+      "mechanik": null,
+      "zielgruppe": null,
+      "trend": null,
+      "punkte": 97,
+      "teilquote": 22,
+      "woran": "vorhersehbar"
+    },
+    {
+      "id": "2026-10-22-16",
+      "titel": "Ja. Es heißt Couch. Und es ist ausgebucht.",
+      "schluss": "Und es ist ausgebucht.",
+      "format": "antwort",
+      "mechanik": "absage",
+      "zielgruppe": "dating",
+      "trend": null,
+      "punkte": 119,
+      "teilquote": 0,
+      "woran": null
+    },
+    {
+      "id": "2026-10-22-22",
+      "titel": "Bewerbungsgespräch: „Was ist Ihre größte Schwäche?“",
+      "schluss": "Ab 17 Uhr bin ich belastbar.",
+      "format": "szene",
+      "mechanik": "gestaendnis",
+      "zielgruppe": "jobstart",
+      "trend": null,
+      "punkte": 154,
+      "teilquote": 0,
+      "woran": null
+    }
+  ],
+  "gruende": [
+    {
+      "art": "vorhersehbar",
+      "name": "Pointe vorhersehbar",
+      "gewicht": 14,
+      "frage": "Hätte die Hälfte der Leser den Schluss erraten?"
+    },
+    {
+      "art": "flach",
+      "name": "Flach, nur Zustand oder Stimmung",
+      "gewicht": 5,
+      "frage": "Gibt es ein Gegenüber oder einen Widerspruch?"
+    },
+    {
+      "art": "ue40",
+      "name": "Klingt nach Ü40",
+      "gewicht": 5,
+      "frage": "Würde eine 22-Jährige das teilen?"
+    }
+  ],
+  "schnitt": 233,
+  "bewertet": 13,
+  "fehler": [
+    {
+      "id": "2026-10-19-07",
+      "fehler": [
+        "ohne mechanik",
+        "ohne zielgruppe"
+      ]
+    },
+    {
+      "id": "2026-10-19-16",
+      "fehler": [
+        "ohne mechanik",
+        "ohne zielgruppe"
+      ]
+    },
+    {
+      "id": "2026-10-20-07",
+      "fehler": [
+        "ohne mechanik",
+        "ohne zielgruppe"
+      ]
+    },
+    {
+      "id": "2026-10-20-16",
+      "fehler": [
+        "ohne mechanik"
+      ]
+    },
+    {
+      "id": "2026-10-21-07",
+      "fehler": [
+        "Schluss „Es ist jetzt Deko.“ beschreibt nur einen Zustand oder bestätigt das Setup (Flach-Test)",
+        "ohne mechanik"
+      ]
+    },
+    {
+      "id": "2026-10-21-16",
+      "fehler": [
+        "ohne mechanik"
+      ]
+    },
+    {
+      "id": "2026-10-22-07",
+      "fehler": [
+        "ohne mechanik"
+      ]
+    }
+  ]
+}
