@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-25-16",
+    "datum": "2026-10-25",
+    "slot": "16",
+    "format": "szene",
+    "bild": "tarot-tisch-herbert.jpg",
+    "text": "Beste Freundin: Diesmal blockier ich ihn wirklich. [Ich frag die Karten, wie lange.]",
+    "bilder": [
+      "tagebuch/2026-10-25-16/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-25-07",
     "datum": "2026-10-25",
     "slot": "07",

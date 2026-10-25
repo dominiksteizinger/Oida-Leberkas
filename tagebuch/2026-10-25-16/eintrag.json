@@ -1,0 +1,26 @@
+{
+  "id": "2026-10-25-16",
+  "datum": "2026-10-25",
+  "slot": "16",
+  "inhalt": {
+    "format": "szene",
+    "satz": "Beste Freundin: Diesmal blockier ich ihn wirklich.",
+    "klammern": [
+      "Ich frag die Karten, wie lange."
+    ]
+  },
+  "bild": "tarot-tisch-herbert.jpg",
+  "caption": "Die Karten sagen: bis Freitag.",
+  "aufforderung": "Markier die Freundin, die ihn zum vierten Mal blockiert.",
+  "hashtags": [
+    "#bestie",
+    "#ex",
+    "#freundinnen",
+    "#deadpan"
+  ],
+  "mechanik": "kontrast",
+  "zielgruppe": "freundinnen",
+  "region": "dach",
+  "annahme": "Sie glaubt ihr",
+  "quelle": "#283"
+}
