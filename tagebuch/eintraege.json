@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-26-07",
+    "datum": "2026-10-26",
+    "slot": "07",
+    "format": "szene",
+    "bild": "standuhr-zeitumstellung.jpg",
+    "text": "Lena: Ab jetzt ist es um fünf dunkel. Was machen wir abends? [Ich hab schon einen Plan.] [Um sechs im Schlafanzug.]",
+    "bilder": [
+      "tagebuch/2026-10-26-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-25-16",
     "datum": "2026-10-25",
     "slot": "16",

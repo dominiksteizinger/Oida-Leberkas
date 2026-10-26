@@ -1,0 +1,32 @@
+{
+  "id": "2026-10-26-07",
+  "datum": "2026-10-26",
+  "slot": "07",
+  "inhalt": {
+    "format": "szene",
+    "satz": "Lena: Ab jetzt ist es um fünf dunkel. Was machen wir abends?",
+    "klammern": [
+      "Ich hab schon einen Plan.",
+      "Um sechs im Schlafanzug."
+    ]
+  },
+  "bild": "standuhr-zeitumstellung.jpg",
+  "caption": "Winterzeit ist Schlafanzugzeit.",
+  "aufforderung": "Schick das der Freundin, die seit Sonntag jammert.",
+  "hashtags": [
+    "#zeitumstellung",
+    "#winterzeit",
+    "#goth",
+    "#deadpan"
+  ],
+  "mechanik": "ertappt",
+  "zielgruppe": "freundinnen",
+  "region": "dach",
+  "trend": "Anlass: Zeitumstellung",
+  "annahme": "Sie plant etwas mit Lena",
+  "anlass": {
+    "ab": "2026-10-25",
+    "bis": "2026-10-28"
+  },
+  "quelle": "#308"
+}
