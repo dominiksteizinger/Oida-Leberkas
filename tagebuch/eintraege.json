@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-26-16",
+    "datum": "2026-10-26",
+    "slot": "16",
+    "format": "szene",
+    "bild": "bim-regen-kopfhoerer.jpg",
+    "text": "Er, pünktlich zum ersten Frost: Denkst du noch manchmal an mich? [Ja.] [Beim Biomüll.]",
+    "bilder": [
+      "tagebuch/2026-10-26-16/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-26-07",
     "datum": "2026-10-26",
     "slot": "07",

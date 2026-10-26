@@ -1,0 +1,32 @@
+{
+  "id": "2026-10-26-16",
+  "datum": "2026-10-26",
+  "slot": "16",
+  "inhalt": {
+    "format": "szene",
+    "satz": "Er, pünktlich zum ersten Frost: Denkst du noch manchmal an mich?",
+    "klammern": [
+      "Ja.",
+      "Beim Biomüll."
+    ]
+  },
+  "bild": "bim-regen-kopfhoerer.jpg",
+  "caption": "Jeden Dienstag. Abholtag.",
+  "aufforderung": "Schick das der Freundin, deren Ex sich auch gerade meldet.",
+  "hashtags": [
+    "#cuffingseason",
+    "#ex",
+    "#dating",
+    "#deadpan"
+  ],
+  "mechanik": "absage",
+  "zielgruppe": "dating",
+  "region": "dach",
+  "trend": "Fanbase: Cuffing Season",
+  "annahme": "Sie vermisst ihn",
+  "anlass": {
+    "ab": null,
+    "bis": "2026-11-01"
+  },
+  "quelle": "#296"
+}
