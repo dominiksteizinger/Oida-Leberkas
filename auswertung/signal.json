@@ -1,20 +1,38 @@
 {
-  "datum": "2026-10-25",
+  "datum": "2026-10-26",
   "mehr": {
-    "mechanik": [],
+    "mechanik": [
+      "kontrast"
+    ],
     "zielgruppe": [
       "alltag"
     ],
     "format": []
   },
   "weniger": {
-    "mechanik": [],
-    "zielgruppe": [],
+    "mechanik": [
+      "umdeutung"
+    ],
+    "zielgruppe": [
+      "freundinnen"
+    ],
     "format": [
       "antwort"
     ]
   },
   "top": [
+    {
+      "id": "2026-10-22-22",
+      "titel": "Bewerbungsgespräch: „Was ist Ihre größte Schwäche?“",
+      "schluss": "Ab 17 Uhr bin ich belastbar.",
+      "format": "szene",
+      "mechanik": "gestaendnis",
+      "zielgruppe": "jobstart",
+      "trend": null,
+      "punkte": 407,
+      "teilquote": 0,
+      "woran": "logische_folge"
+    },
     {
       "id": "2026-10-20-16",
       "titel": "Chat mit Lena",
@@ -23,47 +41,47 @@
       "mechanik": null,
       "zielgruppe": "alltag",
       "trend": "Google Trends AT: Selbstbedienungskassen (2000+ Suchen)",
-      "punkte": 345,
+      "punkte": 346,
       "teilquote": 0,
       "woran": "vorhersehbar"
     },
     {
-      "id": "2026-10-23-07",
-      "titel": "Mädelsabend. Alle hassen ihren Freund.",
-      "schluss": "Am meisten den von Lena.",
-      "format": "szene",
-      "mechanik": "kontrast",
-      "zielgruppe": "dating",
-      "trend": "TikTok: #ihatemybf",
-      "punkte": 332,
-      "teilquote": 9,
-      "woran": null
-    },
-    {
-      "id": "2026-10-19-07",
-      "titel": "Schick das der Person, die du auf deinem Begräbnis haben willst.",
-      "schluss": "bringt Semmeln mit",
+      "id": "2026-10-21-16",
+      "titel": "Manche 2-Euro-Münzen sind angeblich ein Vermögen wert.",
+      "schluss": "es ist die letzte",
       "format": "szene",
       "mechanik": null,
-      "zielgruppe": null,
-      "trend": null,
-      "punkte": 321,
-      "teilquote": 7,
+      "zielgruppe": "alltag",
+      "trend": "Google Trends DE: 2-Euro-Münze (5000+ Suchen)",
+      "punkte": 340,
+      "teilquote": 9,
       "woran": "vorhersehbar"
     }
   ],
   "flop": [
     {
-      "id": "2026-10-19-16",
-      "titel": "Endlich Nebel.",
-      "schluss": "Wellness",
+      "id": "2026-10-24-16",
+      "titel": "Wie es sich anfühlt, die einzige Single-Freundin beim Pärchenabend zu sein:",
+      "schluss": "Ich bin hier für die Stimmung zuständig.",
       "format": "szene",
-      "mechanik": null,
-      "zielgruppe": null,
+      "mechanik": "umdeutung",
+      "zielgruppe": "freundinnen",
       "trend": null,
-      "punkte": 97,
-      "teilquote": 22,
-      "woran": "vorhersehbar"
+      "punkte": 132,
+      "teilquote": 9,
+      "woran": null
+    },
+    {
+      "id": "2026-10-23-16",
+      "titel": "Diese eine Freundin, die bei jedem Date ihrer Freundinnen per Live-Standort mitfährt.",
+      "schluss": "Ich hab Snacks und eine Exit-Strategie.",
+      "format": "szene",
+      "mechanik": "gestaendnis",
+      "zielgruppe": "freundinnen",
+      "trend": null,
+      "punkte": 164,
+      "teilquote": 0,
+      "woran": null
     },
     {
       "id": "2026-10-22-16",
@@ -73,60 +91,34 @@
       "mechanik": "absage",
       "zielgruppe": "dating",
       "trend": null,
-      "punkte": 119,
+      "punkte": 173,
       "teilquote": 0,
-      "woran": null
-    },
-    {
-      "id": "2026-10-22-22",
-      "titel": "Bewerbungsgespräch: „Was ist Ihre größte Schwäche?“",
-      "schluss": "Ab 17 Uhr bin ich belastbar.",
-      "format": "szene",
-      "mechanik": "gestaendnis",
-      "zielgruppe": "jobstart",
-      "trend": null,
-      "punkte": 154,
-      "teilquote": 0,
-      "woran": null
+      "woran": "vorhersehbar"
     }
   ],
   "gruende": [
     {
       "art": "vorhersehbar",
       "name": "Pointe vorhersehbar",
-      "gewicht": 14,
+      "gewicht": 15,
       "frage": "Hätte die Hälfte der Leser den Schluss erraten?"
     },
     {
       "art": "flach",
       "name": "Flach, nur Zustand oder Stimmung",
-      "gewicht": 5,
+      "gewicht": 6,
       "frage": "Gibt es ein Gegenüber oder einen Widerspruch?"
     },
     {
       "art": "ue40",
       "name": "Klingt nach Ü40",
-      "gewicht": 5,
+      "gewicht": 6,
       "frage": "Würde eine 22-Jährige das teilen?"
     }
   ],
-  "schnitt": 233,
-  "bewertet": 13,
+  "schnitt": 264,
+  "bewertet": 14,
   "fehler": [
-    {
-      "id": "2026-10-19-07",
-      "fehler": [
-        "ohne mechanik",
-        "ohne zielgruppe"
-      ]
-    },
-    {
-      "id": "2026-10-19-16",
-      "fehler": [
-        "ohne mechanik",
-        "ohne zielgruppe"
-      ]
-    },
     {
       "id": "2026-10-20-07",
       "fehler": [
