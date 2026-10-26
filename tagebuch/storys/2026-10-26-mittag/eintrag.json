@@ -1,0 +1,26 @@
+{
+  "id": "2026-10-26-mittag",
+  "datum": "2026-10-26",
+  "slot": "12",
+  "inhalt": {
+    "format": "horoskop",
+    "zeichen": "Skorpion",
+    "symbol": "♏",
+    "text": "Diese Woche schreibt dir jemand. Lass ihn liegen.",
+    "werte": [
+      {
+        "name": "Liebe",
+        "saerge": 1
+      },
+      {
+        "name": "Ruhe",
+        "saerge": 5
+      },
+      {
+        "name": "Geduld",
+        "saerge": 2
+      }
+    ]
+  },
+  "bild": "boden-handy-dunkel.jpg"
+}
