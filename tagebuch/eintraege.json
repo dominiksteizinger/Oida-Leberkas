@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-27-07",
+    "datum": "2026-10-27",
+    "slot": "07",
+    "format": "szene",
+    "bild": "heuriger-allein-semmel.jpg",
+    "text": "Mädelsabend. Jede erzählt, was ihr Freund wieder gemacht hat. [Ich hab keinen.] [Ich hasse trotzdem mit. Ehrenamtlich.]",
+    "bilder": [
+      "tagebuch/2026-10-27-07/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-26-16",
     "datum": "2026-10-26",
     "slot": "16",

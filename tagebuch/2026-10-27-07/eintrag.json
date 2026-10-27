@@ -1,0 +1,32 @@
+{
+  "id": "2026-10-27-07",
+  "datum": "2026-10-27",
+  "slot": "07",
+  "inhalt": {
+    "format": "szene",
+    "satz": "Mädelsabend. Jede erzählt, was ihr Freund wieder gemacht hat.",
+    "klammern": [
+      "Ich hab keinen.",
+      "Ich hasse trotzdem mit. Ehrenamtlich."
+    ]
+  },
+  "bild": "heuriger-allein-semmel.jpg",
+  "caption": "Ich führe auch Protokoll.",
+  "aufforderung": "Markier deine Mädelsrunde.",
+  "hashtags": [
+    "#ihatemybf",
+    "#maedelsabend",
+    "#freundinnen",
+    "#deadpan"
+  ],
+  "mechanik": "gestaendnis",
+  "zielgruppe": "freundinnen",
+  "region": "dach",
+  "trend": "Fanbase: #ihatemybf",
+  "annahme": "Sie langweilt sich als Single",
+  "anlass": {
+    "ab": null,
+    "bis": "2026-11-01"
+  },
+  "quelle": "#297"
+}
