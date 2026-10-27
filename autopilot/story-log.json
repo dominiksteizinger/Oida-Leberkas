@@ -151,5 +151,16 @@
     "video": true,
     "ig": "18079369664734708",
     "zeit": "2026-10-26T15:39:37.636Z"
+  },
+  {
+    "id": "2026-10-27-mittag",
+    "datum": "2026-10-27",
+    "slot": "mittag",
+    "art": "karte",
+    "bild": "buero-kaffeemaschine-sunny.jpg",
+    "video": true,
+    "karte": "akku-stiegenhaus",
+    "ig": "18031611254683915",
+    "zeit": "2026-10-27T10:03:37.385Z"
   }
 ]
