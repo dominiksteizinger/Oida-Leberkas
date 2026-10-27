@@ -1,0 +1,14 @@
+{
+  "id": "2026-10-27-mittag",
+  "datum": "2026-10-27",
+  "slot": "12",
+  "inhalt": {
+    "format": "akku",
+    "name": "Sozialer Akku",
+    "prozent": 3,
+    "text": "Reicht noch für ein Nicken im Stiegenhaus. Nicht für ein Gespräch.",
+    "knopf_links": "Später",
+    "knopf_rechts": "Tür zu"
+  },
+  "bild": "buero-kaffeemaschine-sunny.jpg"
+}
