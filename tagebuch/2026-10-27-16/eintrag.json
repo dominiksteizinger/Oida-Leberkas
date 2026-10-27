@@ -1,0 +1,32 @@
+{
+  "id": "2026-10-27-16",
+  "datum": "2026-10-27",
+  "slot": "16",
+  "inhalt": {
+    "format": "szene",
+    "satz": "Neue Kollegin: Kommst du Freitag mit zum Afterwork?",
+    "klammern": [
+      "Ich hab Freitag leider schon was.",
+      "Feierabend."
+    ]
+  },
+  "bild": "feierabend-drehtuer.jpg",
+  "caption": "Termin steht jeden Tag um 17 Uhr.",
+  "aufforderung": "Schick das der Kollegin, die auch nie mitkommt.",
+  "hashtags": [
+    "#afterwork",
+    "#ersterjob",
+    "#feierabend",
+    "#deadpan"
+  ],
+  "mechanik": "absage",
+  "zielgruppe": "jobstart",
+  "region": "dach",
+  "trend": "Reddit r/arbeitsleben: Afterwork mit Kollegen",
+  "annahme": "Sie hat andere Pläne",
+  "anlass": {
+    "ab": null,
+    "bis": "2026-11-01"
+  },
+  "quelle": "#298"
+}
