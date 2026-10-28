@@ -1,5 +1,5 @@
 {
- "stand": "2026-10-26T19:40:41.295Z",
+ "stand": "2026-10-28T11:28:11.023Z",
  "felder": "siehe autopilot/messung-anleitung.md, Abschnitt Datenbank",
  "posts": {
   "2026-10-19-07": {
@@ -28,7 +28,7 @@
    "stimme": null,
    "jingle": null,
    "quelle": "#31",
-   "alter_h": 174,
+   "alter_h": 214,
    "ig": {
     "views": 183,
     "reichweite": 145,
@@ -83,7 +83,7 @@
    "stimme": null,
    "jingle": null,
    "quelle": "#48",
-   "alter_h": 174,
+   "alter_h": 213,
    "ig": {
     "views": 69,
     "reichweite": 47,
@@ -138,7 +138,7 @@
    "stimme": null,
    "jingle": null,
    "quelle": "#143",
-   "alter_h": 158,
+   "alter_h": 198,
    "ig": {
     "views": 136,
     "reichweite": 117,
@@ -193,7 +193,7 @@
    "stimme": null,
    "jingle": null,
    "quelle": "#217",
-   "alter_h": 149,
+   "alter_h": 189,
    "ig": {
     "views": 108,
     "reichweite": 86,
@@ -248,7 +248,7 @@
    "stimme": null,
    "jingle": null,
    "quelle": "#145",
-   "alter_h": 134,
+   "alter_h": 174,
    "ig": {
     "views": 248,
     "reichweite": 208,
@@ -262,7 +262,7 @@
     "link": "https://www.instagram.com/reel/DevpQG5is1r/"
    },
    "yt": {
-    "views": 49,
+    "views": 48,
     "wiedergabe_s": 8,
     "wiedergabe_pct": 60.35,
     "likes": 2,
@@ -274,7 +274,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 257,
+   "punkte": 256,
    "urteil": null
   },
   "2026-10-21-16": {
@@ -303,7 +303,7 @@
    "stimme": null,
    "jingle": null,
    "quelle": "#221",
-   "alter_h": 125,
+   "alter_h": 165,
    "ig": {
     "views": 140,
     "reichweite": 113,
@@ -317,7 +317,7 @@
     "link": "https://www.instagram.com/reel/DewnASCjwab/"
    },
    "yt": {
-    "views": 217,
+    "views": 218,
     "wiedergabe_s": 10,
     "wiedergabe_pct": 63.96000000000001,
     "likes": 1,
@@ -329,7 +329,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 340,
+   "punkte": 341,
    "urteil": null
   },
   "2026-10-22-07": {
@@ -358,7 +358,7 @@
    "stimme": null,
    "jingle": null,
    "quelle": "#146",
-   "alter_h": 110,
+   "alter_h": 150,
    "ig": {
     "views": 153,
     "reichweite": 137,
@@ -372,7 +372,7 @@
     "link": "https://www.instagram.com/reel/DeyN79rDURf/"
    },
    "yt": {
-    "views": 27,
+    "views": 26,
     "wiedergabe_s": 7,
     "wiedergabe_pct": 35.23,
     "likes": 1,
@@ -384,7 +384,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 184,
+   "punkte": 183,
    "urteil": null
   },
   "2026-10-22-11": {
@@ -413,7 +413,7 @@
    "stimme": null,
    "jingle": null,
    "quelle": "#34",
-   "alter_h": 106,
+   "alter_h": 146,
    "ig": {
     "views": 144,
     "reichweite": 131,
@@ -468,7 +468,7 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#97",
-   "alter_h": 100,
+   "alter_h": 140,
    "ig": {
     "views": 115,
     "reichweite": 104,
@@ -482,7 +482,7 @@
     "link": "https://www.instagram.com/reel/DezSXOtlMdQ/"
    },
    "yt": {
-    "views": 69,
+    "views": 67,
     "wiedergabe_s": 17,
     "wiedergabe_pct": 123.95,
     "likes": 0,
@@ -494,7 +494,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 173,
+   "punkte": 171,
    "urteil": null
   },
   "2026-10-22-22": {
@@ -523,7 +523,7 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#225",
-   "alter_h": 95,
+   "alter_h": 135,
    "ig": {
     "views": 167,
     "reichweite": 136,
@@ -537,7 +537,7 @@
     "link": "https://www.instagram.com/reel/Dez02TIja29/"
    },
    "yt": {
-    "views": 271,
+    "views": 269,
     "wiedergabe_s": 14,
     "wiedergabe_pct": 114.52,
     "likes": 3,
@@ -549,7 +549,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 407,
+   "punkte": 405,
    "urteil": null
   },
   "2026-10-23-07": {
@@ -578,7 +578,7 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#251",
-   "alter_h": 82,
+   "alter_h": 122,
    "ig": {
     "views": 134,
     "reichweite": 111,
@@ -592,9 +592,9 @@
     "link": "https://www.instagram.com/reel/De1ON1wESnM/"
    },
    "yt": {
-    "views": 213,
+    "views": 226,
     "wiedergabe_s": 9,
-    "wiedergabe_pct": 66.17,
+    "wiedergabe_pct": 66.58,
     "likes": 3,
     "shares": 0,
     "kommentare": 0,
@@ -604,7 +604,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 334,
+   "punkte": 347,
    "urteil": null
   },
   "2026-10-23-16": {
@@ -633,7 +633,7 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#279",
-   "alter_h": 77,
+   "alter_h": 117,
    "ig": {
     "views": 147,
     "reichweite": 128,
@@ -647,7 +647,7 @@
     "link": "https://www.instagram.com/reel/De1wYw9l9On/"
    },
    "yt": {
-    "views": 36,
+    "views": 40,
     "wiedergabe_s": 7,
     "wiedergabe_pct": 65.97,
     "likes": 0,
@@ -659,7 +659,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 164,
+   "punkte": 168,
    "urteil": null
   },
   "2026-10-24-07": {
@@ -688,7 +688,7 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#252",
-   "alter_h": 62,
+   "alter_h": 102,
    "ig": {
     "views": 187,
     "reichweite": 151,
@@ -702,10 +702,10 @@
     "link": "https://www.instagram.com/reel/De3XaSoD5kH/"
    },
    "yt": {
-    "views": 130,
+    "views": 333,
     "wiedergabe_s": 9,
-    "wiedergabe_pct": 70.48,
-    "likes": 2,
+    "wiedergabe_pct": 67.82,
+    "likes": 3,
     "shares": 0,
     "kommentare": 0,
     "abos": 1,
@@ -714,7 +714,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 281,
+   "punkte": 484,
    "urteil": null
   },
   "2026-10-24-16": {
@@ -743,7 +743,7 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#281",
-   "alter_h": 53,
+   "alter_h": 93,
    "ig": {
     "views": 125,
     "reichweite": 112,
@@ -757,10 +757,10 @@
     "link": "https://www.instagram.com/reel/De4VMJbkZrZ/"
    },
    "yt": {
-    "views": 10,
-    "wiedergabe_s": 5,
-    "wiedergabe_pct": 43.78,
-    "likes": 0,
+    "views": 81,
+    "wiedergabe_s": 7,
+    "wiedergabe_pct": 66.6,
+    "likes": 2,
     "shares": 0,
     "kommentare": 0,
     "abos": 0,
@@ -769,7 +769,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 132,
+   "punkte": 203,
    "urteil": null
   },
   "2026-10-25-07": {
@@ -798,10 +798,10 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#277",
-   "alter_h": 37,
+   "alter_h": 77,
    "ig": {
     "views": 184,
-    "reichweite": 158,
+    "reichweite": 159,
     "shares": 0,
     "saves": 0,
     "likes": 1,
@@ -812,19 +812,19 @@
     "link": "https://www.instagram.com/reel/De6DH0cCZBN/"
    },
    "yt": {
-    "views": 48,
-    "wiedergabe_s": null,
-    "wiedergabe_pct": null,
+    "views": 20,
+    "wiedergabe_s": 9,
+    "wiedergabe_pct": 80.69,
     "likes": 2,
-    "shares": null,
+    "shares": 0,
     "kommentare": 0,
-    "abos": null,
-    "vorlaeufig": true,
+    "abos": 0,
+    "vorlaeufig": false,
     "link": "https://youtube.com/shorts/aMP1sLQVzzo"
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 206,
+   "punkte": 179,
    "urteil": null
   },
   "2026-10-25-16": {
@@ -853,7 +853,7 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#283",
-   "alter_h": 28,
+   "alter_h": 68,
    "ig": {
     "views": 145,
     "reichweite": 128,
@@ -867,19 +867,19 @@
     "link": "https://www.instagram.com/reel/De7A22sAIed/"
    },
    "yt": {
-    "views": 193,
-    "wiedergabe_s": null,
-    "wiedergabe_pct": null,
-    "likes": 5,
-    "shares": null,
+    "views": 87,
+    "wiedergabe_s": 8,
+    "wiedergabe_pct": 75.63,
+    "likes": 2,
+    "shares": 0,
     "kommentare": 0,
-    "abos": null,
-    "vorlaeufig": true,
+    "abos": 0,
+    "vorlaeufig": false,
     "link": "https://youtube.com/shorts/4k4-P8nbUSA"
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 321,
+   "punkte": 215,
    "urteil": null
   },
   "2026-10-26-07": {
@@ -908,10 +908,10 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#308",
-   "alter_h": 13,
+   "alter_h": 53,
    "ig": {
-    "views": 184,
-    "reichweite": 152,
+    "views": 200,
+    "reichweite": 167,
     "shares": 0,
     "saves": 0,
     "likes": 1,
@@ -934,7 +934,7 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 178,
+   "punkte": 193,
    "urteil": null
   },
   "2026-10-26-16": {
@@ -963,15 +963,15 @@
    "stimme": "leda",
    "jingle": "ende",
    "quelle": "#296",
-   "alter_h": 4,
+   "alter_h": 44,
    "ig": {
-    "views": 137,
-    "reichweite": 128,
+    "views": 186,
+    "reichweite": 175,
     "shares": 0,
     "saves": 0,
-    "likes": 0,
+    "likes": 1,
     "kommentare": 0,
-    "wiedergabe_s": 3,
+    "wiedergabe_s": 3.1,
     "share_quote": 0,
     "save_quote": 0,
     "link": "https://www.instagram.com/reel/De9nX9-kc8v/"
@@ -989,7 +989,172 @@
    },
    "facebook": null,
    "tiktok": null,
-   "punkte": 129,
+   "punkte": 176,
+   "urteil": null
+  },
+  "2026-10-27-07": {
+   "id": "2026-10-27-07",
+   "datum": "2026-10-27",
+   "slot": "07",
+   "wochentag": "Di",
+   "format": "szene",
+   "mechanik": "gestaendnis",
+   "zielgruppe": "freundinnen",
+   "region": "dach",
+   "trend": "Fanbase: #ihatemybf",
+   "annahme": "Sie langweilt sich als Single",
+   "anlass": true,
+   "gegenueber": null,
+   "bild": "heuriger-allein-semmel.jpg",
+   "bild_erneut": false,
+   "schluss": "Ich hasse trotzdem mit. Ehrenamtlich.",
+   "schluss_woerter": 5,
+   "setup_woerter": 12,
+   "takte": 3,
+   "aufforderung": "andere",
+   "caption_woerter": 4,
+   "hashtags": 4,
+   "reel_s": 12.9,
+   "stimme": "leda",
+   "jingle": "ende",
+   "quelle": "#297",
+   "alter_h": 29,
+   "ig": {
+    "views": 173,
+    "reichweite": 153,
+    "shares": 0,
+    "saves": 0,
+    "likes": 1,
+    "kommentare": 0,
+    "wiedergabe_s": 5.9,
+    "share_quote": 0,
+    "save_quote": 0,
+    "link": "https://www.instagram.com/reel/De_NwO8l7wC/"
+   },
+   "yt": {
+    "views": 0,
+    "wiedergabe_s": null,
+    "wiedergabe_pct": null,
+    "likes": 0,
+    "shares": null,
+    "kommentare": 0,
+    "abos": null,
+    "vorlaeufig": true,
+    "link": "https://youtube.com/shorts/Tq-To9Yov8g"
+   },
+   "facebook": null,
+   "tiktok": null,
+   "punkte": 153,
+   "urteil": null
+  },
+  "2026-10-27-16": {
+   "id": "2026-10-27-16",
+   "datum": "2026-10-27",
+   "slot": "16",
+   "wochentag": "Di",
+   "format": "szene",
+   "mechanik": "absage",
+   "zielgruppe": "jobstart",
+   "region": "dach",
+   "trend": "Reddit r/arbeitsleben: Afterwork mit Kollegen",
+   "annahme": "Sie hat andere Pläne",
+   "anlass": true,
+   "gegenueber": null,
+   "bild": "feierabend-drehtuer.jpg",
+   "bild_erneut": false,
+   "schluss": "Feierabend.",
+   "schluss_woerter": 1,
+   "setup_woerter": 14,
+   "takte": 3,
+   "aufforderung": "Schick das",
+   "caption_woerter": 7,
+   "hashtags": 4,
+   "reel_s": 11.7,
+   "stimme": "leda",
+   "jingle": "ende",
+   "quelle": "#298",
+   "alter_h": 20,
+   "ig": {
+    "views": 207,
+    "reichweite": 195,
+    "shares": 0,
+    "saves": 0,
+    "likes": 2,
+    "kommentare": 0,
+    "wiedergabe_s": 4.1,
+    "share_quote": 0,
+    "save_quote": 0,
+    "link": "https://www.instagram.com/reel/DfAKou6DRUa/"
+   },
+   "yt": {
+    "views": 0,
+    "wiedergabe_s": null,
+    "wiedergabe_pct": null,
+    "likes": 0,
+    "shares": null,
+    "kommentare": 0,
+    "abos": null,
+    "vorlaeufig": true,
+    "link": "https://youtube.com/shorts/18FNSLKetG8"
+   },
+   "facebook": null,
+   "tiktok": null,
+   "punkte": 195,
+   "urteil": null
+  },
+  "2026-10-28-07": {
+   "id": "2026-10-28-07",
+   "datum": "2026-10-28",
+   "slot": "07",
+   "wochentag": "Mi",
+   "format": "chat",
+   "mechanik": "umdeutung",
+   "zielgruppe": "familie",
+   "region": "dach",
+   "trend": null,
+   "annahme": null,
+   "anlass": false,
+   "gegenueber": "Mama",
+   "bild": null,
+   "bild_erneut": false,
+   "schluss": "Herbert. Er ist eine Fledermaus.",
+   "schluss_woerter": 5,
+   "setup_woerter": 21,
+   "takte": 6,
+   "aufforderung": "Frage",
+   "caption_woerter": 2,
+   "hashtags": 5,
+   "reel_s": 17.8,
+   "stimme": "leda",
+   "jingle": "ende",
+   "quelle": "#36",
+   "alter_h": 5,
+   "ig": {
+    "views": 147,
+    "reichweite": 133,
+    "shares": 0,
+    "saves": 0,
+    "likes": 1,
+    "kommentare": 0,
+    "wiedergabe_s": 2.7,
+    "share_quote": 0,
+    "save_quote": 0,
+    "link": "https://www.instagram.com/reel/DfBxiw8Ei0u/"
+   },
+   "yt": {
+    "views": 0,
+    "wiedergabe_s": null,
+    "wiedergabe_pct": null,
+    "likes": 0,
+    "shares": null,
+    "kommentare": 0,
+    "abos": null,
+    "vorlaeufig": true,
+    "link": "https://youtube.com/shorts/ukn9EOljpVI"
+   },
+   "facebook": null,
+   "tiktok": null,
+   "punkte": 133,
    "urteil": null
   }
  }

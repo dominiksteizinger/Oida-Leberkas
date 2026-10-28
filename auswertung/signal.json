@@ -1,26 +1,35 @@
 {
-  "datum": "2026-10-26",
+  "datum": "2026-10-28",
   "mehr": {
     "mechanik": [
-      "kontrast"
+      "gestaendnis"
     ],
-    "zielgruppe": [
-      "alltag"
-    ],
+    "zielgruppe": [],
     "format": []
   },
   "weniger": {
     "mechanik": [
-      "umdeutung"
+      "umdeutung",
+      "absage"
     ],
     "zielgruppe": [
       "freundinnen"
     ],
-    "format": [
-      "antwort"
-    ]
+    "format": []
   },
   "top": [
+    {
+      "id": "2026-10-24-07",
+      "titel": "Mädelsabend. Jede erzählt, was ihr Freund falsch macht.",
+      "schluss": "Für später.",
+      "format": "szene",
+      "mechanik": "gestaendnis",
+      "zielgruppe": "dating",
+      "trend": "TikTok: #ihatemybf",
+      "punkte": 484,
+      "teilquote": 0,
+      "woran": null
+    },
     {
       "id": "2026-10-22-22",
       "titel": "Bewerbungsgespräch: „Was ist Ihre größte Schwäche?“",
@@ -29,46 +38,34 @@
       "mechanik": "gestaendnis",
       "zielgruppe": "jobstart",
       "trend": null,
-      "punkte": 407,
+      "punkte": 405,
       "teilquote": 0,
       "woran": "logische_folge"
     },
     {
-      "id": "2026-10-20-16",
-      "titel": "Chat mit Lena",
-      "schluss": "Ein Mitarbeiter wurde informiert.",
-      "format": "chat",
-      "mechanik": null,
-      "zielgruppe": "alltag",
-      "trend": "Google Trends AT: Selbstbedienungskassen (2000+ Suchen)",
-      "punkte": 346,
-      "teilquote": 0,
-      "woran": "vorhersehbar"
-    },
-    {
-      "id": "2026-10-21-16",
-      "titel": "Manche 2-Euro-Münzen sind angeblich ein Vermögen wert.",
-      "schluss": "es ist die letzte",
+      "id": "2026-10-23-07",
+      "titel": "Mädelsabend. Alle hassen ihren Freund.",
+      "schluss": "Am meisten den von Lena.",
       "format": "szene",
-      "mechanik": null,
-      "zielgruppe": "alltag",
-      "trend": "Google Trends DE: 2-Euro-Münze (5000+ Suchen)",
-      "punkte": 340,
+      "mechanik": "kontrast",
+      "zielgruppe": "dating",
+      "trend": "TikTok: #ihatemybf",
+      "punkte": 347,
       "teilquote": 9,
-      "woran": "vorhersehbar"
+      "woran": null
     }
   ],
   "flop": [
     {
-      "id": "2026-10-24-16",
-      "titel": "Wie es sich anfühlt, die einzige Single-Freundin beim Pärchenabend zu sein:",
-      "schluss": "Ich bin hier für die Stimmung zuständig.",
+      "id": "2026-10-27-07",
+      "titel": "Mädelsabend. Jede erzählt, was ihr Freund wieder gemacht hat.",
+      "schluss": "Ich hasse trotzdem mit. Ehrenamtlich.",
       "format": "szene",
-      "mechanik": "umdeutung",
+      "mechanik": "gestaendnis",
       "zielgruppe": "freundinnen",
-      "trend": null,
-      "punkte": 132,
-      "teilquote": 9,
+      "trend": "Fanbase: #ihatemybf",
+      "punkte": 153,
+      "teilquote": 0,
       "woran": null
     },
     {
@@ -79,7 +76,7 @@
       "mechanik": "gestaendnis",
       "zielgruppe": "freundinnen",
       "trend": null,
-      "punkte": 164,
+      "punkte": 168,
       "teilquote": 0,
       "woran": null
     },
@@ -91,7 +88,7 @@
       "mechanik": "absage",
       "zielgruppe": "dating",
       "trend": null,
-      "punkte": 173,
+      "punkte": 171,
       "teilquote": 0,
       "woran": "vorhersehbar"
     }
@@ -116,29 +113,9 @@
       "frage": "Würde eine 22-Jährige das teilen?"
     }
   ],
-  "schnitt": 264,
+  "schnitt": 252,
   "bewertet": 14,
   "fehler": [
-    {
-      "id": "2026-10-20-07",
-      "fehler": [
-        "ohne mechanik",
-        "ohne zielgruppe"
-      ]
-    },
-    {
-      "id": "2026-10-20-16",
-      "fehler": [
-        "ohne mechanik"
-      ]
-    },
-    {
-      "id": "2026-10-21-07",
-      "fehler": [
-        "Schluss „Es ist jetzt Deko.“ beschreibt nur einen Zustand oder bestätigt das Setup (Flach-Test)",
-        "ohne mechanik"
-      ]
-    },
     {
       "id": "2026-10-21-16",
       "fehler": [
