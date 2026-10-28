@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-10-28-16",
+    "datum": "2026-10-28",
+    "slot": "16",
+    "format": "szene",
+    "bild": "ubahn-sitzt-herbert.jpg",
+    "text": "Er: Wie kann so eine wie du noch Single sein? [Übung.]",
+    "bilder": [
+      "tagebuch/2026-10-28-16/post.jpg"
+    ]
+  },
+  {
     "id": "2026-10-28-07",
     "datum": "2026-10-28",
     "slot": "07",
