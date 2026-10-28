@@ -1,0 +1,44 @@
+{
+  "id": "2026-10-28-07",
+  "datum": "2026-10-28",
+  "slot": "07",
+  "inhalt": {
+    "format": "chat",
+    "name": "Mama",
+    "nachrichten": [
+      {
+        "wer": "sie",
+        "text": "Und? Gibt es jemanden in deinem Leben?"
+      },
+      {
+        "wer": "ich",
+        "text": "Ja. Er wohnt sogar schon bei mir."
+      },
+      {
+        "wer": "sie",
+        "text": "RESI!! Seit wann??"
+      },
+      {
+        "wer": "sie",
+        "text": "Wie heißt er?"
+      },
+      {
+        "wer": "ich",
+        "text": "Herbert. Er ist eine Fledermaus."
+      }
+    ]
+  },
+  "caption": "Familie informiert.",
+  "aufforderung": "Wer fragt bei euch am Familientisch zuerst?",
+  "hashtags": [
+    "#familie",
+    "#mama",
+    "#deadpan",
+    "#goth",
+    "#same"
+  ],
+  "mechanik": "umdeutung",
+  "zielgruppe": "familie",
+  "region": "dach",
+  "quelle": "#36"
+}
