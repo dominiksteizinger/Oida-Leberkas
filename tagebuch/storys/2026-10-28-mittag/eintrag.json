@@ -1,0 +1,14 @@
+{
+  "id": "2026-10-28-mittag",
+  "datum": "2026-10-28",
+  "slot": "12",
+  "inhalt": {
+    "format": "wetter",
+    "ort": "Wien",
+    "temperatur": "11°",
+    "lage": "Regen",
+    "gefuehlt": "Persönlich",
+    "zusatz": "Der Himmel hat auch keine Lust."
+  },
+  "bild": "buero-kalender-durchgestrichen.jpg"
+}
